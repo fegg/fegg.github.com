@@ -327,6 +327,12 @@ function dispatch(action) {
 <time class='entry-date' datetime='2016-05-17T00:00:00+08:00'><span class='date'>2016 年5 月17 日</span> <span class='time'>12:00 am</span></time>
       
 
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/react/'>react</a>, <a class='category' href='/blog/categories/qian-duan-kai-fa/'>前端开发</a>
+  
+</span>
+
 
     </p>
     
@@ -347,6 +353,12 @@ function dispatch(action) {
     </p>
   </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -430,7 +442,10 @@ function dispatch(action) {
       var disqus_shortname = 'lulin';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://fegg.github.io/blog/20160517/redux-can-do/';
+        var disqus_url = 'http://fegg.github.io/blog/20160517/redux-can-do/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
