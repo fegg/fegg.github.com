@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,11 +111,11 @@
   </header>
 
 
-<div class="entry-content"><h3>一、前言</h3>
+<div class="entry-content"><h3 id="section">一、前言</h3>
 
 <p>上面写了console的乱码问题，接下来写的是web中servlet中的问题，大楷我比较关心一点，因为遇到这个的情况多一些吧。直接开始吧。</p>
 
-<h3>二、jsp和servlet中的乱码问题</h3>
+<h3 id="jspservlet">二、jsp和servlet中的乱码问题</h3>
 
 <p>其实在java文件的编译的情况和（一）中的情况是一样的，不过这里是由WEB容器去调用JVM而已，那么我们得知道一些默认的东西</p>
 
@@ -99,7 +126,6 @@
 <p>注意是ISO-8859-1就行了，tomcat 5.0之前采用是由用户设置的编码方式解析，tomcat 5.0过后有个参数（useBodyEncodingForURI）被默认了false，就使用了ISO-8859-1解析了，这儿是配置中的关键。</p>
 
 <!--more-->
-
 
 <pre><code>package com.test.one;
 
@@ -113,7 +139,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class Hello extends HttpServlet {
     private static final long serialVersionUID = 4878915372815719687L;
-
+	
     public Hello() {
         super();
     }

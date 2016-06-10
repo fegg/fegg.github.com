@@ -9,7 +9,8 @@
   <meta name="author" content="小撸">
 
   
-  <meta name="description" content="一、float的基本原理 float属性定义元素相对于一个块级元素左、右方向的浮动。当前float元素是处于流动状态（flow statu），实际还是脱离了普通流（normal flow）。float是处于流动状态，与absolute和relative的脱离普通流，处于另外的层级有一定区别。 &hellip;">
+  <meta name="description" content="一、float的基本原理
+float属性定义元素相对于一个块级元素左、右方向的浮动。当前float元素是处于流动状态（flow statu），实际还是脱离了普通流（normal flow）。float是处于流动状态，与absolute和relative的脱离普通流，处于另外的层级有一定区别。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,6 +31,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,16 +112,14 @@
   </header>
 
 
-<div class="entry-content"><h3>一、float的基本原理</h3>
-
+<div class="entry-content"><h3 id="float">一、float的基本原理</h3>
 <p>float属性定义元素相对于一个块级元素左、右方向的浮动。当前float元素是处于流动状态（flow statu），实际还是脱离了普通流（normal flow）。float是处于流动状态，与absolute和relative的脱离普通流，处于另外的层级有一定区别。</p>
 
 <p>其实说起来抽象了一点，最傻瓜化的理解我认为就从float本身的名字去理解，即：浮动。既然说到浮动，有一个形象的实物可以对应，那就是“水”。</p>
 
-<p>“水”有一个特性，就是流动->浮动。</p>
+<p>“水”有一个特性，就是流动-&gt;浮动。</p>
 
 <!-- more -->
-
 
 <p>打个比方，一个岛屿，其中一片水是一个层级，某一个元素浮动过后，就想像成水上的漂浮物。这样子相对于陆地上固定的物体来说，漂浮物是占据了岛屿空间的。</p>
 
@@ -108,9 +134,9 @@
 <pre><code>&lt;div class="wrap"&gt;这是一个漂浮物。&lt;/div&gt;
 
 .wrap {
-    float: left;
-    color: #fff;
-    background: #acc;
+	float: left;
+	color: #fff;
+	background: #acc;
 }
 </code></pre>
 
@@ -120,95 +146,94 @@
 
 <p>其实float有一个“行”的概念，对于“行”的理解，我们可以理解为：一个块级元素所在的水平空间。形象的比喻就是一个有高度的块级元素，在浏览器中所在的位置，默认平铺为一行。</p>
 
-<h3>二、float之图文混排</h3>
-
+<h3 id="float-1">二、float之图文混排</h3>
 <p>float最开始我觉得就是来做图文混排的，使用float来做文字围绕图片的效果实在是太简单不过了。</p>
 
 <pre><code>&lt;div class="wrap"&gt;
-    &lt;img class="red-img" src="img/red.png" alt="红色图"&gt;
-    &lt;p class="aritcle"&gt;这里是一个红色背景的图片，现在如果文字过多，设置为浮动，会出现围绕图片的经典布局。&lt;/p&gt;
+	&lt;img class="red-img" src="img/red.png" alt="红色图"&gt;
+	&lt;p class="aritcle"&gt;这里是一个红色背景的图片，现在如果文字过多，设置为浮动，会出现围绕图片的经典布局。&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;button class="btn－star"&gt;开始&lt;/button&gt;
 &lt;button class="btn-stop"&gt;停止&lt;/button&gt;
 
 body {
-    margin: 0;
-    padding: 0;
-    background: #eee;
+	margin: 0;
+	padding: 0;
+	background: #eee;
 }
 .wrap {
-    width: 150px;
-    height: 200px;
-    background: #fca;
+	width: 150px;
+	height: 200px;
+	background: #fca;
 }
 .wrap .red-img {
-    float: left;
+	float: left;
 }
 </code></pre>
 
-<p><img src="/images/float/float%E5%9B%BE%E6%96%87.gif" alt="float图文" /></p>
+<p><img src="/images/float/float图文.gif" alt="float图文" /></p>
 
 <p>如果要实现文字不围绕图片的效果，使用闭合浮动的方式即可，对于闭合浮动的值，单独开一篇解释。</p>
 
 <pre><code>.wrap .aritcle {
-    clear: left;
+	clear: left;
 }
 </code></pre>
 
-<p><img src="/images/float/float%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92%E8%A7%A3%E5%86%B3.gif" alt="float图文混排解决" /></p>
+<p><img src="/images/float/float图文混排解决.gif" alt="float图文混排解决" /></p>
 
-<h3>三、float之高度塌陷</h3>
+<h3 id="float-2">三、float之高度塌陷</h3>
 
 <p>当内部元素设置float后，外部元素会出现高度塌陷的情况，具体看如下实例：</p>
 
 <pre><code>&lt;div class="wrap"&gt;
-    &lt;div class="inner-wrap"&gt;这里是内容区域&lt;/div&gt;
-&lt;/div&gt;          
+	&lt;div class="inner-wrap"&gt;这里是内容区域&lt;/div&gt;
+&lt;/div&gt;			
 
 .wrap {
-    width: 600px;
-    height: 200px;
-    background: #fcc;
+	width: 600px;
+	height: 200px;
+	background: #fcc;
 }
 .wrap .inner-wrap {
-    width: 400px;
-    height: 220px;
-    float: left;
-    background: #acc;
+	width: 400px;
+	height: 220px;
+	float: left;
+	background: #acc;
 }
 </code></pre>
 
-<p><img src="/images/float/float%E9%AB%98%E5%BA%A6%E5%A1%8C%E9%99%B7.gif" alt="float高度塌陷" /></p>
+<p><img src="/images/float/float高度塌陷.gif" alt="float高度塌陷" /></p>
 
 <p>下面举一个方便理解的例子，就是平时用无序列表的时候会遇到ul标签的高度在li标签float过后塌陷的问题，解决方案就是加一点css即可（当然网上有很多方案，好像有6，7种，可以查阅）。</p>
 
 <pre><code>&lt;ul class="items"&gt;
-    &lt;li class="item html"&gt;HTML&lt;/li&gt;
-    &lt;li class="item css"&gt;CSS&lt;/li&gt;
-    &lt;li class="item js"&gt;JavaScript&lt;/li&gt;
+	&lt;li class="item html"&gt;HTML&lt;/li&gt;
+	&lt;li class="item css"&gt;CSS&lt;/li&gt;
+	&lt;li class="item js"&gt;JavaScript&lt;/li&gt;
 &lt;/ul&gt;
 
 ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 .items .item {
-    float: left;
-    width: 100px;
-    height: 30px;
-    margin-left: 10px;
-    display: inline;
+	float: left;
+	width: 100px;
+	height: 30px;
+	margin-left: 10px;
+	display: inline;
 }
 .items .html {
-    background: #ace;
+	background: #ace;
 }
 .items .css {
-    background: #acc;
+	background: #acc;
 }
 .items .js {
-    background: #fcc;
+	background: #fcc;
 }
 </code></pre>
 
@@ -219,15 +244,15 @@ ul {
 <pre><code>&lt;ul class="items clearfix"&gt;...&lt;/ul&gt;
 
 .clearfix:after {    
-    display: block;
-    content: "";
-    height: 0;
-    line-height: 0;
-    clear: both;    
-    visibility: hidden;
+	display: block;
+	content: "";
+	height: 0;
+	line-height: 0;
+	clear: both;    
+	visibility: hidden;
 }
 .clearfix {
-    zoom: 1; /* ie6 */
+	zoom: 1; /* ie6 */
 }
 </code></pre>
 

@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -86,7 +113,7 @@
 
 <div class="entry-content"><p><a href="http://60sky.com/2014/03/24/detail-float-1/">独立的float（一）</a></p>
 
-<h3>四、float的属性值：none、left、right</h3>
+<h3 id="floatnoneleftright">四、float的属性值：none、left、right</h3>
 
 <p>（1）none</p>
 
@@ -102,9 +129,11 @@
 
 <p>我觉得对于基础的讲解，<a href="http://www.w3school.com.cn/css/css_positioning_floating.asp">w3cschool</a>的例子是比较好的。</p>
 
-<h3>五、float之清除浮动</h3>
+<h3 id="float">五、float之清除浮动</h3>
 
-<blockquote><p>clear属性定义了元素的哪边上不允许出现浮动元素。</p></blockquote>
+<blockquote>
+  <p>clear属性定义了元素的哪边上不允许出现浮动元素。</p>
+</blockquote>
 
 <p>clear属性有四个值，分别为：none、left、right、both</p>
 
@@ -114,15 +143,15 @@
 
 <!-- more -->
 
-
 <ul>
-<li><p><strong>使用内嵌样式：clear: [someone]</strong></p>
+  <li>
+    <p><strong>使用内嵌样式：clear: [someone]</strong></p>
 
-<pre><code>  &lt;div class="wrap"&gt;
+    <pre><code>  &lt;div class="wrap"&gt;
       &lt;div class="left"&gt;&lt;/div&gt;
       &lt;p style="clear: left;"&gt;&lt;/p&gt;
   &lt;/div&gt;
-
+	
   .wrap {
       background: #ddd;
   }
@@ -132,29 +161,28 @@
       float: left;
       background: #00f;
   }
-</code></pre></li>
+</code></pre>
+  </li>
 </ul>
-
 
 <p>tip: 在html的结构里面出现控制样式的属性，这是不太好的做法，不太符合结构和样式分离的web标准。</p>
 
 <ul>
-<li><strong>使用br标签</strong></li>
+  <li><strong>使用br标签</strong></li>
 </ul>
-
 
 <p>br标签有几个值，其实最开始我也不知道这个标签能够这样使用，查阅了资料了解。</p>
 
 <p>br标签具有3个值：left、right、all，<strong>所有浏览器都支持</strong>用法和clear属性的值差不多，比如上面的例子可以写成：</p>
 
 <pre><code>&lt;div class="wrap"&gt;
-    &lt;div class="left"&gt;&lt;/div&gt;
-    &lt;br clear="left" /&gt;
+	&lt;div class="left"&gt;&lt;/div&gt;
+	&lt;br clear="left" /&gt;
 &lt;/div&gt;
 
 .wrap {
-    background: #ddd;
-    zoom: 1; /* ie6 */
+	background: #ddd;
+	zoom: 1; /* ie6 */
 }
 </code></pre>
 
@@ -163,31 +191,30 @@
 <p>tip: 添加zoom属性是为了触发IE的HasLayout，这样才能够让div.wrap的高度不塌陷。</p>
 
 <ul>
-<li><strong>使用display: table来模拟table清除浮动</strong></li>
+  <li><strong>使用display: table来模拟table清除浮动</strong></li>
 </ul>
-
 
 <p>这个方法我觉得可能使用得比较少，IE6不支持这属性的值，而且在ff和chrome这里面的实际效果和期望效果有差别。具体如下，改一下之前的html结构，来演示这种清除浮动的方式：</p>
 
 <pre><code>&lt;div class="wrap"&gt;
-    &lt;div class="left"&gt;这是左边&lt;/div&gt;
-    &lt;div class="right"&gt;这是右边&lt;/div&gt;
+	&lt;div class="left"&gt;这是左边&lt;/div&gt;
+	&lt;div class="right"&gt;这是右边&lt;/div&gt;
 &lt;/div&gt;
 
 .wrap {
-    background: #ddd;
+	background: #ddd;
 }
 .left, .right {
-    width: 400px;
-    height: 200px;
+	width: 400px;
+	height: 200px;
 }
 .left {
-    float: left;
-    background: #00f;
+	float: left;
+	background: #00f;
 }
 .right {
-    float: right;
-    background: #eee;
+	float: right;
+	background: #eee;
 }
 </code></pre>
 
@@ -198,9 +225,9 @@
 <p>将div.wrap的样式修改为：</p>
 
 <pre><code>.wrap {
-    display: table;
-    zoom: 1; /* ie6 */
-    background: #ddd;
+	display: table;
+	zoom: 1; /* ie6 */
+	background: #ddd;
 }
 </code></pre>
 
@@ -209,31 +236,30 @@
 <p>可以从上面两个效果比较，可以看出其实使用display这种方式是达不到预期的效果的。当然，也可以变通一下，其实这里有一个父容器的问题，我们可以为div.wrap定宽来看效果。</p>
 
 <pre><code>.wrap {
-    display: table;
-    zoom: 1;
-    width: 900px;
-    background: #fcc;
+	display: table;
+	zoom: 1;
+	width: 900px;
+	background: #fcc;
 }
 </code></pre>
 
 <p>其实这样表面上解决了上面display后会紧密排列的问题，但是这样div.left和div.right就不会随窗口缩小而缩小他们中间的举例。</p>
 
 <pre><code>.wrap {
-    display: table;
-    zoom: 1;
-    width: 900px;
-    background: #fcc;
+	display: table;
+	zoom: 1;
+	width: 900px;
+	background: #fcc;
 }
 </code></pre>
 
 <p><img src="/images/float/dis-table-width.gif" alt="float清除" /></p>
 
-<p>＝＝怎么感觉越写越多&hellip;先睡觉&hellip;</p>
+<p>＝＝怎么感觉越写越多…先睡觉…</p>
 
 <ul>
-<li><strong>使用overflow特殊清除浮动</strong></li>
+  <li><strong>使用overflow特殊清除浮动</strong></li>
 </ul>
-
 
 <p>这个方式介绍，按需求来采用方案。</p>
 
@@ -242,55 +268,54 @@
 <p>但是你会发现，其他浏览器都有了我们想要的效果，可是ie6会没什么变化，对呀，应该没有变化，我们使用overflow:hidden，并没有触发ie6撑起高度的条件，不能算是bug，个人觉得只是浏览器的实现不同。那我们要怎么解决呢？很简单，只需要触发ie6撑起高度的条件就行了，如果没什么特殊要求，使用zoom: 1来撑起ie6的塌陷高度是比较好的，不会影响其他元素的特性。所以总结如下：</p>
 
 <pre><code>.wrap { 
-    overflow: hidden;
-    zoom: 1; /* 你也可以加入ie6的hack标记 */
+	overflow: hidden;
+	zoom: 1; /* 你也可以加入ie6的hack标记 */
 }
 </code></pre>
 
 <p>但是这样做也有不足的地方，overflow: hidden这个属性会吃掉超出元素的内容。</p>
 
 <ul>
-<li><strong>使用伪类:after清除浮动</strong></li>
+  <li><strong>使用伪类:after清除浮动</strong></li>
 </ul>
 
-
-<p>使用伪类的方式，其实在之前已经拿来使用过啦，现在再仔细研究下。大致写法如下：（当然也有另类一点的写法，比如用content: &ldquo;\200B"这种使用字符来达到添加的字符内容本身不可见的效果）</p>
+<p>使用伪类的方式，其实在之前已经拿来使用过啦，现在再仔细研究下。大致写法如下：（当然也有另类一点的写法，比如用content: “\200B”这种使用字符来达到添加的字符内容本身不可见的效果）</p>
 
 <pre><code>.clearfix:after {
-    display: block;
-    content: "";
-    height: 0;
-    line-height: 0;
-    visibility: hidden;
-    clear: both;
+	display: block;
+	content: "";
+	height: 0;
+	line-height: 0;
+	visibility: hidden;
+	clear: both;
 }
 .clearfix {
-    zoom: 1; 
+	zoom: 1; 
 }
 </code></pre>
 
-<p>(1) display: block -> 这个好理解，先弄成块级元素</p>
+<p>(1) display: block -&gt; 这个好理解，先弄成块级元素</p>
 
-<p>(2) content: &ldquo;&rdquo; -> 在.clearfix元素的末尾添加一个空元素，但这仅仅不够，所以会设置visibility</p>
+<p>(2) content: “” -&gt; 在.clearfix元素的末尾添加一个空元素，但这仅仅不够，所以会设置visibility</p>
 
-<p>(3) visibility: hidden -> 让可见元素隐藏，这样就做到了真正忽略我们添加的content</p>
+<p>(3) visibility: hidden -&gt; 让可见元素隐藏，这样就做到了真正忽略我们添加的content</p>
 
-<p>(4) height: 0和line-height: 0 -> 这个也比较好理解，就是设置元素高度为0，看到不到，暂时没测试过是兼容哪一个浏览器，准备单独研究一下height（auto, 100%, 0, 18px等）特殊值对元素样式的影响。</p>
+<p>(4) height: 0和line-height: 0 -&gt; 这个也比较好理解，就是设置元素高度为0，看到不到，暂时没测试过是兼容哪一个浏览器，准备单独研究一下height（auto, 100%, 0, 18px等）特殊值对元素样式的影响。</p>
 
-<p>(5) clear: both -> 清除浮动嘛，必要的。其实就是让浮动元素的盒子不影响到外层元素的盒子</p>
+<p>(5) clear: both -&gt; 清除浮动嘛，必要的。其实就是让浮动元素的盒子不影响到外层元素的盒子</p>
 
-<p>(6) zoom: 1 -> 触发ie6的条件的，主要是让父元素的高度计算，按照自己和子元素的样式来计算</p>
+<p>(6) zoom: 1 -&gt; 触发ie6的条件的，主要是让父元素的高度计算，按照自己和子元素的样式来计算</p>
 
 <ul>
-<li><strong>总结</strong></li>
+  <li><strong>总结</strong></li>
 </ul>
-
 
 <p>其实从上面的来看，就有两种：</p>
 
 <p>(1) 使用clear属性带来的特性，直接清除浮动（得注意添加clear的位置，当然如果慢慢明白了原理就不用注意了，该是怎么回事就怎么用）</p>
 
 <p>(2) 使用overflow和zoom等属性附带特定的值来触发元素撑起高度的条件，后来测试发现了好几种方案都是可行，所以追寻原理，后来发现，标准浏览器有自己的BFC，ie6／7有自己的HasLayout，其实不难理解，就是达到条件，让浏览器的解析换一种方式，不过也有比较细节的地方，需要好好总结。</p>
+
 </div>
 
 

@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,7 +111,7 @@
   </header>
 
 
-<div class="entry-content"><h3>前言</h3>
+<div class="entry-content"><h3 id="section">前言</h3>
 
 <p>一直想写这篇“十日谈”，聊聊我对Web前端开发的体会，顺便解答下周围不少人的困惑和迷惘。我不打算聊太多技术，我想，通过技术的历练，得到的反思应当更重要。</p>
 
@@ -92,10 +119,9 @@
 
 <!-- more -->
 
-
 <p>那么，如何定义Web前端技术岗位边界？Web前端技术的价值体现在何处？前端工程师的价值仅仅体现在物以稀为贵吗？前端工程师的初级、中级、高级和专家之间到底如何界定？当前“我”处在什么位置？接下来的路子应当怎样走？何谓前端技术之“道”？我想多数人都思考过这些问题，本篇“十日谈”里的观点可能有些偏激，但抛砖引玉，读者权且把这些言论当作一个引子吧。</p>
 
-<h3>第一日：初尝禁果</h3>
+<h3 id="section-1">第一日：初尝禁果</h3>
 
 <p>【上帝说：“要有光！”便有了光】</p>
 
@@ -153,7 +179,7 @@
 
 <p>所以，勤于思考，轻装上阵，大胆实践，勇于创新，发掘问题所在，实打实的解决（潜在）问题，这才是我们真正需要的能力。放下思维定势枷锁，也会有一种豁然开朗的感觉。</p>
 
-<h3>第二日：科班秀才</h3>
+<h3 id="section-2">第二日：科班秀才</h3>
 
 <p>【秀才仕途】</p>
 
@@ -183,7 +209,7 @@
 
 <p>“我对Web开发人员最大的建议就是：热爱你的工作。热爱跨浏览器开发带来的挑战、热爱互联网技术的种种异端，热爱业内的同行，热爱你的工 具。互联网发展太快了，如果你不热爱它的话，不可能跟上它的步伐。这意味着你必须多阅读，多动手，保证自己的才能与日俱增。下了班也不能闲着，要做一些对自己有用的 事儿。可以参与一些开源软件的开发，读读好书，看看牛人的博客。经常参加一些会议，看看别人都在干什么。要想让自己快速成长，有很多事儿可以去做，而且付出一定会有回报。“</p>
 
-<h3>第三日，幸福感</h3>
+<h3 id="section-3">第三日，幸福感</h3>
 
 <p>【先精通十行？！】</p>
 
@@ -209,7 +235,7 @@
 
 <p>如果你想做到“资深”，就一定要想清楚这一点，因为你是团队的顶梁柱（业务），也是幸福感的源头（士气）。</p>
 
-<h3>第四日，架构和伪架构</h3>
+<h3 id="section-4">第四日，架构和伪架构</h3>
 
 <p>【代码设计的本质】</p>
 
@@ -227,7 +253,7 @@
 
 <p>真正的高手用记事本就能写出高质量的代码、用cvs就能做到完美的版本控制、用字典式的分解就能做好系统架构，我想，这正是剑宗一派的最高境界吧。</p>
 
-<h3>第五日：寻找突破</h3>
+<h3 id="section-5">第五日：寻找突破</h3>
 
 <p>【动心忍性】</p>
 
@@ -259,7 +285,7 @@
 
 <p>这件事情就是一个典型的技术驱动的例子。谁不让你玩技术了，谁不重视你了，谁把你当工具了，谁觉得你的代码没价值？这世界只有自己把自己看扁，谁想跟你这个蝇头小卒过不去？用实力说话，用数据说话，用独到的见解说话，想不做技术驱动都难（是啊，自己的位置都是自己之前所作所为的体现，更多的是人祸而不是天灾，不能再抱怨了）。</p>
 
-<h3>第六日：码农的宿命</h3>
+<h3 id="section-6">第六日：码农的宿命</h3>
 
 <p>【青春饭】</p>
 
@@ -363,7 +389,7 @@
 
 <p>所以，转管理应当是一件非常慎重的事情，不是所谓程序员混不下去就转管理这么简单。但不管怎样，有一件事情是需要尤其要想清楚，即，转了管理，技术就丢了吗？我们在第七日“伯乐与千里马”中再深入聊聊这个事儿。</p>
 
-<h3>第七日，伯乐与千里马</h3>
+<h3 id="section-7">第七日，伯乐与千里马</h3>
 
 <p>【师兄们的抉择 1】</p>
 
@@ -395,7 +421,7 @@
 
 <p>但这并不是说，他人对自己的观点不重要，有时甚至要综合各种声音，所以，多找身边的大牛们聊聊天，多找你的师兄和主管，不管他们给你的建议是多么形而上，总有一些声音对你是有益的，多收集，有好处。</p>
 
-<h3>第八日，做地球上最牛的UED</h3>
+<h3 id="ued">第八日，做地球上最牛的UED</h3>
 
 <p>【谁推动了历史前进，英雄？还是人民？】</p>
 
@@ -415,7 +441,7 @@
 
 <p>还有一点，Web前端工程师作为UED之中最具实践精神和逻辑思维的工种，是能够将技术对设计的影响发挥到最大，可以催生出大量的创造和革新的，这一点也是传统后端工程师所不具备的。</p>
 
-<h3>第九日，前端技术体系</h3>
+<h3 id="section-8">第九日，前端技术体系</h3>
 
 <p>现在越来越感觉到前端技术需要成体系的积累，一方面可以规范我们的前端技术培训，另一方面，作为知识线索为新人做指引，省的走弯路，避免陷入奇技淫巧的深坑之中不能自拔。</p>
 
@@ -427,12 +453,12 @@
 
 <p>ps：一直很喜欢“神曲”的插图，从“天堂篇”里摘出一张作为封面吧，呵呵。</p>
 
-<h3>第十日：QA</h3>
+<h3 id="qa">第十日：QA</h3>
 
 <pre><code>Follow Your Heart!
 </code></pre>
 
-<p>原文出自：<a href="http://www.cnblogs.com/liufxlucky365/archive/2013/06/14/3136867.html">http://www.cnblogs.com/liufxlucky365/archive/2013/06/14/3136867.html</a></p>
+<p>原文出自：http://www.cnblogs.com/liufxlucky365/archive/2013/06/14/3136867.html</p>
 </div>
 
 

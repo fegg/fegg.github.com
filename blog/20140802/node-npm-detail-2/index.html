@@ -9,8 +9,7 @@
   <meta name="author" content="小撸">
 
   
-  <meta name="description" content="安装Node和npm前半部分的配置可以参考之前我的两篇文章： Hello Node
-Node npm 详解（1） 四、本地模式和全局模式 如果你了解环境变量里面的，用户变量和系统变量。可以做一个类比进行理解。当然，windows上面的环境变量概念比较好理解。 1. 本地模式 本地模式下安装包的特点 &hellip;">
+  <meta name="description" content="安装Node和npm前半部分的配置可以参考之前我的两篇文章： Hello Node Node npm 详解（1） 四、本地模式和全局模式 如果你了解环境变量里面的，用户变量和系统变量。可以做一个类比进行理解。当然，windows上面的环境变量概念比较好理解。 1. 本地模式 本地模式下安装包的特点 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -31,6 +30,33 @@ Node npm 详解（1） 四、本地模式和全局模式 如果你了解环境�
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -88,30 +114,27 @@ Node npm 详解（1） 四、本地模式和全局模式 如果你了解环境�
 <div class="entry-content"><p>安装Node和npm前半部分的配置可以参考之前我的两篇文章：</p>
 
 <ol>
-<li><a href="http://blog.51yuekan.com/2014/10/08/2014-08-02-hello-nodejs/">Hello Node</a></li>
-<li><a href="http://blog.51yuekan.com/2014/10/08/2014-08-02-node-npm-detail-1/">Node npm 详解（1）</a></li>
+  <li><a href="http://blog.51yuekan.com/2014/10/08/2014-08-02-hello-nodejs/">Hello Node</a></li>
+  <li><a href="http://blog.51yuekan.com/2014/10/08/2014-08-02-node-npm-detail-1/">Node npm 详解（1）</a></li>
 </ol>
 
-
-<h3>四、本地模式和全局模式</h3>
+<h3 id="section">四、本地模式和全局模式</h3>
 
 <p>如果你了解环境变量里面的，用户变量和系统变量。可以做一个类比进行理解。当然，windows上面的环境变量概念比较好理解。</p>
 
 <!-- more -->
 
-
-<h4>1. 本地模式</h4>
+<h4 id="section-1">1. 本地模式</h4>
 
 <p>本地模式下安装包的特点</p>
 
 <ul>
-<li>不会写入PATH变量（也就是环境变量，无法在全局引用该安装包，不能在终端直接使用）</li>
-<li>能够在不同的node_modules目录，安装不同版本的安装包</li>
-<li>能够通过require()来引入安装包</li>
+  <li>不会写入PATH变量（也就是环境变量，无法在全局引用该安装包，不能在终端直接使用）</li>
+  <li>能够在不同的node_modules目录，安装不同版本的安装包</li>
+  <li>能够通过require()来引入安装包</li>
 </ul>
 
-
-<p>使用“npm install <pkg>[@<version>]”安装的包，默认会安装在当前目录的“node_modules”目录下（如果没有该目录，在执行命令的时候，会自动帮你创建）。</p>
+<p>使用“npm install <pkg>[@<version>]”安装的包，默认会安装在当前目录的“node_modules”目录下（如果没有该目录，在执行命令的时候，会自动帮你创建）。</version></pkg></p>
 
 <pre><code>//专业的写法
 ./node_modules
@@ -129,23 +152,28 @@ Node npm 详解（1） 四、本地模式和全局模式 如果你了解环境�
 
 <p>这个命令在安装包的同时，将信息写入package.json。</p>
 
-<blockquote><p>@version表示指定安装包的版本号，是可选项目，默认安装最新版本。</p>
+<blockquote>
+  <p>@version表示指定安装包的版本号，是可选项目，默认安装最新版本。</p>
+</blockquote>
 
-<p>项目路径中如果有package.json文件，使用npm install方法就可以根据dependencies配置安装所有的依赖包。</p>
+<blockquote>
+  <p>项目路径中如果有package.json文件，使用npm install方法就可以根据dependencies配置安装所有的依赖包。</p>
+</blockquote>
 
-<p>如果这样配置，当代码提交到github时，就不用提交node_modules这个文件夹。</p></blockquote>
+<blockquote>
+  <p>如果这样配置，当代码提交到github时，就不用提交node_modules这个文件夹。</p>
+</blockquote>
 
-<h4>2. 全局模式</h4>
+<h4 id="section-2">2. 全局模式</h4>
 
 <p>全局模式安装包的特点</p>
 
 <ul>
-<li>不需要重复安装</li>
-<li>不能使用require()引入</li>
-<li>会写入PATH，并建立软链接，使用命令行的方式使用</li>
-<li>不方便指定特定的版本运行</li>
+  <li>不需要重复安装</li>
+  <li>不能使用require()引入</li>
+  <li>会写入PATH，并建立软链接，使用命令行的方式使用</li>
+  <li>不方便指定特定的版本运行</li>
 </ul>
-
 
 <p>（1）采用全局模式安装</p>
 
@@ -183,15 +211,20 @@ $ npm get global
 $ npm config get global
 </code></pre>
 
-<p>（7）设置为默认以全局模式安装，就不用每次加"-g"参数啦。</p>
+<p>（7）设置为默认以全局模式安装，就不用每次加”-g”参数啦。</p>
 
 <pre><code>$ npm set global=true
 $ npm config set global=true
 </code></pre>
 
-<blockquote><p>npm set / npm config set与npm get / npm config get的区别和联系单独写吧。其实不难，只是需要实验才能得出结果，这里区别很细节。</p>
+<blockquote>
+  <p>npm set / npm config set与npm get / npm config get的区别和联系单独写吧。其实不难，只是需要实验才能得出结果，这里区别很细节。</p>
+</blockquote>
 
-<p>准备把文章拆分成几篇，写得详细了一点，这里写的话篇幅就太长了。</p></blockquote>
+<blockquote>
+  <p>准备把文章拆分成几篇，写得详细了一点，这里写的话篇幅就太长了。</p>
+</blockquote>
+
 </div>
 
 

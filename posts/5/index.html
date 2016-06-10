@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -89,7 +116,7 @@
 
   <div class="entry-content"><p><a href="http://60sky.com/2014/03/24/detail-float-1/">独立的float（一）</a></p>
 
-<h3>四、float的属性值：none、left、right</h3>
+<h3 id="floatnoneleftright">四、float的属性值：none、left、right</h3>
 
 <p>（1）none</p>
 
@@ -105,9 +132,11 @@
 
 <p>我觉得对于基础的讲解，<a href="http://www.w3school.com.cn/css/css_positioning_floating.asp">w3cschool</a>的例子是比较好的。</p>
 
-<h3>五、float之清除浮动</h3>
+<h3 id="float">五、float之清除浮动</h3>
 
-<blockquote><p>clear属性定义了元素的哪边上不允许出现浮动元素。</p></blockquote>
+<blockquote>
+  <p>clear属性定义了元素的哪边上不允许出现浮动元素。</p>
+</blockquote>
 
 <p>clear属性有四个值，分别为：none、left、right、both</p>
 
@@ -147,13 +176,12 @@
   </header>
 
 
-  <div class="entry-content"><h3>一、float的基本原理</h3>
-
+  <div class="entry-content"><h3 id="float">一、float的基本原理</h3>
 <p>float属性定义元素相对于一个块级元素左、右方向的浮动。当前float元素是处于流动状态（flow statu），实际还是脱离了普通流（normal flow）。float是处于流动状态，与absolute和relative的脱离普通流，处于另外的层级有一定区别。</p>
 
 <p>其实说起来抽象了一点，最傻瓜化的理解我认为就从float本身的名字去理解，即：浮动。既然说到浮动，有一个形象的实物可以对应，那就是“水”。</p>
 
-<p>“水”有一个特性，就是流动->浮动。</p>
+<p>“水”有一个特性，就是流动-&gt;浮动。</p>
 
 </div>
   
@@ -187,17 +215,17 @@
   </header>
 
 
-  <div class="entry-content"><h3>一、纵向放置的显示</h3>
+  <div class="entry-content"><h3 id="section">一、纵向放置的显示</h3>
 
 <pre><code>&lt;link rel="stylesheet" media="screen and (orientation: portrait)" href="portrait- screen.css" /&gt;
 </code></pre>
 
-<h3>二、非纵向放置的显示屏</h3>
+<h3 id="section-1">二、非纵向放置的显示屏</h3>
 
 <pre><code>&lt;link rel="stylesheet" media="not screen and (orientation: portrait)" href="portrait- screen.css" /&gt;
 </code></pre>
 
-<h3>三、只有纵向放置的显示屏并且视口需要大于800px</h3>
+<h3 id="px">三、只有纵向放置的显示屏并且视口需要大于800px</h3>
 
 <pre><code>&lt;link rel="stylesheet" media="screen and (orientation: portrait) and (min-width: 800px)" href="800wide-portrait-screen.css" /&gt;
 </code></pre>
@@ -234,13 +262,13 @@
   </header>
 
 
-  <div class="entry-content"><h3>一、CSS3 动画的属性和描述</h3>
+  <div class="entry-content"><h3 id="css3-">一、CSS3 动画的属性和描述</h3>
 
 <p>(1) 规定动画的名称、周期</p>
 
 <pre><code>/* animateTimer默认值为0，动画不会被执行。 */
 div {
-    animation: animateName animateTimer;
+	animation: animateName animateTimer;
 }
 </code></pre>
 
@@ -248,8 +276,8 @@ div {
 
 <pre><code>/* from...to... &lt;=&gt; 0%...100% */
 @keyframes animateName {
-    from {...}
-    to {...}
+	from {...}
+	to {...}
 }
 </code></pre>
 
@@ -287,21 +315,23 @@ div {
   </header>
 
 
-  <div class="entry-content"><h3>一、前言</h3>
+  <div class="entry-content"><h3 id="section">一、前言</h3>
 
 <p>在CSS样式中，当文本缩放的时候使用font-size属性是最难以理解的方面之一。在CSS中，你有4种不同的选择，能够让你设置文本在浏览器中的展示。那么这4种单位哪一种更适合呢？这个问题引发了各种各样不同的争论和评价。想要找到一个比较权威的回答可能比较困难，因为这个问题比较难回答。</p>
 
-<blockquote><p>PS: 半年前只翻译啦一半，半夜打开一看原文突然就想把剩下的翻译啦~里面有一些自己的观点描述，如果有错误请您留言给我，一定修正。</p></blockquote>
+<blockquote>
+  <p>PS: 半年前只翻译啦一半，半夜打开一看原文突然就想把剩下的翻译啦~里面有一些自己的观点描述，如果有错误请您留言给我，一定修正。</p>
+</blockquote>
 
-<h3>二、合适的单位</h3>
+<h3 id="section-1">二、合适的单位</h3>
 
-<p><strong>&ldquo;Ems&rdquo;(em): </strong> &ldquo;em"是被用于网页文件媒介的可缩放的单位（即相对单位）。1em就等于当前字体的大小，举个例子来讲，如果文档中字体的大小为12pt，那么1em = 12pt。Ems拥有能够缩放的特点，所以2em = 24pt，0.5em = 6pt（你也可以使用原文中的.5em，但是我觉得0.5em的可读性更好）等等。</p>
+<p>**“Ems”(em): ** “em”是被用于网页文件媒介的可缩放的单位（即相对单位）。1em就等于当前字体的大小，举个例子来讲，如果文档中字体的大小为12pt，那么1em = 12pt。Ems拥有能够缩放的特点，所以2em = 24pt，0.5em = 6pt（你也可以使用原文中的.5em，但是我觉得0.5em的可读性更好）等等。</p>
 
-<p><strong>Pixels(px): </strong> 像素是被用于屏幕媒介（在计算机屏幕上读取）的固定大小的单位（即绝对单位）。1像素表示电脑屏幕中的1个点（这是你的屏幕能够识别的最小单位）。在设计网页的时候，很多web设计者采用像素，因为它能够很精确的在浏览器中渲染网页。但是，使用像素作为单位，当近视的用户（或者视力不好的用户）放大正在浏览的网页或者在移动端缩小网页到合适的尺寸，都会呈现一些问题。</p>
+<p>**Pixels(px): ** 像素是被用于屏幕媒介（在计算机屏幕上读取）的固定大小的单位（即绝对单位）。1像素表示电脑屏幕中的1个点（这是你的屏幕能够识别的最小单位）。在设计网页的时候，很多web设计者采用像素，因为它能够很精确的在浏览器中渲染网页。但是，使用像素作为单位，当近视的用户（或者视力不好的用户）放大正在浏览的网页或者在移动端缩小网页到合适的尺寸，都会呈现一些问题。</p>
 
-<p><strong>Points(pt): </strong> Points是一直以来被用于打印媒介（打印在纸上等等）。1pt = 1/72英寸。Points和Pixels比较像，它们都是固定大小和不能缩放的单位。</p>
+<p>**Points(pt): ** Points是一直以来被用于打印媒介（打印在纸上等等）。1pt = 1/72英寸。Points和Pixels比较像，它们都是固定大小和不能缩放的单位。</p>
 
-<p><strong>Percent(%): </strong> 百分比单位和"em"单位很像，但是存在着细微的不同。首先也是最重要的不同，就是在font-size = 100%（比如：12pt = 100%）的时候。当使用百分比单位，你的文本完全能在移动端正常访问。</p>
+<p>**Percent(%): ** 百分比单位和”em”单位很像，但是存在着细微的不同。首先也是最重要的不同，就是在font-size = 100%（比如：12pt = 100%）的时候。当使用百分比单位，你的文本完全能在移动端正常访问。</p>
 
 </div>
   
@@ -335,8 +365,7 @@ div {
   </header>
 
 
-  <div class="entry-content"><h3>一、技术嘉年华</h3>
-
+  <div class="entry-content"><h3 id="section">一、技术嘉年华</h3>
 <p>2014年3月5日来到公司，下午开始第一天的工作，感觉公司的技术氛围不错。今天，第一次参加公司的技术嘉年华，感觉这是一片技术的海洋，有很多技术大拿，也有很多实战大神！</p>
 
 <p><img src="http://p2.qhimg.com/t014085814a8f47a166.jpg" alt="海报" /></p>
@@ -375,13 +404,13 @@ div {
   </header>
 
 
-  <div class="entry-content"><h3>前言</h3>
+  <div class="entry-content"><h3 id="section">前言</h3>
 
 <p>因为 Arial, Verdana, Garamond or Times New Roman 这些字体几乎在所有电脑上都有安装，所以以前每个网站都使用他们来渲染文本。至今，虽然webfonts已经在互联网中得到普遍的使用，但是我们依然不知道如何高效的加载他们。</p>
 
 <p>为了提供更好的用户体验，我写了一些怎么做才能高效加载webfonts的简单解决方法，这个方案的实施并不需要昂贵的硬件支持。</p>
 
-<h3>0. 目录</h3>
+<h3 id="section-1">0. 目录</h3>
 
 <p>主要从以下方案进行介绍：</p>
 

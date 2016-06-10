@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,28 +111,26 @@
   </header>
 
 
-<div class="entry-content"><h3>一、npm简介</h3>
+<div class="entry-content"><h3 id="npm">一、npm简介</h3>
 
 <p>安装npm请阅读我之前的文章<a href="http://blog.51yuekan.com/2014/10/08/2014-08-02-hello-nodejs/">Hello Node</a>中npm安装那一部分，不过只介绍了linux平台，如果是其它平台，有<a href="http://www.infoq.com/cn/articles/nodejs-npm-install-config">前辈</a>写了更加详细的介绍。</p>
 
 <p>npm的全称：Node Package Manager.</p>
 
-<h4>（1）通俗的理解</h4>
+<h4 id="section">（1）通俗的理解</h4>
 
 <p>其实从字面意思就可以理解这个产品有什么作用翻译为“Node包管理器”。对，就是Node的包的一个管理工具，目前我尝试的有</p>
 
 <ol>
-<li>下载并安装包（npm install [pkg]）</li>
-<li>升级安装包（npm update [pkg]）</li>
-<li>卸载安装包（npm uninstall/rm [pkg]），可以指定卸载包的版本号
-&hellip;</li>
+  <li>下载并安装包（npm install [pkg]）</li>
+  <li>升级安装包（npm update [pkg]）</li>
+  <li>卸载安装包（npm uninstall/rm [pkg]），可以指定卸载包的版本号
+…</li>
 </ol>
-
 
 <p>其实这些命令很简单，常用的必须记住，不常用的查询即可，这才是比较好的学习知识方式。</p>
 
 <!-- more -->
-
 
 <p>在终端输入：</p>
 
@@ -117,49 +142,47 @@ $ npm &lt;command&gt; --help
 $ npm help &lt;command&gt;
 </code></pre>
 
-<h4>（2）专业的解释</h4>
+<h4 id="section-1">（2）专业的解释</h4>
 
 <p>npm（Node Package Manager）是Node.js下的主流套件管理程式。它在Node.js v0.6.x版本之后，内建于Node系统。通过npm可以协助开发者安装、卸载、删除、更新Node.js套件，并且可以通过npm发布自己的插件。</p>
 
-<h3>二、类似的产品</h3>
+<h3 id="section-2">二、类似的产品</h3>
 
-<p>其实学习一个产品，可以联系其它产品，能够更好的理解现在手头的产品。第一次学习npm我的第一反应就是，很像linux/mac平台的很多软件，依赖管理的方式可以参考maven&hellip;当然相似性可以随便联想。</p>
+<p>其实学习一个产品，可以联系其它产品，能够更好的理解现在手头的产品。第一次学习npm我的第一反应就是，很像linux/mac平台的很多软件，依赖管理的方式可以参考maven…当然相似性可以随便联想。</p>
 
 <p>接下来，举几个例子吧，当然详细了解可以查baidu &amp;&amp; google。</p>
 
 <ol>
-<li>gem</li>
-<li>PyPL</li>
-<li>pear</li>
-<li>macPort</li>
-<li>Homebrew</li>
-<li>rem</li>
-<li>apt-get</li>
-<li>yum
-&hellip;</li>
+  <li>gem</li>
+  <li>PyPL</li>
+  <li>pear</li>
+  <li>macPort</li>
+  <li>Homebrew</li>
+  <li>rem</li>
+  <li>apt-get</li>
+  <li>yum
+…</li>
 </ol>
-
 
 <p>是不是很多都很熟悉？这样对于npm的认识就不用局限于概念啦。</p>
 
-<h3>三、npm基础功能</h3>
+<h3 id="npm-1">三、npm基础功能</h3>
 
-<h4>（1）npmrc文件介绍</h4>
+<h4 id="npmrc">（1）npmrc文件介绍</h4>
 
 <p>首先介绍一下npmrc文件，这个文件是npm包管理器的配置文件。</p>
 
 <p>与npmrc相关的三个文件：</p>
 
 <ol>
-<li>用户配置文件：~/.npmrc</li>
-<li>全局配置文件：$PREFIX/npmrc</li>
-<li>npm内部配置文件：安装npm的目录下</li>
+  <li>用户配置文件：~/.npmrc</li>
+  <li>全局配置文件：$PREFIX/npmrc</li>
+  <li>npm内部配置文件：安装npm的目录下</li>
 </ol>
-
 
 <p>下面仔细看一下npm config的配置。</p>
 
-<h4>（2）npm获取配置的6种方式（优先级从高到低）：</h4>
+<h4 id="npm6">（2）npm获取配置的6种方式（优先级从高到低）：</h4>
 
 <p>1.命令行参数</p>
 
@@ -168,7 +191,7 @@ $ npm help &lt;command&gt;
 
 <p>2.环境变量</p>
 
-<p>以"npm_config_&ldquo;为前缀的环境变量将会被认为是npm的配置属性。
+<p>以”npm_config_“为前缀的环境变量将会被认为是npm的配置属性。
 像Maven镜像的概念，方便通信吧。</p>
 
 <pre><code>$ npm_config_proxy=http://&lt;server&gt;:&lt;port&gt;
@@ -192,7 +215,9 @@ $ npm config get globalconfig
 /usr/local/etc/npmrc
 </code></pre>
 
-<blockquote><p>3，4中输入终端的效果如图：</p></blockquote>
+<blockquote>
+  <p>3，4中输入终端的效果如图：</p>
+</blockquote>
 
 <p><img src="/images/post/node-npm/node-npm-3-and-4.png" alt="3，4在终端的结果" /></p>
 
@@ -204,24 +229,26 @@ $ npm config get globalconfig
 
 <p>如果前5条均未设置，npm会使用默认配置参数。</p>
 
-<h4>（4）npm install <pkg name></h4>
+<h4 id="npm-install-pkg-name">（4）npm install <pkg name=""></pkg></h4>
 
 <p>“安装指定包”：这个命令不难，但是也有需要注意的地方，就是安装的模式有两种，在后面会单独讲解。</p>
 
-<blockquote><p>如果不知道包的具体名称，可以在<a href="http://search.npmjs.org">http://search.npmjs.org</a>上进行搜索。</p></blockquote>
+<blockquote>
+  <p>如果不知道包的具体名称，可以在<a href="http://search.npmjs.org">http://search.npmjs.org</a>上进行搜索。</p>
+</blockquote>
 
-<h4>（5）npm uninstall <pkg name></h4>
+<h4 id="npm-uninstall-pkg-name">（5）npm uninstall <pkg name=""></pkg></h4>
 
-<p>“卸载指定包”：在help的时候，会给你推荐npm rm <pkg name>这个命令，uninstall会卸载掉包的依赖，rm。</p>
+<p>“卸载指定包”：在help的时候，会给你推荐npm rm <pkg name="">这个命令，uninstall会卸载掉包的依赖，rm。</pkg></p>
 
-<h4>（6）npm ls</h4>
+<h4 id="npm-ls">（6）npm ls</h4>
 
 <p>查看安装的包清单，其实和linux的ls命令很像，可以跟很多参数，详情可以使用</p>
 
 <pre><code>$ npm help ls
 </code></pre>
 
-<h4>（7）npm search <pkg name></h4>
+<h4 id="npm-search-pkg-name">（7）npm search <pkg name=""></pkg></h4>
 
 <p>搜索包的详细信息，比如我们搜索express试试。第一次搜索，会提示建立索引，需要耐心等待片刻，大家测试的时候不要就关掉啦终端。</p>
 
@@ -233,22 +260,21 @@ $ npm config get globalconfig
 <p>其实看上去复杂，只是东西有点大，不过主要包含以下6个部分：</p>
 
 <ol>
-<li>名称</li>
-<li>描述</li>
-<li>作者</li>
-<li>发布时间</li>
-<li>发布版本号</li>
-<li>关键字</li>
+  <li>名称</li>
+  <li>描述</li>
+  <li>作者</li>
+  <li>发布时间</li>
+  <li>发布版本号</li>
+  <li>关键字</li>
 </ol>
 
-
-<h4>（8）npm update <pkg name></h4>
+<h4 id="npm-update-pkg-name">（8）npm update <pkg name=""></pkg></h4>
 
 <p>更新安装的包</p>
 
 <p>更多API可以查看官网：<a href="https://npmjs.org/doc/">https://npmjs.org/doc/</a></p>
 
-<h3>四、版本号的知识。</h3>
+<h3 id="section-3">四、版本号的知识。</h3>
 
 <p>在node.js中的package.json配置文件中，我们需要配置版本号，比如0.1.2</p>
 
@@ -263,6 +289,7 @@ $ npm config get globalconfig
 <p><a href="http://www.cnblogs.com/sdjxcolin/archive/2007/07/02/803376.html">软件项目版本号的命名规则及格式</a></p>
 
 <p>为什么要解释这个呢？肯定是有用，因为npm安装的时候是可以选择版本号的，有点理解会比较好吧，至少我是这么认为的。</p>
+
 </div>
 
 

@@ -9,7 +9,7 @@
   <meta name="author" content="小撸">
 
   
-  <meta name="description" content="提供者：js-渣渣 原文：[http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0][1] 对象是JavaScript的重要单元。事实上JavaScript的一切都是对象或者是面向对象的接口。  语言特性 引用和值  &hellip;">
+  <meta name="description" content="提供者：js-渣渣 原文：[http://www.cnblogs.com/zha-zha/articles/4863472.html ][1] 对象是JavaScript的重要单元。事实上JavaScript的一切都是对象或者是面向对象的接口。  语言特性 引用和值  &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -86,20 +113,18 @@
 
 <div class="entry-content"><p>提供者：js-渣渣</p>
 
-<p>原文：[<a href="http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0">http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0</a>][1]</p>
+<p>原文：[http://www.cnblogs.com/zha-zha/articles/4863472.html ][1]</p>
 
 <p>对象是JavaScript的重要单元。事实上JavaScript的一切都是对象或者是面向对象的接口。</p>
 
-<h3> 语言特性</h3>
+<h3 id="section"> 语言特性</h3>
 
-<h4>引用和值 </h4>
-
+<h4 id="section-1">引用和值 </h4>
 <p>JavaScript变量持有的数据有两种形式：拷贝和引用。任何的基本类型值都是拷贝到变量。基本类型值最重要的特性就是它们是以值的形式赋值、拷贝、传递以及从函数总返回。</p>
 
 <p>JavaScript非基本类型值则是依赖引用。 任何不持有基本类型值的变量持有的是对象的引用。引用是指向对象内存位置的指针。这样有效率的是两个或者多个变量不会都来持有对象的拷贝；它们只是简单的指向这个对象就好。一个引用对对象的更新直接影响到另一个引用。</p>
 
 <!-- more -->
-
 
 <pre><code>// Set obj to an empty object
 // (Using {} is shorter than 'new Object()')
@@ -120,7 +145,7 @@ refToObj.anotherProperty = 1;
 console.log(obj.anotherProperty === refToObj.anotherProperty); //true
 </code></pre>
 
-<h4>自我调整的对象</h4>
+<h4 id="section-2">自我调整的对象</h4>
 
 <pre><code>// Create an array of items
 // (Similar to 2-1, using [] is shorter than 'new Array()')
@@ -135,7 +160,9 @@ items.push('four');
 console.log(items.length == itemsRef.length); //true
 </code></pre>
 
-<blockquote><p>重要的是要记住引用只指向所指对象，而不是另一个引用。</p></blockquote>
+<blockquote>
+  <p>重要的是要记住引用只指向所指对象，而不是另一个引用。</p>
+</blockquote>
 
 <p>我们看一个实体对象改变，而引用继续指向旧式对象的例子：</p>
 
@@ -176,7 +203,7 @@ item += 'ing';
 console.log(item != itemRef);
 </code></pre>
 
-<h3>作用域</h3>
+<h3 id="section-3">作用域</h3>
 
 <p>JavaScript只有两个作用域：函数作用域和全局作用域。但是Es6里引入了块作用域。</p>
 
@@ -222,7 +249,7 @@ console.log(window.foo === 'test');
 
 <p>在函数里 声明变量的时候，要注意变量提升问题。任何声明在函数里 的作用域都将会把它的声明提升作用域的顶端。这样做的目的是保障变量名在整个作用域都能访问。</p>
 
-<h3>Context上下文环境</h3>
+<h3 id="context">Context上下文环境</h3>
 
 <p>通过this访问环境，它经常指向代码运行的环境。 </p>
 
@@ -281,7 +308,7 @@ function setBodyColor() {
 setBodyColor('black');
 </code></pre>
 
-<h3>闭包</h3>
+<h3 id="section-4">闭包</h3>
 
 <p>闭包是一种工具，我们可以通过它在内部函数中 在外部函数终止执行的时候访问外部函数出现的变量。</p>
 
@@ -315,7 +342,7 @@ setTimeout('otherFunction(' + num + ',' + num2 + ')', 1000);
 
 <p>这两种形式容易在发布代码到production过程中中压缩的时候易出现问题。</p>
 
-<h4>使用闭包实现科里化</h4>
+<h4 id="section-5">使用闭包实现科里化</h4>
 
 <pre><code>// A function that generates a new function for adding numbers
 function addGenerator(num) {
@@ -334,7 +361,7 @@ var addFive = addGenerator(5);
 console.log( addFive( 4 ) == 9 );
 </code></pre>
 
-<h4>使用匿名函数来隐藏全局作用域中的变量</h4>
+<h4 id="section-6">使用匿名函数来隐藏全局作用域中的变量</h4>
 
 <pre><code>// Create a new anonymous function, to use as a wrapper
 (function() {
@@ -374,7 +401,7 @@ for (var i = 0; i &lt; items.length; i++) {
 }
 </code></pre>
 
-<h3>函数重载类型检查</h3>
+<h3 id="section-7">函数重载类型检查</h3>
 
 <p>JavaScript并不提供函数重载的特性，但是存在功能让我们可以实现重载。</p>
 
@@ -415,9 +442,8 @@ sendMessage('How are you?', console);
 aFunction( 1, 2, 3 ); 
 </code></pre>
 
-<h3>关于类型检查</h3>
-
-<h4>1.第一种就是使用typeof检查</h4>
+<h3 id="section-8">关于类型检查</h3>
+<p>#### 1.第一种就是使用typeof检查</p>
 
 <pre><code>var num = '50';
 var arr = 'apples,oranges,pears';
@@ -436,7 +462,7 @@ if (typeof arr == 'string') {
 
 <p>在变量不是Object Array 或者是 自定义对象的时候，这个方案是完美的。</p>
 
-<h4>2.第二种方式是使用instanceof，它检查右操作数是不是左操作数的构造函数。</h4>
+<h4 id="instanceof">2.第二种方式是使用instanceof，它检查右操作数是不是左操作数的构造函数。</h4>
 
 <pre><code>var today = new Date();
 var re = /[a-z]+/i;
@@ -454,13 +480,15 @@ if (re instanceof RegExp) {
 }
 </code></pre>
 
-<blockquote><p>更好的检查方法是使用Object.prototype.toString.call(obj).</p></blockquote>
+<blockquote>
+  <p>更好的检查方法是使用Object.prototype.toString.call(obj).</p>
+</blockquote>
 
-<h3>新的对象工具</h3>
+<h3 id="section-9">新的对象工具</h3>
 
 <p>对象的修改JavaScript有3种方法控制一个对象是否可以被修改</p>
 
-<h4>1.Object.preventExtensions()阻止添加新的属性，强行添加会导致typeError.但是可以修改\删除已经存在的属性</h4>
+<h4 id="objectpreventextensionstypeerror">1.Object.preventExtensions()阻止添加新的属性，强行添加会导致typeError.但是可以修改\删除已经存在的属性</h4>
 
 <pre><code>// Creates a new object and stores it in 'obj'
 var obj = {};
@@ -478,7 +506,7 @@ function makeTypeError() {
 makeTypeError();
 </code></pre>
 
-<h4>2.Object.seal()不能新添属性和删除属性及转换成getter。</h4>
+<h4 id="objectsealgetter">2.Object.seal()不能新添属性和删除属性及转换成getter。</h4>
 
 <pre><code>// Creates a new object and uses object.seal to restrict it
 var obj = {};
@@ -507,7 +535,7 @@ function makeTypeError() {
 makeTypeError();
 </code></pre>
 
-<h4>3.Object.freeze</h4>
+<h4 id="objectfreeze">3.Object.freeze</h4>
 
 <p>这里的对象就是不能有任何的改变了，但是它的某个属性是对象的话仍然可以改变的</p>
 

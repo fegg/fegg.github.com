@@ -9,7 +9,9 @@
   <meta name="author" content="小撸">
 
   
-  <meta name="description" content="一、技术嘉年华 2014年3月5日来到公司，下午开始第一天的工作，感觉公司的技术氛围不错。今天，第一次参加公司的技术嘉年华，感觉这是一片技术的海洋，有很多技术大拿，也有很多实战大神！ 这个海报感觉还比较喜庆，感觉有点玩中国风，嘿嘿！ 二、蔡学庸之七层架构 上午很早就激动的来到啦公司，坐啦半个小时， &hellip;">
+  <meta name="description" content="一、技术嘉年华
+2014年3月5日来到公司，下午开始第一天的工作，感觉公司的技术氛围不错。今天，第一次参加公司的技术嘉年华，感觉这是一片技术的海洋，有很多技术大拿，也有很多实战大神！ 这个海报感觉还比较喜庆，感觉有点玩中国风，嘿嘿！ 二、蔡学庸之七层架构
+上午很早就激动的来到啦公司，坐啦半个小时， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,6 +32,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,8 +113,7 @@
   </header>
 
 
-<div class="entry-content"><h3>一、技术嘉年华</h3>
-
+<div class="entry-content"><h3 id="section">一、技术嘉年华</h3>
 <p>2014年3月5日来到公司，下午开始第一天的工作，感觉公司的技术氛围不错。今天，第一次参加公司的技术嘉年华，感觉这是一片技术的海洋，有很多技术大拿，也有很多实战大神！</p>
 
 <p><img src="http://p2.qhimg.com/t014085814a8f47a166.jpg" alt="海报" /></p>
@@ -94,30 +122,33 @@
 
 <!-- more -->
 
-
-<h3>二、蔡学庸之七层架构</h3>
-
+<h3 id="section-1">二、蔡学庸之七层架构</h3>
 <p>上午很早就激动的来到啦公司，坐啦半个小时，等待蔡学庸前辈进行第一场演讲，我在那里听了前半场，因为项目上线的事情，离开了一会儿，回来的时候已经开始嗷嗷对网页前端技术的讲解了。蔡学庸前辈也是一个技术的爱好者，虽然部分知识其实在大学也提到过，但是想要真正的理解，我想还是要真正做过架构还会明白，确实讲得比较深，不过这也可以在脑海里面形成一个七层（红、橙、黄、绿、蓝、靛、紫）架构的概念。</p>
 
 <p>主要架构的线路分为：</p>
 
-<p><img src="/images/360-tech/%E4%B8%BB%E8%A6%81%E6%9E%B6%E6%9E%84.png" alt="主要架构" /></p>
+<p><img src="/images/360-tech/主要架构.png" alt="主要架构" /></p>
 
-<p>让“业务”成为架构的起点，我理解的是：这样可以避免出现架构了很久，发现离业务越来越远，可以说是架构过度吧，没有最好的架构，只有更合适的架构。</p>
+<p>让“业务”成为架构的起点，我理解的是：这样可以避免出现架构了很久，发现离业务越来越远，可以说是架构过度吧，没有最好的架构，只有更合适的架构。
+&gt; 蔡前辈说过（不一定是原话）</p>
 
-<blockquote><p>蔡前辈说过（不一定是原话）</p>
+<blockquote>
+  <p>从业务建模开始，配合领域建模。</p>
+</blockquote>
 
-<p>从业务建模开始，配合领域建模。</p>
+<blockquote>
+  <p>业务建模由前往后设计（界面=&gt;应用=&gt;框架=&gt;服务=&gt;核心），而领域建模由后往前设计（核心=&gt;服务）。</p>
+</blockquote>
 
-<p>业务建模由前往后设计（界面=>应用=>框架=>服务=>核心），而领域建模由后往前设计（核心=>服务）。</p>
+<blockquote>
+  <p>业务建模和领域建模，互相补充，恰到好处。</p>
+</blockquote>
 
-<p>业务建模和领域建模，互相补充，恰到好处。</p></blockquote>
-
-<p><img src="/images/360-tech/3%E4%B8%AA%E7%BB%84%E4%BB%B6.png" alt="架构元素" /></p>
+<p><img src="/images/360-tech/3个组件.png" alt="架构元素" /></p>
 
 <p>对于我理解的“数据”、“网络”、“人员”这三个关键组件的建模，可以反作用于“业务架构”，这样达到一个架构圈，形成一个完整的架构生态。</p>
 
-<p><img src="/images/360-tech/%E5%9B%9E%E5%BD%92%E4%B8%9A%E5%8A%A1.png" alt="回归业务" /></p>
+<p><img src="/images/360-tech/回归业务.png" alt="回归业务" /></p>
 
 <p>推荐书籍：《七周期数据库》</p>
 

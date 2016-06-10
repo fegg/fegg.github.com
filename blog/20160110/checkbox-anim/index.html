@@ -9,8 +9,7 @@
   <meta name="author" content="小撸">
 
   
-  <meta name="description" content="废话 ＝＝晚上失眠了，在网页上看到一个好玩的效果，自己模拟了一下，最开始用SVG写的。。。不多说了，简单记录一下思路和写法。 思路 先贴一下效果图，脑袋里面留下直观印象。录的效果可能不太好，大家可以用代码本地跑起来看真实的效果。 构造一个简单的组件元素，采用 ::after 伪元素来实现
-利用 &hellip;">
+  <meta name="description" content="废话 ＝＝晚上失眠了，在网页上看到一个好玩的效果，自己模拟了一下，最开始用SVG写的。。。不多说了，简单记录一下思路和写法。 思路 先贴一下效果图，脑袋里面留下直观印象。录的效果可能不太好，大家可以用代码本地跑起来看真实的效果。 构造一个简单的组件元素，采用 ::after 伪元素来实现 利用 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -31,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -85,28 +111,26 @@
   </header>
 
 
-<div class="entry-content"><h3>废话</h3>
+<div class="entry-content"><h3 id="section">废话</h3>
 
 <p>＝＝晚上失眠了，在网页上看到一个好玩的效果，自己模拟了一下，最开始用SVG写的。。。不多说了，简单记录一下思路和写法。</p>
 
-<h3>思路</h3>
+<h3 id="section-1">思路</h3>
 
 <p>先贴一下效果图，脑袋里面留下直观印象。录的效果可能不太好，大家可以用代码本地跑起来看真实的效果。</p>
 
 <p><img src="/images/checkbox-anim.gif" alt="动态效果" /></p>
 
 <ol>
-<li>构造一个简单的组件元素，采用 <code>::after</code> 伪元素来实现</li>
-<li>利用 CSS 中 <code>border</code> 来实现，并且利用 CSS3 动画来添加切换的动画效果</li>
-<li>主要利用 <code>rotate</code> 和 <code>scale</code> 的效果来实现</li>
-<li>JS 部分对类名的 <code>toggle</code></li>
+  <li>构造一个简单的组件元素，采用 <code>::after</code> 伪元素来实现</li>
+  <li>利用 CSS 中 <code>border</code> 来实现，并且利用 CSS3 动画来添加切换的动画效果</li>
+  <li>主要利用 <code>rotate</code> 和 <code>scale</code> 的效果来实现</li>
+  <li>JS 部分对类名的 <code>toggle</code></li>
 </ol>
-
 
 <!-- more -->
 
-
-<h3>基本结构</h3>
+<h3 id="section-2">基本结构</h3>
 
 <pre><code>&lt;checkbox-anim class="checkbox_anim js_anim_normal"&gt;
     &lt;span class="checkbox checkbox-span"&gt;&lt;/span&gt;
@@ -118,9 +142,11 @@
 
 <p>这里我的结构比较简单，<code>checkbox-anim</code> 组件属于 <strong>namespace</strong> 里面就是真正的组件肉体了。在真实使用的时候需要引入 <code>input</code> 组件，为了简单，这里就省略了，更清晰的看交互的实现。</p>
 
-<h3>漂亮的修饰</h3>
+<h3 id="section-3">漂亮的修饰</h3>
 
-<blockquote><p>两个组件最基本的样式</p></blockquote>
+<blockquote>
+  <p>两个组件最基本的样式</p>
+</blockquote>
 
 <pre><code>/********** checkbox 基本样式 *************/
 .checkbox {
@@ -149,48 +175,52 @@
     top: 14px;
     left: 16px;
 
-    transition: all .2s cubic-bezier(.18,.89,.32,1.28) .1s;
+	transition: all .2s cubic-bezier(.18,.89,.32,1.28) .1s;
 }
 
 /********** checkbox_half 基本样式 *************/
 .checkbox_half {
-    background: #2db7f5;
-    border: 1px solid #2db7f5;
+	background: #2db7f5;
+	border: 1px solid #2db7f5;
 }
 
 .checkbox_half::after {
-    width: 16px;
-    height: 0;
-    top: 23px;
-    transform: scale(1);
+	width: 16px;
+	height: 0;
+	top: 23px;
+	transform: scale(1);
 }
 </code></pre>
 
-<blockquote><p>状态改变后的样式</p></blockquote>
+<blockquote>
+  <p>状态改变后的样式</p>
+</blockquote>
 
 <pre><code>/* checkbox 激活样式 */
 .checked .checkbox {
-    background: #2db7f5;
+	background: #2db7f5;
     border: 1px solid #2db7f5;
 }
 .checked .checkbox::after {
-    top: 7px;
-    transform: rotate(45deg) scale(1);
+	top: 7px;
+	transform: rotate(45deg) scale(1);
 }
 
 /********** checkbox_half 激活样式 *************/
 /* 没有修改背景色的部分哦～ */
 .checked .checkbox_half::after {
-    width: 12px;
-    height: 24px;
+	width: 12px;
+	height: 24px;
 }
 </code></pre>
 
-<blockquote><p>其余附带的一点样式，非主要，修饰用的</p></blockquote>
+<blockquote>
+  <p>其余附带的一点样式，非主要，修饰用的</p>
+</blockquote>
 
 <pre><code>/* other 修饰类型样式 */
 .checkbox_anim {
-    cursor: pointer;
+	cursor: pointer;
     display: block;
 }
 
@@ -254,7 +284,7 @@
     };
 
     [CheckBoxNormal, CheckBoxHalf].forEach(function(checkbox) {
-        checkbox.init();
+    	checkbox.init();
     });
 })(window, document);
 </code></pre>

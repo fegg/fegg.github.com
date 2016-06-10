@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,24 +111,25 @@
   </header>
 
 
-<div class="entry-content"><h3>一、前言</h3>
+<div class="entry-content"><h3 id="section">一、前言</h3>
 
 <p>很久之前就想系统的学习nodejs技术了，但是由于很多事情，忙不太过来，今天晚上下定决心要入门这门技术，所以一口气看完了《Node.js开发指南》和《Node.js中文文档》，总算是真正入门了，接下来就总结一部分，剩下的只有明天再总结了。</p>
 
-<h3>二、Node.js简介</h3>
+<h3 id="nodejs">二、Node.js简介</h3>
 
 <p>一句话简单说明一下node.js是什么东西。</p>
 
-<blockquote><p>Node.js 是一个让 JavaScript 运行在服务端的开发平台。</p></blockquote>
+<blockquote>
+  <p>Node.js 是一个让 JavaScript 运行在服务端的开发平台。</p>
+</blockquote>
 
-<h3>三、Node.js的安装</h3>
+<h3 id="nodejs-1">三、Node.js的安装</h3>
 
 <p>学习了Node.js，觉得如果在window下学习这门技术的话还太成熟，第三方的支持不太好，所以只介绍linux或者mac上面的安装。node.js在window上面的安装直接下载安装包，一直下一步就可以装好，环境变量也会自动配置好，npm（node package manage）在新版本也会相应的装上。</p>
 
 <p>对于mac环境安装也比较简单，介绍两种安装方式。</p>
 
 <!-- more -->
-
 
 <p>1.homebrew（注意一直使用admin权限吧，大多都是权限文件夹，可以在终端开始使用sudo -s命令来一直使用admin权限）</p>
 
@@ -123,16 +151,19 @@ $ npm -v &amp;&amp; npm list
 
 <p>2.使用源码编译的方式（其实有方便的尽量就避免麻烦的，嘿嘿）</p>
 
-<blockquote><p>下载地址：<a href="http://nodejs.org">http://nodejs.org</a></p></blockquote>
+<blockquote>
+  <p>下载地址：http://nodejs.org</p>
+</blockquote>
 
 <p>执行典型的安装命令即可（注意到/bin目录，或者有configure文件的目录）。</p>
 
 <pre><code>$ ./configure &amp;&amp; make &amp;&amp; sudo make install
 </code></pre>
 
-<h3>四、Node.js的多版本管理器n</h3>
-
-<blockquote><p>下载地址：<a href="https://github.com/visionmedia/n">https://github.com/visionmedia/n</a></p></blockquote>
+<h3 id="nodejsn">四、Node.js的多版本管理器n</h3>
+<blockquote>
+  <p>下载地址：https://github.com/visionmedia/n</p>
+</blockquote>
 
 <p>如上执行源码安装命令即可。</p>
 
@@ -153,9 +184,9 @@ $ npm -v &amp;&amp; npm list
 
 <p>下载后，会默认下载到：/usr/local/n/versions/目录</p>
 
-<p>如果你安装后，再使用"$ n version"命令就是指定使用的默认版本号，也可以使用“$ n use version xxx.js”来暂时使用某个node版本执行xxx.js文件。</p>
+<p>如果你安装后，再使用”$ n version”命令就是指定使用的默认版本号，也可以使用“$ n use version xxx.js”来暂时使用某个node版本执行xxx.js文件。</p>
 
-<h3>五、万事具备，只欠Hello Node.js</h3>
+<h3 id="hello-nodejs">五、万事具备，只欠Hello Node.js</h3>
 
 <p>每个语言入门都可以写一个hello xxx，示好。</p>
 
@@ -198,9 +229,11 @@ console.log('%d\n', 60);
 
 <p>就可以在终端直接输出结果了。</p>
 
-<blockquote><p>为什么我加入了“console.log(&lsquo;%d\n&rsquo;, 60);”这一句呢？那是因为这可以测试出其实可以用c语言printf的方式来写console.log()。</p></blockquote>
+<blockquote>
+  <p>为什么我加入了“console.log(‘%d\n’, 60);”这一句呢？那是因为这可以测试出其实可以用c语言printf的方式来写console.log()。</p>
+</blockquote>
 
-<h3>六、Node.js终于来到了浏览器</h3>
+<h3 id="nodejs-2">六、Node.js终于来到了浏览器</h3>
 
 <p>前面的例子都是在控制台里面的，没什么意思，我们接下来写一个我们典型的B/S访问的方式。当然这就离不开HTTP了，查看了一下node的源码，新版本默认是http 1.1，支持http和https这两种协议。</p>
 
@@ -216,7 +249,7 @@ http.createServer(function(req, res) {
 console.log("HTTP server is listening at port 8888.");
 </code></pre>
 
-<p>以上代码监听的port：8888，这其实就是建立了一个request，我们在浏览器地址栏中输入：<a href="http://localhost:8888/">http://localhost:8888/</a> 即可以访问我们打印的内容。</p>
+<p>以上代码监听的port：8888，这其实就是建立了一个request，我们在浏览器地址栏中输入：http://localhost:8888/ 即可以访问我们打印的内容。</p>
 
 <p>我们先在终端运行后台服务：</p>
 
@@ -227,7 +260,7 @@ console.log("HTTP server is listening at port 8888.");
 
 <p>我们来分析一下这个简单的程序，其实从require的加载方式我们并不陌生，这是现在模块加载在前端普遍使用的函数名，那么为什么我们的js代码就能够这样来请求和访问呢？我们来简单的看看源码的解析。</p>
 
-<h4>1. 首先我们先看看源码的http.js文件。</h4>
+<h4 id="httpjs">1. 首先我们先看看源码的http.js文件。</h4>
 
 <pre><code>var Server = exports.Server = server.Server;
 function createServer() { return new Server(requestListener) };
@@ -235,7 +268,7 @@ function createServer() { return new Server(requestListener) };
 
 <p>在这个文件中，我们知道createServer()方法其实返回的就是Server类，这个类是由server这个实例来的。</p>
 
-<h4>2. 接下来我们再追踪一下_http_server.js文件。</h4>
+<h4 id="httpserverjs">2. 接下来我们再追踪一下_http_server.js文件。</h4>
 
 <p>这个要问怎么找到这些文件的，其实是凭直觉和猜测，再加上模块化的调试方法，可以找到http.js文件的加载模块，就可以找到相应的文件了。</p>
 
@@ -246,11 +279,11 @@ Server.prototype.setTimeout = function(msecs, callback) {};
 
 <p>再这个文件中，我们可以看出和Socket原理差不多，使用定时器来实现端口的监听，但是在源码中可以找到主定时器，这个概念来源于游戏开发，在全局设置定时器，这样大大提升了性能，不得不佩服作者的才能。</p>
 
-<h4>3. 那么我们node底层是c/c++来实现的，我们可以追踪一下node的启动。</h4>
+<h4 id="nodeccnode">3. 那么我们node底层是c/c++来实现的，我们可以追踪一下node的启动。</h4>
 
 <p>我们先找到c语言的main文件，后来发现好多node_开头的，大楷就是系统和行一点的文件了，在node_main.cc文件中发现了：node::Start(argc, argv);函数，但是找不到具体实现，那么就肯定是在依赖文件中，通过头文件的声明，找到了，其实实现位于node.cc文件。</p>
 
-<h4>4. node.cc文件来看node启动流程。</h4>
+<h4 id="nodeccnode-1">4. node.cc文件来看node启动流程。</h4>
 
 <p>函数大致的执行顺序为：</p>
 
@@ -266,7 +299,7 @@ V8::Initialize();
 
 <p>上面可以看出其实就是通过一系列初始化，最后达到平台的建立。</p>
 
-<h4>5. module的加载实质</h4>
+<h4 id="module">5. module的加载实质</h4>
 
 <p>其实我们经过上面的分析，我们大致知道的node的构成，那么我们能够在node.js（猜想：这个js文件是c和js沟通的桥梁）中，发现传入了process对象。源码结构如下：</p>
 
@@ -301,7 +334,7 @@ static void Binding(const FunctionCallbackInfo&lt;Value&gt;&amp; args);
 void DefineJavaScript(Handle&lt;Object&gt; target);
 </code></pre>
 
-<h4>6. 在module.js文件中，得到真正的js文件的加载，平台调用。</h4>
+<h4 id="modulejsjs">6. 在module.js文件中，得到真正的js文件的加载，平台调用。</h4>
 
 <p>在这里作者的module数据结构设置得比较简单，抛去其它得留下结构如下：</p>
 
@@ -314,7 +347,8 @@ void DefineJavaScript(Handle&lt;Object&gt; target);
 }
 </code></pre>
 
-<p>这样我们这个http程序就能够很好得解释啦。其实知道了原理后面得知识就是看看api和写法了。太晚啦，睡觉觉啦 =_=&hellip;后续&hellip;</p>
+<p>这样我们这个http程序就能够很好得解释啦。其实知道了原理后面得知识就是看看api和写法了。太晚啦，睡觉觉啦 =_=…后续…</p>
+
 </div>
 
 

@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,7 +111,7 @@
   </header>
 
 
-<div class="entry-content"><h3>1. 多用ID选择器</h3>
+<div class="entry-content"><h3 id="id">1. 多用ID选择器</h3>
 
 <p>1) getElementById：是浏览器的内置函数，所以效率比较高；</p>
 
@@ -96,23 +123,20 @@
 
 <!-- more -->
 
-
-<h4>CSS 2.1</h4>
-
+<h4 id="css-21">CSS 2.1</h4>
 <p><img src="/images/post/css2.1.png" alt="Mou icon" /></p>
 
-<h4>CSS 3</h4>
-
+<h4 id="css-3">CSS 3</h4>
 <p><img src="/images/post/css3.png" alt="Mou icon" /></p>
 
-<h3>2. 少直接使用class选择器，可以适当使用符合选择器</h3>
+<h3 id="class">2. 少直接使用class选择器，可以适当使用符合选择器</h3>
 
 <p>可以过滤结果集，这样可以提升一下选择的性能。JQuery的过滤部分做得还是很优秀的。</p>
 
 <pre><code>tag.class
 </code></pre>
 
-<h3>3. 多用父子关系，少用嵌套关系</h3>
+<h3 id="section">3. 多用父子关系，少用嵌套关系</h3>
 
 <pre><code>//父子关系
 parent&gt;child
@@ -120,7 +144,7 @@ parent&gt;child
 outer inner
 </code></pre>
 
-<h3>4. 缓存JQuery对象</h3>
+<h3 id="jquery">4. 缓存JQuery对象</h3>
 
 <pre><code>//先缓存，再循环操作，这里将函数调用也避免了循环调用
 var dom = $('#id'), content = '';
@@ -130,10 +154,11 @@ for(var i = 0; i &lt; length; i++) {
 dom.append(content);
 </code></pre>
 
-<h3>5. 使用链式操作，避免重复选择对象</h3>
+<h3 id="section-1">5. 使用链式操作，避免重复选择对象</h3>
 
 <pre><code>var dom = $('#id').css('color', '#fcc').append('&lt;div&gt;something&lt;/div&gt;');
 </code></pre>
+
 </div>
 
 

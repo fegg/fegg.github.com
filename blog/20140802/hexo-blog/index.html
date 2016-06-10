@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,52 +111,51 @@
   </header>
 
 
-<div class="entry-content"><h3>一、hexo构建的相关技术</h3>
+<div class="entry-content"><h3 id="hexo">一、hexo构建的相关技术</h3>
 
 <p>关于hexo的介绍，网上有很多前辈都已经介绍了，这里我主要说一下这段时间的亲身感受。</p>
 
 <p>hexo有以下几个部分的优点：</p>
 
-<h4>（1）hexo是基于nodejs技术</h4>
+<h4 id="hexonodejs">（1）hexo是基于nodejs技术</h4>
 
 <p>在使用hexo的过程<code>中即使</code>你没有学会nodejs的编写，你也能够熟悉它的使用，为以后更快的学习nodejs打下基础。</p>
 
-<h4>（2）hexo的主题采用ejs模版引擎</h4>
+<h4 id="hexoejs">（2）hexo的主题采用ejs模版引擎</h4>
 
 <p>使得html页面的构成更加有模块化的感觉，这样更加容易维护网页的结构。对于html语义化来说，我们大致可以博客网页分为：header（顶部）、aside（侧边栏）、article（文章）、footer（底部）。分别对应了目录theme/layout/_partial中的：header.ejs、sidebar.ejs、article.ejs、footer.ejs。其余的文件都是辅助文件，比如layout.ejs就是规定整个网页布局的文件，其实很简单，只需要从字面上理解意思即可，因为：语义化。</p>
 
 <!-- more -->
 
-
-<h4>（3）hexo采用的css预处理器是stylus</h4>
+<h4 id="hexocssstylus">（3）hexo采用的css预处理器是stylus</h4>
 
 <p>比起less和sass还是有自己的优点，因为stylus能够完全兼容正规css的编写方式。这样就降低了定制博客样式的学习成本，你只需要把样式文件的后缀名改为.styl，其余的嘛，就不是你关心的了，当你使用hexo g命令的时候框架会自动帮你编译为.css文件。还有就是stylus真的很好学习，也能够让你体验到一种新的编写css的方式，OOP的思想的使用，但是更像是IOS 7分层的设计，让你写出更加方便阅读和维护的css代码，不是吗？</p>
 
-<h4>（4）hexo支持markdown文件</h4>
+<h4 id="hexomarkdown">（4）hexo支持markdown文件</h4>
 
 <p>这是最迷人的地方，为什么呢？那你需要在wordpress后台写自己的博客，或者将文档中写好的博客再到后台去排版才能体会到这个支持的迷人。其实这个优点是现在github pages的相关技术都支持的。</p>
 
-<h3>二、hexo构建后的扩展</h3>
+<h3 id="hexo-1">二、hexo构建后的扩展</h3>
 
 <p>由于hexo的良好设计，毋庸置疑，博客系统就会拥有更好的可扩展性和鲁棒性。</p>
 
-<h4>（1）rss的扩展</h4>
+<h4 id="rss">（1）rss的扩展</h4>
 
 <p>这个功能很好扩展，通过npm下载好node的依赖模块就可以使用了。hexo-generator-feed和hexo-generator-sitemap。但是最伤心的就是google reader现在停止服务了，确实现在用rss订阅没有实现一键那么方便。</p>
 
-<h4>（2）分享组件</h4>
+<h4 id="section">（2）分享组件</h4>
 
 <p>这个所有前辈都有介绍这个功能，但是hexo集成确实很简单，只需要把官方开发中心提供的代码拷贝过来就可以使用。</p>
 
-<h4>（3）新浪微博组件</h4>
+<h4 id="section-1">（3）新浪微博组件</h4>
 
 <p>其实新浪的组件是比较难用的，比如要在首页加一些配置等等，但是在hexo的结构中添加只是分分钟的事情，当然，如果你是第一次搞hexo可能还是会比较麻烦，不是技术的麻烦，大多是找不到该把代码放在什么文件的什么位置。</p>
 
-<h4>（4）评论模块</h4>
+<h4 id="section-2">（4）评论模块</h4>
 
 <p>一般就用两种，我最开始也纠结了很久，到底是用Disqus还是国内的多说。因为这两个就评论系统做得好来说，Disqus毫无疑问的胜出，对响应式支持相当完美（国外的响应式设计确实比国内好），但是对于本土化来说，多说就做得很好了，支持国内的sina、qq等账户的登录和分享（就是配置sina内容优点麻烦，qq更麻烦了，审核需要上传身份证复印件）。因为作为一个互联网人，我们应该以用户为向导，用户用说多方便，那么咋们就用多说吧，最多不足的地方可以通过手动的修补，会越来越让人满意。（后来由于产品确实qisqus做的好。。。还是选择啦它）</p>
 
-<h4>（5）增加自己喜欢的功能</h4>
+<h4 id="section-3">（5）增加自己喜欢的功能</h4>
 
 <p>比如你要增加一个“回到顶部”的功能，这你不必担心，在hexo里面相当简单，你只需要写好css文件，在style.styl中import，html和js文件单独建立一个，放入相应的目录。这样就和模块化开发功能模块一样简单。这里分享一下我自己的“回到顶部”的代码，js部分可以作为jquery小组件来使用，当然我现在还没有单独开发出良好jquery组件的水平，只是修修改改人家的代码，做出自己满意的效果（不过使用css3和position: fixed，如果你想你的博客在ie看起来那么完美就不能使用了）。</p>
 
@@ -163,10 +189,10 @@
 
     //回到顶部的点击元素
     var scrollElem = $('#returnTop');
-
+    
     //回滚动画的速度
     var scrollSpeed = 900;
-
+    
     //默认隐藏
     scrollElem.hide();
 
@@ -174,7 +200,7 @@
     $(window).scroll(function () {             
         //获取滚动条距离顶部的距离
         var scrollTop = $(document).scrollTop();
-
+        
         if ( scrollTop &gt; upperLimit ) {
             $(scrollElem).stop().fadeTo(100, 1); //慢慢出现
         } else {        

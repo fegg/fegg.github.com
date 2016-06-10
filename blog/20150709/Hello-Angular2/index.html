@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,19 +111,18 @@
   </header>
 
 
-<div class="entry-content"><h3>前言</h3>
+<div class="entry-content"><h3 id="section">前言</h3>
 
 <p>Angular 2 正式版还没有出来，但是发现官网已经推广开发版本了，所以尝了一下鲜，来吧，从 Hello World 开始。</p>
 
-<h3>1. 安装需要的工具</h3>
+<h3 id="section-1">1. 安装需要的工具</h3>
 
 <p>这部分和 ng 2 没多大关系，但是我第一次根据官网 5 分钟配置中发现了一些坑，所以做一下准备，免得打击了第一次使用技术的自信心。</p>
 
 <ol>
-<li>Node 和 NPM 最新版（省略）</li>
-<li>jspm 包管理器来初始化 SystemJS 模块加载器那一套</li>
+  <li>Node 和 NPM 最新版（省略）</li>
+  <li>jspm 包管理器来初始化 SystemJS 模块加载器那一套</li>
 </ol>
-
 
 <p><strong>创建一个项目目录</strong></p>
 
@@ -115,16 +141,16 @@ jspm init
 <p><strong>配置一下 config.js</strong></p>
 
 <pre><code>System.config({
-    "baseURL": "/",
-    "transpiler": "traceur",
-    "paths": {
-        "*": "*.js",
-        "github:*": "jspm_packages/github/*.js"
-    },
-    "map": {
-        "traceur": "github:jmcriffey/bower-traceur@0.0.88",
-        "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88"
-    }
+	"baseURL": "/",
+	"transpiler": "traceur",
+	"paths": {
+		"*": "*.js",
+		"github:*": "jspm_packages/github/*.js"
+	},
+	"map": {
+		"traceur": "github:jmcriffey/bower-traceur@0.0.88",
+		"traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88"
+	}
 });
 </code></pre>
 
@@ -137,8 +163,7 @@ http-server
 
 <!-- more -->
 
-
-<h3>2. 开始体验</h3>
+<h3 id="section-2">2. 开始体验</h3>
 
 <p>（1）使用 TypeScript，所以先安装 tsd 包管理器</p>
 
@@ -192,18 +217,18 @@ bootstrap(MyAppComponent);
 
 <pre><code>&lt;!-- index.html --&gt;
 &lt;html&gt;
-    &lt;head&gt;
-    &lt;title&gt;Angular 2 Quickstart&lt;/title&gt;
+  	&lt;head&gt;
+	&lt;title&gt;Angular 2 Quickstart&lt;/title&gt;
     &lt;script src="typings/js/traceur-runtime.js"&gt;&lt;/script&gt;
     &lt;script src="jspm_packages/system.js"&gt;&lt;/script&gt;
-    &lt;script src="config.js"&gt;&lt;/script&gt;
-    &lt;script src="typings/js/angular2.dev.js"&gt;&lt;/script&gt;
+	&lt;script src="config.js"&gt;&lt;/script&gt;
+	&lt;script src="typings/js/angular2.dev.js"&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
 
-    &lt;!-- The app component created in app.ts --&gt;
+	&lt;!-- The app component created in app.ts --&gt;
     &lt;my-app&gt;&lt;/my-app&gt;
-    &lt;script&gt;System.import('./app');&lt;/script&gt;
+	&lt;script&gt;System.import('./app');&lt;/script&gt;
 
   &lt;/body&gt;
 &lt;/html&gt;
@@ -218,6 +243,7 @@ bootstrap(MyAppComponent);
 <p><img src="/images/js/ng2-hello.png" alt="ng2 hello" /></p>
 
 <p>源码下载：<a href="http://yunpan.cn/ccy6mh9hrSwHK">360云盘下载</a> （提取码：0da5）</p>
+
 </div>
 
 

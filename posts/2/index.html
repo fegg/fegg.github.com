@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -87,7 +114,7 @@
   </header>
 
 
-  <div class="entry-content"><h2>前言</h2>
+  <div class="entry-content"><h2 id="section">前言</h2>
 
 <p>今天，ECMAScript正处于定稿中。ECMAScript是JavaScript的基础，因此，今天我们浏览一下提出的新特性，能够让我们了解以后我们将能怎样编写JavaScript。在文章中，我们将讲解10个新特性，以及重要的热门工具、浏览器和跨平台编译器。</p>
 
@@ -127,7 +154,7 @@
 
   <div class="entry-content"><p>现在的博客主题总是有不满意的地方，所以决定自己设计一版，依然采用F法则。</p>
 
-<p>不知道大家会不会也喜欢，现在只是再画手稿，设计稿可能得自己慢慢出了 >0&lt;</p>
+<p>不知道大家会不会也喜欢，现在只是再画手稿，设计稿可能得自己慢慢出了 &gt;0&lt;</p>
 
 <p><img src="http://p3.qhimg.com/t0155e219a40ea18b46.jpg" alt="稿子" /></p>
 
@@ -163,7 +190,7 @@
   </header>
 
 
-  <div class="entry-content"><h3>0  引言</h3>
+  <div class="entry-content"><h3 id="section">0  引言</h3>
 
 <p>GitHub 是一个用于使用Git版本控制系统项目的共享虚拟主机服务。它由GitHub公司（曾称Logical Awesome）的开发者Chris Wanstrath、PJ Hyett和Tom Preston-Werner使用Ruby on Rails编写而成。您能够开通一个免费账户进行使用。hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上。并且hexo支持markdown写文章，用户能够使用自己喜欢的工具书写文章。hexo具有易用、轻巧、用户群体增长快等优点。由于hexo基于Node.js技术，如今Node.js技术的流行，hexo也会变得越来越热门，所以选择hexo在Github上创建一个静态博客是不错的选择。</p>
 
@@ -199,7 +226,7 @@
   </header>
 
 
-  <div class="entry-content"><h3>前言</h3>
+  <div class="entry-content"><h3 id="section">前言</h3>
 
 <p>我们在浏览网页的时候，经常会看到很相似的几种内容。比如下面这两种样子：</p>
 
@@ -209,17 +236,18 @@
 
 <p>看上去是不是比较像呢？其实就是图片的位置不一样，大致上可以认为是一样的吧，那么针对这样子的相似度较高的网页，我们应该怎么样开发呢？</p>
 
-<blockquote><p>其实这就得谈谈“页面重用机制”了，下面所写的积木式网页构建方式就能够很好的处理页面重用这个问题。</p></blockquote>
+<blockquote>
+  <p>其实这就得谈谈“页面重用机制”了，下面所写的积木式网页构建方式就能够很好的处理页面重用这个问题。</p>
+</blockquote>
 
 <p>接下来将从以下4个方面对积木式网页开发进行描述：</p>
 
 <ol>
-<li>分析页面结构</li>
-<li>构建网页的结构</li>
-<li>编写网页基本的样式</li>
-<li>编写不同表现的样式</li>
+  <li>分析页面结构</li>
+  <li>构建网页的结构</li>
+  <li>编写网页基本的样式</li>
+  <li>编写不同表现的样式</li>
 </ol>
-
 
 </div>
   
@@ -253,7 +281,7 @@
   </header>
 
 
-  <div class="entry-content"><h3>八卦</h3>
+  <div class="entry-content"><h3 id="section">八卦</h3>
 
 <p>在2014年9月22日的时候，ThinkJS 1.0开了一个简单的发布会，去抢啦几块蛋糕来吃~现在还记得蛋糕超级好吃！- 0 - 不过成银这套NodeJS框架真心很好用（可能是以前用J2EE的框架用得比较多，所以感觉MVC这类框架比较好理解，不过文章写得很详细，相信看完就能上手），也很强大，上手极快，我相信它将越来越火！下面我们来入个门哈，如果有写得不对的可以直接指出来，使自己进步 ^o^</p>
 
@@ -263,7 +291,7 @@
 
 <p><a href="http://thinkjs.org/video.html">ThinkJS视频教程</a></p>
 
-<h3>一、安装ThinkJS</h3>
+<h3 id="thinkjs">一、安装ThinkJS</h3>
 
 <p>首先得知道ThinkJS是基于NodeJS来玩的MVC框架，所以第一步是先安装NodeJS，直接去官网下载一个pkg的安装包即可。</p>
 
@@ -305,7 +333,7 @@
   </header>
 
 
-  <div class="entry-content"><h3>2015年5月9日更新</h3>
+  <div class="entry-content"><h3 id="section">2015年5月9日更新</h3>
 
 <p>更新内容：针对Mac OS X 10.10.3不能访问用户目录</p>
 
@@ -334,7 +362,7 @@ Include /private/etc/apache2/extra/httpd-userdir.conf
 <p>修改完后访问会出现，所以还需要修改（2）中的文件</p>
 
 <p>Forbidden
-You don&rsquo;t have permission to access /~lulin/ on this server.</p>
+You don’t have permission to access /~lulin/ on this server.</p>
 
 <p><strong>（2）/etc/apache2/extra/httpd-userdir.conf</strong></p>
 
@@ -343,30 +371,29 @@ You don&rsquo;t have permission to access /~lulin/ on this server.</p>
 <pre><code>Include /private/etc/apache2/users/*.conf
 </code></pre>
 
-<p><strong>（3）修改之前 10.9 中 /etc/apache2/users/<youusername>.conf</strong></p>
+<p>**（3）修改之前 10.9 中 /etc/apache2/users/<youusername>.conf**</youusername></p>
 
 <pre><code>&lt;Directory "/Users/lulin/Sites/"&gt;
-    Options Indexes MultiViews
-    AllowOverride None
-    Require all granted
+	Options Indexes MultiViews
+	AllowOverride None
+	Require all granted
 &lt;/Directory&gt;
 </code></pre>
 
-<h3>前言</h3>
+<h3 id="section-1">前言</h3>
 
 <p>因为每次重新安装系统都需要配置一下Apache、MySQL、PHP的环境，网上的文章又不完整或者不完全符合自己的情况，所以写下一篇文章来记录一下，保证99%配置成功，还剩1%由于各种奇葩环境原因。。。主要从 6 个方面进行记录：</p>
 
 <ol>
-<li>启动Apache</li>
-<li>建立个人的网站目录</li>
-<li>启动php的解析功能</li>
-<li>安装、启动mysql</li>
-<li>修改mysql root密码</li>
-<li>使用客户端连接mysql</li>
+  <li>启动Apache</li>
+  <li>建立个人的网站目录</li>
+  <li>启动php的解析功能</li>
+  <li>安装、启动mysql</li>
+  <li>修改mysql root密码</li>
+  <li>使用客户端连接mysql</li>
 </ol>
 
-
-<h3>一、启动Apache</h3>
+<h3 id="apache">一、启动Apache</h3>
 
 <p>查看Apache的版本信息：</p>
 
@@ -429,12 +456,12 @@ Server built:   Dec 10 2013 22:09:38
   </header>
 
 
-  <div class="entry-content"><hr />
-
+  <div class="entry-content">
+<hr />
 <p>layout: post
-title: 骑行－雁栖湖游记</p>
-
-<h2>tags: [&ldquo;游记&rdquo;]</h2>
+title: 骑行－雁栖湖游记
+tags: [“游记”]
+—</p>
 
 <p>路程：来回110公里</p>
 
@@ -444,13 +471,13 @@ title: 骑行－雁栖湖游记</p>
 
 <hr />
 
-<h3>1. 景点简介</h3>
+<h3 id="section">1. 景点简介</h3>
 
 <p>雁栖湖，是位于北京市怀柔区北部北台上村的水库，拦截雁栖河，北临雄伟的万里长城，南偎一望无际的华北平原。雁栖湖水面宽阔，湖水清澈，每年春秋两季常有成群的大雁来湖中栖息，故而得名。</p>
 
-<h3>2. 出发前的集合</h3>
+<h3 id="section-1">2. 出发前的集合</h3>
 
-<p>跟之前约好的一样，早上9点到公司集合出发。大家像打了鸡血一样吃完了早餐，摆好了出发的架势准备出发，在出发前文成比较有经验，还教我们一些骑行中要用到的常用手势，感觉很专业的样子<sup>0</sup>^</p>
+<p>跟之前约好的一样，早上9点到公司集合出发。大家像打了鸡血一样吃完了早餐，摆好了出发的架势准备出发，在出发前文成比较有经验，还教我们一些骑行中要用到的常用手势，感觉很专业的样子^0^</p>
 
 </div>
   
@@ -484,7 +511,7 @@ title: 骑行－雁栖湖游记</p>
   </header>
 
 
-  <div class="entry-content"><h3>前言</h3>
+  <div class="entry-content"><h3 id="section">前言</h3>
 
 <p>一直想写这篇“十日谈”，聊聊我对Web前端开发的体会，顺便解答下周围不少人的困惑和迷惘。我不打算聊太多技术，我想，通过技术的历练，得到的反思应当更重要。</p>
 
@@ -522,26 +549,26 @@ title: 骑行－雁栖湖游记</p>
   </header>
 
 
-  <div class="entry-content"><h3>一、前言</h3>
+  <div class="entry-content"><h3 id="section">一、前言</h3>
 
 <p>现在JQuery很火，大部分原因还是它强大的选择器，但是JQuery的选择器引用了CSS选择器的规则，所以学好CSS选择器不仅仅是对写CSS有好处，在学习JQuery选择器的时候也会更快上手，几乎是一看就明白。</p>
 
-<h3>二、CSS选择器</h3>
+<h3 id="css">二、CSS选择器</h3>
 
 <p>在学习CSS选择器之前，我们应该理解DOM树的生成，这里我们举一个例子：</p>
 
 <pre><code>&lt;body&gt;
-    &lt;h1&gt;
-        &lt;em&gt;h1-em&lt;/em&gt;
-    &lt;/h1&gt;
-    &lt;p&gt;
-        &lt;em&gt;p-em&lt;/em&gt;
-    &lt;/p&gt;
-    &lt;p&gt;
-        &lt;span&gt;
-            &lt;em&gt;p-span-em&lt;/em&gt;
-        &lt;/span&gt;
-    &lt;/p&gt;
+	&lt;h1&gt;
+		&lt;em&gt;h1-em&lt;/em&gt;
+	&lt;/h1&gt;
+	&lt;p&gt;
+		&lt;em&gt;p-em&lt;/em&gt;
+	&lt;/p&gt;
+	&lt;p&gt;
+		&lt;span&gt;
+			&lt;em&gt;p-span-em&lt;/em&gt;
+		&lt;/span&gt;
+	&lt;/p&gt;
 &lt;/body&gt;
 </code></pre>
 
@@ -583,11 +610,11 @@ title: 骑行－雁栖湖游记</p>
   </header>
 
 
-  <div class="entry-content"><h3>一、拉入黑名单实质</h3>
+  <div class="entry-content"><h3 id="section">一、拉入黑名单实质</h3>
 
 <p>当你把别人加入黑名单,在你这头看来,他是在黑名单列表里;在他的QQ里，你的号仍在原来位置，只不过，那只是对他的安慰罢了，事实上，他永远无法看到你在线，他给你发送消息，也会被QQ后台的数据库拦截，不能发送成功。在QQ后台数据库中，你在他的好友列表中已经不存在了，所以他给你的消息是你永远收不到的。</p>
 
-<h3>二、删除好友实质</h3>
+<h3 id="section-1">二、删除好友实质</h3>
 
 <p>如果你把你的好友删除,但是在他QQ里还是有你,他给你发信息的时候会出现在你的陌生人里,你可以直接拉他到黑名单里,相应的他QQ号里的你也会被系统删除掉~。</p>
 

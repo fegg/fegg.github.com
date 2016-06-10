@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,11 +111,11 @@
   </header>
 
 
-<div class="entry-content"><h3>前言</h3>
+<div class="entry-content"><h3 id="section">前言</h3>
 
 <p>今天群里面有很多都在问关于 React 组件之间是如何通信的问题，之前自己写的时候也遇到过这类问题。下面是我看到的一篇不错英文版的翻译，看过我博客的人都知道，我翻译可能不会按部就班，会尽可能用中文的意思，来将作者要讲述的技术描述清楚。英文能力有限，如果有不对的地方请跟我留言，一定修改……^_^</p>
 
-<h3>原著序</h3>
+<h3 id="section-1">原著序</h3>
 
 <p>处理 React 组件之间的交流方式，主要取决于组件之间的关系，然而这些关系的约定人就是你。</p>
 
@@ -97,18 +124,18 @@
 <p>React 组件之间交流的方式，可以分为以下 3 种：</p>
 
 <ul>
-<li>【父组件】向【子组件】传值；</li>
-<li>【子组件】向【父组件】传值；</li>
-<li>没有任何嵌套关系的组件之间传值（PS：比如：兄弟组件之间传值）</li>
+  <li>【父组件】向【子组件】传值；</li>
+  <li>【子组件】向【父组件】传值；</li>
+  <li>没有任何嵌套关系的组件之间传值（PS：比如：兄弟组件之间传值）</li>
 </ul>
-
 
 <!-- more -->
 
+<h3 id="section-2">一、【父组件】向【子组件】传值</h3>
 
-<h3>一、【父组件】向【子组件】传值</h3>
-
-<blockquote><p>初步使用</p></blockquote>
+<blockquote>
+  <p>初步使用</p>
+</blockquote>
 
 <p>这个是相当容易的，在使用 React 开发的过程中经常会使用到，主要是利用 props 来进行交流。例子如下：</p>
 
@@ -130,17 +157,19 @@ var MyContainer = React.createClass({
 var ToggleButton = React.createClass({
   render: function () {
     // 从【父组件】获取的值
-    var checked = this.props.checked,
+	var checked = this.props.checked,
         text = this.props.text;
 
-    return (
+	return (
         &lt;label&gt;{text}: &lt;input type="checkbox" checked={checked} /&gt;&lt;/label&gt;
     );
   }
 });
 </code></pre>
 
-<blockquote><p>进一步讨论</p></blockquote>
+<blockquote>
+  <p>进一步讨论</p>
+</blockquote>
 
 <p>如果组件嵌套层次太深，那么从外到内组件的交流成本就变得很高，通过 props 传递值的优势就不那么明显了。（PS：所以我建议尽可能的减少组件的层次，就像写 HTML 一样，简单清晰的结构更惹人爱）</p>
 
@@ -172,7 +201,7 @@ var Child = React.createClass({
 });
 </code></pre>
 
-<h3>二、【子组件】向【父组件】传值</h3>
+<h3 id="section-3">二、【子组件】向【父组件】传值</h3>
 
 <p>接下来，我们介绍【子组件】控制自己的 state 然后告诉【父组件】的点击状态，然后在【父组件】中展示出来。因此，我们添加一个 change 事件来做交互。</p>
 
@@ -224,7 +253,7 @@ var ToggleButton = React.createClass({
     var checked = this.state.checked;
 
     return (
-        &lt;label&gt;{text}: &lt;input type="checkbox" checked={checked}                 onChange={this.onTextChange} /&gt;&lt;/label&gt;
+        &lt;label&gt;{text}: &lt;input type="checkbox" checked={checked} 				onChange={this.onTextChange} /&gt;&lt;/label&gt;
     );
   }
 });
@@ -236,19 +265,20 @@ var ToggleButton = React.createClass({
 
 <p><img src="/images/react/comp-child-to-parent.png" alt="流程简图" /></p>
 
-<blockquote><p>这样做其实是依赖 props 来传递事件的引用，并通过回调的方式来实现的，这样实现不是特别好，但是在没有任何工具的情况下也是一种简单的实现方式</p></blockquote>
+<blockquote>
+  <p>这样做其实是依赖 props 来传递事件的引用，并通过回调的方式来实现的，这样实现不是特别好，但是在没有任何工具的情况下也是一种简单的实现方式</p>
+</blockquote>
 
 <p>这里会出现一个我们在之前讨论的问题，就是组件有多层嵌套的情况下，你必须要一次传入回调函数给 props 来实现子组件向父组件传值或者操作。</p>
 
-<h3>Tiny-Tip: React Event System</h3>
+<h3 id="tiny-tip-react-event-system">Tiny-Tip: React Event System</h3>
 
 <p>在 onChange 事件或者其他 React 事件中，你能够获取以下东西：</p>
 
 <ul>
-<li>【this】：指向你的组件</li>
-<li>【一个参数】：这个参数是一个 <a href="http://wiki.jikexueyuan.com/project/react/event-system.html">React 合成事件</a>，SyntheticEvent。</li>
+  <li>【this】：指向你的组件</li>
+  <li>【一个参数】：这个参数是一个 <a href="http://wiki.jikexueyuan.com/project/react/event-system.html">React 合成事件</a>，SyntheticEvent。</li>
 </ul>
-
 
 <p>React 对所有事件的管理都是自己实现的，与我们之前使用的 onclick、onchange 事件不一样。从根本上来说，他们都是绑定到 body 上。</p>
 
@@ -266,7 +296,7 @@ function putListener(id, registrationName, listener, transaction) {
   var container = ReactMount.findReactContainerForID(id);
   if (container) {
     var doc = container.nodeType === ELEMENT_NODE_TYPE ? container.ownerDocument : container;
-    listenTo(registrationName, doc);
+	listenTo(registrationName, doc);
   }
   ...
 }
@@ -276,7 +306,9 @@ target.addEventListener(eventType, callback, false);
 
 <p>这里有所有 React 支持的事件：<a href="http://reactjs.cn/react/docs/events.html">中文文档-事件系统</a></p>
 
-<blockquote><p>多个子组件使用同一个回调的情况</p></blockquote>
+<blockquote>
+  <p>多个子组件使用同一个回调的情况</p>
+</blockquote>
 
 <pre><code>// 父组件
 var MyContainer = React.createClass({
@@ -310,7 +342,7 @@ var MyContainer = React.createClass({
           callbackParent={this.onChildChanged}
           /&gt;
       &lt;/div&gt;
-    );
+	);
   }
 });
 
@@ -327,7 +359,7 @@ var ToggleButton = React.createClass({
       checked: newState
     });
     // 这里要注意：setState 是一个异步方法，所以需要操作缓存的当前值
-    this.props.callbackParent(newState);
+	this.props.callbackParent(newState);
   },
   render: function () {
     // 从【父组件】获取的值
@@ -346,7 +378,7 @@ var ToggleButton = React.createClass({
 
 <p>这是非常容易理解的，在父组件中我们增加了一个【totalChecked】来替代之前例子中的【checked】，当子组件改变的时候，使用同一个子组件的回调函数给父组件返回值。</p>
 
-<h3>三、没有任何嵌套关系的组件之间传值</h3>
+<h3 id="section-4">三、没有任何嵌套关系的组件之间传值</h3>
 
 <p>如果组件之间没有任何关系，组件嵌套层次比较深（个人认为 2 层以上已经算深了），或者你为了一些组件能够订阅、写入一些信号，不想让组件之间插入一个组件，让两个组件处于独立的关系。对于事件系统，这里有 2 个基本操作步骤：订阅（subscribe）/监听（listen）一个事件通知，并发送（send）/触发（trigger）/发布（publish）/发送（dispatch）一个事件通知那些想要的组件。</p>
 
@@ -397,7 +429,7 @@ var EventEmitter = {
         for (var i = 0; i &lt; this._events[event].length; i++) {
             this._events[event][i](data);
         }
-    },
+	},
     subscribe: function (event, callback) {
       // 创建一个新事件数组
       if (!this._events[event]) {
@@ -415,7 +447,7 @@ this.dispatch('namechanged', { name: 'John' });
 
 <p>React 团队使用的是：<a href="http://millermedeiros.github.io/js-signals/">js-signals</a> 它基于 Signals 模式，用起来相当不错。</p>
 
-<h3>Events in React</h3>
+<h3 id="events-in-react">Events in React</h3>
 
 <p>使用 React 事件的时候，必须关注下面两个方法：</p>
 
@@ -486,7 +518,7 @@ var Product = React.createClass({
 
 <p><img src="/images/react/demo5.gif" alt="运行结果" /></p>
 
-<h3>ES6: yield and js-csp</h3>
+<h3 id="es6-yield-and-js-csp">ES6: yield and js-csp</h3>
 
 <p>ES6 中有一种传递信息的方式，使用生成函数(generators)和 yield 关键字。可以看一下 <a href="https://github.com/ubolonton/js-csp">https://github.com/ubolonton/js-csp</a></p>
 
@@ -512,13 +544,16 @@ while(!cur.done) {
 
 <p>通常来说，你有一个队列，对象在里面都能找到一个引用，在定义的时候锁住，当发生的时候，立即打开锁执行。js-csp 是一种解决办法，也许以后还会有其他解决办法。</p>
 
-<h3>结尾</h3>
+<h3 id="section-5">结尾</h3>
 
 <p>在实际应用中，按照实际要解决的需求选择解决办法。对于小应用程序，你可以使用 props 和回调的方法进行组件之间的数据交换。你可以通过 pub/sub 模式，以避免污染你的组件。在这里，我们不是在谈论数据，只是组件。对于数据的请求、数据的变化等场景，可以使用 Facebook 的 Flux、Relay、GraphQL 来处理，都非常的好用。</p>
 
-<blockquote><p>文中的每一个例子我都验证过了，主要使用最原始的引入文件方式，创建服务使用的 http-server 包，大家也可以尝试自己来一次。</p></blockquote>
+<blockquote>
+  <p>文中的每一个例子我都验证过了，主要使用最原始的引入文件方式，创建服务使用的 http-server 包，大家也可以尝试自己来一次。</p>
+</blockquote>
 
 <p>译：<a href="http://ctheu.com/2015/02/12/how-to-communicate-between-react-components/#child_to_parent">英文原版</a></p>
+
 </div>
 
 

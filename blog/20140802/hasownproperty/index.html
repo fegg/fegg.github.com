@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -86,11 +113,11 @@
 
 <div class="entry-content"><p>英文版本：<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty</a></p>
 
-<h3>一、概要</h3>
+<h3 id="section">一、概要</h3>
 
 <p>hasOwnProperty()方法返回一个布尔值，这个布尔值表示：当前对象是否包含指定的属性。</p>
 
-<h3>二、语法</h3>
+<h3 id="section-1">二、语法</h3>
 
 <pre><code>obj.hasOwnProperty(prop);
 </code></pre>
@@ -101,20 +128,18 @@
 
 <!-- more -->
 
+<h3 id="section-2">三、描述</h3>
 
-<h3>三、描述</h3>
-
-<p>每一个对象都会从Object继承hasOwnProperty()方法。这个方法可以用来确定当前对象的指定对象是否是直接对象。和"in"操作符不同的是，hasOwnProperty()方法不检查当前对象原形链中的属性。</p>
+<p>每一个对象都会从Object继承hasOwnProperty()方法。这个方法可以用来确定当前对象的指定对象是否是直接对象。和”in”操作符不同的是，hasOwnProperty()方法不检查当前对象原形链中的属性。</p>
 
 <ol>
-<li>一个对象自己的属性指的是：直接对该对象定义的属性。并非是该对象的原形继承的属性。</li>
-<li>对象的属性包括：变量、函数。</li>
+  <li>一个对象自己的属性指的是：直接对该对象定义的属性。并非是该对象的原形继承的属性。</li>
+  <li>对象的属性包括：变量、函数。</li>
 </ol>
 
+<h3 id="section-3">四、例子</h3>
 
-<h3>四、例子</h3>
-
-<h4>（1）使用hasOwnProperty()来判断一个属性是否存在。</h4>
+<h4 id="hasownproperty">（1）使用hasOwnProperty()来判断一个属性是否存在。</h4>
 
 <p>以下例子就是确定 o 这个对象是否包含一个名为prop的属性：</p>
 
@@ -134,7 +159,7 @@ var ret2 = o.hasOwnProperty('prop');
 console.log('ret1: ' + ret1 + ', ret2: ' + ret2);
 </code></pre>
 
-<h4>（2）指向直接属性和继承属性</h4>
+<h4 id="section-4">（2）指向直接属性和继承属性</h4>
 
 <pre><code>var o = new Object();
 o.prop = 'exists';
@@ -145,9 +170,10 @@ o.hasOwnProperty('toString');
 o.hasOwnProperty('hasOwnProperty');
 </code></pre>
 
-<h4>（3）迭代一个对象的属性</h4>
+<h4 id="section-5">（3）迭代一个对象的属性</h4>
 
 <p>以下例子展示怎样迭代一个对象的直接属性，不包括继承的属性。值得注意的是：for..in循环语句本身只能够迭代能够枚举的项，</p>
+
 </div>
 
 

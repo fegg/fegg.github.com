@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,13 +111,13 @@
   </header>
 
 
-<div class="entry-content"><h3>前言</h3>
+<div class="entry-content"><h3 id="section">前言</h3>
 
 <p>因为 Arial, Verdana, Garamond or Times New Roman 这些字体几乎在所有电脑上都有安装，所以以前每个网站都使用他们来渲染文本。至今，虽然webfonts已经在互联网中得到普遍的使用，但是我们依然不知道如何高效的加载他们。</p>
 
 <p>为了提供更好的用户体验，我写了一些怎么做才能高效加载webfonts的简单解决方法，这个方案的实施并不需要昂贵的硬件支持。</p>
 
-<h3>0. 目录</h3>
+<h3 id="section-1">0. 目录</h3>
 
 <p>主要从以下方案进行介绍：</p>
 
@@ -108,26 +135,24 @@
 
 <!-- more -->
 
-
 <p><strong>英文版本的作者 2014/10/09 更新内容</strong></p>
 
 <p>如果你不相信以上方案能够优化网页的性能，那么我创建了2个Demo页面。能够测试他们在：资源加载、资源阻塞以及其他方面的问题。</p>
 
 <ol>
-<li><a href="http://bdadam.com/samples/webfonts-conventional.html">Demo页面：从Google Fonts中加载字体</a></li>
-<li><a href="https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Fbdadam.com%2Fsamples%2Fwebfonts-conventional.html">Page Speed的测试：从Google Fonts中加载字体</a></li>
-<li><a href="http://bdadam.com/samples/webfonts-optimized.html">Demo页面：异步加载字体并且存储到localStorage中，第二次直接从localStorage中取出字体</a></li>
-<li><a href="https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Fbdadam.com%2Fsamples%2Fwebfonts-optimized.html">Page Speed的测试：异步加载字体并且存储到localStorage</a></li>
+  <li><a href="http://bdadam.com/samples/webfonts-conventional.html">Demo页面：从Google Fonts中加载字体</a></li>
+  <li><a href="https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Fbdadam.com%2Fsamples%2Fwebfonts-conventional.html">Page Speed的测试：从Google Fonts中加载字体</a></li>
+  <li><a href="http://bdadam.com/samples/webfonts-optimized.html">Demo页面：异步加载字体并且存储到localStorage中，第二次直接从localStorage中取出字体</a></li>
+  <li><a href="https://developers.google.com/speed/pagespeed/insights/?url=http%3A%2F%2Fbdadam.com%2Fsamples%2Fwebfonts-optimized.html">Page Speed的测试：异步加载字体并且存储到localStorage</a></li>
 </ol>
-
 
 <p><img src="http://p2.qhimg.com/t01698ebcfbd56a2e71.png" alt="页面访问截图" /></p>
 
-<h3>1. 浏览器支持程度</h3>
+<h3 id="section-2">1. 浏览器支持程度</h3>
 
 <p>通过 <a href="http://caniuse.com/#search=woff">caniuse</a> 的统计，有84%用户的浏览器支持WOFF字体格式。除此之外，不支持WOFF格式的浏览器包括：IE8及其以下、Android上的一些老浏览器。因此，这里提供的优化是针对于支持WOFF字体格式的现代浏览器的方案。对于旧浏览器依然使用后备字体来展现网页（比如：Arial = = PS以下：中文的话可以采用“simsun”，属于衬线字体），这将给用户带来更好的用户体验。</p>
 
-<h3>2. 不要使用Google Fonts或者Typekit这类的外部链接方式</h3>
+<h3 id="google-fontstypekit">2. 不要使用Google Fonts或者Typekit这类的外部链接方式</h3>
 
 <p><strong>这两种方式会造成以下两个问题：</strong></p>
 
@@ -136,21 +161,23 @@
 
 <p>下面我们将看到处理webfonts更好的方式。</p>
 
-<h3>3. licence问题</h3>
+<h3 id="licence">3. licence问题</h3>
 
 <p>选择一个webfonts自己使用。不幸的时没有任何一个licence允许这么干。不过值得庆幸的时我们可以利用一些开源的字体，比如：Open Sans、Source Sans Pro。当你发现你想要的字体就能够下载它们的“二进制”文件（OTF或者TTF）。</p>
 
-<h3>4. 优化、减小字体文件大小以及生成CSS文件</h3>
+<h3 id="css">4. 优化、减小字体文件大小以及生成CSS文件</h3>
 
 <p>这里推荐一个网站：<a href="http://www.fontsquirrel.com/tools/webfont-generator">Font Squirrel Webfont Generator</a></p>
 
 <p>（PS：这个网站是用来处理字体的，有捐赠环节的哦\~具体功能可以点进去尝试一下就知道了）</p>
 
-<p>我们能够选择一些额外的方式来移除一些字符。你能够选择你需要的一些字符出来使用。如果你的网页全是英文内容，那么你只需要选择一些基本字符；如果你得网页有中文，那么你可能需要所有的字符。（原文错误：Chineese -> Chinese）</p>
+<p>我们能够选择一些额外的方式来移除一些字符。你能够选择你需要的一些字符出来使用。如果你的网页全是英文内容，那么你只需要选择一些基本字符；如果你得网页有中文，那么你可能需要所有的字符。（原文错误：Chineese -&gt; Chinese）</p>
 
-<blockquote><p>更重要的是最后生成我们所需要的，包含了字体base64编码信息的CSS字体文件。</p></blockquote>
+<blockquote>
+  <p>更重要的是最后生成我们所需要的，包含了字体base64编码信息的CSS字体文件。</p>
+</blockquote>
 
-<h3>5. 使用字体的CSS文件</h3>
+<h3 id="css-1">5. 使用字体的CSS文件</h3>
 
 <p>该CSS文件的大小取决于你选择的字符集合以及相关方面，也许该文件相当的大（最高可达100\~300KB）。因此，使用gzip压缩以及设置强缓存的方式对于用户来说是很重要的。</p>
 
@@ -160,7 +187,7 @@
 
 <p><img src="http://p0.qhimg.com/t01230b7f12a6a2af13.png" alt="优化后的示例图" /></p>
 
-<h3>6. 展示一下代码的编写</h3>
+<h3 id="section-3">6. 展示一下代码的编写</h3>
 
 <p>由于我使用的是localStorage技术，所以只有客户端的代码。</p>
 
@@ -203,7 +230,7 @@
 
 <p><img src="http://p3.qhimg.com/t0116e11ceff509061f.png" alt="优化的流程图" /></p>
 
-<h3>7. 我们做到了什么</h3>
+<h3 id="section-4">7. 我们做到了什么</h3>
 
 <p>（1）解决了除用户第一次访问网页外，其余更多次访问时候的请求阻塞问题；</p>
 
@@ -213,9 +240,11 @@
 
 <p>（4）得到了在Google Page Speed Insights 和 WebPageTest.org 上更高的分数。</p>
 
-<h3>8. 看看实际效果</h3>
+<h3 id="section-5">8. 看看实际效果</h3>
 
-<blockquote><p>英文版本的作者说到本文缺少一些细节的说明，能够在他博客中留言讨论。</p></blockquote>
+<blockquote>
+  <p>英文版本的作者说到本文缺少一些细节的说明，能够在他博客中留言讨论。</p>
+</blockquote>
 
 <p><strong>英文版本的作者 2014/10/11 更新内容</strong></p>
 
@@ -253,27 +282,33 @@
 
 <p>（5）如果上面的前面还不够糟糕，大多数浏览器将呈现空白文本，在不同浏览器之间实际的行为会有所不同：</p>
 
-<ol type="a">
-<li><p>如果请求字体还不可用，IE 会立即使用后备字体呈现，并在字体下载完成之后马上重新呈现；</p></li>
-<li><p>Firefox 和 Chrome 35+ 会首先下载3秒钟的字体，如果超过3秒钟后，会使用后备字体渲染网页，等到指定字体下载完成后再重新渲染网页；</p></li>
-<li><p>Safari 和 Chrome 35之前的版本，会等到指定字体下载完成后再渲染网页（PS：就是不会使用后备字体）。</p></li>
-</ol>
+<p>A. 如果请求字体还不可用，IE 会立即使用后备字体呈现，并在字体下载完成之后马上重新呈现；</p>
 
+<p>B. Firefox 和 Chrome 35+ 会首先下载3秒钟的字体，如果超过3秒钟后，会使用后备字体渲染网页，等到指定字体下载完成后再重新渲染网页；</p>
 
-<blockquote><p>注：以上说明中没有表示IE的版本以及Safari的版本号，所以需要自己测试才能算正确。</p></blockquote>
+<p>C. Safari 和 Chrome 35之前的版本，会等到指定字体下载完成后再渲染网页（PS：就是不会使用后备字体）。</p>
+
+<blockquote>
+  <p>注：以上说明中没有表示IE的版本以及Safari的版本号，所以需要自己测试才能算正确。</p>
+</blockquote>
 
 <p>因此，如果网络连接缓慢，在大多数浏览器中将延迟超过3秒的文本渲染。在最坏的情况下，如果你的字体加载带有时间限制（由于一些连接很慢的移动设备），Safari 用户将不会再展示文本，剩下一个空白网页。如果网页请求超时，最终将只会呈现一个空白网页。</p>
 
-<p>更多的信息可以访问：<a href="https://www.igvita.com/2012/09/12/web-fonts-performance-making-pretty-fast/">Ilya Gregorik&rsquo;s blog</a></p>
+<p>更多的信息可以访问：<a href="https://www.igvita.com/2012/09/12/web-fonts-performance-making-pretty-fast/">Ilya Gregorik’s blog</a></p>
 
 <p><strong>其他相关资源：</strong></p>
 
 <ul>
-<li><p><a href="https://www.igvita.com/2012/09/12/web-fonts-performance-making-pretty-fast/">Web Fonts Performance: Making Pretty, Fast - By Ilya Grigorik</a></p></li>
-<li><p><a href="http://www.smashingmagazine.com/2014/09/08/improving-smashing-magazine-performance-case-study/">Improving Smashing Magazine’s Performance: A Case Study</a></p></li>
-<li><p><a href="http://www.filamentgroup.com/lab/performance-rwd.html">How we make RWD sites load fast as heck</a></p></li>
+  <li>
+    <p><a href="https://www.igvita.com/2012/09/12/web-fonts-performance-making-pretty-fast/">Web Fonts Performance: Making Pretty, Fast - By Ilya Grigorik</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.smashingmagazine.com/2014/09/08/improving-smashing-magazine-performance-case-study/">Improving Smashing Magazine’s Performance: A Case Study</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.filamentgroup.com/lab/performance-rwd.html">How we make RWD sites load fast as heck</a></p>
+  </li>
 </ul>
-
 
 <p><strong>其实英文版本的作者也是翻译的一篇俄文，这篇俄文来自于：</strong></p>
 
@@ -283,9 +318,12 @@
 
 <p><a href="http://bdadam.com/blog/loading-webfonts-with-high-performance.html">http://bdadam.com/blog/loading-webfonts-with-high-performance.html</a></p>
 
-<blockquote><p>注：如果你有兴趣可以再看一下英文版本和俄文版本文章下面的评论，里面还有一些很有价值的东西，这里就不再翻译了，有时间可以再整理一下。以上文章如果有翻译不恰当的地方请在文章后面留言，看见了一定回复并且修改。</p></blockquote>
+<blockquote>
+  <p>注：如果你有兴趣可以再看一下英文版本和俄文版本文章下面的评论，里面还有一些很有价值的东西，这里就不再翻译了，有时间可以再整理一下。以上文章如果有翻译不恰当的地方请在文章后面留言，看见了一定回复并且修改。</p>
+</blockquote>
 
 <p>原文出自：<a href="http://www.60sky.com" title="博客">http://www.60sky.com</a></p>
+
 </div>
 
 

@@ -32,6 +32,33 @@ div { animation: animateName animateTimer;
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -86,13 +113,13 @@ div { animation: animateName animateTimer;
   </header>
 
 
-<div class="entry-content"><h3>一、CSS3 动画的属性和描述</h3>
+<div class="entry-content"><h3 id="css3-">一、CSS3 动画的属性和描述</h3>
 
 <p>(1) 规定动画的名称、周期</p>
 
 <pre><code>/* animateTimer默认值为0，动画不会被执行。 */
 div {
-    animation: animateName animateTimer;
+	animation: animateName animateTimer;
 }
 </code></pre>
 
@@ -100,8 +127,8 @@ div {
 
 <pre><code>/* from...to... &lt;=&gt; 0%...100% */
 @keyframes animateName {
-    from {...}
-    to {...}
+	from {...}
+	to {...}
 }
 </code></pre>
 
@@ -109,8 +136,7 @@ div {
 
 <!-- more -->
 
-
-<h3>二、CSS3 动画的三个事件</h3>
+<h3 id="css3--1">二、CSS3 动画的三个事件</h3>
 
 <p>（1）开始事件: animationStart</p>
 
@@ -125,7 +151,7 @@ div {
 
 <p>我表示不是很好用，也许是我用的不对吧，最后还是采用定时器来解决一些问题的。其实CSS3动画还是挺酷的，下次阅读一下官方文档，看是怎么实现的。</p>
 
-<h3>三、动动手，找下感觉</h3>
+<h3 id="section">三、动动手，找下感觉</h3>
 
 <p>其实之前做动画，是采用JQuery的一些动画API和自定义动画来做。后来也用了<a href="http://www.qwrap.com/">QWrap</a>来做，可能是因为类似的框架主要针对PC端，所以在移动端的性能自然就不是那么理想，不过iphone的性能还是不错的，做出来的效果还不算很卡，Android 4.x还没测试过。</p>
 
@@ -138,18 +164,18 @@ div {
 <p>（1）HTML部分，简单的一个例子结构。</p>
 
 <pre><code>&lt;div id="mininav"&gt;
-    &lt;div class="nav"&gt;
-        &lt;button id="JS-menu"&gt;菜单&lt;/button&gt;
-        &lt;ul id="JS-items" data-animate="hide" class="items"&gt;
-            &lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
-            &lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
-            &lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
-            &lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
-            &lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
-            &lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
-            &lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-    &lt;/div&gt;
+	&lt;div class="nav"&gt;
+		&lt;button id="JS-menu"&gt;菜单&lt;/button&gt;
+		&lt;ul id="JS-items" data-animate="hide" class="items"&gt;
+			&lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
+			&lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
+			&lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
+			&lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
+			&lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
+			&lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
+			&lt;li class="item"&gt;&lt;a href="http://www.so.com/"&gt;360搜索&lt;/a&gt;&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/div&gt;
 &lt;/div&gt;
 </code></pre>
 
@@ -180,34 +206,34 @@ div {
 <p>核心代码：</p>
 
 <pre><code>var menu = document.getElementById('JS-menu'),
-    nav = document.getElementById('JS-items');
+	nav = document.getElementById('JS-items');
 
 /* 菜单的状态 */
 var STATUS = {
-    show: 'show',
-    hide: 'hide'
+	show: 'show',
+	hide: 'hide'
 };
 
 /* 定时器索引 */
 var timer = null;
 
 addEvent(menu, 'click', function (e) {
-    if(nav.getAttribute('data-animate') == STATUS.hide) {
-        clearTimeout(timer); //防止连续不断的点击
+	if(nav.getAttribute('data-animate') == STATUS.hide) {
+		clearTimeout(timer); //防止连续不断的点击
 
-        nav.style.display = 'block';
-        removeClass(nav, STATUS.hide);
-        addClass(nav, STATUS.show);
-        nav.setAttribute('data-animate', STATUS.show);
-    } else {
-        timer = setTimeout(function () {
-            nav.style.display = 'none';
-        }, 1000);
+		nav.style.display = 'block';
+		removeClass(nav, STATUS.hide);
+		addClass(nav, STATUS.show);
+		nav.setAttribute('data-animate', STATUS.show);
+	} else {
+		timer = setTimeout(function () {
+			nav.style.display = 'none';
+		}, 1000);
 
-        removeClass(nav, STATUS.show);
-        addClass(nav, STATUS.hide);
-        nav.setAttribute('data-animate', STATUS.hide);
-    }
+		removeClass(nav, STATUS.show);
+		addClass(nav, STATUS.hide);
+		nav.setAttribute('data-animate', STATUS.hide);
+	}
 }, false);
 </code></pre>
 
@@ -216,63 +242,63 @@ addEvent(menu, 'click', function (e) {
 <p>以下是完整JS代码：</p>
 
 <pre><code>(function () {
-    var menu = document.getElementById('JS-menu'),
-        nav = document.getElementById('JS-items');
+	var menu = document.getElementById('JS-menu'),
+		nav = document.getElementById('JS-items');
 
-    function addEvent(obj, type, fun, isBubble) {
-        if(obj.addEventListener) {
-            obj.addEventListener(type, fun, isBubble);
-        } else {
-            obj.attachEvent('on' + type, fun);
-        }
-    }
+	function addEvent(obj, type, fun, isBubble) {
+		if(obj.addEventListener) {
+			obj.addEventListener(type, fun, isBubble);
+		} else {
+			obj.attachEvent('on' + type, fun);
+		}
+	}
 
-    function hasClass(obj, clazz) {
-        return obj.className.match(new RegExp('(\\s|^)' + clazz + '(\\s|$)'));
-    }   
+	function hasClass(obj, clazz) {
+		return obj.className.match(new RegExp('(\\s|^)' + clazz + '(\\s|$)'));
+	}	
+	
+	//添加指定class，如果你直接className=papapa，值会被覆盖，所以需要累加
+	function addClass(obj, clazz) {
+		if(!hasClass(obj, clazz)) {
+			obj.className += ' ' + clazz;
+		}
+	}
 
-    //添加指定class，如果你直接className=papapa，值会被覆盖，所以需要累加
-    function addClass(obj, clazz) {
-        if(!hasClass(obj, clazz)) {
-            obj.className += ' ' + clazz;
-        }
-    }
+	//去除指定class，如果有兴趣可以做一个class交替操作
+	function removeClass(obj, clazz) {
+		if (hasClass(obj, clazz)) {  
+    		var reg = new RegExp('(\\s|^)' + clazz + '(\\s|$)');  
+    		obj.className = obj.className.replace(reg, '');
+	    }
+	}
 
-    //去除指定class，如果有兴趣可以做一个class交替操作
-    function removeClass(obj, clazz) {
-        if (hasClass(obj, clazz)) {  
-            var reg = new RegExp('(\\s|^)' + clazz + '(\\s|$)');  
-            obj.className = obj.className.replace(reg, '');
-        }
-    }
+	/* 菜单的状态 */
+	var STATUS = {
+		show: 'show',
+		hide: 'hide'
+	};
 
-    /* 菜单的状态 */
-    var STATUS = {
-        show: 'show',
-        hide: 'hide'
-    };
+	/* 定时器索引 */
+	var timer = null;
 
-    /* 定时器索引 */
-    var timer = null;
+	addEvent(menu, 'click', function (e) {
+		if(nav.getAttribute('data-animate') == STATUS.hide) {
+			clearTimeout(timer); //防止连续不断的点击，出现bug
 
-    addEvent(menu, 'click', function (e) {
-        if(nav.getAttribute('data-animate') == STATUS.hide) {
-            clearTimeout(timer); //防止连续不断的点击，出现bug
+			nav.style.display = 'block';
+			removeClass(nav, STATUS.hide);
+			addClass(nav, STATUS.show);
+			nav.setAttribute('data-animate', STATUS.show);
+		} else {
+			timer = setTimeout(function () {
+				nav.style.display = 'none';
+			}, 1000);
 
-            nav.style.display = 'block';
-            removeClass(nav, STATUS.hide);
-            addClass(nav, STATUS.show);
-            nav.setAttribute('data-animate', STATUS.show);
-        } else {
-            timer = setTimeout(function () {
-                nav.style.display = 'none';
-            }, 1000);
-
-            removeClass(nav, STATUS.show);
-            addClass(nav, STATUS.hide);
-            nav.setAttribute('data-animate', STATUS.hide);
-        }
-    }, false);
+			removeClass(nav, STATUS.show);
+			addClass(nav, STATUS.hide);
+			nav.setAttribute('data-animate', STATUS.hide);
+		}
+	}, false);
 })();
 </code></pre>
 
@@ -281,6 +307,7 @@ addEvent(menu, 'click', function (e) {
 <p><img src="/images/CSS3/css3-animation.gif" alt="CSS3 动画" /></p>
 
 <p>睁不起了＝＝睡觉了～呼噜～</p>
+
 </div>
 
 

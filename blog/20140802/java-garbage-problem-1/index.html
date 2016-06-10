@@ -9,7 +9,7 @@
   <meta name="author" content="小撸">
 
   
-  <meta name="description" content="一、前言 最近感觉自己对编码的理解还不够透彻，研究一下编码的问题，我觉得这个是值得研究的地方。自己开始研究的时候，很细心的看了不少的资料，这里和大家分享一下，希望对大家有用，原理有些我就不一条一条的来了，重点描述下吧。 二、控制台中的编码问题 查看操作系统（OS）的默认编码（这点还是有必要的， &hellip;">
+  <meta name="description" content="一、前言 最近感觉自己对编码的理解还不够透彻，研究一下编码的问题，我觉得这个是值得研究的地方。自己开始研究的时候，很细心的看了不少的资料，这里和大家分享一下，希望对大家有用，原理有些我就不一条一条的来了，重点描述下吧。 二、控制台中的编码问题 a. 查看操作系统（OS）的默认编码（这点还是有必要的 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,25 +111,24 @@
   </header>
 
 
-<div class="entry-content"><h3>一、前言</h3>
+<div class="entry-content"><h3 id="section">一、前言</h3>
 
 <p>最近感觉自己对编码的理解还不够透彻，研究一下编码的问题，我觉得这个是值得研究的地方。自己开始研究的时候，很细心的看了不少的资料，这里和大家分享一下，希望对大家有用，原理有些我就不一条一条的来了，重点描述下吧。</p>
 
-<h3>二、控制台中的编码问题</h3>
+<h3 id="section-1">二、控制台中的编码问题</h3>
 
-<ol type="a">
-<li><p>查看操作系统（OS）的默认编码（这点还是有必要的，但是大多数在中国用的都是默认GBK）</p>
+<p>a. 查看操作系统（OS）的默认编码（这点还是有必要的，但是大多数在中国用的都是默认GBK）</p>
 
-<p> Properties props = System.getProperties();
- //操作系统信息
- System.out.println(&ldquo;操作系统默认编码: &rdquo; + props.getProperty(&ldquo;file.encoding&rdquo;));</p></li>
-<li><p>确定了默认的情况后，在java文件编译成class文件到内存年的时候，使用GBK编码编译【-encoding】，IDE可以使用默认。（中途的UNICODE编码可以查阅相关资料）</p></li>
-<li><p>输出的时候也设置成GBK就成了</p></li>
-</ol>
+<pre><code>Properties props = System.getProperties();
+//操作系统信息
+System.out.println("操作系统默认编码: " + props.getProperty("file.encoding"));
+</code></pre>
 
+<p>b. 确定了默认的情况后，在java文件编译成class文件到内存年的时候，使用GBK编码编译【-encoding】，IDE可以使用默认。（中途的UNICODE编码可以查阅相关资料）</p>
+
+<p>c. 输出的时候也设置成GBK就成了</p>
 
 <!--more-->
-
 
 <pre><code>package com.test.two;
 
@@ -137,6 +163,7 @@ public class Test {
     }
 }
 </code></pre>
+
 </div>
 
 

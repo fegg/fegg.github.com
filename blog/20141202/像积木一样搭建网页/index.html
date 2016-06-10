@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,7 +111,7 @@
   </header>
 
 
-<div class="entry-content"><h3>前言</h3>
+<div class="entry-content"><h3 id="section">前言</h3>
 
 <p>我们在浏览网页的时候，经常会看到很相似的几种内容。比如下面这两种样子：</p>
 
@@ -94,28 +121,30 @@
 
 <p>看上去是不是比较像呢？其实就是图片的位置不一样，大致上可以认为是一样的吧，那么针对这样子的相似度较高的网页，我们应该怎么样开发呢？</p>
 
-<blockquote><p>其实这就得谈谈“页面重用机制”了，下面所写的积木式网页构建方式就能够很好的处理页面重用这个问题。</p></blockquote>
+<blockquote>
+  <p>其实这就得谈谈“页面重用机制”了，下面所写的积木式网页构建方式就能够很好的处理页面重用这个问题。</p>
+</blockquote>
 
 <p>接下来将从以下4个方面对积木式网页开发进行描述：</p>
 
 <ol>
-<li>分析页面结构</li>
-<li>构建网页的结构</li>
-<li>编写网页基本的样式</li>
-<li>编写不同表现的样式</li>
+  <li>分析页面结构</li>
+  <li>构建网页的结构</li>
+  <li>编写网页基本的样式</li>
+  <li>编写不同表现的样式</li>
 </ol>
-
 
 <!-- more -->
 
-
-<h3>一、分析页面结构</h3>
+<h3 id="section-1">一、分析页面结构</h3>
 
 <p>虽然HTML的语法那些很简单，但是在网页设计和开发中，它却占据着不可动摇的地位。首先我们需要根据设计师的PSD和产品经理所描述的需求，然后确定我们网页的结构，反复的与他们沟通，确定更多的信息，才让我们的网页结构的生命周期变得更长。</p>
 
 <p>这里推荐一个Chrome的插件，可以瞬间去除CSS和JavaScript的效果，查看到最原始网页的表现。</p>
 
-<blockquote><p>Web Developer</p></blockquote>
+<blockquote>
+  <p>Web Developer</p>
+</blockquote>
 
 <p>下面我们要参考的结构就如下图中2种样子：</p>
 
@@ -126,52 +155,51 @@
 <p>我用红线大致描了一下页面的信息块，接下来我们来分析一下信息：</p>
 
 <ol>
-<li>一张展示图</li>
-<li>一个标题</li>
-<li>商品的列表信息（包括总价）</li>
-<li>附属品的列表信息</li>
-<li>购买按钮</li>
+  <li>一张展示图</li>
+  <li>一个标题</li>
+  <li>商品的列表信息（包括总价）</li>
+  <li>附属品的列表信息</li>
+  <li>购买按钮</li>
 </ol>
-
 
 <p>好吧，这里就不需要PM来确认啦，自己当一回PM ^8^，接下来我们需要描述网页结构。</p>
 
-<h3>二、构建网页的结构</h3>
+<h3 id="section-2">二、构建网页的结构</h3>
 
 <p>经过上面的分析，我们可以得出如下的DOM结构：</p>
 
 <pre><code>&lt;div class="productStackWrap"&gt;
-    &lt;img class="psImage" src="http://p5.qhimg.com/t01bc7da5a2c6e90308.jpg" alt="卢林"&gt;
-    &lt;div class="psArticleWrap"&gt;
-        &lt;h1 class="psTitle"&gt;赔本大甩卖&lt;/h1&gt;
-        &lt;ul class="psPriceWrap"&gt;
-            &lt;li&gt;
-                &lt;span class="spLabel"&gt;眼镜&lt;/span&gt;
-                &lt;span class="spAmount"&gt;500元&lt;/span&gt;
-            &lt;/li&gt;
-            &lt;li&gt;
-                &lt;span class="spLabel"&gt;外套&lt;/span&gt;
-                &lt;span class="spAmount"&gt;300元&lt;/span&gt;
-            &lt;/li&gt;
-            &lt;li&gt;
-                &lt;span class="spLabel"&gt;iPhone 5S&lt;/span&gt;
-                &lt;span class="spAmount"&gt;88元&lt;/span&gt;
-            &lt;/li&gt;
-            &lt;li&gt;
-                &lt;span class="spLabel"&gt;总价&lt;/span&gt;
-                &lt;span class="spAmount spTotalPrice"&gt;仅需888元&lt;/span&gt;
-            &lt;/li&gt;
-        &lt;/ul&gt;
-        &lt;div class="spDescriptionWrap"&gt;
-            &lt;p&gt;附带品&lt;/p&gt;
-            &lt;ul class="descBulletsUL"&gt;
-                &lt;li&gt;可乐一罐&lt;/li&gt;
-                &lt;li&gt;饭碗一个&lt;/li&gt;
-                &lt;li&gt;6块钱的麻辣烫&lt;/li&gt;
-            &lt;/ul&gt;
-        &lt;/div&gt;
-        &lt;button class="psCTA"&gt;买买买&lt;/button&gt;
-    &lt;/div&gt;
+	&lt;img class="psImage" src="http://p5.qhimg.com/t01bc7da5a2c6e90308.jpg" alt="卢林"&gt;
+	&lt;div class="psArticleWrap"&gt;
+		&lt;h1 class="psTitle"&gt;赔本大甩卖&lt;/h1&gt;
+		&lt;ul class="psPriceWrap"&gt;
+			&lt;li&gt;
+				&lt;span class="spLabel"&gt;眼镜&lt;/span&gt;
+				&lt;span class="spAmount"&gt;500元&lt;/span&gt;
+			&lt;/li&gt;
+			&lt;li&gt;
+				&lt;span class="spLabel"&gt;外套&lt;/span&gt;
+				&lt;span class="spAmount"&gt;300元&lt;/span&gt;
+			&lt;/li&gt;
+			&lt;li&gt;
+				&lt;span class="spLabel"&gt;iPhone 5S&lt;/span&gt;
+				&lt;span class="spAmount"&gt;88元&lt;/span&gt;
+			&lt;/li&gt;
+			&lt;li&gt;
+				&lt;span class="spLabel"&gt;总价&lt;/span&gt;
+				&lt;span class="spAmount spTotalPrice"&gt;仅需888元&lt;/span&gt;
+			&lt;/li&gt;
+		&lt;/ul&gt;
+		&lt;div class="spDescriptionWrap"&gt;
+			&lt;p&gt;附带品&lt;/p&gt;
+			&lt;ul class="descBulletsUL"&gt;
+				&lt;li&gt;可乐一罐&lt;/li&gt;
+				&lt;li&gt;饭碗一个&lt;/li&gt;
+				&lt;li&gt;6块钱的麻辣烫&lt;/li&gt;
+			&lt;/ul&gt;
+		&lt;/div&gt;
+		&lt;button class="psCTA"&gt;买买买&lt;/button&gt;
+	&lt;/div&gt;
 &lt;/div&gt;
 </code></pre>
 
@@ -181,20 +209,20 @@
 
 <p>好吧，到这里我们的DOM结构就构造完了，接下来添加一点基本的，也可以理解为公用的样式，这里的公用可以不理解为积木块共有的样式。说起来绕了一点，也就是说不同表现的共有样式可以与本身结构具有的基本样式进行分离，这个可以看自己喜好来决定。</p>
 
-<h3>三、编写网页基本的样式</h3>
+<h3 id="section-3">三、编写网页基本的样式</h3>
 
 <p>在此之前我们来看看我本地的文件结构：</p>
 
 <pre><code>demo  //文件夹
-    A.css  //样式1
-    B.css  //样式2
-    index.css  //基本样式
-    index.html //DOM结构
+	A.css  //样式1
+	B.css  //样式2
+	index.css  //基本样式
+	index.html //DOM结构
 </code></pre>
 
 <p>这里可以处理一些基本的网页样式信息，比如恢复一些元素的默认值、调整部分间隙。这部分代码位于：index.css中，内容放入文章末尾吧，这里我们连贯的描述怎么做页面重用。</p>
 
-<h3>四、编写不同表现的样式</h3>
+<h3 id="section-4">四、编写不同表现的样式</h3>
 
 <p>说了怎么久，DOM结构和基本样式都搞好啦，那么现在我们来实现我们的两张图。现在我们只需要做的是在最外层DOM结构中加入不同的类名：</p>
 
@@ -207,61 +235,63 @@
 <p>这样我们利用CSS的权重来控制特殊的样式，其实这里的 psTreatmentA 类更像一个命名空间，如果用严格的语言来理解的话，那么可以理解为：</p>
 
 <pre><code>class psTreatmentA implements productStackWrap {
-    ...
+	...
 }
 
 class psTreatmentB implements productStackWrap {
-    ...
+	...
 }
 
 ...
 
 class psTreatmentN implements productStackWrap {
-    ...
+	...
 }
 </code></pre>
 
-<blockquote><p>注意这里用的是接口哦，CSS的复用可以是多继承的关系，至少我是这么理解的。</p></blockquote>
+<blockquote>
+  <p>注意这里用的是接口哦，CSS的复用可以是多继承的关系，至少我是这么理解的。</p>
+</blockquote>
 
 <p>那么我们改怎么针对这个类来写属于它实例的样式呢？那么看一下下面两段代码就可以理解了。</p>
 
 <pre><code>/* A类样式 */
 .psTreatmentA {
-    width: 310px;
+	width: 310px;
 }
 .psTreatmentA .psImage {
-    width: 80px;
-    height: 112px;
-    float: left;
+	width: 80px;
+	height: 112px;
+	float: left;
 }
 .psTreatmentA .psTitle {
-    margin-left: 100px;
+	margin-left: 100px;
 }
 .psTreatmentA .psPriceWrap {
-    margin-left: 100px;
-    text-align: right;
+	margin-left: 100px;
+	text-align: right;
 }
 .psTreatmentA .psCTA {
-    margin: 0 auto;
+	margin: 0 auto;
 }
 
 /* B类样式 */
 .psTreatmentB {
-    width: 385px;
+	width: 385px;
 }
 .psTreatmentB .psImage {
-    width: 386px;
-    height: 287px;
-    display: block;
-    margin-bottom: 20px;
+	width: 386px;
+	height: 287px;
+	display: block;
+	margin-bottom: 20px;
 }
 .psTreatmentB .psPriceWrap {
-    text-align: left;
-    margin-left: 110px;
+	text-align: left;
+	margin-left: 110px;
 }
 .psTreatmentB .psTitle {
-    text-align: center;
-    font-size: 27px;
+	text-align: center;
+	font-size: 27px;
 }
 </code></pre>
 
@@ -281,70 +311,70 @@ class psTreatmentN implements productStackWrap {
 
 <p>FE说：“我看看设计稿来（啪啪啪~看完设计稿，发现其中有很多复用的网页样式）。”</p>
 
-<p>FE再说：“我尽力吧，晚上做完回你。（使用通用的结构include，最后将之前项目中的A&hellip;N样式拿来一套，解决问题！）”</p>
+<p>FE再说：“我尽力吧，晚上做完回你。（使用通用的结构include，最后将之前项目中的A…N样式拿来一套，解决问题！）”</p>
 
 <p>好处还有很多呢，等待你去发现~</p>
 
-<h3>五、最后结束语</h3>
+<h3 id="section-5">五、最后结束语</h3>
 
 <p>虽然上面文章描述了样式上的重用，其实在JS行为的把握上我们也可以使用相同处理事情的方式，将JS行为的类将表现给分离出来，能够更好的应对需求的变更以及增加代码的可维护~</p>
 
 <p>附：（文章例子中的基本样式）</p>
 
 <pre><code>.productStackWrap {
-    position: relative;
-    font-size: 14px;
-    margin: 40px 0;
-    border: 1px solid #999;
-    padding: 20px;
+	position: relative;
+	font-size: 14px;
+	margin: 40px 0;
+	border: 1px solid #999;
+	padding: 20px;
 }
 .psTitle {
-    font-size: 21px;
-    font-weight: 700;
-    margin: 0 0 5px 0;
+	font-size: 21px;
+	font-weight: 700;
+	margin: 0 0 5px 0;
 }
 .psPriceWrap {
-    padding: 0;
+	padding: 0;
 }
 .psPriceWrap li {
-    list-style: none;
-    padding: 2px 0;
+	list-style: none;
+	padding: 2px 0;
 }
 .spLabel {
-    display: inline-block;
-    width: 75px;
-    text-align: right;
-    padding-right: 3px;
+	display: inline-block;
+	width: 75px;
+	text-align: right;
+	padding-right: 3px;
 }
 .spAmount {
-    display: inline-block;
-    width: 75px;
-    text-align: right;
-    font-weight: 700;
+	display: inline-block;
+	width: 75px;
+	text-align: right;
+	font-weight: 700;
 }
 .spTotalPrice {
-    color: green;
+	color: green;
 }
 .spDescriptionWrap p {
-    line-height: 150%;
+	line-height: 150%;
 }
 .psCTA {
-    background: green;
-    color: #fff;
-    padding: 5px 0;
-    width: 120px;
-    display: block;
-    border: 0;
-    text-align: center;
-    font-size: 20px;
-    text-shadow: 1px 1px 1px #666;
-    border-radius: 5px;
-    background-clip: padding-box;
-    background: #92c436;
-    background: linear-gradient(top, #92c436 0%, #97c64b 50%, #80c217 51%, #7cbc0a 100%);
+	background: green;
+	color: #fff;
+	padding: 5px 0;
+	width: 120px;
+	display: block;
+	border: 0;
+	text-align: center;
+	font-size: 20px;
+	text-shadow: 1px 1px 1px #666;
+	border-radius: 5px;
+	background-clip: padding-box;
+	background: #92c436;
+	background: linear-gradient(top, #92c436 0%, #97c64b 50%, #80c217 51%, #7cbc0a 100%);
 }
 .descBulletsUL li {
-    padding: 4px 0;
+	padding: 4px 0;
 }
 </code></pre>
 </div>

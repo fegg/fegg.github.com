@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,7 +111,7 @@
   </header>
 
 
-<div class="entry-content"><h2>前言</h2>
+<div class="entry-content"><h2 id="section">前言</h2>
 
 <p>今天，ECMAScript正处于定稿中。ECMAScript是JavaScript的基础，因此，今天我们浏览一下提出的新特性，能够让我们了解以后我们将能怎样编写JavaScript。在文章中，我们将讲解10个新特性，以及重要的热门工具、浏览器和跨平台编译器。</p>
 
@@ -92,61 +119,60 @@
 
 <!-- more -->
 
-
-<h3>一、ECMA，ECMAScript 和 JavaScript 的发展史</h3>
+<h3 id="ecmaecmascript--javascript-">一、ECMA，ECMAScript 和 JavaScript 的发展史</h3>
 
 <p>JavaScript最初是由Brendan Eich网景公司开发的,在1995年，正式发布出来，成为Netscape Navigator 2.0的一部分。一年后,将 JavaScript 提交给 ECMA International, JavaScript成为促进信息和通讯技术的标准化和消费电子产品的一部分,为了它能够在智能工业中得到正式确定。因此, 在ECMA-262的时候，命名为ECMAScript, 成为了标准化脚本语言。</p>
 
 <p>以ECMAScript标准的形式为主,有很多其他的派生语言,其中包括ActionScript和JScript。至今,ECMAScript总共经历了4个版本,今天的讨论我们将围绕第六个版本，将其命名为：ECMAScript Harmony。</p>
 
-<h3>二、ECMAScript和JavaScript对应的版本</h3>
+<h3 id="ecmascriptjavascript">二、ECMAScript和JavaScript对应的版本</h3>
 
 <p>在我们即将深入ECMAScript 6的新特性之前，比较重要的是需要了解ECMAScript标准和JavaScript的关系，他们之间存在着数字上对应的差异。这表明JavaScript与ECMAScript标准兼容,同时提供更多的功能。下面的表格中，总结了JavaScript和ECMAScript之间的关系：（mou打表格比较麻烦，就截图了）</p>
 
 <p><img src="http://p4.qhimg.com/t01f7b309fac3cc5bbf.png" alt="JavaScript和ECMAScript之间的关系" /></p>
 
-<h3>三、ES6 概述</h3>
+<h3 id="es6-">三、ES6 概述</h3>
 
-<h4>1. 目标</h4>
+<h4 id="section-1">1. 目标</h4>
 
 <p>JavaScript已经诞生接近20年，今天，开发者们编写了成千上万行代码的复杂JavaScript应用程序。在我们深入介绍ES 6特性之前，你可能想看看规范中定义的需求、模板、含义以及主题草稿。ES 6的目标之一就是为了创建一个更好的语言：</p>
 
 <ol>
-<li>复杂应用程序</li>
-<li>库</li>
-<li>代码生成器</li>
+  <li>复杂应用程序</li>
+  <li>库</li>
+  <li>代码生成器</li>
 </ol>
 
+<h4 id="es-6">2. ES 6的兼容性</h4>
 
-<h4>2. ES 6的兼容性</h4>
-
-<p>大家可以访问 <a href="http://kangax.github.io/compat-table/es6/">ES 6兼容表</a>，它能够告诉我们当前ES 6的特性在当代浏览器中的支持情况。它也给我们提供了一个各个新特性的说明链接（浏览了一下，属于官方的讲解，可以随时查阅）。注意,一些特性的存在并不意味着完全符合规范。在Chrome中测试新特性，应该使用"Experimental JavaScript"的flags选项。以下是一个兼容性的截图：（现在应该不需要了，版本以及到了V40，可以下载黄金版测试）</p>
+<p>大家可以访问 <a href="http://kangax.github.io/compat-table/es6/">ES 6兼容表</a>，它能够告诉我们当前ES 6的特性在当代浏览器中的支持情况。它也给我们提供了一个各个新特性的说明链接（浏览了一下，属于官方的讲解，可以随时查阅）。注意,一些特性的存在并不意味着完全符合规范。在Chrome中测试新特性，应该使用”Experimental JavaScript”的flags选项。以下是一个兼容性的截图：（现在应该不需要了，版本以及到了V40，可以下载黄金版测试）</p>
 
 <p><img src="http://p9.qhimg.com/t0173f03192041ea6d5.png" alt="兼容性的截图" /></p>
 
-<h4>3. 将要介绍的10个特性</h4>
+<h4 id="section-2">3. 将要介绍的10个特性</h4>
 
 <p>在下面几节中,我们将讨论十ES6的特点,使用各种工具,这样我们可以了解ES6无论是在理论和实践。JavaScript的先验知识是首要的,所以需要随时查阅<a href="http://code.tutsplus.com/tutorials/the-best-way-to-learn-javascript--net-21954">JavaScript资源</a>。</p>
 
 <p>下面列出的特性,我们将通过使用不同的工具。以下是将要讲解的目录，能够点一下直接到你想了解的特性：</p>
 
-<blockquote><p>&ldquo;[]"中表示使用的开发工具。</p></blockquote>
+<blockquote>
+  <p>”[]”中表示使用的开发工具。</p>
+</blockquote>
 
 <ol>
-<li><a href="#let">块级作用域：let</a> [Firefox]</li>
-<li><a href="#const">块级作用域：const</a> [Chrome]</li>
-<li><a href="#classes">Classes</a> [traceur]（不知道traceur工具的可以直接理解为Javascript 编译器）</li>
-<li><a href="#params">默认函数参数</a> [TypeScript]（开源的一个东西，可以到官网了解）</li>
-<li><a href="#collections">集合</a> [NodeJS]</li>
-<li><a href="#destructuring">解构</a> [Firefox]</li>
-<li><a href="#rest-spread">Rest parameters &amp; Spread operator</a> [Grunt plugin Traceur]</li>
-<li><a href="#for">迭代器</a> [Firefox]</li>
-<li><a href="#arr">数组的操作</a></li>
-<li><a href="#module">模块</a></li>
+  <li><a href="#let">块级作用域：let</a> [Firefox]</li>
+  <li><a href="#const">块级作用域：const</a> [Chrome]</li>
+  <li><a href="#classes">Classes</a> [traceur]（不知道traceur工具的可以直接理解为Javascript 编译器）</li>
+  <li><a href="#params">默认函数参数</a> [TypeScript]（开源的一个东西，可以到官网了解）</li>
+  <li><a href="#collections">集合</a> [NodeJS]</li>
+  <li><a href="#destructuring">解构</a> [Firefox]</li>
+  <li><a href="#rest-spread">Rest parameters &amp; Spread operator</a> [Grunt plugin Traceur]</li>
+  <li><a href="#for">迭代器</a> [Firefox]</li>
+  <li><a href="#arr">数组的操作</a></li>
+  <li><a href="#module">模块</a></li>
 </ol>
 
-
-<h4><h3 name="let" id="let"><em>特性一：</em>块级作用域：let</h3></h4>
+<h4 id="h3-namelet-idletememleth3">&lt;h3 name="let" id="let"&gt;<em>特性一：</em>块级作用域：let&lt;/h3&gt;</h4>
 
 <p>wiki资料：<a href="http://wiki.ecmascript.org/doku.php?id=harmony:let">let</a></p>
 
@@ -154,7 +180,9 @@
 
 <p>（快捷键：windows F12，mac alt+command+i）</p>
 
-<blockquote><p>操作步骤：菜单 -> 工具 -> Web开发者 -> Web控制台</p></blockquote>
+<blockquote>
+  <p>操作步骤：菜单 -&gt; 工具 -&gt; Web开发者 -&gt; Web控制台</p>
+</blockquote>
 
 <p>JavaScript的变量是函数作用域的，这就意味着，即使变量声明在最近的代码块，它们的实际作用域也会在整个函数中。我们看一下下面的简短例子；我们将简单地用Firefox和Chrome运行试试。</p>
 
@@ -162,22 +190,22 @@
 
 <pre><code>var jsFuture = "es6";
 (function () {
-    if (!jsFuture) {
-        var jsFuture = "es5";
-    }
-    console.log(jsFuture);
+	if (!jsFuture) {
+		var jsFuture = "es5";
+	}
+	console.log(jsFuture);
 }());
 </code></pre>
 
-<p>在上面的例子中，<strong>console.log(jsFuture);</strong> 将打印出"es5"。这段代码主要需要理解的就是，在JavaScript代码中，有<a href="http://code.tutsplus.com/tutorials/quick-tip-javascript-hoisting-explained--net-15092">变量声明提升</a>的概念（原文推荐的是英文版，这里我推荐一个中文版<a href="http://openwares.net/js/javascript_declaration_hoisting.html">变量声明提升</a>的讲解），然后再进行变量的初始化工作。另一方面，不管变量是在那里初始化和声明的，都属于函数作用域范围，他们将总是会被声明提升。</p>
+<p>在上面的例子中，<strong>console.log(jsFuture);</strong> 将打印出”es5”。这段代码主要需要理解的就是，在JavaScript代码中，有<a href="http://code.tutsplus.com/tutorials/quick-tip-javascript-hoisting-explained--net-15092">变量声明提升</a>的概念（原文推荐的是英文版，这里我推荐一个中文版<a href="http://openwares.net/js/javascript_declaration_hoisting.html">变量声明提升</a>的讲解），然后再进行变量的初始化工作。另一方面，不管变量是在那里初始化和声明的，都属于函数作用域范围，他们将总是会被声明提升。</p>
 
 <p>下面这段代码将简单描述一下变量声明提升，与上面那份代码等价：</p>
 
 <pre><code>var jsFuture = "es6";
 (function() {
-    // 在这里将jsFuture变量声明提升
+	// 在这里将jsFuture变量声明提升
     // var jsFuture = undefined;
-    // 然后这里判断，得出true的结果，进入if语句，初始化jsFuture的值
+	// 然后这里判断，得出true的结果，进入if语句，初始化jsFuture的值
     if (!jsFuture) {
         var jsFuture = "es5";
     }
@@ -205,7 +233,7 @@ es[6](); // 即将出版的 ECMAScript 是 ES10
 <pre><code>'use strict'; // 这句是我翻译加的，保证代码的可运行
 var es = [];
 for (var i = 0; i &lt; 10; i++) {
-    let c = i;
+	let c = i;
     es[i] = function() {
         console.log("即将出版的 ECMAScript 是 ES" + c);
     };
@@ -221,25 +249,26 @@ es[6](); // 即将出版的 ECMAScript 是 ES10
 
 <p>PS：网上有很多资源，是专属 <strong>let</strong> 的讲解，这里推荐几个吧，这样对这个特性应该就理解差不多了。</p>
 
-<blockquote><p>其实之前对作用域知识比较扎实，理解很快，用法也很简单。go go go!</p></blockquote>
+<blockquote>
+  <p>其实之前对作用域知识比较扎实，理解很快，用法也很简单。go go go!</p>
+</blockquote>
 
 <p><strong>英文资料</strong></p>
 
 <ol>
-<li>MDN还是要看的：<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let">资料</a></li>
-<li>实例讨论的文章：<a href="http://davidwalsh.name/for-and-against-let">资料</a></li>
-<li>let与var的一篇帖子：<a href="http://stackoverflow.com/questions/762011/javascript-let-keyword-vs-var-keyword">资料</a></li>
+  <li>MDN还是要看的：<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let">资料</a></li>
+  <li>实例讨论的文章：<a href="http://davidwalsh.name/for-and-against-let">资料</a></li>
+  <li>let与var的一篇帖子：<a href="http://stackoverflow.com/questions/762011/javascript-let-keyword-vs-var-keyword">资料</a></li>
 </ol>
-
 
 <p><strong>中文资料</strong></p>
 
 <ol>
-<li>segmentfault上的一篇翻译文：<a href="http://segmentfault.com/blog/kk_470661/1190000000518683">资料</a></li>
+  <li>segmentfault上的一篇翻译文：<a href="http://segmentfault.com/blog/kk_470661/1190000000518683">资料</a></li>
 </ol>
 
+<p>原文出自：<a href="http://code.tutsplus.com/articles/use-ecmascript-6-today--net-31582">http://code.tutsplus.com/articles/use-ecmascript-6-today–net-31582</a></p>
 
-<p>原文出自：<a href="http://code.tutsplus.com/articles/use-ecmascript-6-today--net-31582">http://code.tutsplus.com/articles/use-ecmascript-6-today&ndash;net-31582</a></p>
 </div>
 
 

@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -87,25 +114,25 @@
   </header>
 
 
-  <div class="entry-content"><h3>一、前言</h3>
+  <div class="entry-content"><h3 id="section">一、前言</h3>
 
 <p>ECMA中所有函数的参数都是按照<em>值传递</em>。</p>
 
-<h3>二、基本数据类型</h3>
+<h3 id="section-1">二、基本数据类型</h3>
 
 <p>在向函数传递基本数据类型的时候，被传递的值会被复制给一个局部变量（arguments对象的一个元素）。</p>
 
 <pre><code>function test( x ) {
-    x = 10; //第一次赋值
-    console.log( 'x1 : ' + x ); 
-    console.log( 'arguments1 : ' + arguments )
-    console.log( 'arguments[0]1 : ' + arguments[0] )
-
-    arguments[0] = 100;
-
-    console.log( 'x2 : ' + x ); 
-    console.log( 'arguments2 : ' + arguments )
-    console.log( 'arguments[0]2 : ' + arguments[0] )
+	x = 10; //第一次赋值
+	console.log( 'x1 : ' + x );	
+	console.log( 'arguments1 : ' + arguments )
+	console.log( 'arguments[0]1 : ' + arguments[0] )
+	
+	arguments[0] = 100;
+	
+	console.log( 'x2 : ' + x );	
+	console.log( 'arguments2 : ' + arguments )
+	console.log( 'arguments[0]2 : ' + arguments[0] )
 };
 
 test(5);
@@ -143,11 +170,11 @@ test(5);
   </header>
 
 
-  <div class="entry-content"><h3>一、前言</h3>
+  <div class="entry-content"><h3 id="section">一、前言</h3>
 
 <p>上面写了console的乱码问题，接下来写的是web中servlet中的问题，大楷我比较关心一点，因为遇到这个的情况多一些吧。直接开始吧。</p>
 
-<h3>二、jsp和servlet中的乱码问题</h3>
+<h3 id="jspservlet">二、jsp和servlet中的乱码问题</h3>
 
 <p>其实在java文件的编译的情况和（一）中的情况是一样的，不过这里是由WEB容器去调用JVM而已，那么我们得知道一些默认的东西</p>
 
@@ -189,22 +216,22 @@ test(5);
   </header>
 
 
-  <div class="entry-content"><h3>一、前言</h3>
+  <div class="entry-content"><h3 id="section">一、前言</h3>
 
 <p>最近感觉自己对编码的理解还不够透彻，研究一下编码的问题，我觉得这个是值得研究的地方。自己开始研究的时候，很细心的看了不少的资料，这里和大家分享一下，希望对大家有用，原理有些我就不一条一条的来了，重点描述下吧。</p>
 
-<h3>二、控制台中的编码问题</h3>
+<h3 id="section-1">二、控制台中的编码问题</h3>
 
-<ol type="a">
-<li><p>查看操作系统（OS）的默认编码（这点还是有必要的，但是大多数在中国用的都是默认GBK）</p>
+<p>a. 查看操作系统（OS）的默认编码（这点还是有必要的，但是大多数在中国用的都是默认GBK）</p>
 
-<p> Properties props = System.getProperties();
- //操作系统信息
- System.out.println(&ldquo;操作系统默认编码: &rdquo; + props.getProperty(&ldquo;file.encoding&rdquo;));</p></li>
-<li><p>确定了默认的情况后，在java文件编译成class文件到内存年的时候，使用GBK编码编译【-encoding】，IDE可以使用默认。（中途的UNICODE编码可以查阅相关资料）</p></li>
-<li><p>输出的时候也设置成GBK就成了</p></li>
-</ol>
+<pre><code>Properties props = System.getProperties();
+//操作系统信息
+System.out.println("操作系统默认编码: " + props.getProperty("file.encoding"));
+</code></pre>
 
+<p>b. 确定了默认的情况后，在java文件编译成class文件到内存年的时候，使用GBK编码编译【-encoding】，IDE可以使用默认。（中途的UNICODE编码可以查阅相关资料）</p>
+
+<p>c. 输出的时候也设置成GBK就成了</p>
 
 </div>
   
@@ -238,17 +265,17 @@ test(5);
   </header>
 
 
-  <div class="entry-content"><h3>一、hexo构建的相关技术</h3>
+  <div class="entry-content"><h3 id="hexo">一、hexo构建的相关技术</h3>
 
 <p>关于hexo的介绍，网上有很多前辈都已经介绍了，这里我主要说一下这段时间的亲身感受。</p>
 
 <p>hexo有以下几个部分的优点：</p>
 
-<h4>（1）hexo是基于nodejs技术</h4>
+<h4 id="hexonodejs">（1）hexo是基于nodejs技术</h4>
 
 <p>在使用hexo的过程<code>中即使</code>你没有学会nodejs的编写，你也能够熟悉它的使用，为以后更快的学习nodejs打下基础。</p>
 
-<h4>（2）hexo的主题采用ejs模版引擎</h4>
+<h4 id="hexoejs">（2）hexo的主题采用ejs模版引擎</h4>
 
 <p>使得html页面的构成更加有模块化的感觉，这样更加容易维护网页的结构。对于html语义化来说，我们大致可以博客网页分为：header（顶部）、aside（侧边栏）、article（文章）、footer（底部）。分别对应了目录theme/layout/_partial中的：header.ejs、sidebar.ejs、article.ejs、footer.ejs。其余的文件都是辅助文件，比如layout.ejs就是规定整个网页布局的文件，其实很简单，只需要从字面上理解意思即可，因为：语义化。</p>
 
@@ -284,17 +311,19 @@ test(5);
   </header>
 
 
-  <div class="entry-content"><h3>一、前言</h3>
+  <div class="entry-content"><h3 id="section">一、前言</h3>
 
 <p>很久之前就想系统的学习nodejs技术了，但是由于很多事情，忙不太过来，今天晚上下定决心要入门这门技术，所以一口气看完了《Node.js开发指南》和《Node.js中文文档》，总算是真正入门了，接下来就总结一部分，剩下的只有明天再总结了。</p>
 
-<h3>二、Node.js简介</h3>
+<h3 id="nodejs">二、Node.js简介</h3>
 
 <p>一句话简单说明一下node.js是什么东西。</p>
 
-<blockquote><p>Node.js 是一个让 JavaScript 运行在服务端的开发平台。</p></blockquote>
+<blockquote>
+  <p>Node.js 是一个让 JavaScript 运行在服务端的开发平台。</p>
+</blockquote>
 
-<h3>三、Node.js的安装</h3>
+<h3 id="nodejs-1">三、Node.js的安装</h3>
 
 <p>学习了Node.js，觉得如果在window下学习这门技术的话还太成熟，第三方的支持不太好，所以只介绍linux或者mac上面的安装。node.js在window上面的安装直接下载安装包，一直下一步就可以装好，环境变量也会自动配置好，npm（node package manage）在新版本也会相应的装上。</p>
 
@@ -334,11 +363,11 @@ test(5);
 
   <div class="entry-content"><p>英文版本：<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty</a></p>
 
-<h3>一、概要</h3>
+<h3 id="section">一、概要</h3>
 
 <p>hasOwnProperty()方法返回一个布尔值，这个布尔值表示：当前对象是否包含指定的属性。</p>
 
-<h3>二、语法</h3>
+<h3 id="section-1">二、语法</h3>
 
 <pre><code>obj.hasOwnProperty(prop);
 </code></pre>
@@ -379,13 +408,13 @@ test(5);
   </header>
 
 
-  <div class="entry-content"><h3>一、大二，main()</h3>
+  <div class="entry-content"><h3 id="main">一、大二，main()</h3>
 
 <p>进入大二，依然保持着乐观积极的心态，不知道满足的学习着专业知识，虽然学校的氛围有点浮躁，但是静下心来，发现目标就在眼前，只要朝目标走，什么都是正确的！</p>
 
-<h3>二、智能化校园项目小组成员</h3>
+<h3 id="section">二、智能化校园项目小组成员</h3>
 
-<p>这是我接手的第二个项目，在这个项目中，使用了全新的后台框架，也有更多的前端组件可以使用。在这个项目中，有两个学长带领我们开发（因为只有两个老开发学长&hellip;），由于有了第一个项目的经验，对模块开发的模式和SVN的使用比较熟悉啦～所以入手还算快，但是项目框架的原因，常常因为不清楚怎么实现的，会遇到一些莫名其妙的错误，后来我就将我们的后台代码逻辑生吞活剥啦&hellip;第一次尝试去看整个系统的代码&hellip;好蛋疼&hellip;有种很乱找不到线头的毛线团，后来找到学长的一个模块，通过打断点的方式，从前台到后台慢慢的去理解框架，最后有了大致的了解，不断的使用，对框架更加熟悉，开发起来也越来越顺手了。</p>
+<p>这是我接手的第二个项目，在这个项目中，使用了全新的后台框架，也有更多的前端组件可以使用。在这个项目中，有两个学长带领我们开发（因为只有两个老开发学长…），由于有了第一个项目的经验，对模块开发的模式和SVN的使用比较熟悉啦～所以入手还算快，但是项目框架的原因，常常因为不清楚怎么实现的，会遇到一些莫名其妙的错误，后来我就将我们的后台代码逻辑生吞活剥啦…第一次尝试去看整个系统的代码…好蛋疼…有种很乱找不到线头的毛线团，后来找到学长的一个模块，通过打断点的方式，从前台到后台慢慢的去理解框架，最后有了大致的了解，不断的使用，对框架更加熟悉，开发起来也越来越顺手了。</p>
 
 </div>
   
@@ -419,13 +448,13 @@ test(5);
   </header>
 
 
-  <div class="entry-content"><h3>一、大一，依然激情</h3>
+  <div class="entry-content"><h3 id="section">一、大一，依然激情</h3>
 
-<p>在高中的时候就是喜欢热闹的人儿，到了大学依然性格如初，每次上课都要坐前面3排（ps:高中的时候都做讲台旁边- -），每一次课都喜欢和老师互动，问老师问题，补充老师的讲解，不过后来发现在学校做前排的大多都是女孩子&hellip;</p>
+<p>在高中的时候就是喜欢热闹的人儿，到了大学依然性格如初，每次上课都要坐前面3排（ps:高中的时候都做讲台旁边- -），每一次课都喜欢和老师互动，问老师问题，补充老师的讲解，不过后来发现在学校做前排的大多都是女孩子…</p>
 
-<h3>二、C语言程序设计</h3>
+<h3 id="c">二、C语言程序设计</h3>
 
-<p>在高中填自愿的时候果断报了自己喜欢的“软件工程”专业，在大一的时候专业课还没开，开了一门《C语言程序设计－谭浩强版》，这也是在高三的时候自学的语言，很带劲，也是很喜欢的语言之一，C语言很自由，想干点什么就干点什么。那个时候是但老师教，是个很好的老师，可能是工程师的性格，性格不是那么的外向，但是调试起程序来就很专注了。大一也没什么课，所以课余时间就比较多，就经常折腾Linux、C语言和各种感兴趣的软件，记得重装系统的次数多得我都数不清啦&hellip;这可能也是后来对安装与卸载比较熟悉的原因吧&hellip;</p>
+<p>在高中填自愿的时候果断报了自己喜欢的“软件工程”专业，在大一的时候专业课还没开，开了一门《C语言程序设计－谭浩强版》，这也是在高三的时候自学的语言，很带劲，也是很喜欢的语言之一，C语言很自由，想干点什么就干点什么。那个时候是但老师教，是个很好的老师，可能是工程师的性格，性格不是那么的外向，但是调试起程序来就很专注了。大一也没什么课，所以课余时间就比较多，就经常折腾Linux、C语言和各种感兴趣的软件，记得重装系统的次数多得我都数不清啦…这可能也是后来对安装与卸载比较熟悉的原因吧…</p>
 
 </div>
   
@@ -459,7 +488,7 @@ test(5);
   </header>
 
 
-  <div class="entry-content"><h3>一、字节</h3>
+  <div class="entry-content"><h3 id="section">一、字节</h3>
 
 <p>字节（Byte）是通过网络传输信息（或硬盘、内存中的存储信息）的单位。</p>
 
@@ -502,7 +531,7 @@ test(5);
   </header>
 
 
-  <div class="entry-content"><h3>一、节点层次</h3>
+  <div class="entry-content"><h3 id="section">一、节点层次</h3>
 
 <p>dom可以将任何html文档描述成一个多层节点的结构。在html中总共有12种节点类型，这些节点都继承自一个基类型。每种类型分别表示文档中不同的信息或者标记。每个节点都会拥有自己的特点、数据和方法，节点之间还有着相互关系。节点之间的各种关系构成了节点层次，这种层次可以用树形结构更加形象的表示。下面我们看一个简单的html代码：</p>
 

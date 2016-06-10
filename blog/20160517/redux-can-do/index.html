@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,37 +111,36 @@
   </header>
 
 
-<div class="entry-content"><h3>一、我先给一个 Redux 的定义</h3>
+<div class="entry-content"><h3 id="redux-">一、我先给一个 Redux 的定义</h3>
 
 <p><code>Redux</code> 被大家知道应该都是来自于 <code>React</code> 的出现，但是这篇文章会通过介绍一个 <code>React</code> 之外的例子，来让大家理解 <code>Redux</code> 是什么东西，到底还能够做点撒。</p>
 
 <p>我自己的理解是：</p>
 
-<blockquote><p>Redux 是一个改变<strong>状态(state)</strong>的模型，这个模型通过一个单向操作的方式来改变<strong>状态</strong>，用数学符号的方式来理解我认为应该是：<code>y = f(x)</code>，嗯，就是一个最简单的函数模型。</p></blockquote>
+<blockquote>
+  <p>Redux 是一个改变<strong>状态(state)</strong>的模型，这个模型通过一个单向操作的方式来改变<strong>状态</strong>，用数学符号的方式来理解我认为应该是：<code>y = f(x) </code>，嗯，就是一个最简单的函数模型。</p>
+</blockquote>
 
 <p>不过这样说，有些人还会不理解，毕竟以前撸代码不是这个样子的，那么我们先反向的来获取自己的理解。</p>
 
 <p>首先，我们需要知道 Redux 有的以下几个东西：</p>
 
 <ul>
-<li>createStore</li>
-<li>reducer</li>
-<li>dispatch</li>
+  <li>createStore</li>
+  <li>reducer</li>
+  <li>dispatch</li>
 </ul>
-
 
 <p>我觉得需要介绍清楚 Redux ，知道这三个就行了，至于还有一些函数我觉得都是调味料，这里先不介绍。</p>
 
 <!-- more -->
 
-
 <p>好吧，现在我就把上面的数学函数模型语义的转换一下（也许不一定对，但是可能暂时这样理解，理解是一个过程）：</p>
 
 <ol>
-<li>第一步：<code>newState = store(reducer)(state)</code></li>
-<li>第二步：<code>newState = reducer(state)</code></li>
+  <li>第一步：<code>newState = store(reducer)(state)</code></li>
+  <li>第二步：<code>newState = reducer(state)</code></li>
 </ol>
-
 
 <p>为什么这里可能理解成两个步骤呢？那是因为我们可以从不同的层面去认识 Redux，在第一步中我的理解是store里面的东西(reducer)去改变了 state，而在第二步中，我以实际会起到作用的层面去理解，就是 reducer 去改变了 state。</p>
 
@@ -131,7 +157,7 @@ newState = reducer(state)
 
 <p>好吧，废话就上面那么多了，接下来我举一个实际的例子来理一下自己对 Redux 的理解，这个例子是我在一篇文章中看到的，觉得不错。</p>
 
-<h3>二、 先介绍一下这个例子的效果</h3>
+<h3 id="section">二、 先介绍一下这个例子的效果</h3>
 
 <p><img src="/images/react/game.gif" alt="演示" /></p>
 
@@ -141,7 +167,7 @@ newState = reducer(state)
 
 <p>这里我们可以理解为：新坐标[x1, y1] = f(原始坐标[x0, y0])</p>
 
-<h3>三、开始撸一个实例</h3>
+<h3 id="section-1">三、开始撸一个实例</h3>
 
 <p><strong>1.首先我们需要定义个 <code>f</code> 来修改坐标</strong></p>
 
@@ -163,7 +189,7 @@ function coordinates(state = [1, 1], action) {
 }
 </code></pre>
 
-<p>这个函数主要就是使初始坐标 <strong>[1, 1] => [1 + random, 1 + random]</strong> 这样返回一个全新的数组，这个全新的数组就是新的状态。</p>
+<p>这个函数主要就是使初始坐标 <strong>[1, 1] =&gt; [1 + random, 1 + random]</strong> 这样返回一个全新的数组，这个全新的数组就是新的状态。</p>
 
 <p><strong>2.我们再将这个 <code>f</code> 函数给 Redux 的 Store 去管理</strong></p>
 
@@ -217,8 +243,8 @@ function click() {
 <p>来获取最新的当前状态，其实在 Redux 源代码里面就是很简单的一个函数：</p>
 
 <pre><code>function getState() {
-    // 这里的 currentState 是一个外部的变量，在 Store 的作用域下全局生效
-    return currentState;
+	// 这里的 currentState 是一个外部的变量，在 Store 的作用域下全局生效
+	return currentState;
 }
 </code></pre>
 
@@ -228,8 +254,8 @@ function click() {
 * 定义 plane(飞机) 的移动
 */
 function movePlane(plane) {
-    game.add.tween(plane).to({
-        x: store.getState()[0],
+	game.add.tween(plane).to({
+    	x: store.getState()[0],
         y: store.getState()[1]
     }, 1000, 'Linear', true);
 }
@@ -244,34 +270,36 @@ store.subscribe(movePlane.bind(null, plane));
 <pre><code>function subscribe(listener) {
     var isSubscribed = true;
 
-    ensureCanMutateNextListeners();
+	ensureCanMutateNextListeners();
     nextListeners.push(listener);
-
+    
     // 然后会返回一个取消订阅的函数，这里省略
 }
 function dispatch(action) {
-    // 省略一些杂七杂八的异常处理代码
+	// 省略一些杂七杂八的异常处理代码
 
-    try {
-        isDispatching = true;
-        currentState = currentReducer(currentState, action);
+	try {
+		isDispatching = true;
+		currentState = currentReducer(currentState, action);
     } finally {
-        isDispatching = false;
-    }
+    	isDispatching = false;
+	}
 
-    // 执行的代码
-    var listeners = currentListeners = nextListeners;
-    for (var i = 0; i &lt; listeners.length; i++) {
-        listeners[i]();
-    }
+	// 执行的代码
+	var listeners = currentListeners = nextListeners;
+	for (var i = 0; i &lt; listeners.length; i++) {
+		listeners[i]();
+	}
 
-    return action;
+	return action;
 }
 </code></pre>
 
 <p>好吧，这样就是一个游戏的流程来，在 Redux 的帮助下，很好的组织了代码，优雅的完成了。执行代码的流程是这样的：</p>
 
-<blockquote><p>dispatch(click()) => update reducer => subscribe() => 飞机移动新位置</p></blockquote>
+<blockquote>
+  <p>dispatch(click()) =&gt; update reducer =&gt; subscribe() =&gt; 飞机移动新位置</p>
+</blockquote>
 
 <p>这个例子很好的解释了脱离 React 的束缚，很纯粹的 Redux，原文翻译有点慢，干脆就自己写了一下。</p>
 

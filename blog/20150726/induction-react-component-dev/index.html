@@ -9,8 +9,7 @@
   <meta name="author" content="小撸">
 
   
-  <meta name="description" content="前言 熟悉 React 的思想后，我们先来尝试开发一个单纯的小组件，可以对比一下是不是比以前的开发模式更加舒适了，这里我主要以一个 Loadding 组件来举栗子，实现了几个基本的功能： 一种类型的 loadding（菊花转）
-能够设置 loadding 的三个属性：width height &hellip;">
+  <meta name="description" content="前言 熟悉 React 的思想后，我们先来尝试开发一个单纯的小组件，可以对比一下是不是比以前的开发模式更加舒适了，这里我主要以一个 Loadding 组件来举栗子，实现了几个基本的功能： 一种类型的 loadding（菊花转） 能够设置 loadding 的三个属性：width height &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -31,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -85,20 +111,19 @@
   </header>
 
 
-<div class="entry-content"><h3>前言</h3>
+<div class="entry-content"><h3 id="section">前言</h3>
 
 <p>熟悉 React 的思想后，我们先来尝试开发一个单纯的小组件，可以对比一下是不是比以前的开发模式更加舒适了，这里我主要以一个 Loadding 组件来举栗子，实现了几个基本的功能：</p>
 
 <ul>
-<li>一种类型的 loadding（菊花转）</li>
-<li>能够设置 loadding 的三个属性：width height color</li>
-<li>能够控制 loadding 的显示和隐藏</li>
+  <li>一种类型的 loadding（菊花转）</li>
+  <li>能够设置 loadding 的三个属性：width height color</li>
+  <li>能够控制 loadding 的显示和隐藏</li>
 </ul>
-
 
 <p>其实对于一个简单需求来说，这三个属性已经很实用了。但是去网上看一些外国大神写的组件，有一些不明白的地方，所以自己就慢慢搞，do it！</p>
 
-<h3>设计</h3>
+<h3 id="section-1">设计</h3>
 
 <p>我想这样用 loadding 组件：</p>
 
@@ -106,20 +131,19 @@
 
 <!-- more -->
 
-
 <p>所以我定义这个组件的基本结构如下：</p>
 
 <pre><code>var Loadding = React.createClass({
-    // 控制组件属性的类型
-    propTypes: {},
-    // 控制组件属性的默认值
-    getDefaultProps: function () {},
-    // 组装基本的内联样式
-    getComponentStyle: function () {},
-    // 渲染基本的组件，拆分 render 方法的粒度
-    renderBaseComp: function () {},
-    // 最终的渲染方法
-    render: function () {}
+	// 控制组件属性的类型
+	propTypes: {},
+	// 控制组件属性的默认值
+	getDefaultProps: function () {},
+	// 组装基本的内联样式
+	getComponentStyle: function () {},
+	// 渲染基本的组件，拆分 render 方法的粒度
+	renderBaseComp: function () {},
+	// 最终的渲染方法
+	render: function () {}
 });
 </code></pre>
 
@@ -127,95 +151,97 @@
 
 <p>每部分的具体实现如下，代码中有一些讲解（这里我不会介绍具体 loadding 效果是怎么出来的，看代码应该就会明白，主要介绍一个 react 制作简单组件的思路和写法）对于扩展性来说，</p>
 
-<blockquote><p>你还可以加入 className 和 type 这些修饰性的属性，但是我更倾向于迭代式的组件开发，小组件就要具有良好的封闭性，使用接口简单，大组件才考虑更好的鲁棒性和可扩展性，这样开发一个组件的性价比才高。需要注意对 getDefaultProps 的理解，只有当使用接口的人代码中根本没有写那个属性的时候，才会使用定义的默认值。</p></blockquote>
+<blockquote>
+  <p>你还可以加入 className 和 type 这些修饰性的属性，但是我更倾向于迭代式的组件开发，小组件就要具有良好的封闭性，使用接口简单，大组件才考虑更好的鲁棒性和可扩展性，这样开发一个组件的性价比才高。需要注意对 getDefaultProps 的理解，只有当使用接口的人代码中根本没有写那个属性的时候，才会使用定义的默认值。</p>
+</blockquote>
 
-<h3>实现</h3>
+<h3 id="section-2">实现</h3>
 
 <pre><code>var Loadding = React.createClass({
-    propTypes: {
-        width: React.PropTypes.oneOfType([
-            React.PropTypes.number,
-            React.PropTypes.string
-        ]),
-        height: React.PropTypes.oneOfType([
-            React.PropTypes.number,
-            React.PropTypes.string
-        ]),
-        color: React.PropTypes.string,
-        active: React.PropTypes.bool
-    },
-    getDefaultProps: function() {
-        return {
-            color: '#00be9c',
-            height: 30,
-            width: 30,
-            active: false
-        };
-    },
+	propTypes: {
+		width: React.PropTypes.oneOfType([
+			React.PropTypes.number,
+			React.PropTypes.string
+		]),
+		height: React.PropTypes.oneOfType([
+			React.PropTypes.number,
+			React.PropTypes.string
+		]),
+		color: React.PropTypes.string,
+		active: React.PropTypes.bool
+	},
+	getDefaultProps: function() {
+		return {
+			color: '#00be9c',
+			height: 30,
+			width: 30,
+			active: false
+		};
+	},
 
-    getComponentStyle: function() {
-        var width = this.props.width,
-            height = this.props.height,
-            color = this.props.color;
-        /* 中间圆心 */
-        var cWidth = 0.4 * width,
-            cHeight = 0.4 * height,
-            cMarginLeft = -0.5 * cWidth,
-            cMarginTop = -0.5 * cHeight;
+	getComponentStyle: function() {
+		var width = this.props.width,
+			height = this.props.height,
+			color = this.props.color;
+		/* 中间圆心 */
+		var cWidth = 0.4 * width,
+			cHeight = 0.4 * height,
+			cMarginLeft = -0.5 * cWidth,
+			cMarginTop = -0.5 * cHeight;
 
-        /* 基本样式 */
-        return {
-            loaddingStyle: { // loadding 容器
-                width: width,
-                height: height
-            },
-            lineStyle: { // loadding 元件样式
-                background: color
-            },
-            centerStyle: { // loadding 圆心样式
-                width: cWidth,
-                height: cHeight,
-                marginLeft: cMarginLeft,
-                marginTop: cMarginTop
-            }
-        };
-    },
+		/* 基本样式 */
+		return {
+			loaddingStyle: { // loadding 容器
+				width: width,
+				height: height
+			},
+			lineStyle: { // loadding 元件样式
+				background: color
+			},
+			centerStyle: { // loadding 圆心样式
+				width: cWidth,
+				height: cHeight,
+				marginLeft: cMarginLeft,
+				marginTop: cMarginTop
+			}
+		};
+	},
 
-    renderBaseComp: function(compStyle) {
-        /* 生成动画元件 */
-        var n = 4; // 元件个数，todo: 定制个数
-        var lines = []; // 元件元素集合
-        for (var i = 0; i &lt; n; i++) {
-            lines.push(
-                &lt;div className="line"&gt;
-                    &lt;span className="top" style={ compStyle.lineStyle }&gt;&lt;/span&gt;
-                    &lt;span className="bottom" style={ compStyle.lineStyle }&gt;&lt;/span&gt;
-                &lt;/div&gt;
-            );
-        }
-        return lines;
-    },
+	renderBaseComp: function(compStyle) {
+		/* 生成动画元件 */
+		var n = 4; // 元件个数，todo: 定制个数
+		var lines = []; // 元件元素集合
+		for (var i = 0; i &lt; n; i++) {
+			lines.push(
+				&lt;div className="line"&gt;
+					&lt;span className="top" style={ compStyle.lineStyle }&gt;&lt;/span&gt;
+					&lt;span className="bottom" style={ compStyle.lineStyle }&gt;&lt;/span&gt;
+				&lt;/div&gt;
+			);
+		}
+		return lines;
+	},
 
-    render: function() {
-        /* 生成组件自己的样式 */
-        var compStyle = this.getComponentStyle();
-        /* 模拟渲染基本动画元件 */
-        var lines = this.renderBaseComp(compStyle);
+	render: function() {
+		/* 生成组件自己的样式 */
+		var compStyle = this.getComponentStyle();
+		/* 模拟渲染基本动画元件 */
+		var lines = this.renderBaseComp(compStyle);
 
-        // loadding 的class，控制交互
-        var loaddingClasses = cx({
-            loadding: true,
-            active: this.props.active
-        });
+		// loadding 的class，控制交互
+		var loaddingClasses = cx({
+			loadding: true,
+			active: this.props.active
+		});
 
-        return (
-            &lt;div className={ loaddingClasses } style={ compStyle.loaddingStyle }&gt;
-                {lines}
-                &lt;div className="loadding-center" style={ compStyle.centerStyle }&gt;&lt;/div&gt;
-            &lt;/div&gt;
+		return (
+			&lt;div className={ loaddingClasses } style={ compStyle.loaddingStyle }&gt;
+				{lines}
+				&lt;div className="loadding-center" style={ compStyle.centerStyle }&gt;&lt;/div&gt;
+			&lt;/div&gt;
 
-        );
-    }
+		);
+	}
 
 });
 </code></pre>
@@ -223,90 +249,91 @@
 <p>最后，下面是基本的 SASS（不考虑不支持的情况，不支持都不用开发，直接用图，性价比更高）</p>
 
 <pre><code>@include keyframes(load) {
-    0% {
-        opacity: 0;
-    }
-    25% {
-        opacity: .25;
-    }
-    50% {
-        opacity: .5;
-    }
-    75% {
-        opacity: .75;
-    }
-    100% {
-        opacity: 1;
-    }
+	0% {
+		opacity: 0;
+	}
+	25% {
+		opacity: .25;
+	}
+	50% {
+		opacity: .5;
+	}
+	75% {
+		opacity: .75;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 .loadding {
-    display: none;
-    position: absolute;
-    &amp;.active {
-        display: block;
-    }
-    .loadding-center {
-        position: absolute;
-        left: 0;
-        top: 50%;
-        background: #fff;
-        border-radius: 50%;
-    }
-    .line {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        .top {
-            content: '';
-            display: block;
-            width: 1px;
-            font-size: 0;
-            height: 50%;
-        }
-        .bottom {
-            @extend .top;
-        }
-        @for $i from 1 through 4 {
-            &amp;:nth-child(#{$i}) {
-                transform:rotate(45deg * ($i - 1));
-                .top {
-                    @include animation(load, 0.8s, linear, 0s, infinite);
-                }
-                .bottom {
-                    @include animation(load, 0.8s, linear, 0.4s + $i/10, infinite);
-                }
-            }
-        }
-    }
+	display: none;
+	position: absolute;
+	&amp;.active {
+		display: block;
+	}
+	.loadding-center {
+		position: absolute;
+		left: 0;
+		top: 50%;
+		background: #fff;
+		border-radius: 50%;
+	}
+	.line {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		.top {
+			content: '';
+			display: block;
+			width: 1px;
+			font-size: 0;
+			height: 50%;
+		}
+		.bottom {
+			@extend .top;
+		}
+		@for $i from 1 through 4 {
+			&amp;:nth-child(#{$i}) {
+				transform:rotate(45deg * ($i - 1));
+				.top {
+					@include animation(load, 0.8s, linear, 0s, infinite);
+				}
+				.bottom {
+					@include animation(load, 0.8s, linear, 0.4s + $i/10, infinite);
+				}
+			}
+		}
+	}
 }
 </code></pre>
 
 <p>里面用到的一个 animation 混淆方法：</p>
 
 <pre><code>@mixin keyframes($name) {
-    @-webkit-keyframes #{$name} {
-        @content;
-    }
-    @-moz-keyframes #{$name} {
-        @content;
-    }
-    @-ms-keyframes #{$name} {
-        @content;
-    }
-    @keyframes #{$name} {
-        @content;
-    }
+	@-webkit-keyframes #{$name} {
+		@content;
+	}
+	@-moz-keyframes #{$name} {
+		@content;
+	}
+	@-ms-keyframes #{$name} {
+		@content;
+	}
+	@keyframes #{$name} {
+		@content;
+	}
 }
 
 @mixin animation ($name, $duration, $func, $delay, $count, $direction: normal) {
-    -webkit-animation: $name $duration $func $delay $count $direction;
-    -moz-animation: $name $duration $func $delay $count $direction;
-    -o-animation: $name $duration $func $delay $count $direction;
-    animation: $name $duration $func $delay $count $direction;
+	-webkit-animation: $name $duration $func $delay $count $direction;
+	-moz-animation: $name $duration $func $delay $count $direction;
+	-o-animation: $name $duration $func $delay $count $direction;
+	animation: $name $duration $func $delay $count $direction;
 }
 </code></pre>
+
 </div>
 
 

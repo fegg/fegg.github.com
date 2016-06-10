@@ -34,6 +34,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -88,7 +115,7 @@
   </header>
 
 
-<div class="entry-content"><h3>一、window.innerWidth和window.innerHeight</h3>
+<div class="entry-content"><h3 id="windowinnerwidthwindowinnerheight">一、window.innerWidth和window.innerHeight</h3>
 
 <p>概念：计算浏览器窗口的内部高度（不包括工具栏和滚动条）。
 通俗的来讲：整个浏览器中能够显示网页内容的部分。
@@ -99,16 +126,16 @@
 <p><img src="/images/post/safari-client.png" alt="Mou icon" /></p>
 
 <pre><code>var windowSize = {
-    width : function () {
-        return window.innerWidth 
-            || document.body.clientWidth 
-            || document.documentElement.clientWidth;
-    },
-    height : function () {
-        return window.innerHeight 
-            || document.body.clientHeight
-            || document.documentElement.clientHeight;
-    }
+	width : function () {
+		return window.innerWidth 
+			|| document.body.clientWidth 
+			|| document.documentElement.clientWidth;
+	},
+	height : function () {
+		return window.innerHeight 
+			|| document.body.clientHeight
+			|| document.documentElement.clientHeight;
+	}
 };
 console.log(windowSize.width());
 console.log(windowSize.height());
@@ -116,8 +143,7 @@ console.log(windowSize.height());
 
 <!--more-->
 
-
-<h3>二、availWidth和availHeight</h3>
+<h3 id="availwidthavailheight">二、availWidth和availHeight</h3>
 
 <p>概念：计算用户电脑屏幕的可用宽、高，不包括任务栏。
 特殊情况
@@ -133,11 +159,11 @@ console.log(windowSize.height());
 console.log(screenSize.availHeight());
 </code></pre>
 
-<h3>三、offsetWidth和offsetHeight</h3>
+<h3 id="offsetwidthoffsetheight">三、offsetWidth和offsetHeight</h3>
 
-<h3>四、scrollWidth和scrollHeight</h3>
+<h3 id="scrollwidthscrollheight">四、scrollWidth和scrollHeight</h3>
 
-<h3>五、outerWidth和outerHeight</h3>
+<h3 id="outerwidthouterheight">五、outerWidth和outerHeight</h3>
 </div>
 
 

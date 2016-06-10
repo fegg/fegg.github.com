@@ -9,12 +9,7 @@
   <meta name="author" content="小撸">
 
   
-  <meta name="description" content="一、web标准的重要性以及好处 可以交付到更多的用户代理，也就是可以更好的适应多种浏览网页的容器。
-能够改善性能，也就是可以利用更少的代码实现相同的功能。
-更能够适合浏览器，对于兼容早期浏览器作出的努力更少。
-分离内容和表现。
-能够构建流动式（自适应的）页面。
-流水线式生产， &hellip;">
+  <meta name="description" content="一、web标准的重要性以及好处 可以交付到更多的用户代理，也就是可以更好的适应多种浏览网页的容器。 能够改善性能，也就是可以利用更少的代码实现相同的功能。 更能够适合浏览器，对于兼容早期浏览器作出的努力更少。 分离内容和表现。 能够构建流动式（自适应的）页面。 流水线式生产， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -35,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -89,28 +111,26 @@
   </header>
 
 
-<div class="entry-content"><h3>一、web标准的重要性以及好处</h3>
+<div class="entry-content"><h3 id="web">一、web标准的重要性以及好处</h3>
 
 <ol>
-<li>可以交付到更多的用户代理，也就是可以更好的适应多种浏览网页的容器。</li>
-<li>能够改善性能，也就是可以利用更少的代码实现相同的功能。</li>
-<li>更能够适合浏览器，对于兼容早期浏览器作出的努力更少。</li>
-<li>分离内容和表现。</li>
-<li>能够构建流动式（自适应的）页面。</li>
-<li>流水线式生产，可以让内容和表现的开发分开进行，并且能够无缝地衔接起来。</li>
-<li>使内容具有可访问性。</li>
-<li>减轻维护代码的负担。</li>
-<li>代码可以更好的适应未来。</li>
-<li>&hellip;</li>
+  <li>可以交付到更多的用户代理，也就是可以更好的适应多种浏览网页的容器。</li>
+  <li>能够改善性能，也就是可以利用更少的代码实现相同的功能。</li>
+  <li>更能够适合浏览器，对于兼容早期浏览器作出的努力更少。</li>
+  <li>分离内容和表现。</li>
+  <li>能够构建流动式（自适应的）页面。</li>
+  <li>流水线式生产，可以让内容和表现的开发分开进行，并且能够无缝地衔接起来。</li>
+  <li>使内容具有可访问性。</li>
+  <li>减轻维护代码的负担。</li>
+  <li>代码可以更好的适应未来。</li>
+  <li>…</li>
 </ol>
 
-
-<h3>二、XHTML的理解</h3>
+<h3 id="xhtml">二、XHTML的理解</h3>
 
 <p>在学习XHTML前应该先学习XML的基础知识，这样XHTML理解起来更加容易。</p>
 
 <!--more-->
-
 
 <p>重要概念</p>
 
@@ -118,104 +138,104 @@
 
 <p>XHTML标记的九大规则</p>
 
-<h4>1. 声明DOCTYPE</h4>
+<h4 id="doctype">1. 声明DOCTYPE</h4>
 
 <pre><code>3种主要标记类型
 
 1) 严格型(Strict) : 所有标记必须符合XHTML标准。
 
 exp : 
-
-    &lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt; 
+	
+	&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt; 
 
 2) 过渡型 : 可以兼容之前的HTML代码。
 
 exp : 
 
-    &lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-      "http://www.w3.org/TR/html4/loose.dtd"&gt;
-
+	&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	  "http://www.w3.org/TR/html4/loose.dtd"&gt;
+	  
 3) 框架型 : 可以兼容XHTML不推荐的框架。
 
 exp : 
 
-    &lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
-      "http://www.w3.org/TR/html4/frameset.dtd"&gt;
+	&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+	  "http://www.w3.org/TR/html4/frameset.dtd"&gt;
 </code></pre>
 
-<h4>2. 声明XML命名空间 : 处理相应的DTD中，包含哪些已经定义的有效的XHTML标签。</h4>
+<h4 id="xml--dtdxhtml">2. 声明XML命名空间 : 处理相应的DTD中，包含哪些已经定义的有效的XHTML标签。</h4>
 
-<pre><code>    &lt;html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"&gt;
+<pre><code>	&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"&gt;
 </code></pre>
 
-<h4>3. 声明内容类型 : 出现在文档头部，其实可以想成设置内容编码。</h4>
+<h4 id="section">3. 声明内容类型 : 出现在文档头部，其实可以想成设置内容编码。</h4>
 
-<pre><code>    &lt;meta http-equiv="Content-type" content="text/html; charset=iso-8859-1" /&gt;
-
+<pre><code>	&lt;meta http-equiv="Content-type" content="text/html; charset=iso-8859-1" /&gt;
+	
 这里如果你考虑HTML5标准，推荐：
-
-    &lt;meta charset="utf-8" /&gt;
+	
+	&lt;meta charset="utf-8" /&gt;
 </code></pre>
 
-<h4>4. 关闭每个标签</h4>
+<h4 id="section-1">4. 关闭每个标签</h4>
 
-<pre><code>    &lt;p&gt;Hello World!&lt;/p&gt;
+<pre><code>	&lt;p&gt;Hello World!&lt;/p&gt;
 </code></pre>
 
-<h4>5. 所有标签必须正确嵌套</h4>
+<h4 id="section-2">5. 所有标签必须正确嵌套</h4>
 
-<pre><code>    &lt;!-- 不符合 --&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;/p&gt;&lt;/strong&gt;
-    &lt;!-- 符合 --&gt;
-    &lt;p&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/p&gt;
+<pre><code>	&lt;!-- 不符合 --&gt;
+	&lt;p&gt;&lt;strong&gt;&lt;/p&gt;&lt;/strong&gt;
+	&lt;!-- 符合 --&gt;
+	&lt;p&gt;&lt;strong&gt;&lt;/strong&gt;&lt;/p&gt;
 </code></pre>
 
-<h4>6. 行内标签不能包含块级标签</h4>
+<h4 id="section-3">6. 行内标签不能包含块级标签</h4>
 
-<pre><code>    &lt;!-- 不符合 --&gt;
-    &lt;a&gt;&lt;p&gt;Test&lt;/p&gt;&lt;/a&gt;
-    &lt;!-- 符合 --&gt;
-    &lt;p&gt;&lt;strong&gt;Test&lt;/strong&gt;&lt;/p&gt;
+<pre><code>	&lt;!-- 不符合 --&gt;
+	&lt;a&gt;&lt;p&gt;Test&lt;/p&gt;&lt;/a&gt;
+	&lt;!-- 符合 --&gt;
+	&lt;p&gt;&lt;strong&gt;Test&lt;/strong&gt;&lt;/p&gt;
 </code></pre>
 
-<h4>7. 标签全部小写</h4>
+<h4 id="section-4">7. 标签全部小写</h4>
 
-<pre><code>    &lt;!-- 不符合 --&gt;
-    &lt;DIV&gt;&lt;/DIV&gt; 
-    &lt;!-- 符合 --&gt;
-    &lt;div&gt;&lt;/div&gt; 
+<pre><code>	&lt;!-- 不符合 --&gt;
+	&lt;DIV&gt;&lt;/DIV&gt; 
+	&lt;!-- 符合 --&gt;
+	&lt;div&gt;&lt;/div&gt; 
 </code></pre>
 
-<h4>8. 属性必须有值</h4>
+<h4 id="section-5">8. 属性必须有值</h4>
 
-<pre><code>    &lt;!-- 不符合 --&gt;
-    &lt;select name&gt;
-        &lt;option value&gt;ZhangSan&lt;/option&gt;
-        &lt;option value selected&gt;LiSi&lt;/option&gt;
-    &lt;/select&gt;
-    &lt;!-- 符合 --&gt;
-    &lt;select name="persons"&gt;
-        &lt;option value="zhangsan"&gt;ZhangSan&lt;/option&gt;
-        &lt;option value="lisi" selected="selected"&gt;LiSi&lt;/option&gt;
-    &lt;/select&gt;
+<pre><code>	&lt;!-- 不符合 --&gt;
+	&lt;select name&gt;
+		&lt;option value&gt;ZhangSan&lt;/option&gt;
+		&lt;option value selected&gt;LiSi&lt;/option&gt;
+	&lt;/select&gt;
+	&lt;!-- 符合 --&gt;
+	&lt;select name="persons"&gt;
+		&lt;option value="zhangsan"&gt;ZhangSan&lt;/option&gt;
+		&lt;option value="lisi" selected="selected"&gt;LiSi&lt;/option&gt;
+	&lt;/select&gt;
 </code></pre>
 
-<h4>9. 在内容中为特殊符号使用等价的编码符号</h4>
+<h4 id="section-6">9. 在内容中为特殊符号使用等价的编码符号</h4>
 
 <pre><code>exp : 
 
-    {
-        "&lt;" : "&amp;lt",
-        "&gt;" : "&amp;gt"
-    }
+	{
+		"&lt;" : "&amp;lt",
+		"&gt;" : "&amp;gt"
+	}
 </code></pre>
 
-<h3>三、文档流</h3>
+<h3 id="section-7">三、文档流</h3>
 
-<h3>四、浏览器的内部样式表</h3>
+<h3 id="section-8">四、浏览器的内部样式表</h3>
 
-<h3>五、文档层次</h3>
+<h3 id="section-9">五、文档层次</h3>
 </div>
 
 

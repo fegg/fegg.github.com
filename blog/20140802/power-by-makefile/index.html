@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,25 +111,25 @@
   </header>
 
 
-<div class="entry-content"><h3>一、make 规则</h3>
+<div class="entry-content"><h3 id="make-">一、make 规则</h3>
 
 <pre><code>Target: Dependencies
-    &lt;TAB&gt;Commands
+	&lt;TAB&gt;Commands
 </code></pre>
 
 <p>例子：</p>
 
 <pre><code>main.o: main.c common.c common.h
-    gcc -c main.c
+	gcc -c main.c
 </code></pre>
 
-<h3>二、建立 Makefile (这里不带后缀名，并且根据习惯首字母大写)</h3>
+<h3 id="makefile-">二、建立 Makefile (这里不带后缀名，并且根据习惯首字母大写)</h3>
 
 <p>输入以下内容：</p>
 
 <pre><code>clean: 
-    @echo hello
-    echo hello
+	@echo hello
+	echo hello
 </code></pre>
 
 <p>ps:
@@ -116,10 +143,9 @@
 
 <!--more-->
 
-
 <p><img src="/images/post/make1.png" alt="Mou icon" /></p>
 
-<h3>三、通过 Makefile 去编译并且执行C语言代码</h3>
+<h3 id="makefile-c">三、通过 Makefile 去编译并且执行C语言代码</h3>
 
 <p>(1) 首先创建main.c源代码文件，这个不难。</p>
 
@@ -127,9 +153,9 @@
 
 int main()
 {
-    printf("-----------\n");
-    printf("hello\n");
-    printf("-----------\n");
+	printf("-----------\n");
+	printf("hello\n");
+	printf("-----------\n");
 }
 </code></pre>
 
@@ -138,24 +164,24 @@ int main()
 <pre><code>targets = main
 
 $(targets): main.c 
-    gcc main.c -o main.o
-    ./main.o
+	gcc main.c -o main.o
+	./main.o
 
 clean:
-    rm *.o
+	rm *.o
 </code></pre>
 
 <p>ps: 这里出现了新语法：变量定义
-变量的声明&ndash;> targets = main.o
-引用变量&ndash;> $(targets)
+变量的声明–&gt; targets = main.o
+引用变量–&gt; $(targets)
 等价于：</p>
 
 <pre><code>main: main.c 
-    gcc main.c -o main.o
-    ./main.o
+	gcc main.c -o main.o
+	./main.o
 
 clean:
-    rm *.o
+	rm *.o
 </code></pre>
 
 <p>(3) 执行效果。</p>
@@ -165,6 +191,7 @@ clean:
 <p>ps: 这里执行了make &amp;&amp; make clean（等价于：make main &amp;&amp; make clean）
 1. make不带参数，默认执行第一条命令。
 2. &amp;&amp;：左边命令执行成功，就执行右边的命令（和程序中的&amp;&amp;是一样的效果）。</p>
+
 </div>
 
 

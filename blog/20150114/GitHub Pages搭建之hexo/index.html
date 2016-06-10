@@ -30,6 +30,33 @@
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
   
 
 </head>
@@ -84,48 +111,37 @@
   </header>
 
 
-<div class="entry-content"><h3>0  引言</h3>
+<div class="entry-content"><h3 id="section">0  引言</h3>
 
 <p>GitHub 是一个用于使用Git版本控制系统项目的共享虚拟主机服务。它由GitHub公司（曾称Logical Awesome）的开发者Chris Wanstrath、PJ Hyett和Tom Preston-Werner使用Ruby on Rails编写而成。您能够开通一个免费账户进行使用。hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上。并且hexo支持markdown写文章，用户能够使用自己喜欢的工具书写文章。hexo具有易用、轻巧、用户群体增长快等优点。由于hexo基于Node.js技术，如今Node.js技术的流行，hexo也会变得越来越热门，所以选择hexo在Github上创建一个静态博客是不错的选择。</p>
 
 <!-- more -->
 
+<h3 id="section-1">1  知识储备</h3>
+<p>### 1.1  Ruby的基础
+由于GitHub 是一个用于使用Git版本控制系统项目的共享虚拟主机服务。它由GitHub公司（曾称Logical Awesome）的开发者Chris Wanstrath、PJ Hyett和Tom Preston-Werner使用Ruby on Rails编写而成。所以需要有一定的ruby基础。</p>
 
-<h3>1  知识储备</h3>
-
-<h3>1.1  Ruby的基础</h3>
-
-<p>由于GitHub 是一个用于使用Git版本控制系统项目的共享虚拟主机服务。它由GitHub公司（曾称Logical Awesome）的开发者Chris Wanstrath、PJ Hyett和Tom Preston-Werner使用Ruby on Rails编写而成。所以需要有一定的ruby基础。</p>
-
-<h3>1.2 Git与GitHub的基础</h3>
-
+<h3 id="gitgithub">1.2 Git与GitHub的基础</h3>
 <p>由于最后博客的环境是托管在GitHub Pages上，所以需要使用Git的基本命令或者Git可视化图形工具的使用。</p>
 
-<h3>1.3 Linux使用基础</h3>
-
+<h3 id="linux">1.3 Linux使用基础</h3>
 <p>此次Github Pages的搭建环境主要是基于Unix/Linux平台，因此需要一定的Linux的基础，需要熟悉部分Linux的简单命令，这样更有助于环境的搭建。</p>
 
-<h3>1.4 Node.js的基础</h3>
-
+<h3 id="nodejs">1.4 Node.js的基础</h3>
 <p>因为hexo是基于Node.js的静态博客程序，熟悉Node.js的原理，会容易体会到搭建、编译和发布等过程，不会让您不知所措。</p>
 
-<h3>1.5 HTML/CSS的基础</h3>
-
+<h3 id="htmlcss">1.5 HTML/CSS的基础</h3>
 <p>如果您是一个专业的用户，您可以自己定制网站的主题（Theme），您能够通过HTML/CSS等技术，您能够让博客更加具有吸引力和个人特色。</p>
 
-<h3>1.6 CSS预处理器stylus的使用</h3>
-
+<h3 id="cssstylus">1.6 CSS预处理器stylus的使用</h3>
 <p>hexo程序中css部分使用的预处理器是stylus，因此您需要了解它的基本语法，您才能够看懂其中的意思。</p>
 
-<h3>1.7 模版的认识</h3>
-
+<h3 id="section-2">1.7 模版的认识</h3>
 <p>在hexo代码修改中，借鉴了模版引擎的思想，如果对模版思想有一定认识，会让您更加如鱼得水。</p>
 
-<h3>2 基本环境的配置</h3>
-
-<h3>2.1 Ruby环境的搭建</h3>
-
-<p>由于本次配置使用的系统环境为：Mac OS X 10.9，自身集成了Ruby环境，因此不需要单独安装。在搭建过程中Ruby版本号可能太低需要升级，目前最新版本为1.9.3。在Linux系统中可以采用命令的方式升级。能够安装rvm，可以切换多个版本的ruby。</p>
+<h3 id="section-3">2 基本环境的配置</h3>
+<p>### 2.1 Ruby环境的搭建
+由于本次配置使用的系统环境为：Mac OS X 10.9，自身集成了Ruby环境，因此不需要单独安装。在搭建过程中Ruby版本号可能太低需要升级，目前最新版本为1.9.3。在Linux系统中可以采用命令的方式升级。能够安装rvm，可以切换多个版本的ruby。</p>
 
 <p><strong>查看安装的ruby版本</strong></p>
 
@@ -142,15 +158,18 @@
 <pre><code>rvm use 1.9.3 --head default
 </code></pre>
 
-<blockquote><p>注：在升级前希望安装xcode的Command Line Tools，因为需要使用gcc。</p></blockquote>
+<blockquote>
+  <p>注：在升级前希望安装xcode的Command Line Tools，因为需要使用gcc。</p>
+</blockquote>
 
 <p><img src="http://p9.qhimg.com/t018ea1438638b021c4.png" alt="gcc安装" /></p>
 
-<h3>2.2 Git环境的搭建</h3>
-
+<h3 id="git">2.2 Git环境的搭建</h3>
 <p>使用Git OS X Installer</p>
 
-<blockquote><p>下载页面：<a href="https://code.google.com/p/git-osx-installer/">https://code.google.com/p/git-osx-installer/</a></p></blockquote>
+<blockquote>
+  <p>下载页面：https://code.google.com/p/git-osx-installer/</p>
+</blockquote>
 
 <p><strong>使用包管理安装</strong></p>
 
@@ -171,9 +190,11 @@
 sudo port selfupdate
 </code></pre>
 
-<blockquote><p>注：其中sudo是使用admin权限执行命令，这里必须使用admin权限。</p></blockquote>
+<blockquote>
+  <p>注：其中sudo是使用admin权限执行命令，这里必须使用admin权限。</p>
+</blockquote>
 
-<h3>2.3 Node.js环境的搭建</h3>
+<h3 id="nodejs-1">2.3 Node.js环境的搭建</h3>
 
 <p>由于之前安装了包管理器，这下好处体现出来了，使用Homebrew安装nodejs即可。</p>
 
@@ -189,7 +210,7 @@ make
 sudo make install
 </code></pre>
 
-<h3>2.4 hexo环境的搭建</h3>
+<h3 id="hexo">2.4 hexo环境的搭建</h3>
 
 <p>在这之前需要安装npm（node.js的包管理器），这样能够更加方便的安装hexo。</p>
 
@@ -205,11 +226,13 @@ export NODE_PATH=”/usr/local/lib/node_modules/”
 npm update hexo -g
 </code></pre>
 
-<blockquote><p>注：软件配置，安装完后必须要确认每步配置是否正确，再进行接下来的配置。查看安装软件版本号如图所示。</p></blockquote>
+<blockquote>
+  <p>注：软件配置，安装完后必须要确认每步配置是否正确，再进行接下来的配置。查看安装软件版本号如图所示。</p>
+</blockquote>
 
 <p><img src="http://p3.qhimg.com/t0112e9e4c00396bcca.png" alt="检查是否正确" /></p>
 
-<h3>3. 正式搭建GitHub Pages博客</h3>
+<h3 id="github-pages">3. 正式搭建GitHub Pages博客</h3>
 
 <p><strong>初始化</strong></p>
 
@@ -234,18 +257,22 @@ npm update hexo -g
 
 <p><strong>本地预览</strong></p>
 
-<p>在浏览器中输入：<a href="http://localhost:4000/">http://localhost:4000/</a></p>
+<p>在浏览器中输入：http://localhost:4000/</p>
 
 <p><img src="http://p0.qhimg.com/t01d7b0d155b1bbfc0f.png" alt="预览效果" /></p>
 
-<blockquote><p>注：建议使用IE9以上、FF或者Chrome等现代浏览器访问才能看到良好效果。</p></blockquote>
+<blockquote>
+  <p>注：建议使用IE9以上、FF或者Chrome等现代浏览器访问才能看到良好效果。</p>
+</blockquote>
 
 <p><strong>发布博客</strong></p>
 
 <pre><code>hexo deploy
 </code></pre>
 
-<blockquote><p>注：本文中hexo的版本较低，需要更新文章。如果你使用hexo 2.0以下版本是有效的。</p></blockquote>
+<blockquote>
+  <p>注：本文中hexo的版本较低，需要更新文章。如果你使用hexo 2.0以下版本是有效的。</p>
+</blockquote>
 
 <p><strong>将会更新的内容：</strong></p>
 
@@ -266,6 +293,7 @@ npm update hexo -g
 <p>（8）github域名绑定，以及域名的常用知识。</p>
 
 <p><strong>~0~ 精力有限，坚持写下去！</strong></p>
+
 </div>
 
 
