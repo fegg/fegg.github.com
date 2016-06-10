@@ -1,0 +1,4698 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[My Octopress Blog]]></title>
+  <link href="http://fegg.github.io/atom.xml" rel="self"/>
+  <link href="http://fegg.github.io/"/>
+  <updated>2016-06-10T23:35:44+08:00</updated>
+  <id>http://fegg.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Redux 能做什么？]]></title>
+    <link href="http://fegg.github.io/blog/2016/05/17/redux-can-do/"/>
+    <updated>2016-05-17T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2016/05/17/redux-can-do</id>
+    <content type="html"><![CDATA[<h3>一、我先给一个 Redux 的定义</h3>
+
+<p><code>Redux</code> 被大家知道应该都是来自于 <code>React</code> 的出现，但是这篇文章会通过介绍一个 <code>React</code> 之外的例子，来让大家理解 <code>Redux</code> 是什么东西，到底还能够做点撒。</p>
+
+<p>我自己的理解是：</p>
+
+<blockquote><p>Redux 是一个改变<strong>状态(state)</strong>的模型，这个模型通过一个单向操作的方式来改变<strong>状态</strong>，用数学符号的方式来理解我认为应该是：<code>y = f(x)</code>，嗯，就是一个最简单的函数模型。</p></blockquote>
+
+<p>不过这样说，有些人还会不理解，毕竟以前撸代码不是这个样子的，那么我们先反向的来获取自己的理解。</p>
+
+<p>首先，我们需要知道 Redux 有的以下几个东西：</p>
+
+<ul>
+<li>createStore</li>
+<li>reducer</li>
+<li>dispatch</li>
+</ul>
+
+
+<p>我觉得需要介绍清楚 Redux ，知道这三个就行了，至于还有一些函数我觉得都是调味料，这里先不介绍。</p>
+
+<!-- more -->
+
+
+<p>好吧，现在我就把上面的数学函数模型语义的转换一下（也许不一定对，但是可能暂时这样理解，理解是一个过程）：</p>
+
+<ol>
+<li>第一步：<code>newState = store(reducer)(state)</code></li>
+<li>第二步：<code>newState = reducer(state)</code></li>
+</ol>
+
+
+<p>为什么这里可能理解成两个步骤呢？那是因为我们可以从不同的层面去认识 Redux，在第一步中我的理解是store里面的东西(reducer)去改变了 state，而在第二步中，我以实际会起到作用的层面去理解，就是 reducer 去改变了 state。</p>
+
+<p>好吧，来个对比：</p>
+
+<pre><code>y = f(x)
+newState = reducer(state)
+</code></pre>
+
+<p>最后我自己先得出一个结论：</p>
+
+<pre><code>f &lt;=&gt; reducer ( &lt;=&gt;: 表示等价的意思)
+</code></pre>
+
+<p>好吧，废话就上面那么多了，接下来我举一个实际的例子来理一下自己对 Redux 的理解，这个例子是我在一篇文章中看到的，觉得不错。</p>
+
+<h3>二、 先介绍一下这个例子的效果</h3>
+
+<p><img src="http://fegg.github.io/images/react/game.gif" alt="演示" /></p>
+
+<p>这里我们要实现的效果就是：</p>
+
+<p>点击飞机，让飞机随机移动到一个新的坐标点</p>
+
+<p>这里我们可以理解为：新坐标[x1, y1] = f(原始坐标[x0, y0])</p>
+
+<h3>三、开始撸一个实例</h3>
+
+<p><strong>1.首先我们需要定义个 <code>f</code> 来修改坐标</strong></p>
+
+<pre><code>/**
+ * reducer
+ * @param state 坐标状态
+ * @param action 执行的行为
+*/
+function coordinates(state = [1, 1], action) {
+    switch (action.type) {
+        case CLICK:
+            return [
+                state[0] + 40 * Math.random(),
+                state[1] + 40 * Math.random()
+            ]
+        default:
+            return state;
+    }
+}
+</code></pre>
+
+<p>这个函数主要就是使初始坐标 <strong>[1, 1] => [1 + random, 1 + random]</strong> 这样返回一个全新的数组，这个全新的数组就是新的状态。</p>
+
+<p><strong>2.我们再将这个 <code>f</code> 函数给 Redux 的 Store 去管理</strong></p>
+
+<pre><code>/**
+ * 创建 Redux 的 Store(存储器)
+*/
+let store = createStore(coordinates);
+</code></pre>
+
+<p>这个比较简单，就是通过传入 <code>f</code> 来创建一个 Store，对于 Redux 来说有且只有一个 Store，这个和 flux 有比较大的差别。</p>
+
+<p><strong>3.然后再定义一个行为，使我们能够通过 dispatch 调用这个行为去改变 state</strong></p>
+
+<pre><code>/**
+ * action
+*/
+const CLICK = 'CLICK';
+/**
+ * @returns plainObject =&gt; action
+ */
+function click() {
+    return {
+        type: CLICK
+    }
+}
+</code></pre>
+
+<p>在 Redux 中，只有通过 <code>dispatch</code> 方法去改变状态，就是因为这样，才让我们调试代码变得简单，复现 BUG 更加容易，因为它是单向的，顺着一个方向在流动数据。</p>
+
+<p><strong>4.接下来就写一下 dispatch</strong></p>
+
+<pre><code>plane.events.onInputDown.add(() =&gt; {
+    store.dispatch(click())
+}, null);
+</code></pre>
+
+<p>先抛开其他代码，我们剥离一下：</p>
+
+<pre><code>store.dispatch(click())
+</code></pre>
+
+<p>这样就会去调用行为，然后执行我们上面定义的 <code>coordinates</code> 函数，返回一个新的坐标</p>
+
+<p><strong>5.最后我们再订阅一下具体改变我们飞机位置的业务代码</strong></p>
+
+<p>上面的写完后，我们只是返回来状态，但是还没体现到飞机在场景下的移动效果。我们能够通过</p>
+
+<pre><code>store.getState()
+</code></pre>
+
+<p>来获取最新的当前状态，其实在 Redux 源代码里面就是很简单的一个函数：</p>
+
+<pre><code>function getState() {
+    // 这里的 currentState 是一个外部的变量，在 Store 的作用域下全局生效
+    return currentState;
+}
+</code></pre>
+
+<p>好吧，现在我们让飞机订阅一下移动的函数：</p>
+
+<pre><code>/**
+* 定义 plane(飞机) 的移动
+*/
+function movePlane(plane) {
+    game.add.tween(plane).to({
+        x: store.getState()[0],
+        y: store.getState()[1]
+    }, 1000, 'Linear', true);
+}
+/**
+* 移动事件的订阅
+*/
+store.subscribe(movePlane.bind(null, plane));
+</code></pre>
+
+<p>大家会想，为什么我订阅了就自动调用 movePlane 生效了呢？在 Redux 内部会调用当前的监听器，源代码如下，很简单，监听器就是一个数组来装的，最后移出来执行一下：</p>
+
+<pre><code>function subscribe(listener) {
+    var isSubscribed = true;
+
+    ensureCanMutateNextListeners();
+    nextListeners.push(listener);
+
+    // 然后会返回一个取消订阅的函数，这里省略
+}
+function dispatch(action) {
+    // 省略一些杂七杂八的异常处理代码
+
+    try {
+        isDispatching = true;
+        currentState = currentReducer(currentState, action);
+    } finally {
+        isDispatching = false;
+    }
+
+    // 执行的代码
+    var listeners = currentListeners = nextListeners;
+    for (var i = 0; i &lt; listeners.length; i++) {
+        listeners[i]();
+    }
+
+    return action;
+}
+</code></pre>
+
+<p>好吧，这样就是一个游戏的流程来，在 Redux 的帮助下，很好的组织了代码，优雅的完成了。执行代码的流程是这样的：</p>
+
+<blockquote><p>dispatch(click()) => update reducer => subscribe() => 飞机移动新位置</p></blockquote>
+
+<p>这个例子很好的解释了脱离 React 的束缚，很纯粹的 Redux，原文翻译有点慢，干脆就自己写了一下。</p>
+
+<p>项目所有的代码：<a href="https://github.com/fegg/redux-game">https://github.com/fegg/redux-game</a></p>
+
+<p>参考英文原文：<a href="http://atendesigngroup.com/blog/redux-outside-react">http://atendesigngroup.com/blog/redux-outside-react</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[一个好玩的 CSS 技术 CheckBox]]></title>
+    <link href="http://fegg.github.io/blog/2016/01/10/checkbox-anim/"/>
+    <updated>2016-01-10T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2016/01/10/checkbox-anim</id>
+    <content type="html"><![CDATA[<h3>废话</h3>
+
+<p>＝＝晚上失眠了，在网页上看到一个好玩的效果，自己模拟了一下，最开始用SVG写的。。。不多说了，简单记录一下思路和写法。</p>
+
+<h3>思路</h3>
+
+<p>先贴一下效果图，脑袋里面留下直观印象。录的效果可能不太好，大家可以用代码本地跑起来看真实的效果。</p>
+
+<p><img src="http://fegg.github.io/images/checkbox-anim.gif" alt="动态效果" /></p>
+
+<ol>
+<li>构造一个简单的组件元素，采用 <code>::after</code> 伪元素来实现</li>
+<li>利用 CSS 中 <code>border</code> 来实现，并且利用 CSS3 动画来添加切换的动画效果</li>
+<li>主要利用 <code>rotate</code> 和 <code>scale</code> 的效果来实现</li>
+<li>JS 部分对类名的 <code>toggle</code></li>
+</ol>
+
+
+<!-- more -->
+
+
+<h3>基本结构</h3>
+
+<pre><code>&lt;checkbox-anim class="checkbox_anim js_anim_normal"&gt;
+    &lt;span class="checkbox checkbox-span"&gt;&lt;/span&gt;
+&lt;/checkbox-anim&gt;
+&lt;checkbox-anim class="checkbox_anim js_anim_half"&gt;
+    &lt;span class="checkbox checkbox-span checkbox_half"&gt;&lt;/span&gt;
+&lt;/checkbox-anim&gt;
+</code></pre>
+
+<p>这里我的结构比较简单，<code>checkbox-anim</code> 组件属于 <strong>namespace</strong> 里面就是真正的组件肉体了。在真实使用的时候需要引入 <code>input</code> 组件，为了简单，这里就省略了，更清晰的看交互的实现。</p>
+
+<h3>漂亮的修饰</h3>
+
+<blockquote><p>两个组件最基本的样式</p></blockquote>
+
+<pre><code>/********** checkbox 基本样式 *************/
+.checkbox {
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: white;
+    border: 1px solid #e9e9e9;
+    border-radius: 3px;
+    position: relative;
+
+    transition: all .2s cubic-bezier(.68,-.55,.27,1.55);
+}
+
+.checkbox::after {
+    display: block;
+    content: '\20';
+    width: 14px;
+    height: 24px;
+    border: 4px solid white;
+    border-top: 0;
+    border-left: 0;
+
+    transform: rotate(45deg) scale(0);
+    position: absolute;
+    top: 14px;
+    left: 16px;
+
+    transition: all .2s cubic-bezier(.18,.89,.32,1.28) .1s;
+}
+
+/********** checkbox_half 基本样式 *************/
+.checkbox_half {
+    background: #2db7f5;
+    border: 1px solid #2db7f5;
+}
+
+.checkbox_half::after {
+    width: 16px;
+    height: 0;
+    top: 23px;
+    transform: scale(1);
+}
+</code></pre>
+
+<blockquote><p>状态改变后的样式</p></blockquote>
+
+<pre><code>/* checkbox 激活样式 */
+.checked .checkbox {
+    background: #2db7f5;
+    border: 1px solid #2db7f5;
+}
+.checked .checkbox::after {
+    top: 7px;
+    transform: rotate(45deg) scale(1);
+}
+
+/********** checkbox_half 激活样式 *************/
+/* 没有修改背景色的部分哦～ */
+.checked .checkbox_half::after {
+    width: 12px;
+    height: 24px;
+}
+</code></pre>
+
+<blockquote><p>其余附带的一点样式，非主要，修饰用的</p></blockquote>
+
+<pre><code>/* other 修饰类型样式 */
+.checkbox_anim {
+    cursor: pointer;
+    display: block;
+}
+
+.checkbox-span {
+    margin: 20px;
+}
+</code></pre>
+
+<p>其实现在我们就算写完了，加入点 JS 就能够完整的动起来了。这里贴一下，可以拿来跑来看看效果 ^0^ 兼容神马的我不知道。。。不知道。。。</p>
+
+<pre><code>(function(window, document, undefined) {
+    if (window.HTMLElement) {
+        HTMLElement.prototype.on = function(type, cb, isbb) {
+            if (window.addEventListener) {
+                this.addEventListener(type, cb, isbb || false);
+            }
+
+            return this;
+        };
+        HTMLElement.prototype.toggleClass = function(cls) {
+            if (this.classList) {
+                this.classList.toggle(cls);
+            }
+
+            return this;
+        };
+    }
+
+    function select(selector) {
+        return document.querySelector(selector);
+    }
+
+    var CheckBox = {
+        checked: 'checked'
+    };
+
+    var CheckBoxNormal = {
+        _self: select('.js_anim_normal'),
+        init: function() {
+            this.bind();
+        },
+        bind: function() {
+            this._self.on('click', this.handleCheckbox.bind(this));
+        },
+        handleCheckbox: function(e) {
+            this._self.toggleClass(CheckBox.checked);
+        }
+    };
+
+    var CheckBoxHalf = {
+        _self: select('.js_anim_half'),
+        init: function() {
+            this.bind();
+        },
+        bind: function() {
+            this._self.on('click', this.handleCheckbox.bind(this));
+        },
+        handleCheckbox: function(e) {
+            this._self.toggleClass(CheckBox.checked);
+        }
+    };
+
+    [CheckBoxNormal, CheckBoxHalf].forEach(function(checkbox) {
+        checkbox.init();
+    });
+})(window, document);
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[乱玩 Vue Todo]]></title>
+    <link href="http://fegg.github.io/blog/2015/12/16/hi-vue/"/>
+    <updated>2015-12-16T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2015/12/16/hi-vue</id>
+    <content type="html"><![CDATA[<h3>前言</h3>
+
+<p>最近感觉人比较疲倦，但是又想坚持写博客的习惯，就随便写点吧，就说一下我是怎么学习一个框架的，比如 Vue 这种框架其实学起来很快，1，2个小时就能入门做。主要总结起来有几点：</p>
+
+<ol>
+<li>直接看官方 API 这是不太靠谱的，枯燥，而且没有体系；</li>
+<li>通过一个 DEMO 的结构来梳理清晰；</li>
+<li>除了梳理，还应该结合 API 和官方的资料来了解 DEMO 中的每一个知识点；</li>
+<li>这样下来过后，对一个框架的基本 API 和 思想应该会比较清晰了（除非 DEMO 比较差，所以选 DEMO 的代码是比较重要的，最好是选大家都认可的，GitHub start 比较高的）；</li>
+<li>重要的还是经常学习东西，体会思想，形成自己的一套对代码的理解，这样学东西就比较快了；</li>
+<li>下面的例子都是采用伪代码的方式来描述，也可以认为就是一些思路的比划。</li>
+</ol>
+
+
+<p>看文章前需要下载一下 DEMO 代码：<a href="https://github.com/vuejs/vue/tree/dev/examples/todomvc">源代码</a></p>
+
+<!-- more -->
+
+
+<h3>一、HTML 眼中的 Vue</h3>
+
+<ul>
+<li>data-framework</li>
+<li>v-cloak</li>
+<li>v-show</li>
+<li>v-for</li>
+<li>v-todo-focus</li>
+<li>v-model</li>
+<li>:bindAttribute ( <code>Class</code> 和 <code>Style</code> )</li>
+<li>@event</li>
+</ul>
+
+
+<blockquote><p>Vue 更多的入口都是基于 HTML，而 React 的入口更多是 JavaScript</p></blockquote>
+
+<h3>二、对数据对象的处理</h3>
+
+<p>主要依赖于业务的数据处理，非 Vue 的控制，其实在个在这种针对 Model 编程的模型中相当的重要，对数据的结构和抽象程度越合适，处理数据和模型的复杂度就越低。</p>
+
+<pre><code>filters -&gt; all -&gt; 返回所有的 todos 对象
+
+filters -&gt; active -&gt; 返回状态没有完成的 todos 对象，即：!completed
+
+filters -&gt; completed -&gt; 返回状态完成的 todos 对象，即：completed
+</code></pre>
+
+<h3>三、Vue 框架的控制</h3>
+
+<p><strong>1. Vue instance ( export app )</strong></p>
+
+<p>一个简单的 todo 应用包含的知识：</p>
+
+<ul>
+<li>el</li>
+<li>data</li>
+<li>watch</li>
+<li>computed</li>
+<li>methods</li>
+<li>directives</li>
+</ul>
+
+
+<p><strong>2. 数据的绑定 data</strong></p>
+
+<pre><code>todos -&gt; localStorage 的数据
+
+newTodo -&gt; 新添加的 todo
+
+editedTodo -&gt; 正在编辑中的 todo
+
+visibility -&gt; default all 显示全部 todo
+</code></pre>
+
+<p><strong>3. watch</strong></p>
+
+<pre><code>todos -&gt; {
+    handler -&gt; { save todos }
+    deep -&gt; true
+}
+</code></pre>
+
+<p><strong>4. computed 比 $watch 如何</strong></p>
+
+<p>computed 将 <code>模板</code> 和 <code>逻辑</code> 有效的解耦，让模板更容易表达 View 的结构，其余逻辑分离到 JavaScript 中来使用，即保证了分离，又能够更好的进行单元测试。</p>
+
+<pre><code>filteredTodos -&gt; 筛选出当前状态的 todo
+
+filters[currentStatus](todosObject)
+
+remaining -&gt; 激活状态的 todo 数量: Number
+
+allDone -&gt; {
+    get -&gt; remaining === 0 -&gt; 都完成
+    set -&gt; 改变一个 todo 的完成成功 -&gt; currentTodo.completed
+}
+</code></pre>
+
+<p><strong>5. 一个 todo 应用的 methods</strong></p>
+
+<p>在 todo 例子中的 methods 更多是一个 Event Hook 的实现，分析代码结构的时候清晰列出来，主要有 CRUD 的操作以及一些业务的处理方法。</p>
+
+<ul>
+<li>addTodo</li>
+<li>removeTodo</li>
+<li>editTodo</li>
+<li>doneEdit</li>
+<li>cancelEdit</li>
+<li>removeCompleted</li>
+</ul>
+
+
+<p><strong>6. Vue 中的自定义 directives</strong></p>
+
+<p>在 ng 中，指令比较强大，Vue 也借鉴了这种做法，主要类似 ng 的 <code>EA</code>，在 Vue 中提供了指令的 Hook，比较简单实用的周期：bind -> update -> unbind。与此同时，对 <code>twoWay</code> 也能通过这个周期来实现。</p>
+
+<p>同时，指令对 <code>对象字面量</code> 支持也不错，这在前端来说比较实用，也深度的 <code>update</code>。</p>
+
+<ul>
+<li>todo-focus（属性指令）</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[PostCSS是个什么鬼东西？]]></title>
+    <link href="http://fegg.github.io/blog/2015/10/24/postcss-introduce/"/>
+    <updated>2015-10-24T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2015/10/24/postcss-introduce</id>
+    <content type="html"><![CDATA[<h3>前言</h3>
+
+<p>最近大漠前辈在群里发关于<code>PostCSS</code>的系列文章，但是耗子姐姐又说看了有点云里雾里的感觉，所以这篇文章将按一个思考的角度来理解一下 PostCSS 到底是一个什么东西。</p>
+
+<p><img src="http://fegg.github.io/images/postcss/top.png" alt="配图" /></p>
+
+<h3>一、提出不懂的地方</h3>
+
+<p>很多时候第一次在网上查询 PostCSS 概念的时候，大家都解释成一个<code>后处理器</code>的概念，其实个人觉得这些概念不重要，更为重要的有以下几点：</p>
+
+<ol>
+<li>它本质上是一个什么东西？</li>
+<li>它能解决我们什么问题？</li>
+<li>它是通过什么方式来解决我们的问题？</li>
+<li>它解决我们的问题是为什么？</li>
+<li>怎么实现与 <code>SASS</code>、<code>LESS</code>、<code>Stylus</code> 相同的功能（因为它们被经常拿来比较）</li>
+<li>它由哪些东西组成？</li>
+<li>既然是程序可以用的，那么它的API呢？</li>
+</ol>
+
+
+<!-- more -->
+
+
+<hr />
+
+<p>Q: 这个时候，你应该会问：<strong>为什么要将组成和API放到最后呢？</strong></p>
+
+<p>A: 那是因为我们在认识一个不太清楚的东西的时候，第一次肯定是一个直观的认识：它到底有什么用？而不会说，一来就去深入的研究它。不过这里本质还是要先说一下的，先留个印象。</p>
+
+<hr />
+
+<h3>二、个个击破</h3>
+
+<h4>1. 它本质上是一个什么东西？</h4>
+
+<ul>
+<li>PostCSS 可以直观的理解为：它就是一个<code>平台、平台、平台</code>，重要的事情来三遍比较爽，哈哈！</li>
+</ul>
+
+
+<blockquote><p>为什么说它是一个平台呢？因为我们直接用它，感觉不能干什么事情，但是如果让一些插件在它上面跑，那么将会很强大。</p></blockquote>
+
+<ul>
+<li>PostCSS 提供了一个解析器，它能够将 CSS 解析成抽象语法树（AST）。</li>
+</ul>
+
+
+<p>上面两条看完后，我们可以理解为下面这个模型。</p>
+
+<p><img src="http://fegg.github.io/images/postcss/process.png" alt="基本模型" /></p>
+
+<p>所以说，PostCSS 它需要一个插件系统才能够发挥作用。我们可以通过“插件”来传递AST，然后再把AST转换成一个串，最后再输出到目标文件中去。当然，这里是有API可以用，这里先不讲，免得晕了。</p>
+
+<h4>2. 它能解决我们什么问题？它是通过什么方式来解决我们的问题？</h4>
+
+<p>上面的图很清晰，但是我还是不知道是个什么东西！所以接下来温和点，直接从代码层面来感官的认识一下。</p>
+
+<ul>
+<li>它能够为 CSS 提供额外的功能；</li>
+<li>通过在 PostCSS 这个<code>平台</code>上，我们能够开发一些插件，来处理我们的CSS，比如热门的：autoprefixer</li>
+<li>我们能够使用JavaScript来开发插件（这点对前端来说很重要）</li>
+</ul>
+
+
+<p>好吧，看到一个熟悉的单词了：autoprefixer，这里我们就让它来当栗子吧，可能更容易理解一点。</p>
+
+<p>首先，我们需要做一些准备，安装好需要的东西。</p>
+
+<pre><code>// postcss 的命令行工具
+sudo npm install  -g postcss-cli
+// autoprefixer 插件
+sudo npm install -g autoprefixer
+</code></pre>
+
+<p>第一次用命令行能让你更直观去理解它哈，所以请要有一颗折腾的心。</p>
+
+<pre><code>// 1. 先看下这个命令有哪些参数可以用
+postcss --help
+
+Usage: /usr/local/bin/postcss -use plugin [--config|-c config.json] [--output|-o
+output.css] [input.css]
+
+选项：
+  -c, --config       JSON file with plugin configuration
+  -u, --use          postcss plugin name (can be used multiple times)
+  -o, --output       Output file (stdout if not provided)
+  -d, --dir          Output directory
+  -r, --replace      Replace input file(s) with generated output       [boolean]
+  -s, --syntax       Alternative input syntax parser
+  -p, --parser       Alternative CSS parser
+  -t, --stringifier  Alternative output stringifier
+  -w, --watch        auto-recompile when detecting source changes
+  -v, --version      显示版本号                                        [boolean]
+  -h, --help         显示帮助信息                                      [boolean]
+
+示例：
+  postcss --use autoprefixer -c             Use autoprefixer as a postcss plugin
+  options.json -o screen.css screen.css
+  postcss --use autoprefixer                Pass plugin parameters in
+  --autoprefixer.browsers "&gt; 5%" -o         plugin.option notation
+  screen.css screen.css
+  postcss -u postcss-cachify -u             Use multiple plugins and multiple
+  autoprefixer -d build *.css               input files
+
+Please specify at least one plugin name.
+</code></pre>
+
+<p>PS: 我贴出来是方便大家在看的时候不用电脑……^_^</p>
+
+<p>好吧，先看一下文件目录，这里我只说一下比较好写的方式，就是将一些参数配置到配置文件中去。</p>
+
+<p><img src="http://fegg.github.io/images/postcss/menu.png" alt="目录结构" /></p>
+
+<pre><code>// config.json: 所有的配置
+// p.json: 仅有 autoprefixer 插件的配置
+
+// config.json 的内容
+{
+    "use": ["autoprefixer"],
+    "input": "src/index.css",
+    "output": "index.css",
+    "autoprefixer": {
+        "browsers": "&gt; 5%"
+    }
+}
+
+// p.json 的内容
+{
+    "autoprefixer": {
+        "browsers": "&gt; 5%"
+    }
+}
+</code></pre>
+
+<p>接下来我们在终端里面输入：</p>
+
+<pre><code>// 最简洁的方式
+postcss -c config.json
+// 稍微复杂一点的方式，这里要用 -i 参数，help里面没有，我是从config.json里面的配置猜出来的，官方的那个写法出不来
+postcss -u autoprefixer -c p.json -i src/index.css -o index.css
+// 最复杂的方式
+// 还是不写比较好。。。
+</code></pre>
+
+<p>跟平时想到的效果一样：</p>
+
+<pre><code>// src/index.css 中的源码
+* {
+    transition: all .1s;
+}
+// 转换过后的代码 index.css
+* {
+    -webkit-transition: all .1s;
+        transition: all .1s;
+}
+</code></pre>
+
+<p>好吧，现在肯定就对 PostCSS 有一个感官的认识了，接下来就是需要自己动手去用一下 <code>cssnext</code> 这个插件了～看会发生什么，这里就不写了，也挺好用的，不过应该还是草案状态。</p>
+
+<hr />
+
+<p>我们开发不可能用命令行吧，所以这里再接着介绍代码编写，然后用 node 去执行文件的方式。直接上代码吧。</p>
+
+<pre><code>// 1. 先安装一下需要的库
+npm install postcss --save-dev
+npm install autoprefixer --save-dev
+
+// 2. 其实应该先看看 postcss 的 package.json 文件，来看看包含了些什么，留个印象
+
+// 3. p.js 中的代码
+var postcss = require('postcss');
+var autoprefixer = require('autoprefixer');
+var fs = require('fs');
+
+var css = '* { transition: all .1s; }';
+
+postcss([autoprefixer])
+    .process(css)
+    .then(function(result) {
+        // 这一行是学习的时候需要的，看一下到底对象里面包含什么
+        console.log(result);
+        if (result.css) {
+            fs.writeFileSync('index.css', result.css);
+        }
+        if (result.map) {
+            fs.writeFileSync('index.css.map', result.map);
+        }
+    });
+
+// 4. 执行 p.js
+node p
+</code></pre>
+
+<p>好吧，最后的结果和之前用命令行的方式一样，只不过过程不同。这样下来应该对 PostCSS 有了更多的感觉了吧。还没完，不用慌～我们还需要提出一个问题，我都有 <code>SASS</code> 等预处理器了，还拿它来不是又给前端届添乱么？因为这2年东西确实太多了～</p>
+
+<blockquote><p>记住一句话：存在即合理</p></blockquote>
+
+<p>既然合理，那么我们就看看它有什么优势呗～</p>
+
+<h4>3. 它解决我们的问题是为什么？优势何在？</h4>
+
+<p>比如，我们用 SASS 来处理 box-shadow 的前缀，我们需要这样写：</p>
+
+<pre><code>/* CSS3 box-shadow */
+@mixin box-shadow($top, $left, $blur, $size, $color, $inset: false) {
+    @if $inset {
+        -webkit-box-shadow: inset $top $left $blur $size $color;
+        box-shadow: inset $top $left $blur $size $color;
+    } @else {
+        -webkit-box-shadow: $top $left $blur $size $color;
+        box-shadow: $top $left $blur $size $color;
+    }
+}
+</code></pre>
+
+<p>使用 PostCSS 我们只需要按标准的 CSS 来写就行了，因为最后 autoprefixer 会帮我们做添加这个事情～</p>
+
+<pre><code>box-shadow: 0 0 3px 5px rgba(222, 222, 222, .3);
+</code></pre>
+
+<p>所以，这里就出现了一个经常大家说的未来编码的问题。实际上，PostCSS 改变的是一种开发模式。</p>
+
+<ul>
+<li>SASS等工具：源代码 -> 生产环境 CSS</li>
+<li>PostCSS：源代码 -> 标准 CSS -> 生产环境 CSS</li>
+</ul>
+
+
+<p>这样能体会出优势吧，但是目前大家都是 SASS + PostCSS 这样的开发模式，其实我认为是不错的，取长补短嘛，当然，在 PostCSS 平台上都是可以做到的，只是目前这个过渡期，这样更好，更工程化。接下来我就介绍一些方法来纯粹是用 PostCSS。</p>
+
+<h4>4. 怎么实现与 SASS、LESS、Stylus 相同的功能</h4>
+
+<p>其实这一节我都不需要写了～列一下插件就行了，因为插件才是实现，PostCSS 只是提供了一个平台。</p>
+
+<p>其实可以去官方看看：<a href="https://github.com/postcss/postcss">插件系统</a>
+这里列几个便于理解的插件</p>
+
+<ul>
+<li>postcss-each</li>
+<li>postcss-for</li>
+<li>postcss-mixins</li>
+<li>postcss-extend</li>
+</ul>
+
+
+<p>从名字就能看出来了吧～应该很好理解。</p>
+
+<h4>5. 它由哪些东西组成？</h4>
+
+<p>其实从官方介绍来看，只包含以下内容：</p>
+
+<ol>
+<li>CSS Parser</li>
+<li>CSS 节点树 API</li>
+<li>source map 生成器</li>
+<li>生成节点树串</li>
+</ol>
+
+
+<p>英文不太好 ＝＝ ，就这 4 部分吧，从第一个图其实也能够看出来。</p>
+
+<p>其中的 I/O 体现在什么地方呢？好吧，很容易想到，主要体现在：</p>
+
+<ul>
+<li>Input: <strong>插件程式</strong>和<strong>CSS Parser</strong></li>
+<li>Output: <strong>生成节点树串</strong></li>
+</ul>
+
+
+<p>CSS Parser 可以理解为一个内部过程，而插件程式主要体现在：</p>
+
+<pre><code>postcss([ autoprefixer ])
+</code></pre>
+
+<p>最后生成的节点树串体现在：</p>
+
+<pre><code>postcss().process().then(function (result) {
+    // 就是这里了
+    console.log(result.css);
+});
+
+// 现在我贴一下上面 result 对象的一个输出结果
+// 这里我多引入了一个 cssnano 插件
+// 改变的代码就这点，为了更全的看 result
+var opts = {
+    from: 'src/index.css',
+    to: 'index.css',
+    // 配置 map
+    map: { inline: false }
+};
+postcss([ autoprefixer, cssnano() ]).process(css, opts)
+
+Result {
+    processor: Processor {
+        // 处理器的版本号
+        version: '5.0.10',
+        // 加载的一堆插件
+        plugins: [
+            [Object], [Object], [Object], [Object], [Object],
+            [Object], [Object], [Object], [Object], [Object],
+            [Object], [Object], [Object], [Object], [Object],
+            [Object], [Object], [Object], [Object], [Object],
+            [Object], [Object], [Object], [Object], [Object],
+            [Object], [Object]
+        ]
+    },
+    messages: [],
+    root: Root {
+        raws: {
+            semicolon: false,
+            after: ''
+        },
+        type: 'root',
+        nodes: [
+            [Object]
+        ],
+        source: {
+            input: [Object],
+            start: [Object]
+        },
+        _autoprefixerDisabled: false,
+        _autoprefixerPrefix: false,
+        rawCache: {
+            colon: ':',
+            indent: '',
+            beforeDecl: '',
+            beforeRule: '',
+            beforeOpen: '',
+            beforeClose: '',
+            beforeComment: '',
+            after: '',
+            emptyBody: '',
+            commentLeft: '',
+            commentRight: ''
+        }
+    },
+    // 我们代码中配置 opts 变量
+    opts: {
+        from: 'src/index.css',
+        to: 'index.css'
+    },
+    // 这就是重新生成的 节点树串
+    // 这里有自动补全和高效压缩的效果
+    css: '*{-webkit-transition:all .1s;transition:all .1s}',
+    // map的文件的配置
+    map: 
+        SourceMapGenerator {
+            _file: 'index.css',
+            _sourceRoot: null,
+            _skipValidation: false,
+            _sources: ArraySet { _array: [Object], _set: [Object] },
+            _names: ArraySet { _array: [], _set: {} },
+            _mappings: MappingList { _array: [Object], _sorted: true, _last: [Object] },
+            _sourcesContents: { '$src/index.css': '* { transition: all .1s; }' } },
+    // 这里应该是链式要用的吧，暂时不深究
+    lastPlugin: {
+        [Function]
+        postcssPlugin: 'cssnano-reset-stylecache',
+            postcssVersion: '5.0.10'
+    }
+}
+</code></pre>
+
+<p>其实吧，这样有点抽象的，还是来看熟悉的 API 吧。</p>
+
+<p>这里出现了 sourcemap，说明 PostCSS 中的转换功能是它必备的，但是必备并不等于：<strong>源代码与目标代码不能完全一致</strong>。</p>
+
+<p>这里吐槽一下 Chrome 的 sourcemap 功能，一坨屎！下面看看 firefox 里面的效果吧。</p>
+
+<p><img src="http://fegg.github.io/images/postcss/sourcemap.png" alt="SourceMap的效果" /></p>
+
+<p>这里 firefox 里面就自动映射了<strong>源文件</strong>，非常不错！</p>
+
+<h4>6. 既然是程序可以用的，那么它的API呢？</h4>
+
+<p>其实官方有 API 的详细解释，我看了一下，一看就明白了，就不再花时间介绍了，大家可以去看看，这样会知道，原来如此～</p>
+
+<p>PS: 大家可以先看看 Node Common 和 Node相关的，然后再看 plugin</p>
+
+<p><a href="https://github.com/postcss/postcss/blob/master/docs/api.md">官方API</a></p>
+
+<p>这里看一个 DEMO，主要做 rem 和 px 单位之间的互换，加入 processors 就可以用了，很方便：</p>
+
+<pre><code>var custom = function(css, opts){
+    css.eachDecl(function(decl){
+        decl.value = decl.value.replace(/\d+rem/, function(str){
+            return 16 * parseFloat(str) + "px";
+        });
+    });
+};
+</code></pre>
+
+<p>开发插件可以看一下 <a href="https://github.com/postcss/postcss/blob/master/docs/guidelines/plugin.md">官方插件指南</a></p>
+
+<p>更细致的地方，之后有时间的时候再写写 ^_^ 一说技术就停不下来了～</p>
+
+<p>大家在问？我怎么在工程上应用它呢？好吧，使用 gulp, grunt, webpack 都是可以的，我觉得都理解了 PostCSS ，使用这些就很简单了，一查资料，拷贝一份配置就可以开始用了～就这样吧，下次再结合 react 来介绍一下一个叫: postcss-js 的插件，看上去还不错，还没深入用，用到的时候再分享吧。</p>
+
+<p>其实我也是初学者，只是用了自己的学习方法来梳理成文章，下面都是我看过的文章，部分是引用的。这里就不全部举例了，看的文章有点多。。。</p>
+
+<h4>7. 参考的文章</h4>
+
+<ul>
+<li>最权威的初认识</li>
+</ul>
+
+
+<p><a href="https://github.com/postcss/postcss">https://github.com/postcss/postcss</a></p>
+
+<ul>
+<li>一个不错的东西 rework</li>
+</ul>
+
+
+<p><a href="https://github.com/reworkcss">https://github.com/reworkcss</a></p>
+
+<ul>
+<li>理解 AST 等插件解析技术</li>
+</ul>
+
+
+<p><a href="http://rapheal.sinaapp.com/category/js/uglify%E6%BA%90%E7%A0%81/">http://rapheal.sinaapp.com/category/js/uglify%E6%BA%90%E7%A0%81/</a></p>
+
+<ul>
+<li>大漠的系列文章，应用型很强，推荐</li>
+</ul>
+
+
+<p><a href="http://www.w3cplus.com/blog/tags/517.html">http://www.w3cplus.com/blog/tags/517.html</a></p>
+
+<ul>
+<li>一个年龄差不多的开发者的解释</li>
+</ul>
+
+
+<p><a href="http://acgtofe.com/posts/2015/05/modular-transforming-with-postcss/">http://acgtofe.com/posts/2015/05/modular-transforming-with-postcss/</a></p>
+
+<ul>
+<li>一篇稍微理论化解释的文章</li>
+</ul>
+
+
+<p><a href="http://www.oschina.net/translate/its-time-for-everyone-to-learn-about-postcss?cmp">http://www.oschina.net/translate/its-time-for-everyone-to-learn-about-postcss?cmp</a></p>
+
+<ul>
+<li>一个开发模式简单的优劣比较</li>
+</ul>
+
+
+<p><a href="http://caibaojian.com/css-processor.html">http://caibaojian.com/css-processor.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JavaScript的特性、函数、对象]]></title>
+    <link href="http://fegg.github.io/blog/2015/10/09/pro-js-2/"/>
+    <updated>2015-10-09T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2015/10/09/pro-js-2</id>
+    <content type="html"><![CDATA[<p>提供者：js-渣渣</p>
+
+<p>原文：[<a href="http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0">http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0</a>][1]</p>
+
+<p>对象是JavaScript的重要单元。事实上JavaScript的一切都是对象或者是面向对象的接口。</p>
+
+<h3> 语言特性</h3>
+
+<h4>引用和值 </h4>
+
+<p>JavaScript变量持有的数据有两种形式：拷贝和引用。任何的基本类型值都是拷贝到变量。基本类型值最重要的特性就是它们是以值的形式赋值、拷贝、传递以及从函数总返回。</p>
+
+<p>JavaScript非基本类型值则是依赖引用。 任何不持有基本类型值的变量持有的是对象的引用。引用是指向对象内存位置的指针。这样有效率的是两个或者多个变量不会都来持有对象的拷贝；它们只是简单的指向这个对象就好。一个引用对对象的更新直接影响到另一个引用。</p>
+
+<!-- more -->
+
+
+<pre><code>// Set obj to an empty object
+// (Using {} is shorter than 'new Object()')
+var obj = {};
+
+// objRef now refers to the other object
+var refToObj = obj;
+
+// Modify a property in the original object
+obj.oneProperty = true;
+
+// We now see that the change is represented in both variables
+// (Since they both refer to the same object)
+console.log(obj.oneProperty === refToObj.oneProperty); //true
+
+// This change goes both ways, since obj and refToObj are both references
+refToObj.anotherProperty = 1;
+console.log(obj.anotherProperty === refToObj.anotherProperty); //true
+</code></pre>
+
+<h4>自我调整的对象</h4>
+
+<pre><code>// Create an array of items
+// (Similar to 2-1, using [] is shorter than 'new Array()')
+var items = ['one', 'two', 'three'];
+// Create a reference to the array of items
+var itemsRef = items;
+// Add an item to the original array
+items.push('four');
+
+// The length of each array should be the same,
+// since they both point to the same array object
+console.log(items.length == itemsRef.length); //true
+</code></pre>
+
+<blockquote><p>重要的是要记住引用只指向所指对象，而不是另一个引用。</p></blockquote>
+
+<p>我们看一个实体对象改变，而引用继续指向旧式对象的例子：</p>
+
+<pre><code>// Set items to an array (object) of strings
+var items = ['one', 'two', 'three'];
+// Set itemsRef to a reference to items
+var itemsRef = items;
+// Set items to equal a new object
+items = ['new', 'array'];
+
+// items and itemsRef now point to different objects.
+// items points to [ 'new', 'array' ]
+// itemsRef points to [ 'one', 'two', 'three' ]
+console.log(items !== itemsRef);
+</code></pre>
+
+<p>字符串是较有迷惑性的</p>
+
+<pre><code>var item = new String('test');
+var itemRef = item;
+item += 'ing'; //这里创建新的对象，但是基本类型
+console.log(item, itemRef, item != itemRef);
+//test result:
+//testing 
+//String {0: "t", 1: "e", 2: "s", 3: "t", length: 4, [[PrimitiveValue]]: "test"}
+//false
+
+// Set item equal to a new string object
+var item = 'test';
+// itemRef now refers to the same string object
+var itemRef = item;
+// Concatenate some new text onto the string object
+// NOTE: This creates a new object and does not modify
+// the original object.
+item += 'ing';
+// The values of item and itemRef are NOT equal, as a whole
+// new string object has been created
+console.log(item != itemRef);
+</code></pre>
+
+<h3>作用域</h3>
+
+<p>JavaScript只有两个作用域：函数作用域和全局作用域。但是Es6里引入了块作用域。</p>
+
+<p>JavaScript里变量作用域的运行原理 </p>
+
+<pre><code>// Set a global variable, foo, equal to test
+var foo = 'test';
+// Within an if block
+if (true) {
+    // Set foo equal to 'new test'
+    // NOTE: This still belongs to the global scope!
+    var foo = 'new test';
+}
+
+// As we can see here, as foo is now equal to 'new test'
+console.log(foo === 'new test');
+
+// Create a function that will modify the variable foo
+function test() {
+    var foo = 'old test';
+}
+
+// However, when called, 'foo' remains within the scope
+// of the function
+test();
+
+// Which is confirmed, as foo is still equal to 'new test'
+console.log(foo === 'new test');
+</code></pre>
+
+<p>隐式的全局变量</p>
+
+<pre><code>// A function in which the value of foo is set
+function test() {
+    foo = 'test';
+}
+
+// Call the function to set the value of foo
+test();
+// We see that foo is now globally scoped
+console.log(window.foo === 'test');
+</code></pre>
+
+<p>在函数里 声明变量的时候，要注意变量提升问题。任何声明在函数里 的作用域都将会把它的声明提升作用域的顶端。这样做的目的是保障变量名在整个作用域都能访问。</p>
+
+<h3>Context上下文环境</h3>
+
+<p>通过this访问环境，它经常指向代码运行的环境。 </p>
+
+<pre><code>function setFoo(fooInput) {
+    this.foo = fooInput;
+}
+var foo = 5;
+console.log('foo at the window level is set to: ' + foo);
+
+var obj = {
+    foo: 10
+};
+console.log('foo inside of obj is set to: ' + obj.foo);
+
+// This will change window-level foo
+setFoo(15);
+console.log('foo at the window level is now set to: ' + foo);
+
+// This will change the foo inside the object
+obj.setFoo = setFoo;
+obj.setFoo(20);
+console.log('foo inside of obj is now set to: ' + obj.foo);
+</code></pre>
+
+<p>这个函数setFoo有点奇怪。通常不会在普通的函数里使用this，这里是因为我们是要把setFoo关联到obj对象的。JavaScript有两种方法让你指定运行环境的：call、apply；</p>
+
+<pre><code>// A simple function that sets the color style of its context
+function changeColor(color) {
+    this.style.color = color;
+}
+
+// Calling it on the window object, which fails, since it doesn't
+// have a style object
+changeColor('white');
+
+// Create a new div element, which will have a style object
+var main = document.createElement('div');
+
+// Set its color to black, using the call method
+// The call method sets the context with the first argument
+// and passes all the other arguments as arguments to the function
+changeColor.call(main, 'black');
+
+//Check results using console.log
+//The output should say 'black'
+console.log(main.style.color);
+
+// A function that sets the color on the body element
+function setBodyColor() {
+    // The apply method sets the context to the body element
+    // with the first argument, and the second argument is an array
+    // of arguments that gets passed to the function
+    changeColor.apply(document.body, arguments);
+}
+// Set the background color of the body to black
+setBodyColor('black');
+</code></pre>
+
+<h3>闭包</h3>
+
+<p>闭包是一种工具，我们可以通过它在内部函数中 在外部函数终止执行的时候访问外部函数出现的变量。</p>
+
+<p>它提供给我们一种上下文环境，只能以某种形式访问。</p>
+
+<pre><code>// Find the element with an ID of 'main'
+var obj = document.getElementById('main');
+// Change its border styling
+obj.style.border = '1px solid red';
+// Initialize a callback that will occur in one second
+setTimeout(function() {
+    // Which will hide the object
+    obj.style.display = 'none';
+}, 1000);
+
+// A generic function for displaying a delayed alert message
+function delayedAlert(msg, time) {
+    // Initialize an enclosed callback
+    setTimeout(function() {
+        // Which utilizes the msg passed in from the enclosing function
+        console.log(msg);
+    }, time);
+}
+// Call the delayedAlert function with two arguments
+delayedAlert('Welcome!', 2000);
+
+setTimeout('otherFunction()', 1000); 
+//or even  
+setTimeout('otherFunction(' + num + ',' + num2 + ')', 1000);
+</code></pre>
+
+<p>这两种形式容易在发布代码到production过程中中压缩的时候易出现问题。</p>
+
+<h4>使用闭包实现科里化</h4>
+
+<pre><code>// A function that generates a new function for adding numbers
+function addGenerator(num) {
+    // Return a simple function for adding two numbers
+    // with the first number borrowed from the generator
+    return function(toAdd) {
+        return num + toAdd
+    };
+}
+
+// addFive now contains a function that takes one argument,
+// adds five to it, and returns the resulting number
+var addFive = addGenerator(5);
+// We can see here that the result of the addFive function is 9,
+// when passed an argument of 4
+console.log( addFive( 4 ) == 9 );
+</code></pre>
+
+<h4>使用匿名函数来隐藏全局作用域中的变量</h4>
+
+<pre><code>// Create a new anonymous function, to use as a wrapper
+(function() {
+    // The variable that would normally be global
+    var msg = 'Thanks for visiting! ';
+    // Binding a new function to a global object
+    window.onload = function() {
+        // Which uses the 'hidden' variable
+        console.log(msg);
+    };
+    // Close off the anonymous function and execute it
+})();
+</code></pre>
+
+<p>闭包允许引用存在于父函数中的变量。但是它在刚创建的时候并不提供变量的值。它提供的是变量最终的值。 </p>
+
+<pre><code>// An element with an ID of main
+var obj = document.getElementById('main');
+// An array of items to bind to
+var items = ['click', 'keypress'];
+
+// Iterate through each of the items
+for (var i = 0; i &lt; items.length; i++) {
+    // Use a self-executed anonymous function to induce scope
+    (function() {
+        // Remember the value within this scope
+        // Each 'item' is unique.
+        //Not relying on variables created in the parent context.
+        var item = items[i];
+        // Bind a function to the element
+        obj['on' + item] = function() {
+            // item refers to a parent variable that has been successfully
+            // scoped within the context of this for loop
+            console.log('Thanks for your ' + item);
+        };
+    })();
+}
+</code></pre>
+
+<h3>函数重载类型检查</h3>
+
+<p>JavaScript并不提供函数重载的特性，但是存在功能让我们可以实现重载。</p>
+
+<p>函数的重载我们需要知道两件事参数的数量和参数的类型：</p>
+
+<p>我们可以借助每个JavaScript函数都有的语境变量arguments类数组对象。
+重载的例子：</p>
+
+<pre><code>// A simple function for sending a message
+function sendMessage(msg, obj) {
+    // If both a message and an object are provided
+    if (arguments.length === 2) {
+        // Send the message to the object
+        // (Assumes that obj has a log property!)
+        obj.log(msg);
+    } else {
+        // Otherwise, assume that only a message was provided
+        // So just display the default error message
+        console.log(msg);
+    }
+}
+
+// Both of these function calls work
+sendMessage('Hello, World!');
+sendMessage('How are you?', console);
+</code></pre>
+
+<p>你可能想知道有没有办法让arguments拥有Array的全部功能。就其本身来说是不可能的。但是arguments的拷贝倒是可以</p>
+
+<p>将arguments转换成数组</p>
+
+<pre><code>function  aFunction(x,  y,  z)  {
+    var  argsArray  =  Array.prototype.slice.call( arguments,  0 );
+    console.log( 'The last argument is: '  +  argsArray.pop() );
+}
+
+// Will output 'The last argument is 3'.
+aFunction( 1, 2, 3 ); 
+</code></pre>
+
+<h3>关于类型检查</h3>
+
+<h4>1.第一种就是使用typeof检查</h4>
+
+<pre><code>var num = '50';
+var arr = 'apples,oranges,pears';
+
+// Check to see if our number is actually a string
+if (typeof num === 'string') {
+    // If it is, then parse a number out of it
+    num = parseInt(num);
+}
+// Check to see if our array is actually a string
+if (typeof arr == 'string') {
+    // If that's the case, make an array, splitting on commas
+    arr = arr.split(',');
+}
+</code></pre>
+
+<p>在变量不是Object Array 或者是 自定义对象的时候，这个方案是完美的。</p>
+
+<h4>2.第二种方式是使用instanceof，它检查右操作数是不是左操作数的构造函数。</h4>
+
+<pre><code>var today = new Date();
+var re = /[a-z]+/i;
+
+// These don't give us enough details
+console.log('typeof today: ' + typeof today);
+console.log('typeof re: ' + typeof re);
+
+// Let's find out if the variables are of a more specific type
+if (today instanceof Date) {
+    console.log('today is an instance of a Date.');
+}
+if (re instanceof RegExp) {
+    console.log('re is an instance of a RegExp object.');
+}
+</code></pre>
+
+<blockquote><p>更好的检查方法是使用Object.prototype.toString.call(obj).</p></blockquote>
+
+<h3>新的对象工具</h3>
+
+<p>对象的修改JavaScript有3种方法控制一个对象是否可以被修改</p>
+
+<h4>1.Object.preventExtensions()阻止添加新的属性，强行添加会导致typeError.但是可以修改\删除已经存在的属性</h4>
+
+<pre><code>// Creates a new object and stores it in 'obj'
+var obj = {};
+// Creates a new Object object using preventExtensions
+var obj2 = Object.preventExtensions(obj);
+
+// Generates TypeError when trying to define a new property
+function makeTypeError() {
+    'use strict';
+    //Generates TypeError when trying to define a new property
+    Object.defineProperty(obj2, 'greeting', {
+        value: 'Hello World'
+    }); 
+}
+makeTypeError();
+</code></pre>
+
+<h4>2.Object.seal()不能新添属性和删除属性及转换成getter。</h4>
+
+<pre><code>// Creates a new object and uses object.seal to restrict it
+var obj = {};
+obj.greeting = 'Welcome';
+Object.seal(obj);
+//Updating the existing writable property
+//Cannot convert existing property to accessor, throws TypeErrors
+obj.greeting = 'Hello World';
+Object.defineProperty(obj, 'greeting', {
+    get: function() {
+        return 'Hello World';
+    }
+});
+
+// Cannot delete property, fails silently
+delete obj.greeting;
+
+function makeTypeError() {
+    'use strict';
+    //Generates TypeError when trying to delete a property
+    delete obj.greeting;
+    //Can still update property
+    obj.greeting = 'Welcome';
+    console.log(obj.greeting);
+}
+makeTypeError();
+</code></pre>
+
+<h4>3.Object.freeze</h4>
+
+<p>这里的对象就是不能有任何的改变了，但是它的某个属性是对象的话仍然可以改变的</p>
+
+<pre><code>//Creates a new object with two properties. Second property is an object
+var obj = {
+    greeting: "Welcome",
+    innerObj: {}
+};
+//Freeezes our obj
+Object.freeze(obj);
+//silently fails
+obj.greeting = 'Hello World';
+//innerObj can still be updated
+obj.innerObj.greeting = 'Hello World';
+console.log('obj.innerObj.greeting = ' + obj.innerObj.greeting);
+
+//Cannot convert existing property to accessor
+//Throws TypeError
+Object.defineProperty(obj, 'greeting', {
+    get: function() {
+        return 'Hello World';
+    }
+});
+// Cannot delete property, fails silently
+delete obj.greeting;
+
+function makeTypeError() {
+    'use strict';
+}
+//Generates TypeError when trying to delete a property
+delete obj.greeting;
+
+//Freeze inner object
+Object.freeze(obj.innerObj);
+//innerObj is now frozen. Fails silently
+obj.innerObj.greeting = 'Worked so far...';
+
+function makeTypeError() {
+    'use strict';
+    //all attempts will throw TypeErrors
+    delete obj.greeting;
+    obj.innerObj.greeting = 'Worked so far...';
+    obj.greeting = "Welcome";
+};
+makeTypeError();
+</code></pre>
+
+<p>原文出自：<a href="http://www.cnblogs.com/zha-zha/articles/4863472.html">http://www.cnblogs.com/zha-zha/articles/4863472.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[影响一生的职业建议]]></title>
+    <link href="http://fegg.github.io/blog/2015/10/09/only-one/"/>
+    <updated>2015-10-09T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2015/10/09/only-one</id>
+    <content type="html"><![CDATA[<p><img src="http://fegg.github.io/images/fish.jpg" title="鱼" alt="" /></p>
+
+<h3>影响一生的职业建议</h3>
+
+<p>前段时间我和一个同事进行了一次有趣的讨论。我们重新审视了我们的工作历史，并探讨了那些可以称之为丰富多彩的个人特性是如何对我们产生长期的负面影响的。之后我发现在我刚走出校园的时候确实有点混蛋（某些人也许会说我现在依然有点混蛋，不过这是题外话了）。那时候的我是一个自负，刻薄并不知道尊重其他人的人。不过我想那时候的我知道这些并反而对于这样的我感到自豪。</p>
+
+<!-- more -->
+
+
+<p>过去，我喜欢直接指出那些更加资深的工程师他们的错误，尽管大多说时间我是对的，但我却没有能力去让它起作用。曾经在一次正在进行的会议中，有个高级工程师打断了我，他当时说的话我至今记忆犹新，“如果你还不闭嘴的话，我就把你揍出屎来。”当时我对这句话嗤之以鼻因为我知道他不敢，但多年以后我才意识到这句话的背后含义：他真的想要这么做。</p>
+
+<p>从那之后我成长了许多，我学会了注意言辞并不受本性的影响去尊重别人。我会在专业场合将讽刺之言抑制于口，而在与好朋友的私人场合下将其宣泄于外。 我并非无师自通学会自制力以及很多其他的宝贵经验，它们是在伴我一路走来的导师的精心指导下学会的。如果不是他们，也许我那糟糕的人际关系早已挫毁我的事业。</p>
+
+<p>回想起来，正是由于这些我所接触到的人才使得我的事业变得如此顺风顺水。一路之上的导师们将一个纯粹的菜鸟塑造成一个我可以为之自豪的人。更重要的是，在他们的潜移默化之下，我现在不仅是一个好的程序员——同时也是一个好的队友和好人。他们对我的人生的影响是如此之深，以致我现在依然会将他们的建议转述给我现在指导的同事们。</p>
+
+<p>同时，我也发现他们的建议具有普适性，所以我想将这些伴我一路成长的建议 分享给大家 。当然， 由于我的记忆力没有那么好所以我所复述的会与原话有些出入， 不过我想我应该已经抓到了它们中的精髓部分。</p>
+
+<h4>不要做快餐师</h4>
+
+<p>我最早的一份工作只持续了8个月所在的公司就倒闭了。 当我在和我的经理讨论接下来我该去做什么的时候，他给我了这样的建议:</p>
+
+<blockquote><p>Nicholas, 你比你的代码更有价值。 不论你的下一份工作是什么，确保你不会成为一个快餐师。不要接受一份告诉你了做什么以及如何去做的工作。 你需要工作在人们不仅欣赏你的工作能力也同样欣赏你对产品的观点的地方。</p></blockquote>
+
+<p>我一直把它牢记在心里。 成为一个履行者并不好——你需要去参与到通向实现之路的过程中。好的工程师不会仅仅 服从安排，他们给产品的主人发送反馈并与他们一起工作来使得产品变得更好。幸运的是， 我明智地去选择我的工作并从不使自己陷入到人们不尊重或者不重视我的观点的环境中。</p>
+
+<h4>自我推销</h4>
+
+<p>一天我在雅虎的第二任经理将我拉到一边并给我了一些建议。他说他曾经观察我的工作并觉得我有些内向</p>
+
+<blockquote><p>你的工作完成的很棒，真的很棒。我喜欢你的代码样式并且它们很少出bug。但是问题是其他人并没有意识到这一点。如果你想要获得与你所做的事相称的名分，你得让其他人了解这些。要让别人注意到你，你需要做一些自我推销。</p></blockquote>
+
+<p>我花了一些时间来领会他上所说的话，不过最终我想通了。如果你工作做的好，但是没有人知道你工作做的好，那么工作做的再好对你也没有任何人知道。 你的上司可以去支持你但是却不能为你证明你的情况。组织中的群众需要了解你的价值，达到这个目的的最好的方法是告诉别人你做了什么。</p>
+
+<p>现在我会把这条建议提给许多同事。自我推销并不意味着：“看我，看我，我很牛B。” 它意味着让别人知道你在某个时间点完成了一个重要指标或者学到了一些新的知识。它也意味着向别人展示你所引以为傲的工作成果。它意味着为彼此的成就而庆贺。它意味在组织中有存在感。在角落里默写代码稍显古怪 ——别这样搞。发封简短的邮件：“嘿，我刚搞了个新的邮件布局。你们觉得它怎么样?”会大有裨益。</p>
+
+<h4>始关乎人</h4>
+
+<p>在我职业生涯的早期，我很追逐职称。我最想知道的一件事就是如何去升职。于是我在雅虎首页的第一次和上司的一对一会议上，我问他怎么做才可以晋升。他的话语至今萦绕在我耳边：</p>
+
+<blockquote><p>从某种程度上来说，已经不能根据技术来评价你了，现在要看你与人之间的交往方式了。</p></blockquote>
+
+<p>我不知道这是不是我曾经接受到的关于软件工程专业的最好建议。他太对了。在那个阶段，已经没有人回去怀疑我的技术能力了。在他们眼中，我是一个写的一手优质的好代码并很少出bug的家伙。我所欠缺的是领导能力。</p>
+
+<p>之后，我曾看到无数的工程师遇到他们的事业瓶颈。他们聪明，写的一手好代码，然而由于与他人协作能力的缺乏却让他们裹足难前。每当有人在软件工程事业中停滞，我都会将这条建议转述给他们，而且它的确能恰到好处的帮到他们。</p>
+
+<h4>它没你想象的那么重要</h4>
+
+<p>在雅虎的有段时间，我非常失落。不，与其说是失落，倒不如说是愤怒更加准确。我靠频繁的与他人争辩来发泄我的怒火。一切都糟透了，我并不想如此下去。在一个特别艰难的日子，我向我的一位导师请教当一切都如此之糟的时候如何去保持冷静。他的回应是：</p>
+
+<blockquote><p>这很简单。你必须认识到：这些都不重要。今天一些蹩脚的代码被准入了，明天网站挂了。那又怎样呢？工作不是你生活的全部。工作问题都不是真的问题。对你最重要的是工作之外发生的事情。我回到家看到我老婆在等着我，这就很美好了。</p></blockquote>
+
+<p>那时我才从马塞诸塞州搬到加利福尼亚，朋友也很难交。工作完全构成了我的生活，只有它才让我感觉到自己还是一个完整的人。工作的走向完全意味着我生活的走向。这次谈话让我明白了我必须得去找寻生活中除工作之外， 在其中可以忘记工作上的烦恼的的部分。</p>
+
+<p>他是对的，当我试着转变心态并将那些工作上的烦心事归类于“工作上的事”，我又能清醒的思考了。我会冷静的对待工作并有了更好的人际关系。</p>
+
+<h4>人各有路</h4>
+
+<p>当我在雅虎首次升任首席工程师的时候，我曾向我的主管请教说如何更好地理解这个角色所肩负的责任。我知道我需要更像一个领导，但是不知道如何去有威信。我找他寻求帮助，他如此说：</p>
+
+<blockquote><p>我不能明确的告诉你如何去变得有威信，这需要你自己去找。千人千路，你唯一需要做的是去找一个你可以接受并让你感到合适的方式。很遗憾我不能告诉你它是什么，但既然你在这个位置，就必须去找到它。</p></blockquote>
+
+<p>那一年我花了许多时间去观察那些权威人物以及他们与其他人交往的方式。我把他们走路，说话，处理问题的方式做了笔记。在经历百种尝试之后，我终于找到了属于我的那种方式。这是每个追求权威的人都要经历的荆棘之路，每个人都独一无二。不过相对他人而言，我比较幸运的是在出发之前已经有导师指给我了线索。</p>
+
+<h4>从“如何做”到“做什么”</h4>
+
+<p>在一次我与经理的谈话中，我问他对于处于新职位的我的期望是什么。他回答说：</p>
+
+<blockquote><p>以你今天的位置来说，你已经明白了“如何做”这个问题，比如说我们会告诉你需要完成什么然后你能明白的想出如何去完成。不过对于你的新职位，你需要学会回答“做什么”这个问题，我期待你来告诉我你需要做什么。</p></blockquote>
+
+<p>这是许多工程师泥足深陷的部分，也许如果不是这条建议，我也会陷进去。从“如何做”到“做什么”的转变非常困难而且需要大量的时间。它也需要你去成熟的均衡自己的个人欲望以及工作重点。毕竟，如果你能够任意支配你的时间，你也需要为你的产出负责。</p>
+
+<p>在Box，我们称之为“奔跑的开环”，它意味着你们可以在尽量少的关注下做你们的事情，但是你们所做的整合起来却依然需要对公司或者机构可以造成积极的影响。许多想要到达下一级别的工程师会在此受挫，所以我依然会将这条建议给予需要的人。</p>
+
+<h4>在其位，谋其政</h4>
+
+<p>我曾经参与过一个会议，一言不发的从开始坐到结束。后面在一次与主管的一对一会议中，我提到了这件事，说我刚参加了一个不明不白的会并且没有发表任何一件。他说：</p>
+
+<blockquote><p>这种事永远不要有下次了。需要你参与一个会议，事出必有因。如果你不知道这原因，那么问下别人。如果没来由那么就撤吧。你现在扮演的是领导角色，就需要做领导该做的事情。不要默默地走进房间。尽可能表现出你的控制力，同时其他人也会认同它。</p></blockquote>
+
+<p>这条建议让我想起了高中时候表演课上学到的内容：没人知道你正在虚张声势。如果你能在紧张的时候表现的很轻松，那么其他人就不会知道你很紧张。领导力也是如此。俗语有云：假戏久坐假成真。从那时起，我不会再默不作声的参加会议。我会确定一个会议是否真的需要我去参加才去参加。</p>
+
+<h4>退一步海阔天空</h4>
+
+<p>曾经有段时间，团队中充满了各种争论。不过通常我会借用自己的权威性来结束这些争论，我也为之感到骄傲。那时我有种“终结者”的感觉，然后我的上司注意到了这点，并给我了如下建议：</p>
+
+<blockquote><p>我看到了正在进行的大量争论，并且我知道你常常最终会赢。虽然在大多时间你都是对的，但偶尔也让他们赢一次吧。从中挑选真正对你有意义的事情并为之努力，然后放过其他事情。百争百胜其实并没有必要。</p></blockquote>
+
+<p>对于这条建议，我一开始是抵触的。既然几乎所有时间我都是对的，凭什么要让别人赢？不过那时候我已经开始去相信他的直觉了，所以我决定放手一试。最终的结果是再没有那么多的争论了。人们不再觉得他们必须要胜过我，我也更善于辨明一件事情是否值得我去那么关心。我会在重要事项上坚持我的观点，至于其他的交由他们来解决。自此，所有会议的激烈程度都大幅下降了。</p>
+
+<h4>总结</h4>
+
+<p>回望毕业时那傲慢地自己，谁能料到我的事业人生会有今天。那时的我对谁也不服气，在别人眼里是个聪明却难相处的家伙，只有情非得已之下他们才会来和我打交道。如果不是这一路上的各位导师，以及事业早期那几次难堪的失败，我那糟糕的人际沟通技巧（或者由此导致的其他不足）早已将我完全搞垮。这些天，我会定期地去找那些比我有经验的人并寻求建议。可能我已不再犯那些明显的大错误，但是我更不会去等到错误发生之后才去找寻求那些我信任的资深人士的意见。</p>
+
+<p>我在雅虎的最近五年是我事业转折点中最重要的一些。我不仅能够研究大量的有趣的问题，更重要的是我有幸结识了组织中许多很棒的经理以及其他导师。时至今日，我可以成为一个不管是在工作中还是在真实生活中都会为之自豪的人，这些谈话居功至伟。</p>
+
+<p>如果要我给一条首要的建议，那就是“找出在工作中在某一方面（技术，组织能力等）强过你的人，并去靠近他们。试试看去经常性的跟他们一起吃午饭或和咖啡来汲取他们大脑中的大量知识，你的事业甚至是你的人生都会走向出乎意料的更好。</p>
+
+<p>原文链接: <a href="http://www.nczonline.net/blog/2013/10/15/the-best-career-advice-ive-received/">http://www.nczonline.net/blog/2013/10/15/the-best-career-advice-ive-received/</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[React 组件开发入门]]></title>
+    <link href="http://fegg.github.io/blog/2015/07/26/induction-react-component-dev/"/>
+    <updated>2015-07-26T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2015/07/26/induction-react-component-dev</id>
+    <content type="html"><![CDATA[<h3>前言</h3>
+
+<p>熟悉 React 的思想后，我们先来尝试开发一个单纯的小组件，可以对比一下是不是比以前的开发模式更加舒适了，这里我主要以一个 Loadding 组件来举栗子，实现了几个基本的功能：</p>
+
+<ul>
+<li>一种类型的 loadding（菊花转）</li>
+<li>能够设置 loadding 的三个属性：width height color</li>
+<li>能够控制 loadding 的显示和隐藏</li>
+</ul>
+
+
+<p>其实对于一个简单需求来说，这三个属性已经很实用了。但是去网上看一些外国大神写的组件，有一些不明白的地方，所以自己就慢慢搞，do it！</p>
+
+<h3>设计</h3>
+
+<p>我想这样用 loadding 组件：</p>
+
+<p><img src="http://fegg.github.io/images/react/code-loadding.png" alt="使用代码" /></p>
+
+<!-- more -->
+
+
+<p>所以我定义这个组件的基本结构如下：</p>
+
+<pre><code>var Loadding = React.createClass({
+    // 控制组件属性的类型
+    propTypes: {},
+    // 控制组件属性的默认值
+    getDefaultProps: function () {},
+    // 组装基本的内联样式
+    getComponentStyle: function () {},
+    // 渲染基本的组件，拆分 render 方法的粒度
+    renderBaseComp: function () {},
+    // 最终的渲染方法
+    render: function () {}
+});
+</code></pre>
+
+<p>这个组件中，我使用的 内联样式 来控制组件的内部基本样式的稳定。其实有时候我们会觉得内联样式不好，但是我个人觉得每一种设置 CSS 形式的方法，用在合适的场景中就是正确的。</p>
+
+<p>每部分的具体实现如下，代码中有一些讲解（这里我不会介绍具体 loadding 效果是怎么出来的，看代码应该就会明白，主要介绍一个 react 制作简单组件的思路和写法）对于扩展性来说，</p>
+
+<blockquote><p>你还可以加入 className 和 type 这些修饰性的属性，但是我更倾向于迭代式的组件开发，小组件就要具有良好的封闭性，使用接口简单，大组件才考虑更好的鲁棒性和可扩展性，这样开发一个组件的性价比才高。需要注意对 getDefaultProps 的理解，只有当使用接口的人代码中根本没有写那个属性的时候，才会使用定义的默认值。</p></blockquote>
+
+<h3>实现</h3>
+
+<pre><code>var Loadding = React.createClass({
+    propTypes: {
+        width: React.PropTypes.oneOfType([
+            React.PropTypes.number,
+            React.PropTypes.string
+        ]),
+        height: React.PropTypes.oneOfType([
+            React.PropTypes.number,
+            React.PropTypes.string
+        ]),
+        color: React.PropTypes.string,
+        active: React.PropTypes.bool
+    },
+    getDefaultProps: function() {
+        return {
+            color: '#00be9c',
+            height: 30,
+            width: 30,
+            active: false
+        };
+    },
+
+    getComponentStyle: function() {
+        var width = this.props.width,
+            height = this.props.height,
+            color = this.props.color;
+        /* 中间圆心 */
+        var cWidth = 0.4 * width,
+            cHeight = 0.4 * height,
+            cMarginLeft = -0.5 * cWidth,
+            cMarginTop = -0.5 * cHeight;
+
+        /* 基本样式 */
+        return {
+            loaddingStyle: { // loadding 容器
+                width: width,
+                height: height
+            },
+            lineStyle: { // loadding 元件样式
+                background: color
+            },
+            centerStyle: { // loadding 圆心样式
+                width: cWidth,
+                height: cHeight,
+                marginLeft: cMarginLeft,
+                marginTop: cMarginTop
+            }
+        };
+    },
+
+    renderBaseComp: function(compStyle) {
+        /* 生成动画元件 */
+        var n = 4; // 元件个数，todo: 定制个数
+        var lines = []; // 元件元素集合
+        for (var i = 0; i &lt; n; i++) {
+            lines.push(
+                &lt;div className="line"&gt;
+                    &lt;span className="top" style={ compStyle.lineStyle }&gt;&lt;/span&gt;
+                    &lt;span className="bottom" style={ compStyle.lineStyle }&gt;&lt;/span&gt;
+                &lt;/div&gt;
+            );
+        }
+        return lines;
+    },
+
+    render: function() {
+        /* 生成组件自己的样式 */
+        var compStyle = this.getComponentStyle();
+        /* 模拟渲染基本动画元件 */
+        var lines = this.renderBaseComp(compStyle);
+
+        // loadding 的class，控制交互
+        var loaddingClasses = cx({
+            loadding: true,
+            active: this.props.active
+        });
+
+        return (
+            &lt;div className={ loaddingClasses } style={ compStyle.loaddingStyle }&gt;
+                {lines}
+                &lt;div className="loadding-center" style={ compStyle.centerStyle }&gt;&lt;/div&gt;
+            &lt;/div&gt;
+
+        );
+    }
+
+});
+</code></pre>
+
+<p>最后，下面是基本的 SASS（不考虑不支持的情况，不支持都不用开发，直接用图，性价比更高）</p>
+
+<pre><code>@include keyframes(load) {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: .25;
+    }
+    50% {
+        opacity: .5;
+    }
+    75% {
+        opacity: .75;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.loadding {
+    display: none;
+    position: absolute;
+    &amp;.active {
+        display: block;
+    }
+    .loadding-center {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        background: #fff;
+        border-radius: 50%;
+    }
+    .line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        .top {
+            content: '';
+            display: block;
+            width: 1px;
+            font-size: 0;
+            height: 50%;
+        }
+        .bottom {
+            @extend .top;
+        }
+        @for $i from 1 through 4 {
+            &amp;:nth-child(#{$i}) {
+                transform:rotate(45deg * ($i - 1));
+                .top {
+                    @include animation(load, 0.8s, linear, 0s, infinite);
+                }
+                .bottom {
+                    @include animation(load, 0.8s, linear, 0.4s + $i/10, infinite);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>里面用到的一个 animation 混淆方法：</p>
+
+<pre><code>@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+    @-ms-keyframes #{$name} {
+        @content;
+    }
+    @keyframes #{$name} {
+        @content;
+    }
+}
+
+@mixin animation ($name, $duration, $func, $delay, $count, $direction: normal) {
+    -webkit-animation: $name $duration $func $delay $count $direction;
+    -moz-animation: $name $duration $func $delay $count $direction;
+    -o-animation: $name $duration $func $delay $count $direction;
+    animation: $name $duration $func $delay $count $direction;
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[React 组件之间如何交流]]></title>
+    <link href="http://fegg.github.io/blog/2015/07/19/react-component-communicate/"/>
+    <updated>2015-07-19T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2015/07/19/react-component-communicate</id>
+    <content type="html"><![CDATA[<h3>前言</h3>
+
+<p>今天群里面有很多都在问关于 React 组件之间是如何通信的问题，之前自己写的时候也遇到过这类问题。下面是我看到的一篇不错英文版的翻译，看过我博客的人都知道，我翻译可能不会按部就班，会尽可能用中文的意思，来将作者要讲述的技术描述清楚。英文能力有限，如果有不对的地方请跟我留言，一定修改……^_^</p>
+
+<h3>原著序</h3>
+
+<p>处理 React 组件之间的交流方式，主要取决于组件之间的关系，然而这些关系的约定人就是你。</p>
+
+<p>我不会讲太多关于 data-stores、data-adapters 或者 data-helpers 之类的话题。我下面只专注于 React 组件本身的交流方式的讲解。</p>
+
+<p>React 组件之间交流的方式，可以分为以下 3 种：</p>
+
+<ul>
+<li>【父组件】向【子组件】传值；</li>
+<li>【子组件】向【父组件】传值；</li>
+<li>没有任何嵌套关系的组件之间传值（PS：比如：兄弟组件之间传值）</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h3>一、【父组件】向【子组件】传值</h3>
+
+<blockquote><p>初步使用</p></blockquote>
+
+<p>这个是相当容易的，在使用 React 开发的过程中经常会使用到，主要是利用 props 来进行交流。例子如下：</p>
+
+<pre><code>// 父组件
+var MyContainer = React.createClass({
+  getInitialState: function () {
+    return {
+      checked: true
+    };
+  },
+  render: function() {
+    return (
+      &lt;ToggleButton text="Toggle me" checked={this.state.checked} /&gt;
+    );
+  }
+});
+
+// 子组件
+var ToggleButton = React.createClass({
+  render: function () {
+    // 从【父组件】获取的值
+    var checked = this.props.checked,
+        text = this.props.text;
+
+    return (
+        &lt;label&gt;{text}: &lt;input type="checkbox" checked={checked} /&gt;&lt;/label&gt;
+    );
+  }
+});
+</code></pre>
+
+<blockquote><p>进一步讨论</p></blockquote>
+
+<p>如果组件嵌套层次太深，那么从外到内组件的交流成本就变得很高，通过 props 传递值的优势就不那么明显了。（PS：所以我建议尽可能的减少组件的层次，就像写 HTML 一样，简单清晰的结构更惹人爱）</p>
+
+<pre><code>// 父组件
+var MyContainer = React.createClass({
+  render: function() {
+    return (
+      &lt;Intermediate text="where is my son?" /&gt;
+    );
+  }
+});
+
+// 子组件1：中间嵌套的组件
+var Intermediate = React.createClass({
+  render: function () {
+    return (
+      &lt;Child text={this.props.text} /&gt;
+    );
+  }
+});
+
+// 子组件2：子组件1的子组件
+var Child = React.createClass({
+  render: function () {
+    return (
+      &lt;span&gt;{this.props.text}&lt;/span&gt;
+    );
+  }
+});
+</code></pre>
+
+<h3>二、【子组件】向【父组件】传值</h3>
+
+<p>接下来，我们介绍【子组件】控制自己的 state 然后告诉【父组件】的点击状态，然后在【父组件】中展示出来。因此，我们添加一个 change 事件来做交互。</p>
+
+<pre><code>// 父组件
+var MyContainer = React.createClass({
+  getInitialState: function () {
+    return {
+      checked: false
+    };
+  },
+  onChildChanged: function (newState) {
+    this.setState({
+      checked: newState
+    });
+  },
+  render: function() {
+    var isChecked = this.state.checked ? 'yes' : 'no';
+    return (
+      &lt;div&gt;
+        &lt;div&gt;Are you checked: {isChecked}&lt;/div&gt;
+        &lt;ToggleButton text="Toggle me"
+          initialChecked={this.state.checked}
+          callbackParent={this.onChildChanged}
+          /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+
+// 子组件
+var ToggleButton = React.createClass({
+  getInitialState: function () {
+    return {
+      checked: this.props.initialChecked
+    };
+  },
+  onTextChange: function () {
+    var newState = !this.state.checked;
+    this.setState({
+      checked: newState
+    });
+    // 这里要注意：setState 是一个异步方法，所以需要操作缓存的当前值
+    this.props.callbackParent(newState);
+  },
+  render: function () {
+    // 从【父组件】获取的值
+    var text = this.props.text;
+    // 组件自身的状态数据
+    var checked = this.state.checked;
+
+    return (
+        &lt;label&gt;{text}: &lt;input type="checkbox" checked={checked}                 onChange={this.onTextChange} /&gt;&lt;/label&gt;
+    );
+  }
+});
+</code></pre>
+
+<p><img src="http://fegg.github.io/images/react/demo3.gif" alt="运行效果" /></p>
+
+<p>我觉得原文作者用代码不是很直观，接下来我话一个流程走向简图来直观描述一下这个过程：</p>
+
+<p><img src="http://fegg.github.io/images/react/comp-child-to-parent.png" alt="流程简图" /></p>
+
+<blockquote><p>这样做其实是依赖 props 来传递事件的引用，并通过回调的方式来实现的，这样实现不是特别好，但是在没有任何工具的情况下也是一种简单的实现方式</p></blockquote>
+
+<p>这里会出现一个我们在之前讨论的问题，就是组件有多层嵌套的情况下，你必须要一次传入回调函数给 props 来实现子组件向父组件传值或者操作。</p>
+
+<h3>Tiny-Tip: React Event System</h3>
+
+<p>在 onChange 事件或者其他 React 事件中，你能够获取以下东西：</p>
+
+<ul>
+<li>【this】：指向你的组件</li>
+<li>【一个参数】：这个参数是一个 <a href="http://wiki.jikexueyuan.com/project/react/event-system.html">React 合成事件</a>，SyntheticEvent。</li>
+</ul>
+
+
+<p>React 对所有事件的管理都是自己实现的，与我们之前使用的 onclick、onchange 事件不一样。从根本上来说，他们都是绑定到 body 上。</p>
+
+<pre><code>document.on('change', 'input[data-reactid=".0.2"]', function () {...});
+</code></pre>
+
+<p>上面这份代码不是来自于 React，只是打一个比方而已。</p>
+
+<p>如果我没有猜错的话，React 真正处理一个事件的代码如下：</p>
+
+<pre><code>var listenTo = ReactBrowserEventEmitter.listenTo;
+...
+function putListener(id, registrationName, listener, transaction) {
+  ...
+  var container = ReactMount.findReactContainerForID(id);
+  if (container) {
+    var doc = container.nodeType === ELEMENT_NODE_TYPE ? container.ownerDocument : container;
+    listenTo(registrationName, doc);
+  }
+  ...
+}
+// 在监听事件的内部，我们能发现如下：
+target.addEventListener(eventType, callback, false);
+</code></pre>
+
+<p>这里有所有 React 支持的事件：<a href="http://reactjs.cn/react/docs/events.html">中文文档-事件系统</a></p>
+
+<blockquote><p>多个子组件使用同一个回调的情况</p></blockquote>
+
+<pre><code>// 父组件
+var MyContainer = React.createClass({
+  getInitialState: function () {
+    return {
+      totalChecked: 0
+    };
+  },
+  onChildChanged: function (newState) {
+    var newToral = this.state.totalChecked
+      + (newState ? 1 : -1);
+    this.setState({
+      totalChecked: newToral
+    });
+  },
+  render: function() {
+    var totalChecked = this.state.totalChecked;
+    return (
+      &lt;div&gt;
+        &lt;div&gt;How many are checked: {totalChecked}&lt;/div&gt;
+        &lt;ToggleButton text="Toggle me"
+          initialChecked={this.state.checked}
+          callbackParent={this.onChildChanged}
+          /&gt;
+        &lt;ToggleButton text="Toggle me too"
+            initialChecked={this.state.checked}
+            callbackParent={this.onChildChanged}
+          /&gt;
+        &lt;ToggleButton text="And me"
+          initialChecked={this.state.checked}
+          callbackParent={this.onChildChanged}
+          /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+
+// 子组件
+var ToggleButton = React.createClass({
+  getInitialState: function () {
+    return {
+      checked: this.props.initialChecked
+    };
+  },
+  onTextChange: function () {
+    var newState = !this.state.checked;
+    this.setState({
+      checked: newState
+    });
+    // 这里要注意：setState 是一个异步方法，所以需要操作缓存的当前值
+    this.props.callbackParent(newState);
+  },
+  render: function () {
+    // 从【父组件】获取的值
+    var text = this.props.text;
+    // 组件自身的状态数据
+    var checked = this.state.checked;
+
+    return (
+        &lt;label&gt;{text}: &lt;input type="checkbox" checked={checked} onChange={this.onTextChange} /&gt;&lt;/label&gt;
+    );
+  }
+});
+</code></pre>
+
+<p><img src="http://fegg.github.io/images/react/demo4.gif" alt="运行结果" /></p>
+
+<p>这是非常容易理解的，在父组件中我们增加了一个【totalChecked】来替代之前例子中的【checked】，当子组件改变的时候，使用同一个子组件的回调函数给父组件返回值。</p>
+
+<h3>三、没有任何嵌套关系的组件之间传值</h3>
+
+<p>如果组件之间没有任何关系，组件嵌套层次比较深（个人认为 2 层以上已经算深了），或者你为了一些组件能够订阅、写入一些信号，不想让组件之间插入一个组件，让两个组件处于独立的关系。对于事件系统，这里有 2 个基本操作步骤：订阅（subscribe）/监听（listen）一个事件通知，并发送（send）/触发（trigger）/发布（publish）/发送（dispatch）一个事件通知那些想要的组件。</p>
+
+<p>下面讲介绍 3 种模式来处理事件，你能<a href="https://github.com/millermedeiros/js-signals/wiki/Comparison-between-different-Observer-Pattern-implementations">点击这里</a>来比较一下它们。</p>
+
+<p>简单总结一下：</p>
+
+<p>(1) Event Emitter/Target/Dispatcher</p>
+
+<p>特点：需要一个指定的订阅源</p>
+
+<pre><code>// to subscribe
+otherObject.addEventListener(‘click’, function() { alert(‘click!’); });
+// to dispatch
+this.dispatchEvent(‘click’);
+</code></pre>
+
+<p>(2) Publish / Subscribe</p>
+
+<p>特点：触发事件的时候，你不需要指定一个特定的源，因为它是使用一个全局对象来处理事件（其实就是一个全局
+广播的方式来处理事件）</p>
+
+<pre><code>// to subscribe
+globalBroadcaster.subscribe(‘click’, function() { alert(‘click!’); });
+// to dispatch
+globalBroadcaster.publish(‘click’);
+</code></pre>
+
+<p>(3) Signals</p>
+
+<p>特点：与Event Emitter/Target/Dispatcher相似，但是你不要使用随机的字符串作为事件触发的引用。触发事件的每一个对象都需要一个确切的名字（就是类似硬编码类的去写事件名字），并且在触发的时候，也必须要指定确切的事件。（看例子吧，很好理解）</p>
+
+<pre><code>// to subscribe
+otherObject.clicked.add(function() { alert(‘click’); });
+// to dispatch
+this.clicked.dispatch();
+</code></pre>
+
+<p>如果你只想简单的使用一下，并不需要其他操作，可以用简单的方式来实现：</p>
+
+<pre><code>// 简单实现了一下 subscribe 和 dispatch
+var EventEmitter = {
+    _events: {},
+    dispatch: function (event, data) {
+        if (!this._events[event]) { // 没有监听事件
+          return;
+        }
+        for (var i = 0; i &lt; this._events[event].length; i++) {
+            this._events[event][i](data);
+        }
+    },
+    subscribe: function (event, callback) {
+      // 创建一个新事件数组
+      if (!this._events[event]) {
+        this._events[event] = [];
+      }
+      this._events[event].push(callback);
+    }
+};
+
+otherObject.subscribe('namechanged', function(data) { alert(data.name); });
+this.dispatch('namechanged', { name: 'John' });
+</code></pre>
+
+<p>如果你想使用 Publish/Subscribe 模型，可以使用：<a href="https://github.com/mroderick/PubSubJS">PubSubJS</a></p>
+
+<p>React 团队使用的是：<a href="http://millermedeiros.github.io/js-signals/">js-signals</a> 它基于 Signals 模式，用起来相当不错。</p>
+
+<h3>Events in React</h3>
+
+<p>使用 React 事件的时候，必须关注下面两个方法：</p>
+
+<pre><code>componentDidMount
+componentWillUnmount
+</code></pre>
+
+<p>在处理事件的时候，需要注意：</p>
+
+<p>在 componentDidMount 事件中，如果组件挂载（mounted）完成，再订阅事件；当组件卸载（unmounted）的时候，在 componentWillUnmount 事件中取消事件的订阅。</p>
+
+<p>（如果不是很清楚可以查阅 React 对生命周期介绍的文档，里面也有描述。原文中介绍的是 componentWillMount 个人认为应该是挂载完成后订阅事件，比如Animation这个就必须挂载，并且不能动态的添加，谨慎点更好）</p>
+
+<p>因为组件的渲染和销毁是由 React 来控制的，我们不知道怎么引用他们，所以EventEmitter 模式在处理组件的时候用处不大。</p>
+
+<p>pub/sub 模式可以使用，你不需要知道引用。</p>
+
+<p>下面来一个例子：实现有多个 product 组件，点击他们的时候，展示 product 的名字。</p>
+
+<p>(我在例子中引入了之前推荐的 PubSubJS 库，如果你觉得引入代价太大，也可以手写一个简版，还是比较容易的，很好用哈，大家也可以体验，但是我还是不推荐全局广播的方式)</p>
+
+<pre><code>// 定义一个容器
+var ProductList = React.createClass({
+    render: function () {
+      return (
+        &lt;div&gt;
+          &lt;ProductSelection /&gt;
+          &lt;Product name="product 1" /&gt;
+          &lt;Product name="product 2" /&gt;
+          &lt;Product name="product 3" /&gt;
+        &lt;/div&gt;
+      );
+    }
+});
+// 用于展示点击的产品信息容器
+var ProductSelection = React.createClass({
+  getInitialState: function() {
+    return {
+      selection: 'none'
+    };
+  },
+  componentDidMount: function () {
+    this.pubsub_token = PubSub.subscribe('products', function (topic, product) {
+      this.setState({
+        selection: product
+      });
+    }.bind(this));
+  },
+  componentWillUnmount: function () {
+    PubSub.unsubscribe(this.pubsub_token);
+  },
+  render: function () {
+    return (
+      &lt;p&gt;You have selected the product : {this.state.selection}&lt;/p&gt;
+    );
+  }
+});
+
+var Product = React.createClass({
+  onclick: function () {
+    PubSub.publish('products', this.props.name);
+  },
+  render: function() {
+    return &lt;div onClick={this.onclick}&gt;{this.props.name}&lt;/div&gt;;
+  }
+});
+</code></pre>
+
+<p><img src="http://fegg.github.io/images/react/demo5.gif" alt="运行结果" /></p>
+
+<h3>ES6: yield and js-csp</h3>
+
+<p>ES6 中有一种传递信息的方式，使用生成函数(generators)和 yield 关键字。可以看一下 <a href="https://github.com/ubolonton/js-csp">https://github.com/ubolonton/js-csp</a></p>
+
+<p>（这里我写一个简单的 DEMO 介绍一下这种新的传递方式，其实大同小异）</p>
+
+<pre><code>function* list() {
+    for(var i = 0; i &lt; arguments.length; i++) {
+        yield arguments[i];
+    }
+    return "done.";
+}
+
+var o = list(1, 2, 3);
+
+var cur = o.next;
+while(!cur.done) {
+    cur = o.next();
+    console.log(cur);
+}
+</code></pre>
+
+<p>以上例子来自于屈屈的一篇博客：<a href="http://imququ.com/post/generator-function-in-es6.html">ES6 中的生成器函数介绍</a> 屈屈是一个大牛，大家可以经常关注他的博客。</p>
+
+<p>通常来说，你有一个队列，对象在里面都能找到一个引用，在定义的时候锁住，当发生的时候，立即打开锁执行。js-csp 是一种解决办法，也许以后还会有其他解决办法。</p>
+
+<h3>结尾</h3>
+
+<p>在实际应用中，按照实际要解决的需求选择解决办法。对于小应用程序，你可以使用 props 和回调的方法进行组件之间的数据交换。你可以通过 pub/sub 模式，以避免污染你的组件。在这里，我们不是在谈论数据，只是组件。对于数据的请求、数据的变化等场景，可以使用 Facebook 的 Flux、Relay、GraphQL 来处理，都非常的好用。</p>
+
+<blockquote><p>文中的每一个例子我都验证过了，主要使用最原始的引入文件方式，创建服务使用的 http-server 包，大家也可以尝试自己来一次。</p></blockquote>
+
+<p>译：<a href="http://ctheu.com/2015/02/12/how-to-communicate-between-react-components/#child_to_parent">英文原版</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hello Angular2]]></title>
+    <link href="http://fegg.github.io/blog/2015/07/09/Hello-Angular2/"/>
+    <updated>2015-07-09T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2015/07/09/Hello-Angular2</id>
+    <content type="html"><![CDATA[<h3>前言</h3>
+
+<p>Angular 2 正式版还没有出来，但是发现官网已经推广开发版本了，所以尝了一下鲜，来吧，从 Hello World 开始。</p>
+
+<h3>1. 安装需要的工具</h3>
+
+<p>这部分和 ng 2 没多大关系，但是我第一次根据官网 5 分钟配置中发现了一些坑，所以做一下准备，免得打击了第一次使用技术的自信心。</p>
+
+<ol>
+<li>Node 和 NPM 最新版（省略）</li>
+<li>jspm 包管理器来初始化 SystemJS 模块加载器那一套</li>
+</ol>
+
+
+<p><strong>创建一个项目目录</strong></p>
+
+<pre><code>mkdir ng &amp;&amp; cd ng
+</code></pre>
+
+<p><strong>安装 jspm 环境</strong></p>
+
+<pre><code>sudo npm install jspm/jspm-cli -g
+npm init
+npm install jspm --save-dev
+// 一路回车就行了
+jspm init
+</code></pre>
+
+<p><strong>配置一下 config.js</strong></p>
+
+<pre><code>System.config({
+    "baseURL": "/",
+    "transpiler": "traceur",
+    "paths": {
+        "*": "*.js",
+        "github:*": "jspm_packages/github/*.js"
+    },
+    "map": {
+        "traceur": "github:jmcriffey/bower-traceur@0.0.88",
+        "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88"
+    }
+});
+</code></pre>
+
+<p><strong>安装一个本地服务工具</strong></p>
+
+<pre><code>sudo npm install -g http-server
+// ng 目录下启动
+http-server 
+</code></pre>
+
+<!-- more -->
+
+
+<h3>2. 开始体验</h3>
+
+<p>（1）使用 TypeScript，所以先安装 tsd 包管理器</p>
+
+<pre><code>sudo npm install -g tsd@^0.6.0
+</code></pre>
+
+<p>（2）安装 ng 2 依赖的核心</p>
+
+<pre><code>tsd install angular2 es6-promise rx rx-lite
+</code></pre>
+
+<p>这里安装完成后会创建包管理器的文件夹：typings</p>
+
+<p>（3）在 ng 目录下创建代码文件</p>
+
+<pre><code>touch app.ts index.html
+</code></pre>
+
+<p>（4）配置一下 TypeScript</p>
+
+<pre><code>sudo npm install -g typescript@^1.5.0-beta
+// 在 ng 目录下运行监听编译
+tsc --watch -m commonjs -t es5 --emitDecoratorMetadata app.ts
+</code></pre>
+
+<p>（5）接下来编写 app.ts 文件</p>
+
+<pre><code>///&lt;reference path="typings/angular2/angular2.d.ts" /&gt;
+import {Component, View, bootstrap} from 'angular2/angular2';
+
+// Annotation section
+@Component({
+  selector: 'my-app'
+})
+@View({
+  template: '&lt;h1&gt;Hello &lt;/h1&gt;'
+})
+// Component controller
+class MyAppComponent {
+  name: string;
+
+  constructor() {
+    this.name = 'Angular2';
+  }
+}
+
+bootstrap(MyAppComponent);
+</code></pre>
+
+<p>（6）下载官方的 traceur-runtime.js 和 angular2.dev.js（为了速度，你也可以直接引入）</p>
+
+<pre><code>&lt;!-- index.html --&gt;
+&lt;html&gt;
+    &lt;head&gt;
+    &lt;title&gt;Angular 2 Quickstart&lt;/title&gt;
+    &lt;script src="typings/js/traceur-runtime.js"&gt;&lt;/script&gt;
+    &lt;script src="jspm_packages/system.js"&gt;&lt;/script&gt;
+    &lt;script src="config.js"&gt;&lt;/script&gt;
+    &lt;script src="typings/js/angular2.dev.js"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;!-- The app component created in app.ts --&gt;
+    &lt;my-app&gt;&lt;/my-app&gt;
+    &lt;script&gt;System.import('./app');&lt;/script&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>最后的文件目录如下：</p>
+
+<p><img src="http://fegg.github.io/images/js/ng2-dev.png" alt="文件目录" /></p>
+
+<p>运行的结果图：</p>
+
+<p><img src="http://fegg.github.io/images/js/ng2-hello.png" alt="ng2 hello" /></p>
+
+<p>源码下载：<a href="http://yunpan.cn/ccy6mh9hrSwHK">360云盘下载</a> （提取码：0da5）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[从触摸开始（一）]]></title>
+    <link href="http://fegg.github.io/blog/2015/05/24/%E4%BB%8E%E8%A7%A6%E6%91%B8%E5%BC%80%E5%A7%8B/"/>
+    <updated>2015-05-24T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2015/05/24/从触摸开始</id>
+    <content type="html"><![CDATA[<h3>1. 前言</h3>
+
+<p>最近看了一本《移动Web手册》的书，奇舞团翻译的，非常不错。个人觉得在进入移动端的时候最先应该了解移动端新的交互模式：<strong>触摸</strong>。为什么这样说呢？在PC端，我们大多数的交互都是通过<strong>鼠标</strong>来实现，在开发过程中，对鼠标事件的处理也非常多，通过之前在移动端的开发经验，在移动端的交互也避免不了经常与触摸打交道，所以我们有必要单独学习一下它。</p>
+
+<h3>2. 触摸、鼠标交互模式</h3>
+
+<p><strong>(1) 连续性</strong></p>
+
+<p>触摸事件是不连续的，鼠标事件是连续的。</p>
+
+<p><img src="http://p1.qhimg.com/t01995847f1bbafff14.png" alt="连续性" /></p>
+
+<p>操作顺序：A -> B -> C</p>
+
+<p>在鼠标上：鼠标点击A -> 划过B -> 点击C</p>
+
+<p>在触摸上：手指触摸A -> 跨过B -> 触摸C</p>
+
+<!-- more -->
+
+
+<p><strong>(2) 下一步预期的操作</strong></p>
+
+<p>在鼠标上：移入元素 -> 点击鼠标左键 -> 触发单击 -> 在有效时间内点击第二次 -> 触发双击</p>
+
+<p><img src="http://p6.qhimg.com/t0158d291e5b4957da5.jpg" alt="鼠标" /></p>
+
+<p>在触摸上，可能有以下几种情况：</p>
+
+<ol>
+<li>手指触摸屏幕 -> 轻触</li>
+<li>手指触摸屏幕 -> 双触</li>
+<li>手指触摸屏幕 -> 滑动</li>
+<li>手指触摸屏幕 -> 缩放</li>
+</ol>
+
+
+<p><img src="http://p8.qhimg.com/t011432add6b1f1b6e4.jpg" alt="触摸" /></p>
+
+<blockquote><p>其实作者认为鼠标事件在用户点击的时候就能够判断行为，其实我觉得如果是双击事件的情况下，浏览器也需要等待一段时间才能够做出反应。这个可以查阅一下google。</p></blockquote>
+
+<p><strong>(3) 等价事件</strong></p>
+
+<p><img src="http://p7.qhimg.com/t0153cb2eaf3a9addb3.png" alt="等价事件" /></p>
+
+<h3>3. 单说触摸事件</h3>
+
+<p>在了解两种不同的交互模式的基础上，我们再来进行单个的分析。其实我觉得学习一样东西，最根本的还是摸清原理部分，就能够很快的Get它了，当然，编码量不够的情况下也许还是需要慢慢来，掌握得更加扎实。</p>
+
+<p><strong>(1) 事件种类</strong></p>
+
+<ul>
+<li>touchstart: 手指触摸屏幕的瞬间</li>
+<li>touchmove: 手指在屏幕上移动的时候</li>
+<li>touchend: 手指离开屏幕的时候</li>
+<li>touchcancel</li>
+</ul>
+
+
+<p>其实从命名上就能很清楚的明白他们是干嘛的，当然，有一个比较特殊：touchcancel事件，可能会不太好理解，在最初的学习中可以忽略它，这里做一个简单的介绍：</p>
+
+<blockquote><p>touchcancel 在系统发生中断的时候会触发，这样说很抽象，我们来举一个栗子，比如你正在玩游戏，触摸的时候，突然手机来了一条短信，这个时候短信通知这个更高级的事件中断了触摸操作，touchcancel事件就触发了。在这个时候游戏开发中，会使用它来进行暂停游戏等操作。</p></blockquote>
+
+<p>由于touchcancel触发的时机不好掌控，所以一般情况下我们会采用下面的方式来处理touchcancel，维护我们的代码逻辑，当然这个要看业务场景。</p>
+
+<pre><code>dom.addEventListener('touchcancel', function(e){
+    e.preventDefault();
+}, false);
+</code></pre>
+
+<p><strong>(2) 触发时机</strong></p>
+
+<p>介绍完了事件的种类，我们来对每一种事件都进行代码级别的测试，看一看是否跟它说的先后顺序一样，这里我将引入鼠标事件一起测试，因为有一些区别性的东西哦。</p>
+
+<p>我们先看一下测试结果：(iOS 8.3 Safari)</p>
+
+<p><strong>A.直接触摸空白部分，然后直接离开</strong></p>
+
+<p><img src="http://p6.qhimg.com/t014f36b6caddf59eea.png" alt="" /></p>
+
+<p><strong>B.在空白区域触摸并滑动，然后离开</strong></p>
+
+<p><img src="http://p8.qhimg.com/t0185793a0e4fd34658.png" alt="" /></p>
+
+<p><strong>C.点击界面中的按钮，未阻止冒泡</strong></p>
+
+<p><img src="http://p3.qhimg.com/t01344b50e10dd503a3.png" alt="" /></p>
+
+<p><strong>D.点击界面中一块区域，阻止冒泡</strong></p>
+
+<p><img src="http://p6.qhimg.com/t0133d2b926bcb771ba.png" alt="" /></p>
+
+<p><strong>E.长按屏幕空白部分，出现选中效果，然后立刻离开屏幕</strong></p>
+
+<p><img src="http://p1.qhimg.com/t0151dc690eab55b394.png" alt="" /></p>
+
+<p>结果很明了，就不需要总结了，下面我们看一下测试的代码：</p>
+
+<p><strong>DOM</strong></p>
+
+<pre><code>&lt;div&gt;
+    &lt;button class="btn"&gt;这里是一个按钮&lt;/button&gt;
+    &lt;span class="area"&gt;这里是一块可点击区域&lt;/span&gt;
+    &lt;p class="info"&gt;&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p><strong>JavaScript</strong></p>
+
+<pre><code>;(function () {
+    var doc = document;
+    var info = doc.querySelector('.info');
+    var btn = doc.querySelector('.btn');
+    var area = doc.querySelector('.area');
+
+    doc.ontouchstart = function (e) {
+        info.innerHTML += ', '+ e.type;
+    }
+    doc.ontouchmove = function (e) {
+        info.innerHTML += ', '+ e.type;
+    }
+    doc.ontouchend = function (e) {
+        info.innerHTML += ', '+ e.type;
+    }
+    doc.ontouchcancel = function (e) {
+        info.innerHTML += ', '+ e.type;
+    }
+
+    doc.onmouseover = function (e) {
+        info.innerHTML += ', '+ e.type;
+    }
+    doc.onmousemove = function (e) {
+        info.innerHTML += ', '+ e.type;
+    }
+    doc.onmousedown = function (e) {
+        info.innerHTML += ', '+ e.type;
+    }
+    doc.onmouseup = function (e) {
+        info.innerHTML += ', '+ e.type;
+    }
+    doc.onmouseleave = function (e) {
+        info.innerHTML += ', '+ e.type;
+    }
+    doc.onclick = function (e) {
+        info.innerHTML += ', document: '+ e.type;
+    }
+    btn.onclick = function (e) {
+        info.innerHTML += ', button: '+ e.type;
+    }
+    area.onclick = function (e) {
+        e.stopPropagation();
+        info.innerHTML += ', area: '+ e.type;
+    }
+})();
+</code></pre>
+
+<p><strong>CSS</strong></p>
+
+<pre><code>.btn {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    font-size: 16px;
+    border: none;
+    color: #fff;
+    text-align: center;
+    background: #2A3846;
+}
+.area {
+    display: block;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    color: #fff;
+    text-align: center;
+    background: #2A3846;
+    margin-top: 20px;
+}
+</code></pre>
+
+<p>为了不干扰直接知识的理解，之前没有说不同meta头的事情，以及Safari与UC浏览器之间的差异。毕竟要接地气嘛，UC还是要测试一下的。</p>
+
+<p><strong>情况一</strong></p>
+
+<pre><code>&lt;meta name="viewport" content="width=device-width"&gt;
+</code></pre>
+
+<p>行为：“触摸空白区域，立刻离开时候的现象”</p>
+
+<p>现象：</p>
+
+<p>Safari：touchstart与touchend事件触发后，延迟一段时间，触发mouse以及click事件；</p>
+
+<p>UC：只触发了touchstart与touchend事件，并无触发mouse和click事件。</p>
+
+<p>行为：“点击页面的按钮（或者元素区域），立刻离开时候的现象”</p>
+
+<p>现象：</p>
+
+<p>Safari：touchstart与touchend事件触发后，延迟一段时间，触发mouse以及click事件，不过click触发是从按钮到document的顺序；</p>
+
+<p>UC：与Safari中表现一致。</p>
+
+<p>总结：</p>
+
+<ul>
+<li>如果没有禁止缩放，Safari和UC中的点击事件均有延迟现象；</li>
+<li>在document上绑定事件，与其他元素上绑定事件上述两个浏览器之间存在差异。</li>
+</ul>
+
+
+<hr />
+
+<p><strong>情况二</strong></p>
+
+<pre><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;
+</code></pre>
+
+<p>先不考虑这样写不符合单一变量测试原则，国内移动网站大多都是这样的meta头，当然，我有测试过，只要带有user-scalable一项就能够满足下面的实验。</p>
+
+<p>不过下面的实验我们排除“点击空白区域这种情况”，因为这document绑定事件确实有差异，我们只测试“点击按钮”这一种行为。</p>
+
+<p>行为：“点击页面的按钮（或者元素区域），立刻离开时候的现象”</p>
+
+<p>现象：</p>
+
+<p>Safari：touchstart与touchend事件触发后，延迟一段时间，触发mouse以及click事件，不过click触发是从按钮到document的顺序；</p>
+
+<p>UC：touchstart、touchend、mouse、click先后顺序不变，但是几乎是同时触发，没有发生延迟。</p>
+
+<p>总结：</p>
+
+<p>在这种情况下，Safari依然存在click事件延迟，UC不存在延迟。</p>
+
+<p>好吧，我承认这样实验有点枯燥，但是必须得这样才能弄明白到底怎么了，到底是怎么了。。。</p>
+
+<blockquote><p>Tip：这里赞美一下Safari，它能够很好的监听touchmove事件，几乎和手指移动的速度是一样的，UC和Chrome表现均是手指移动一段事件后，再从事件栈里面抛出触发，当然，Chrome触发的速度比UC好。还没有实际例子测试，不知是否会有影响，大家可以测试了给一下结果。</p></blockquote>
+
+<p>发现总结成博文好慢，先不写了，睡觉，接下来有时间将总结以下内容：</p>
+
+<ul>
+<li>事件级联深入解析</li>
+<li>300ms延迟的产生原理与解决方案</li>
+<li>事件默认事件、事件冒泡在移动端的影响</li>
+<li>触摸事件怎么玩？</li>
+<li>触摸中的摇曳与HTML5中的摇曳栗子</li>
+<li>触摸中无限滚动的栗子</li>
+<li>W3C中的Touch Events</li>
+<li>未来的Pointer Events</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[（译）ECMAScript 6（一）]]></title>
+    <link href="http://fegg.github.io/blog/2015/03/18/ECMAScript%206%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <updated>2015-03-18T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2015/03/18/ECMAScript 6（一）</id>
+    <content type="html"><![CDATA[<h2>前言</h2>
+
+<p>今天，ECMAScript正处于定稿中。ECMAScript是JavaScript的基础，因此，今天我们浏览一下提出的新特性，能够让我们了解以后我们将能怎样编写JavaScript。在文章中，我们将讲解10个新特性，以及重要的热门工具、浏览器和跨平台编译器。</p>
+
+<p>PS：没写过ES 6相关的文章，感觉就是一些特性，但是比较好用，看到这篇原文挺不错，就翻译了一下，原文太长，翻译的时候就分开了一下，方便上个洗手间就看完的样子。翻译不对的地方请指出，一定修改 ^0^. 在文章末尾推荐了一些特定特性介绍的资料。</p>
+
+<!-- more -->
+
+
+<h3>一、ECMA，ECMAScript 和 JavaScript 的发展史</h3>
+
+<p>JavaScript最初是由Brendan Eich网景公司开发的,在1995年，正式发布出来，成为Netscape Navigator 2.0的一部分。一年后,将 JavaScript 提交给 ECMA International, JavaScript成为促进信息和通讯技术的标准化和消费电子产品的一部分,为了它能够在智能工业中得到正式确定。因此, 在ECMA-262的时候，命名为ECMAScript, 成为了标准化脚本语言。</p>
+
+<p>以ECMAScript标准的形式为主,有很多其他的派生语言,其中包括ActionScript和JScript。至今,ECMAScript总共经历了4个版本,今天的讨论我们将围绕第六个版本，将其命名为：ECMAScript Harmony。</p>
+
+<h3>二、ECMAScript和JavaScript对应的版本</h3>
+
+<p>在我们即将深入ECMAScript 6的新特性之前，比较重要的是需要了解ECMAScript标准和JavaScript的关系，他们之间存在着数字上对应的差异。这表明JavaScript与ECMAScript标准兼容,同时提供更多的功能。下面的表格中，总结了JavaScript和ECMAScript之间的关系：（mou打表格比较麻烦，就截图了）</p>
+
+<p><img src="http://p4.qhimg.com/t01f7b309fac3cc5bbf.png" alt="JavaScript和ECMAScript之间的关系" /></p>
+
+<h3>三、ES6 概述</h3>
+
+<h4>1. 目标</h4>
+
+<p>JavaScript已经诞生接近20年，今天，开发者们编写了成千上万行代码的复杂JavaScript应用程序。在我们深入介绍ES 6特性之前，你可能想看看规范中定义的需求、模板、含义以及主题草稿。ES 6的目标之一就是为了创建一个更好的语言：</p>
+
+<ol>
+<li>复杂应用程序</li>
+<li>库</li>
+<li>代码生成器</li>
+</ol>
+
+
+<h4>2. ES 6的兼容性</h4>
+
+<p>大家可以访问 <a href="http://kangax.github.io/compat-table/es6/">ES 6兼容表</a>，它能够告诉我们当前ES 6的特性在当代浏览器中的支持情况。它也给我们提供了一个各个新特性的说明链接（浏览了一下，属于官方的讲解，可以随时查阅）。注意,一些特性的存在并不意味着完全符合规范。在Chrome中测试新特性，应该使用"Experimental JavaScript"的flags选项。以下是一个兼容性的截图：（现在应该不需要了，版本以及到了V40，可以下载黄金版测试）</p>
+
+<p><img src="http://p9.qhimg.com/t0173f03192041ea6d5.png" alt="兼容性的截图" /></p>
+
+<h4>3. 将要介绍的10个特性</h4>
+
+<p>在下面几节中,我们将讨论十ES6的特点,使用各种工具,这样我们可以了解ES6无论是在理论和实践。JavaScript的先验知识是首要的,所以需要随时查阅<a href="http://code.tutsplus.com/tutorials/the-best-way-to-learn-javascript--net-21954">JavaScript资源</a>。</p>
+
+<p>下面列出的特性,我们将通过使用不同的工具。以下是将要讲解的目录，能够点一下直接到你想了解的特性：</p>
+
+<blockquote><p>&ldquo;[]"中表示使用的开发工具。</p></blockquote>
+
+<ol>
+<li><a href="#let">块级作用域：let</a> [Firefox]</li>
+<li><a href="#const">块级作用域：const</a> [Chrome]</li>
+<li><a href="#classes">Classes</a> [traceur]（不知道traceur工具的可以直接理解为Javascript 编译器）</li>
+<li><a href="#params">默认函数参数</a> [TypeScript]（开源的一个东西，可以到官网了解）</li>
+<li><a href="#collections">集合</a> [NodeJS]</li>
+<li><a href="#destructuring">解构</a> [Firefox]</li>
+<li><a href="#rest-spread">Rest parameters &amp; Spread operator</a> [Grunt plugin Traceur]</li>
+<li><a href="#for">迭代器</a> [Firefox]</li>
+<li><a href="#arr">数组的操作</a></li>
+<li><a href="#module">模块</a></li>
+</ol>
+
+
+<h4><h3 name="let" id="let"><em>特性一：</em>块级作用域：let</h3></h4>
+
+<p>wiki资料：<a href="http://wiki.ecmascript.org/doku.php?id=harmony:let">let</a></p>
+
+<p>工具：Firefox 20.0，打开调试工具的步骤如下：</p>
+
+<p>（快捷键：windows F12，mac alt+command+i）</p>
+
+<blockquote><p>操作步骤：菜单 -> 工具 -> Web开发者 -> Web控制台</p></blockquote>
+
+<p>JavaScript的变量是函数作用域的，这就意味着，即使变量声明在最近的代码块，它们的实际作用域也会在整个函数中。我们看一下下面的简短例子；我们将简单地用Firefox和Chrome运行试试。</p>
+
+<p>思考一下下面JS中jsFuture变量的最后结果是什么？</p>
+
+<pre><code>var jsFuture = "es6";
+(function () {
+    if (!jsFuture) {
+        var jsFuture = "es5";
+    }
+    console.log(jsFuture);
+}());
+</code></pre>
+
+<p>在上面的例子中，<strong>console.log(jsFuture);</strong> 将打印出"es5"。这段代码主要需要理解的就是，在JavaScript代码中，有<a href="http://code.tutsplus.com/tutorials/quick-tip-javascript-hoisting-explained--net-15092">变量声明提升</a>的概念（原文推荐的是英文版，这里我推荐一个中文版<a href="http://openwares.net/js/javascript_declaration_hoisting.html">变量声明提升</a>的讲解），然后再进行变量的初始化工作。另一方面，不管变量是在那里初始化和声明的，都属于函数作用域范围，他们将总是会被声明提升。</p>
+
+<p>下面这段代码将简单描述一下变量声明提升，与上面那份代码等价：</p>
+
+<pre><code>var jsFuture = "es6";
+(function() {
+    // 在这里将jsFuture变量声明提升
+    // var jsFuture = undefined;
+    // 然后这里判断，得出true的结果，进入if语句，初始化jsFuture的值
+    if (!jsFuture) {
+        var jsFuture = "es5";
+    }
+    console.log(jsFuture); // "es5"
+}());
+</code></pre>
+
+<p>在ES 6中，通过 <strong>let</strong> 来解决这个问题。比如像：var，它实际上是一个块级范围，而不是函数范围。让我们来思考一下下面的一个例子，调用了 <strong>es[6]()</strong> 将打印出 <strong>i=10</strong> 的结果。值得注意的是：尽管声明了 <strong>var i = 0;</strong> 的一个for循环，在for循环中，<strong>var i</strong> 的作用域默认是全局global的。所以当<strong>es[es6]()</strong> 方法被执行的时候，<strong>i</strong> 的值已经等于 <strong>10</strong> 了。看一下下面的例子：</p>
+
+<pre><code>var es = [];
+for (var i = 0; i &lt; 10; i++) {
+    es[i] = function() {
+        console.log("即将出版的 ECMAScript 是 ES" + i);
+    };
+}
+es[6](); // 即将出版的 ECMAScript 是 ES10
+</code></pre>
+
+<p>执行结果如下图：</p>
+
+<p><img src="http://p5.qhimg.com/t013b7ea4502696494a.png" alt="执行结果" /></p>
+
+<p>接下来我们用一下 <strong>let</strong> 关键字，可以打开Firefox的开发者工具运行一下。在一个for循环中，使用  <strong>let c = i;</strong> 声明了一个块级作用域的变量。</p>
+
+<pre><code>'use strict'; // 这句是我翻译加的，保证代码的可运行
+var es = [];
+for (var i = 0; i &lt; 10; i++) {
+    let c = i;
+    es[i] = function() {
+        console.log("即将出版的 ECMAScript 是 ES" + c);
+    };
+}
+es[6](); // 即将出版的 ECMAScript 是 ES10
+</code></pre>
+
+<p>执行结果如下图：</p>
+
+<p><img src="http://p4.qhimg.com/t018773497660b758ef.png" alt="执行结果" /></p>
+
+<p>火狐已经支持很多ES 6的特性。能够在<a href="https://developer.mozilla.org/en-US/docs/JavaScript/ECMAScript_6_support_in_Mozilla">更新表</a>中找到Firefox的更新点，其功能都支持，也符合当前规范。</p>
+
+<p>PS：网上有很多资源，是专属 <strong>let</strong> 的讲解，这里推荐几个吧，这样对这个特性应该就理解差不多了。</p>
+
+<blockquote><p>其实之前对作用域知识比较扎实，理解很快，用法也很简单。go go go!</p></blockquote>
+
+<p><strong>英文资料</strong></p>
+
+<ol>
+<li>MDN还是要看的：<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let">资料</a></li>
+<li>实例讨论的文章：<a href="http://davidwalsh.name/for-and-against-let">资料</a></li>
+<li>let与var的一篇帖子：<a href="http://stackoverflow.com/questions/762011/javascript-let-keyword-vs-var-keyword">资料</a></li>
+</ol>
+
+
+<p><strong>中文资料</strong></p>
+
+<ol>
+<li>segmentfault上的一篇翻译文：<a href="http://segmentfault.com/blog/kk_470661/1190000000518683">资料</a></li>
+</ol>
+
+
+<p>原文出自：<a href="http://code.tutsplus.com/articles/use-ecmascript-6-today--net-31582">http://code.tutsplus.com/articles/use-ecmascript-6-today&ndash;net-31582</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[全新博客初稿]]></title>
+    <link href="http://fegg.github.io/blog/2015/01/25/%E5%85%A8%E6%96%B0%E5%8D%9A%E5%AE%A2%E5%88%9D%E7%A8%BF/"/>
+    <updated>2015-01-25T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2015/01/25/全新博客初稿</id>
+    <content type="html"><![CDATA[<p>现在的博客主题总是有不满意的地方，所以决定自己设计一版，依然采用F法则。</p>
+
+<p>不知道大家会不会也喜欢，现在只是再画手稿，设计稿可能得自己慢慢出了 >0&lt;</p>
+
+<p><img src="http://p3.qhimg.com/t0155e219a40ea18b46.jpg" alt="稿子" /></p>
+
+<!-- more -->
+
+
+<p>今天好朋友说：“SB，快过年啦，准备年货！”</p>
+
+<p><img src="http://p2.qhimg.com/t01b165957c7e289a80.jpg" alt="装逼" /></p>
+
+<p>我尽无言以对，不管怎么说，热爱技术的心还是要有的。</p>
+
+<p><img src="http://p9.qhimg.com/t015222b05fad126e17.jpg" alt="犀利哥" /></p>
+
+<blockquote><p>预期：</p></blockquote>
+
+<p>（1）目前博客的配色较宅的气氛，配色上将更加大气和整洁，以白色为主，个人比较喜欢白色 ^o^</p>
+
+<p>（2）采用<a href="http://thinkjs.org/">ThinkJS</a>开发，配置在阿里云上，域名也将更新为备案的<strong>www.60sky.com</strong>，又将是一场采坑之旅</p>
+
+<p>（3）对网站内容加入自定义统计功能，对习惯和喜好类信息的存储，排期靠后</p>
+
+<p>（4）浏览器的支持将会是渐进增强，顺便锻炼一下这方面的技术，不过身为技术人员一般还是高级浏览器</p>
+
+<p>（5）适配移动端和PC，采用移动向上的方式，<del>(>_&lt;)</del> 这就意味着要抽时间设计移动稿</p>
+
+<p>（6）评论部分依然抛给多说，根据网站的风格修改多说样式代码</p>
+
+<p>（7）将要干的活细致多来，进行排期开发</p>
+
+<hr />
+
+<p>PS: 配合这次的设计，将出另一个网站的设计稿。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GitHub Pages搭建之hexo（待更新版本）]]></title>
+    <link href="http://fegg.github.io/blog/2015/01/14/GitHub%20Pages%E6%90%AD%E5%BB%BA%E4%B9%8Bhexo/"/>
+    <updated>2015-01-14T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2015/01/14/GitHub Pages搭建之hexo</id>
+    <content type="html"><![CDATA[<h3>0  引言</h3>
+
+<p>GitHub 是一个用于使用Git版本控制系统项目的共享虚拟主机服务。它由GitHub公司（曾称Logical Awesome）的开发者Chris Wanstrath、PJ Hyett和Tom Preston-Werner使用Ruby on Rails编写而成。您能够开通一个免费账户进行使用。hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上。并且hexo支持markdown写文章，用户能够使用自己喜欢的工具书写文章。hexo具有易用、轻巧、用户群体增长快等优点。由于hexo基于Node.js技术，如今Node.js技术的流行，hexo也会变得越来越热门，所以选择hexo在Github上创建一个静态博客是不错的选择。</p>
+
+<!-- more -->
+
+
+<h3>1  知识储备</h3>
+
+<h3>1.1  Ruby的基础</h3>
+
+<p>由于GitHub 是一个用于使用Git版本控制系统项目的共享虚拟主机服务。它由GitHub公司（曾称Logical Awesome）的开发者Chris Wanstrath、PJ Hyett和Tom Preston-Werner使用Ruby on Rails编写而成。所以需要有一定的ruby基础。</p>
+
+<h3>1.2 Git与GitHub的基础</h3>
+
+<p>由于最后博客的环境是托管在GitHub Pages上，所以需要使用Git的基本命令或者Git可视化图形工具的使用。</p>
+
+<h3>1.3 Linux使用基础</h3>
+
+<p>此次Github Pages的搭建环境主要是基于Unix/Linux平台，因此需要一定的Linux的基础，需要熟悉部分Linux的简单命令，这样更有助于环境的搭建。</p>
+
+<h3>1.4 Node.js的基础</h3>
+
+<p>因为hexo是基于Node.js的静态博客程序，熟悉Node.js的原理，会容易体会到搭建、编译和发布等过程，不会让您不知所措。</p>
+
+<h3>1.5 HTML/CSS的基础</h3>
+
+<p>如果您是一个专业的用户，您可以自己定制网站的主题（Theme），您能够通过HTML/CSS等技术，您能够让博客更加具有吸引力和个人特色。</p>
+
+<h3>1.6 CSS预处理器stylus的使用</h3>
+
+<p>hexo程序中css部分使用的预处理器是stylus，因此您需要了解它的基本语法，您才能够看懂其中的意思。</p>
+
+<h3>1.7 模版的认识</h3>
+
+<p>在hexo代码修改中，借鉴了模版引擎的思想，如果对模版思想有一定认识，会让您更加如鱼得水。</p>
+
+<h3>2 基本环境的配置</h3>
+
+<h3>2.1 Ruby环境的搭建</h3>
+
+<p>由于本次配置使用的系统环境为：Mac OS X 10.9，自身集成了Ruby环境，因此不需要单独安装。在搭建过程中Ruby版本号可能太低需要升级，目前最新版本为1.9.3。在Linux系统中可以采用命令的方式升级。能够安装rvm，可以切换多个版本的ruby。</p>
+
+<p><strong>查看安装的ruby版本</strong></p>
+
+<pre><code>rvm list known
+</code></pre>
+
+<p><strong>安装ruby</strong></p>
+
+<pre><code>rvm install ruby --head
+</code></pre>
+
+<p><strong>设置ruby默认版本为1.9.3（之前可以查看版本号）</strong></p>
+
+<pre><code>rvm use 1.9.3 --head default
+</code></pre>
+
+<blockquote><p>注：在升级前希望安装xcode的Command Line Tools，因为需要使用gcc。</p></blockquote>
+
+<p><img src="http://p9.qhimg.com/t018ea1438638b021c4.png" alt="gcc安装" /></p>
+
+<h3>2.2 Git环境的搭建</h3>
+
+<p>使用Git OS X Installer</p>
+
+<blockquote><p>下载页面：<a href="https://code.google.com/p/git-osx-installer/">https://code.google.com/p/git-osx-installer/</a></p></blockquote>
+
+<p><strong>使用包管理安装</strong></p>
+
+<p>在linux平台推荐使用这种方式，更直观，不推荐编译source code的方式。</p>
+
+<p>这里介绍两种包管理软件：Homebrew、MacPorts。</p>
+
+<p>本人更喜欢前者，能够更快、更方便的安装需要的软件。</p>
+
+<p><strong>(1) Homebrew安装Git</strong></p>
+
+<pre><code>sudo brew install git
+</code></pre>
+
+<p><strong>(2) Mac Ports安装Git</strong></p>
+
+<pre><code>sudo port install git-core
+sudo port selfupdate
+</code></pre>
+
+<blockquote><p>注：其中sudo是使用admin权限执行命令，这里必须使用admin权限。</p></blockquote>
+
+<h3>2.3 Node.js环境的搭建</h3>
+
+<p>由于之前安装了包管理器，这下好处体现出来了，使用Homebrew安装nodejs即可。</p>
+
+<pre><code>sudo brew install node
+</code></pre>
+
+<p>当然，之前由于安装了git，只需要clone一个node source code下来安装也是比较方便的做法。</p>
+
+<pre><code>git clone git://github.com/joyent/node.git
+cd node
+./configure
+make
+sudo make install
+</code></pre>
+
+<h3>2.4 hexo环境的搭建</h3>
+
+<p>在这之前需要安装npm（node.js的包管理器），这样能够更加方便的安装hexo。</p>
+
+<p><strong>安装npm包管理器</strong></p>
+
+<pre><code>sudo curl http://npmjs.org/install.sh | sh
+export NODE_PATH=”/usr/local/lib/node_modules/”
+</code></pre>
+
+<p><strong>安装并更新hexo环境</strong></p>
+
+<pre><code>npm install -g hexo
+npm update hexo -g
+</code></pre>
+
+<blockquote><p>注：软件配置，安装完后必须要确认每步配置是否正确，再进行接下来的配置。查看安装软件版本号如图所示。</p></blockquote>
+
+<p><img src="http://p3.qhimg.com/t0112e9e4c00396bcca.png" alt="检查是否正确" /></p>
+
+<h3>3. 正式搭建GitHub Pages博客</h3>
+
+<p><strong>初始化</strong></p>
+
+<pre><code>hexo init
+</code></pre>
+
+<p><img src="http://p6.qhimg.com/t01798b958188a9c654.png" alt="init" /></p>
+
+<p><strong>生成静态页面</strong></p>
+
+<pre><code>hexo generate
+</code></pre>
+
+<p><img src="http://p2.qhimg.com/t0109fdb58f5b01a9d0.png" alt="静态页" /></p>
+
+<p><strong>启动服务</strong></p>
+
+<pre><code>hexo server
+</code></pre>
+
+<p><img src="http://p4.qhimg.com/t017ec6ab1305215b69.png" alt="启动服务" /></p>
+
+<p><strong>本地预览</strong></p>
+
+<p>在浏览器中输入：<a href="http://localhost:4000/">http://localhost:4000/</a></p>
+
+<p><img src="http://p0.qhimg.com/t01d7b0d155b1bbfc0f.png" alt="预览效果" /></p>
+
+<blockquote><p>注：建议使用IE9以上、FF或者Chrome等现代浏览器访问才能看到良好效果。</p></blockquote>
+
+<p><strong>发布博客</strong></p>
+
+<pre><code>hexo deploy
+</code></pre>
+
+<blockquote><p>注：本文中hexo的版本较低，需要更新文章。如果你使用hexo 2.0以下版本是有效的。</p></blockquote>
+
+<p><strong>将会更新的内容：</strong></p>
+
+<p>（1）如何使用git以及github的使用方法，最后搭建好一个良好的代码提交环境，保证我们的页面正常发布和mac在终端上正常访问github；</p>
+
+<p>（2）NodeJS版本的更新，引入的一些方便的地方；</p>
+
+<p>（3）hexo新版本的更新，带来的一些安装上的问题；</p>
+
+<p>（4）mac环境的升级，将升级到Mac OS X 10.10；</p>
+
+<p>（5）在mac上如何方便的使用git，引入zsh的使用；</p>
+
+<p>（6）比较hexo与octopress，为何最后选择了hexo，octopress会出现什么问题；</p>
+
+<p>（7）如何看懂hexo的文件结构，方便二次开发以及推荐几个好看的主题；</p>
+
+<p>（8）github域名绑定，以及域名的常用知识。</p>
+
+<p><strong>~0~ 精力有限，坚持写下去！</strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[像积木一样搭建网页]]></title>
+    <link href="http://fegg.github.io/blog/2014/12/02/%E5%83%8F%E7%A7%AF%E6%9C%A8%E4%B8%80%E6%A0%B7%E6%90%AD%E5%BB%BA%E7%BD%91%E9%A1%B5/"/>
+    <updated>2014-12-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2014/12/02/像积木一样搭建网页</id>
+    <content type="html"><![CDATA[<h3>前言</h3>
+
+<p>我们在浏览网页的时候，经常会看到很相似的几种内容。比如下面这两种样子：</p>
+
+<p><img src="http://p4.qhimg.com/t010118aee227f746a5.png" alt="视图1" /></p>
+
+<p><img src="http://p4.qhimg.com/t0188a9a78a17386fb9.png" alt="视图2" /></p>
+
+<p>看上去是不是比较像呢？其实就是图片的位置不一样，大致上可以认为是一样的吧，那么针对这样子的相似度较高的网页，我们应该怎么样开发呢？</p>
+
+<blockquote><p>其实这就得谈谈“页面重用机制”了，下面所写的积木式网页构建方式就能够很好的处理页面重用这个问题。</p></blockquote>
+
+<p>接下来将从以下4个方面对积木式网页开发进行描述：</p>
+
+<ol>
+<li>分析页面结构</li>
+<li>构建网页的结构</li>
+<li>编写网页基本的样式</li>
+<li>编写不同表现的样式</li>
+</ol>
+
+
+<!-- more -->
+
+
+<h3>一、分析页面结构</h3>
+
+<p>虽然HTML的语法那些很简单，但是在网页设计和开发中，它却占据着不可动摇的地位。首先我们需要根据设计师的PSD和产品经理所描述的需求，然后确定我们网页的结构，反复的与他们沟通，确定更多的信息，才让我们的网页结构的生命周期变得更长。</p>
+
+<p>这里推荐一个Chrome的插件，可以瞬间去除CSS和JavaScript的效果，查看到最原始网页的表现。</p>
+
+<blockquote><p>Web Developer</p></blockquote>
+
+<p>下面我们要参考的结构就如下图中2种样子：</p>
+
+<p><img src="http://p5.qhimg.com/t0138cd1fbdfbc5ff7e.png" alt="视图1" /></p>
+
+<p><img src="http://p1.qhimg.com/t01e4dfb2288f445e02.png" alt="视图2" /></p>
+
+<p>我用红线大致描了一下页面的信息块，接下来我们来分析一下信息：</p>
+
+<ol>
+<li>一张展示图</li>
+<li>一个标题</li>
+<li>商品的列表信息（包括总价）</li>
+<li>附属品的列表信息</li>
+<li>购买按钮</li>
+</ol>
+
+
+<p>好吧，这里就不需要PM来确认啦，自己当一回PM ^8^，接下来我们需要描述网页结构。</p>
+
+<h3>二、构建网页的结构</h3>
+
+<p>经过上面的分析，我们可以得出如下的DOM结构：</p>
+
+<pre><code>&lt;div class="productStackWrap"&gt;
+    &lt;img class="psImage" src="http://p5.qhimg.com/t01bc7da5a2c6e90308.jpg" alt="卢林"&gt;
+    &lt;div class="psArticleWrap"&gt;
+        &lt;h1 class="psTitle"&gt;赔本大甩卖&lt;/h1&gt;
+        &lt;ul class="psPriceWrap"&gt;
+            &lt;li&gt;
+                &lt;span class="spLabel"&gt;眼镜&lt;/span&gt;
+                &lt;span class="spAmount"&gt;500元&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;span class="spLabel"&gt;外套&lt;/span&gt;
+                &lt;span class="spAmount"&gt;300元&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;span class="spLabel"&gt;iPhone 5S&lt;/span&gt;
+                &lt;span class="spAmount"&gt;88元&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;span class="spLabel"&gt;总价&lt;/span&gt;
+                &lt;span class="spAmount spTotalPrice"&gt;仅需888元&lt;/span&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class="spDescriptionWrap"&gt;
+            &lt;p&gt;附带品&lt;/p&gt;
+            &lt;ul class="descBulletsUL"&gt;
+                &lt;li&gt;可乐一罐&lt;/li&gt;
+                &lt;li&gt;饭碗一个&lt;/li&gt;
+                &lt;li&gt;6块钱的麻辣烫&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;button class="psCTA"&gt;买买买&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>我们这里不需要任何样式，也会是一个很美的网页，至少看起来整洁，信息整齐。（图片太大，直截取文本部分。因为图片的宽、高在初始化的时候必须要设置的，至于为什么要设置可以查阅Google，主要是给图片预留空间，提升文档性能。）</p>
+
+<p><img src="http://p5.qhimg.com/t0146e9616541c6732a.png" alt="无样式的表现" /></p>
+
+<p>好吧，到这里我们的DOM结构就构造完了，接下来添加一点基本的，也可以理解为公用的样式，这里的公用可以不理解为积木块共有的样式。说起来绕了一点，也就是说不同表现的共有样式可以与本身结构具有的基本样式进行分离，这个可以看自己喜好来决定。</p>
+
+<h3>三、编写网页基本的样式</h3>
+
+<p>在此之前我们来看看我本地的文件结构：</p>
+
+<pre><code>demo  //文件夹
+    A.css  //样式1
+    B.css  //样式2
+    index.css  //基本样式
+    index.html //DOM结构
+</code></pre>
+
+<p>这里可以处理一些基本的网页样式信息，比如恢复一些元素的默认值、调整部分间隙。这部分代码位于：index.css中，内容放入文章末尾吧，这里我们连贯的描述怎么做页面重用。</p>
+
+<h3>四、编写不同表现的样式</h3>
+
+<p>说了怎么久，DOM结构和基本样式都搞好啦，那么现在我们来实现我们的两张图。现在我们只需要做的是在最外层DOM结构中加入不同的类名：</p>
+
+<pre><code>// A类样式
+&lt;div class="productStackWrap psTreatmentA"&gt;...&lt;/div&gt;
+// B类样式
+&lt;div class="productStackWrap psTreatmentB"&gt;...&lt;/div&gt;
+</code></pre>
+
+<p>这样我们利用CSS的权重来控制特殊的样式，其实这里的 psTreatmentA 类更像一个命名空间，如果用严格的语言来理解的话，那么可以理解为：</p>
+
+<pre><code>class psTreatmentA implements productStackWrap {
+    ...
+}
+
+class psTreatmentB implements productStackWrap {
+    ...
+}
+
+...
+
+class psTreatmentN implements productStackWrap {
+    ...
+}
+</code></pre>
+
+<blockquote><p>注意这里用的是接口哦，CSS的复用可以是多继承的关系，至少我是这么理解的。</p></blockquote>
+
+<p>那么我们改怎么针对这个类来写属于它实例的样式呢？那么看一下下面两段代码就可以理解了。</p>
+
+<pre><code>/* A类样式 */
+.psTreatmentA {
+    width: 310px;
+}
+.psTreatmentA .psImage {
+    width: 80px;
+    height: 112px;
+    float: left;
+}
+.psTreatmentA .psTitle {
+    margin-left: 100px;
+}
+.psTreatmentA .psPriceWrap {
+    margin-left: 100px;
+    text-align: right;
+}
+.psTreatmentA .psCTA {
+    margin: 0 auto;
+}
+
+/* B类样式 */
+.psTreatmentB {
+    width: 385px;
+}
+.psTreatmentB .psImage {
+    width: 386px;
+    height: 287px;
+    display: block;
+    margin-bottom: 20px;
+}
+.psTreatmentB .psPriceWrap {
+    text-align: left;
+    margin-left: 110px;
+}
+.psTreatmentB .psTitle {
+    text-align: center;
+    font-size: 27px;
+}
+</code></pre>
+
+<p>这样做了过后就能够使用同一套DOM结构，来穿上不同的样式了，技术是很简单的技术，但是不同的玩法能玩出不同的精彩哦~</p>
+
+<p>那么，这样做有什么好处呢？这里随机列几条吧。</p>
+
+<p><strong>场景一：</strong></p>
+
+<p>PM说：“我们换回以前那份设计稿吧。”</p>
+
+<p>FE说：“好的，马上弄。”（随手删除了引入的B样式，引入A样式，OK，解决问题~）</p>
+
+<p><strong>场景二：</strong></p>
+
+<p>PM说：“这是最新设计稿，要赶紧上线，1天能上线吗？”</p>
+
+<p>FE说：“我看看设计稿来（啪啪啪~看完设计稿，发现其中有很多复用的网页样式）。”</p>
+
+<p>FE再说：“我尽力吧，晚上做完回你。（使用通用的结构include，最后将之前项目中的A&hellip;N样式拿来一套，解决问题！）”</p>
+
+<p>好处还有很多呢，等待你去发现~</p>
+
+<h3>五、最后结束语</h3>
+
+<p>虽然上面文章描述了样式上的重用，其实在JS行为的把握上我们也可以使用相同处理事情的方式，将JS行为的类将表现给分离出来，能够更好的应对需求的变更以及增加代码的可维护~</p>
+
+<p>附：（文章例子中的基本样式）</p>
+
+<pre><code>.productStackWrap {
+    position: relative;
+    font-size: 14px;
+    margin: 40px 0;
+    border: 1px solid #999;
+    padding: 20px;
+}
+.psTitle {
+    font-size: 21px;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+}
+.psPriceWrap {
+    padding: 0;
+}
+.psPriceWrap li {
+    list-style: none;
+    padding: 2px 0;
+}
+.spLabel {
+    display: inline-block;
+    width: 75px;
+    text-align: right;
+    padding-right: 3px;
+}
+.spAmount {
+    display: inline-block;
+    width: 75px;
+    text-align: right;
+    font-weight: 700;
+}
+.spTotalPrice {
+    color: green;
+}
+.spDescriptionWrap p {
+    line-height: 150%;
+}
+.psCTA {
+    background: green;
+    color: #fff;
+    padding: 5px 0;
+    width: 120px;
+    display: block;
+    border: 0;
+    text-align: center;
+    font-size: 20px;
+    text-shadow: 1px 1px 1px #666;
+    border-radius: 5px;
+    background-clip: padding-box;
+    background: #92c436;
+    background: linear-gradient(top, #92c436 0%, #97c64b 50%, #80c217 51%, #7cbc0a 100%);
+}
+.descBulletsUL li {
+    padding: 4px 0;
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[一步步学习ThinkJS（一）]]></title>
+    <link href="http://fegg.github.io/blog/2014/11/27/%E4%B8%80%E6%AD%A5%E6%AD%A5%E5%AD%A6%E4%B9%A0ThinkJS%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <updated>2014-11-27T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2014/11/27/一步步学习ThinkJS（一）</id>
+    <content type="html"><![CDATA[<h3>八卦</h3>
+
+<p>在2014年9月22日的时候，ThinkJS 1.0开了一个简单的发布会，去抢啦几块蛋糕来吃~现在还记得蛋糕超级好吃！- 0 - 不过成银这套NodeJS框架真心很好用（可能是以前用J2EE的框架用得比较多，所以感觉MVC这类框架比较好理解，不过文章写得很详细，相信看完就能上手），也很强大，上手极快，我相信它将越来越火！下面我们来入个门哈，如果有写得不对的可以直接指出来，使自己进步 ^o^</p>
+
+<p>如果要看官方文档资料，可以进入<a href="http://thinkjs.org/doc.html">ThinkJS官网地址</a></p>
+
+<p>当然，也少不了手把手视频教程，大家可以去看哦！</p>
+
+<p><a href="http://thinkjs.org/video.html">ThinkJS视频教程</a></p>
+
+<h3>一、安装ThinkJS</h3>
+
+<p>首先得知道ThinkJS是基于NodeJS来玩的MVC框架，所以第一步是先安装NodeJS，直接去官网下载一个pkg的安装包即可。</p>
+
+<p><a href="http://nodejs.org/">NodeJS官网</a></p>
+
+<p>如果你翻墙不了，可以到我分享的360云盘去下载：</p>
+
+<p><a href="http://yunpan.cn/cAtcbhmeYZKss">NodeJS 360云盘地址</a>  （提取码：47a2）</p>
+
+<!-- more -->
+
+
+<p>好啦，准备工作就这些，这里我使用的是Unix环境，如果你是Windows的话，可以去查其他教程，但是建议玩NodeJS就不要在Windows上玩了。下面我的命令基本都是使用sudo权限，看过我文章的都知道，是为了不给自己找不必要的麻烦。</p>
+
+<pre><code>sudo npm install -g thinkjs-cmd
+</code></pre>
+
+<p>暂时还没遇到过下载不下来的情况，所以不需要用镜像了。下载完成后你会发现有一些依赖的库都顺带下载下来了。</p>
+
+<p>我们可以先看一下ThinkJS依赖的NodeJS版本、包的源文件地址、依赖信息</p>
+
+<pre><code>npm view thinkjs engines
+npm view thinkjs repository.url
+npm view thinkjs dependencies
+</code></pre>
+
+<p>这里就不贴结果了，可以运行试试，主要是依赖的版本和依赖信息，可以看出ThinkJS能够使用其他什么技术进行开发（默认的模板引擎：ejs，NodeJS默认的就是这玩意；依赖ES6-Promise，可以让你感受不一样写JS的赶脚；还有WebSocket等实用接口）。</p>
+
+<p>接来下我们先创建一个ThinkJS项目，按步骤来就行了，so easy!</p>
+
+<pre><code>//进入一个ROOT目录
+cd ~/Documents
+//创建项目根目录文件以及进入该文件
+mkdir thinkjs &amp;&amp; cd thinkjs
+//快速创建
+thinkjs .
+</code></pre>
+
+<p>这样子就可以了，很方便吧，最后会默认在终端提示：</p>
+
+<pre><code>Application create finished
+</code></pre>
+
+<p>并且打开默认浏览器，在浏览器中显示：</p>
+
+<pre><code>hello, thinkjs!
+</code></pre>
+
+<p>在浏览器地址栏，可以看出默认的端口是：<strong>8360</strong></p>
+
+<p>现在我们就可以开始撸码啦，那么我们先来看看生成的ThinkJS的一个项目长什么样子吧。</p>
+
+<h3>二、项目目录简介</h3>
+
+<p>大家看了目录不要失望，对，就长下面那个戳样，不过真心是很好用的一个框架！</p>
+
+<p><img src="http://p4.qhimg.com/t019f1e0f87d83b3d83.png" alt="ThinkJS默认目录结构" /></p>
+
+<p>主要说一下App、www这两个目录，因为入门的话，完全就够了，不要搞得太复杂，以至于学不下去。</p>
+
+<p><strong>- App</strong></p>
+
+<p>这个文件里面的就是MVC设计模式的核心，你可以将APP/Lib目录展开，最后在APP目录下可以发现三个目录：</p>
+
+<ul>
+<li>Model （数据模型）</li>
+<li>Controller （控制类）</li>
+<li>View （界面类）</li>
+</ul>
+
+
+<p>所以分工相当的明确。</p>
+
+<p>MVC设计模式解决的问题之一是：M与V的解耦。C负责数据与界面数据的同步。但是这样说还是很模糊吧，如果学过J2EE的Struts2、SSH或者Spring MVC会特别熟悉这一块，所以我们来通俗的说一下。</p>
+
+<p>比如我们做项目的流程就是：</p>
+
+<blockquote><p>【创建数据库、表】->【取出数据】->【界面获取数据展现】</p></blockquote>
+
+<p><img src="http://p6.qhimg.com/t019347a6bf1453c4c0.png" alt="流程" /></p>
+
+<p>这里的流程简图为了更直观理解，所以倒放了，实际操作是逆向的。</p>
+
+<p>现在我们在【取出数据】与【界面展现】中间隔离一下，将对数据的逻辑操作独立出来，形成一层【控制层】。</p>
+
+<blockquote><p>【控制层】就通过调用【数据模型】获取数据，来与【界面展现】进行交互，并且控制用户的输入，最后向【数据模型】层发送数据。这样就做到了【数据模型】层不直接与【界面展现】层打交道，达到解耦的目的。</p></blockquote>
+
+<p><img src="http://p3.qhimg.com/t0139892a3cd097f2ec.png" alt="改进为MVC模型" /></p>
+
+<p>现在有这样一个需求：我们要从数据库的“think_user”表中，读取数据，其中数据包括：用户名、用户头像、用户博客链接3个数据，最后展现到界面中，形成如下图所示的样子：</p>
+
+<p><img src="http://p2.qhimg.com/t01132f641e8b05fdef.png" alt="效果图" /></p>
+
+<p>很简单的需求，是吧！就是一个查询，再遍历展示的操作，不过只要你会了这一步，CRUD你就可以轻松掌握了。</p>
+
+<p>接下来我们将按照：创建数据库和表 -> 编写数据模型 -> 编写控制层 -> 编写界面层的顺序来玩一玩ThinkJS。</p>
+
+<h3>三、创建数据库和表</h3>
+
+<p>之前的一篇文章写过<a href="http://blog.51yuekan.com/2014/11/26/2014-11-26-Mac%20OS%20X%2010.9%E9%85%8D%E7%BD%AEAMP%E7%8E%AF%E5%A2%83/">Max OS X上搭建MySQL</a>，这里我就直接开始了。</p>
+
+<ul>
+<li><p>创建数据库、创建think_user表</p>
+
+<pre><code>  create database blog;
+
+  use blog;
+
+  create table think_user (
+      userid varchar(20) not null,
+      username varchar(50) not null,
+      passwd varchar(100) not null,
+      photo varchar(255) not null,
+      blogurl varchar(255) default null,
+      primary key(userid)
+  );
+</code></pre></li>
+<li><p>按照自己的需要添加一些数据，最好在创建库的时候使用UTF8编码和字符集。</p></li>
+</ul>
+
+
+<p>最后搞出来的样子如下图所示：</p>
+
+<p><img src="http://p5.qhimg.com/t01be1402d6468f06ad.png" alt="数据情况" /></p>
+
+<p>接下来我们需要找到创建的ThinkJS项目的对应数据库映射配置文件：</p>
+
+<pre><code>App/Conf/config.js
+</code></pre>
+
+<p>这个文件里面配置了一些MySQL的参数，官方解释得很清晰，这里面也可以看出我们为什么表要以think_为前缀的原因。我的配置如下：</p>
+
+<pre><code>module.exports = {
+    //配置项: 配置值
+    port: 8360, //监听的端口
+    db_type: 'mysql', // 数据库类型
+    db_host: '127.0.0.1', // 服务器地址
+    db_port: '', // 端口
+    db_name: 'blog', // 数据库名
+    db_user: 'root', // 用户名
+    db_pwd: 'lulin', // 密码，= =明文的
+    db_prefix: 'think_', // 数据库表前缀
+};
+</code></pre>
+
+<p>这样我们的配置工作就弄完啦，可以开始撸码啦。先查询出全部的user信息。</p>
+
+<h3>四、编写数据模型</h3>
+
+<p>我们需要在“Lib/Model”目录下面建立一个文件"UserModel.js"，详情如下图：</p>
+
+<p><img src="http://p3.qhimg.com/t01a7940516c348787a.png" alt="目录结构" /></p>
+
+<p>这里的名字是有讲究的，与数据库中的think_user表是对应的，默认除去think_前缀。不推荐使用奇葩写法来映射，虽然官方提供了自己手动做一些解析，但是要从最开始就养成好习惯，好处以后会慢慢体现出来。</p>
+
+<p>好，接下来我们看看查询think_user表的数据代码是怎么样子的：</p>
+
+<pre><code>module.exports = Model(function () {
+    return {
+        getUserList: function () {
+            var self = this;
+
+            return self.select().then(function(data) {
+                return data;
+            });
+        }
+    };
+});
+</code></pre>
+
+<p>是不是感觉简单爆啦！对，用起来就是这般酸爽！官方还提供了更多的方式，现在可以看看<a href="http://thinkjs.org/doc/model.html#%E6%A8%A1%E5%9E%8B%E5%AE%9A%E4%B9%89">官网</a>，留个印象。</p>
+
+<p>这样子我们就可以通过调用getUserList()方法来得到数据对象，现在我们在控制层中，将数据传到界面的手上，途中可以做一些处理，好吧，来看看控制层怎么搞。</p>
+
+<h3>五、编写控制层</h3>
+
+<p>如上图，Controller层的Home目录默认有两个文件，这里成银使用的继承的方式来做，这样对于中小型开发是很有力的，当然结构控制得好，大型开发也同样给力，毫不逊色。IndexController继承于BaseController，BaseController里面基本就初始化，这里我们只需要修改IndexController来实现我们的需求。</p>
+
+<pre><code>module.exports = Controller("Home/BaseController", function(){
+    "use strict";
+
+    return {
+        indexAction: function(){
+            var self = this;
+
+            var userModel = D('user');
+            var userList = userModel.getUserList();
+
+            //将数据库中的值传入userList变量中
+            self.assign('userList', userList);
+            //渲染到页面上，默认会渲染index_index.html页面
+            self.display();
+        }
+    };
+});
+</code></pre>
+
+<p>代码也很好写吧，接下来就是写页面了，再将数据填充进去就完成需求了。</p>
+
+<h3>六、编写界面层</h3>
+
+<p>这里就跟ThinkJS没什么关系了，单纯的就是写页面，最后使用ejs填充数据。目录结构如下图，分别是HTML、CSS、JS代码的目录。</p>
+
+<p><img src="http://p9.qhimg.com/t014fe628ee5bda311d.png" alt="目录结构" /></p>
+
+<p>DOM结构（CSS代码附在文章末尾处了）</p>
+
+<p><img src="http://p4.qhimg.com/t0133963df1689d6611.png" alt="DOM结构" /></p>
+
+<p>哎，hexo编译的时候报错，所以只好截图一张了。</p>
+
+<blockquote><p>不过要注意，引入的CSS和JS文件的相对路径是"resource/xxx/xxx"这样的，也就是说www目录是网站的ROOT目录。</p></blockquote>
+
+<p>在这里我们就可以启动ThinkJS项目了，入口文件为：</p>
+
+<pre><code>www/index.js
+</code></pre>
+
+<p>所以进入www目录，使用下面的经典命令就可以在网页 <a href="http://127.0.0.1:8360">http://127.0.0.1:8360</a> 中浏览效果了，本例子中得效果就如最开始的那张图一模一样。</p>
+
+<pre><code>node index.js   
+</code></pre>
+
+<p>如果你还觉得不过瘾，你现在可以再写一个后台管理，实现数据的可视化添加、编辑、删除功能，这样一个简单的系统就已经起来了！很简单是吧，完全感受不到框架的存在，感受不到它的存在就对了，这样就是一个好框架了！<sup>0</sup>^</p>
+
+<p>附：本例子中的CSS代码</p>
+
+<pre><code>.main {
+    min-height: 400px;
+    _height: 400px;
+    background: #ededed;
+}
+.content {
+    text-align: center;
+}
+.items {
+    display: inline-block;
+    margin-left: -20px;
+    *display: inline;
+    *zoom: 1;
+}
+.item {
+    float: left;
+    width: 160px;
+    margin-left: 20px;
+}
+.item-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+}
+.item-photo {
+    display: block;
+    width: 150px;
+    height: 150px;
+    border: 3px solid #f5f5f5;
+    border-radius: 50%;
+}
+.item-username {
+    display: block;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 18px;
+    text-align: center;
+    color: #222;
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mac OS X 10.9配置AMP环境]]></title>
+    <link href="http://fegg.github.io/blog/2014/11/26/Mac%20OS%20X%2010.9%E9%85%8D%E7%BD%AEAMP%E7%8E%AF%E5%A2%83/"/>
+    <updated>2014-11-26T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2014/11/26/Mac OS X 10.9配置AMP环境</id>
+    <content type="html"><![CDATA[<h3>2015年5月9日更新</h3>
+
+<p>更新内容：针对Mac OS X 10.10.3不能访问用户目录</p>
+
+<pre><code>http://localhost/~lulin
+</code></pre>
+
+<p>检查Apache版本是否升级</p>
+
+<pre><code>Server version: Apache/2.4.10 (Unix)
+Server built:   Jan  8 2015 20:48:33
+</code></pre>
+
+<p>修改的地方有以下 3 点：</p>
+
+<p><strong>（1）/etc/apache2/httpd.conf</strong></p>
+
+<p>打开如下配置（去除#注释）</p>
+
+<pre><code>LoadModule authz_core_module libexec/apache2/mod_authz_core.so
+LoadModule authz_host_module libexec/apache2/mod_authz_host.so
+# 这两项是重点检查对象
+LoadModule userdir_module libexec/apache2/mod_userdir.so
+Include /private/etc/apache2/extra/httpd-userdir.conf
+</code></pre>
+
+<p>修改完后访问会出现，所以还需要修改（2）中的文件</p>
+
+<p>Forbidden
+You don&rsquo;t have permission to access /~lulin/ on this server.</p>
+
+<p><strong>（2）/etc/apache2/extra/httpd-userdir.conf</strong></p>
+
+<p>打开如下配置（去除#注释）</p>
+
+<pre><code>Include /private/etc/apache2/users/*.conf
+</code></pre>
+
+<p><strong>（3）修改之前 10.9 中 /etc/apache2/users/<youusername>.conf</strong></p>
+
+<pre><code>&lt;Directory "/Users/lulin/Sites/"&gt;
+    Options Indexes MultiViews
+    AllowOverride None
+    Require all granted
+&lt;/Directory&gt;
+</code></pre>
+
+<h3>前言</h3>
+
+<p>因为每次重新安装系统都需要配置一下Apache、MySQL、PHP的环境，网上的文章又不完整或者不完全符合自己的情况，所以写下一篇文章来记录一下，保证99%配置成功，还剩1%由于各种奇葩环境原因。。。主要从 6 个方面进行记录：</p>
+
+<ol>
+<li>启动Apache</li>
+<li>建立个人的网站目录</li>
+<li>启动php的解析功能</li>
+<li>安装、启动mysql</li>
+<li>修改mysql root密码</li>
+<li>使用客户端连接mysql</li>
+</ol>
+
+
+<h3>一、启动Apache</h3>
+
+<p>查看Apache的版本信息：</p>
+
+<pre><code>$ httpd -v
+
+Server version: Apache/2.2.26 (Unix)
+Server built:   Dec 10 2013 22:09:38
+</code></pre>
+
+<p>启动Apache</p>
+
+<pre><code>$ sudo apachectl start
+</code></pre>
+
+<p>如果终端中显示：</p>
+
+<pre><code>org.apache.httpd: Already loaded
+</code></pre>
+
+<p>就表示已经启动过了，可以使用重启命令：</p>
+
+<pre><code>$ sudo apachectl restart
+</code></pre>
+
+<p>这样我们的准备工作就做完了，第一步不要太复杂，不然配置会混乱，不太好还原之前的状态。接下来访问：</p>
+
+<p><a href="http://localhost">http://localhost</a></p>
+
+<p>如果出现如下图情况，就表示一切顺利，我们再接下去配置，如果没有成功，其实就不推荐再折腾啦，重装系统是最快的解决方案。。。</p>
+
+<!-- more -->
+
+
+<p><img src="http://p4.qhimg.com/t019a3b13c20aab70a4.png" alt="It works!" /></p>
+
+<blockquote><p>接下来我们来看看为什么吧。</p></blockquote>
+
+<ul>
+<li>Apache默认的网站目录：/Library/WebServer/Documents</li>
+<li>默认访问的文件：/Library/WebServer/Documents/index.html.en</li>
+</ul>
+
+
+<p>好吧，这样就很好理解了，我们不需要看Apache的配置文件，这样只会让配置变得复杂。</p>
+
+<p>当然，配置好啦之后，我们就应该了解为什么是这个目录，现在可以使用快捷键(shift+command+G)打开对应目录(有界面还是尽量使用可视化操作，会让你更加专注的学习正在配置的东西)：</p>
+
+<blockquote><p>/etc/apache2</p></blockquote>
+
+<p>你会发现有一个：httpd.conf 文件，这个文件里面就配置了默认的网站目录，你可以使用sublime text等编辑器(使用编辑器可以更好的处理权限等问题)查找“/Library/WebServer/Documents”，一看就明白了。</p>
+
+<p>OK，现在上面的入门配置好啦，接下来就需要在/Users/<yourname>下配置自己的网站目录，你可能要问为什么，首先，使用默认的目录不是程序员的范，其次就是那个目录的权限太高，每次修改内容都需要使用sudo权限，不太方便。</p>
+
+<h3>二、建立个人的网站目录</h3>
+
+<p>首先，需要在你的个人目录下面创建一个Sites目录（为什么叫这个名字呢？可以google一下，是有故事的，这里就不多描述了，单纯的先把成果搞出来），网上教使用：</p>
+
+<pre><code>$ mkdir Sites
+</code></pre>
+
+<p>这种方式来创建目录，这里必须要说一下，既然你用的Mac OS X可视化系统，需要这么复杂吗？右键，新建文件夹，就OK。</p>
+
+<p>接下来我们就需要修改一些配置了：</p>
+
+<ul>
+<li><p>搞一个自己的配置文件，放入：/etc/apache2/users，比如我的配置</p>
+
+<pre><code>  /etc/apache2/users/lulin.conf
+</code></pre></li>
+<li><p>提升你对该配置文件的权限，这个用终端瞬间秒杀</p>
+
+<pre><code>  $ sudo chmod 755 /etc/apache2/users/lulin.conf
+  //验证一下修改正确没有，首先验证lulin.conf文件，其次验证/etc/apache2/users这个目录的权限，不然遇到蛋疼的时候没头绪
+  $ cd /etc/apache2/users &amp;&amp; ls -la
+  $ cd .. &amp;&amp; ls -la
+</code></pre></li>
+</ul>
+
+
+<p>显示如下图情况就表示没问题了：</p>
+
+<p><img src="http://p3.qhimg.com/t0146e8cad6473dccfd.png" alt="验证权限" /></p>
+
+<p>最后需要配置一下"/etc/apache2/users/lulin.conf"这个conf文件，使用sublime text打开加入内容如下：</p>
+
+<pre><code>&lt;Directory "/Users/lulin/Sites/"&gt;
+    Options Indexes MultiViews
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+&lt;/Directory&gt;
+</code></pre>
+
+<p>改了配置嘛，不管怎么，要我们的环境保证是修改后的结果，就重启一下Apache吧。</p>
+
+<pre><code>$ sudo apachectl restart
+</code></pre>
+
+<p>输入访问地址：</p>
+
+<pre><code>http://localhost/~lulin/
+</code></pre>
+
+<blockquote><p>如果出现权限问题，那么可以查看一下“/etc/apache2/users/lulin.conf”这里的文件权限是否正确。</p></blockquote>
+
+<p><img src="http://p8.qhimg.com/t01bd67e9b3dc1099bc.png" alt="个人网站目录" /></p>
+
+<p>这样个人的自定义目录也搞定了，接下我们如果想访问php文件的话就还需要一点简单配置，不然的话php文件会被当做普通文本来解析，离成功不远啦。</p>
+
+<h3>三、启动php的解析功能</h3>
+
+<p>使用快捷键直接定位到配置文件：</p>
+
+<pre><code>/etc/apache2/httpd.conf
+</code></pre>
+
+<p>打开后只需要去除一句话的注释即可搞定，使用编辑器来搜索吧，so easy!（去除前面的#号即可，这就是conf的特性而已）</p>
+
+<pre><code>LoadModule php5_module libexec/apache2/libphp5.so
+</code></pre>
+
+<p>接下来老规矩，保证不踩坑，重启一下Apache。</p>
+
+<pre><code>$ sudo apachectl restart
+</code></pre>
+
+<p>写一个简单的php文件测试一下配置结果，这次我们把php文件建在我们个人的网站目录"/Users/lulin/Sites"吧。</p>
+
+<ul>
+<li>新建一个 index.php 页面，Apache会默认解析index.php</li>
+<li><p>敲入简单代码，别偷懒，敲完整哦，不然万一你的某个配置没开就踩坑里了：</p>
+
+<pre><code>  &lt;?php
+      echo phpinfo();
+  ?&gt;
+</code></pre></li>
+</ul>
+
+
+<p><img src="http://p9.qhimg.com/t0120bef7ecbe5b7f46.png" alt="PHP经典页面" /></p>
+
+<p>显示下面经典测试php的页面，即OK。</p>
+
+<h3>四、安装、启动mysql</h3>
+
+<p>安装去官网下载一份就行，我这里下载的版本是：mysql-5.6.21-osx10.9-x86_64.dmg</p>
+
+<blockquote><p>建立下载dmg文件，安装方便，会默认建立软连接等东西。</p></blockquote>
+
+<p>安装完后，我们先找到安装的mysql，这样方便以后配置，简单的查看目录就在：</p>
+
+<pre><code>//软连接
+/usr/local/mysql
+//真实目录
+/usr/local/mysql-5.6.21-osx10.8-x86_64
+</code></pre>
+
+<p>安装的详情可以查看官方说明，我找了很多资料发现还是官方比较直观。</p>
+
+<p><a href="http://dev.mysql.com/doc/refman/5.6/en/macosx-installation-pkg.html">MySQL安装官网</a></p>
+
+<p>不过官网更新不是特别快，其中的安装默认启动项已经在我安装的版本不需要自己搞了，已经有了，可以查看【系统偏好设置查看】，安装MySQL后默认是关闭的，我们也进去启动一下。</p>
+
+<p><img src="http://p0.qhimg.com/t014982da363f4740a8.png" alt="入口" /></p>
+
+<p><img src="http://p3.qhimg.com/t01a64f1284d81b06e7.jpg" alt="MySQL启动配置" /></p>
+
+<p>现在依然在终端输入：mysql 命令还不能识别到命令，我们需要配置环境变量，这个在终端下面好弄一点，我们就采用命令的方式修改：</p>
+
+<pre><code>$ sudo vim ~/.bash_profile
+</code></pre>
+
+<p>在.bash_profile文件中加入MySQL的可执行目录：</p>
+
+<pre><code>export PATH="/usr/local/mysql/bin:$PATH"
+</code></pre>
+
+<p>最后刷新一下配置：</p>
+
+<pre><code>$ source ~/.bash_profile
+</code></pre>
+
+<p>接下来我们就可以在终端之间输入：mysql 命令就能够以非root用户登录了。</p>
+
+<p>现在MySQL环境搭建完成，要正常使用我们需要配置root用户，默认root用户的密码是空值，实际使用肯定需要修改一下。</p>
+
+<h3>五、修改mysql root密码</h3>
+
+<p>网上介绍了很多方法，我觉得最直接，最快速的方法是使用空密码，以root用户的身份登录进入MySQL控制台，然后再去更新密码即可。</p>
+
+<pre><code>$ mysql -u root -p
+$ 直接回车登录
+//下面模拟MySQL控制台
+//因为是在MySQL下，所以SQL关键字采用小写更方便，如果你是Oracle的话还是推荐都是用大写
+mysql &gt; show databases; //看一下所有数据是否齐全
+      &gt; use mysql; //切换到mysql库
+      &gt; update user set password=password('lulin') where user='root';
+      &gt; flush privileges; //一定要记住刷新权限，不然修改密码不生效
+      &gt; exit; //退出，使用修改后的密码重新登录，确定是否修改成功
+</code></pre>
+
+<p>现在MySQL的配置基本上结束了，更多的配置可以配置my.cnf，在windows下是my.ini，都是其他文件重命名的，这个可以google查阅到详细配置。</p>
+
+<h3>六、使用客户端连接mysql</h3>
+
+<p>上面的配置结束啦，我们不可能每次都在MySQL控制台搞吧，效率太low，这里我介绍几个客户端：</p>
+
+<ul>
+<li>Mac OS X平台</li>
+</ul>
+
+
+<p><strong>Querious</strong></p>
+
+<p>这个使用过一段时间，需要收费，不太好破解官方出的最新版本，不过还挺好用，这里我就不用了，找个免费的用用。</p>
+
+<p><strong>Sequel Pro</strong></p>
+
+<p>下载地址：<a href="http://www.sequelpro.com/download">http://www.sequelpro.com/download</a></p>
+
+<p>可能被墙访问有点慢，我就将最新版放入了360云盘，大家可以去下。</p>
+
+<p>云盘地址：<a href="http://yunpan.cn/cA5FY26fdqTsm">http://yunpan.cn/cA5FY26fdqTsm</a> （提取码：b343）</p>
+
+<p>使用就so easy啦，Sequel Pro 配置如下图：</p>
+
+<p><img src="http://p2.qhimg.com/t0172923d750ff38455.png" alt="Sequel Pro 连接MySQL" /></p>
+
+<p>记得把常用连接加入收藏就行，不然每次都要输来输去，Host建立使用127.0.0.1，原因可以google，不过Querious之前我用的时候输入localhost会默认转换成127.0.0.1，还比较人性化。</p>
+
+<ul>
+<li>Windows平台</li>
+</ul>
+
+
+<p>只推荐一款利器，用过很多，没有之一，就它最好用：</p>
+
+<p><strong>navicat for mysql</strong></p>
+
+<p>这个客户端是收费的，不过如果你使用的时8.0版本，在baidu搜索：</p>
+
+<pre><code>navicat for mysql 注册码
+</code></pre>
+
+<p>关键字，第一个搜索结果里面就有注册码。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Yanxihu]]></title>
+    <link href="http://fegg.github.io/blog/2014/09/19/yanxihu/"/>
+    <updated>2014-09-19T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2014/09/19/yanxihu</id>
+    <content type="html"><![CDATA[<hr />
+
+<p>layout: post
+title: 骑行－雁栖湖游记</p>
+
+<h2>tags: [&ldquo;游记&rdquo;]</h2>
+
+<p>路程：来回110公里</p>
+
+<p>时间：2014年9月20日</p>
+
+<p>我、智杰、成银、肆爷、文武、文成、孟孟（7人）</p>
+
+<hr />
+
+<h3>1. 景点简介</h3>
+
+<p>雁栖湖，是位于北京市怀柔区北部北台上村的水库，拦截雁栖河，北临雄伟的万里长城，南偎一望无际的华北平原。雁栖湖水面宽阔，湖水清澈，每年春秋两季常有成群的大雁来湖中栖息，故而得名。</p>
+
+<h3>2. 出发前的集合</h3>
+
+<p>跟之前约好的一样，早上9点到公司集合出发。大家像打了鸡血一样吃完了早餐，摆好了出发的架势准备出发，在出发前文成比较有经验，还教我们一些骑行中要用到的常用手势，感觉很专业的样子<sup>0</sup>^</p>
+
+<!-- more -->
+
+
+<p><img src="http://p1.qhimg.com/t01fc37c85fef53360e.jpg" alt="大家的'宝马'" /></p>
+
+<p><img src="http://p2.qhimg.com/t01e8be3b0735e82792.jpg" alt="大家的'宝马'" /></p>
+
+<p>最开始起步大家都像打了鸡血一样&hellip;从最开始自由的骑行到最后排成一条线，感觉就是一个小骑行队在前进，在骑行途中还有其他队跟我们打招呼呢，喊小伙子加油，哈哈！</p>
+
+<p><img src="http://p7.qhimg.com/t012456da4e267c15aa.jpg" alt="骑行队伍" /></p>
+
+<p><img src="http://p1.qhimg.com/t01abe54a9ae9f26d89.jpg" alt="骑行队伍" /></p>
+
+<h3>3. 别具风味的午餐</h3>
+
+<p>我们骑到的时候大楷就1点多了，准备找一个点吃饭，要到雁栖湖的地方饭店还真的多，最后我们选择了一家看上去比较休闲一点的地方吃饭，0_0 很有情调吧～</p>
+
+<p><img src="http://p4.qhimg.com/t0170b4481a74be8efc.jpg" alt="风味午餐" /></p>
+
+<p>不过遇到一个好耍的老爷子，对白是这样子的：</p>
+
+<p>他：“小伙子们，你们现在是骑回去还是刚骑到？”</p>
+
+<p>我们：“刚骑到。”</p>
+
+<p>他：“从哪儿开始骑的？”</p>
+
+<p>我们：“大楷是酒仙桥。”</p>
+
+<p>他：“我也是酒仙桥，刚到～”</p>
+
+<p>＝＝他好像是走路来的，我们还以为碰到神仙啦&hellip;这步行速度，像“神行太保”，有木有～有木有！！！</p>
+
+<h3>4. 美丽的雁栖湖</h3>
+
+<p>经过辛苦的骑行，终于到啦雁栖湖门口，我们四辆机油车要牢牢的在一起，哈哈～不过为什么我的车被两把锁给锁住啦&hellip;</p>
+
+<p><img src="http://p9.qhimg.com/t01449f900c6e1b04b8.jpg" alt="机油车" /></p>
+
+<p><img src="http://p9.qhimg.com/t010f6d54e443b5cce1.jpg" alt="雁栖湖门口" /></p>
+
+<p>到啦就先来个集体照吧，可以暂时歇个脚了，骑行后的放松，大家都好high心的样子～</p>
+
+<p><img src="http://p7.qhimg.com/t013aa7d0210b6ad279.jpg" alt="集体照" /></p>
+
+<p><img src="http://p1.qhimg.com/t012ac7958e709c0e1b.jpg" alt="大黄鸭" /></p>
+
+<p>大家看到那只小黄鸭了吗？明明是小黄鸭，立的是大黄鸭的牌坊 ＝＝</p>
+
+<p><img src="http://p4.qhimg.com/t01e455618c512f9e10.jpg" alt="大黄鸭" /></p>
+
+<p>回家途中饿了就是士力酱，补充体能继续上路，我们的目标是公司对面的黄焖鸡 @&hellip;@ 就这点追求了～</p>
+
+<p><img src="http://p4.qhimg.com/t01d8167ce092f32f98.jpg" alt="士力酱" /></p>
+
+<p><img src="http://p4.qhimg.com/t017da9805e7a739bbf.jpg" alt="那些年" /></p>
+
+<p>有木有像那些年，那些年，我们的青春永不止步！</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Web前端十日谈]]></title>
+    <link href="http://fegg.github.io/blog/2014/08/02/web-ten-days/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2014/08/02/web-ten-days</id>
+    <content type="html"><![CDATA[<h3>前言</h3>
+
+<p>一直想写这篇“十日谈”，聊聊我对Web前端开发的体会，顺便解答下周围不少人的困惑和迷惘。我不打算聊太多技术，我想，通过技术的历练，得到的反思应当更重要。</p>
+
+<p>我一直认为自己是“初级”前端开发工程师，一方面我入道尚浅，只有短短几年，另一方面我自知对技术的钻研并不深入，可能是由于环境的原因，当然最重要的是，我幸运的参与到互联网崛起的浪潮之巅。时势造就了一批技能薄弱但备受追捧的“弄潮者”，这在很大程度上影响我们对“技术本质”的洞察力，多年来也一直未有成体系的“前端技术”布道佳作，以至于当下多数人对前端技术的了解，盖始于表述并不严谨的岗位招聘描述，而这正恰恰反映了Web前端开发对自身的模糊定位。对于很多Web前端工程师来说，初尝禁果的快感无法持续很久，就陷入一轮又一轮的迷惘，思索自己的职业规划，试图寻找到适合自己的成长道路、看清自身技能的瓶颈，寻找突破。但遗憾的是，Web前端技术被广泛接纳时日尚短，没有多少励志的成功样板可供遵循。然而情况不总是这么糟，毕竟Web前端技术是一门“技术”，和计算机科学系出同门，只是因为互联网的高速崛起而被蒙上了迷雾，遮住了双眼，让我们傻傻看不清时局。</p>
+
+<!-- more -->
+
+
+<p>那么，如何定义Web前端技术岗位边界？Web前端技术的价值体现在何处？前端工程师的价值仅仅体现在物以稀为贵吗？前端工程师的初级、中级、高级和专家之间到底如何界定？当前“我”处在什么位置？接下来的路子应当怎样走？何谓前端技术之“道”？我想多数人都思考过这些问题，本篇“十日谈”里的观点可能有些偏激，但抛砖引玉，读者权且把这些言论当作一个引子吧。</p>
+
+<h3>第一日：初尝禁果</h3>
+
+<p>【上帝说：“要有光！”便有了光】</p>
+
+<p>万物生灵、阳光雨露盖源于造物之初的天工开物，我们无法想象上帝创造光明之前的世界模样。但幸运的是，前端开发没有神祗般的诡魅。这个技术工种的孕育、定型、发展自有轨迹，也颇有渊源，当然，这非常容易理解。不严格的讲，在杨致远和费罗在斯坦福大学的机房里撺掇出Yahoo!时，Web前端技术就已经开始进入公众视野，只不过当时没有一个响亮的名字。从那时起，“基于浏览器端的开发”就成了软件开发的新的分支，这也是Web前端技术的核心，即不论何时何地何种系统以及怎样的设备，但凡基于浏览器，都是Web前端开发的范畴（当然，这个定义很狭隘，下文会提到）。</p>
+
+<p>在2000年之后浏览器技术渐渐成熟，Web产品也越来越丰富，中国有大批年轻人开始接触互联网，有一点需要注意，大部分人接触互联网不是始于对浏览器功能的好奇，而是被浏览器窗口内的丰富内容所吸引，我们的思维模式从一开始就被限制在一个小窗口之内，以至于很长时间内我们将“视觉”认为是一种“功能”，Web产品无非是用来展现信息之用。起初的入行者无一例外对“视觉”的关注超过了对“内容”的重视，先让页面看起来漂亮，去关注html/css，沿着“视觉呈现”的思路，继续深入下去。因此，这类人是被“视觉”所吸引，从切页面入行，着迷于结构化的html和书写工整的css，喜欢简洁优雅的UI和工整的页面设计，之后开始接触视觉特效，并使用jQuery来实现视觉特效，以此为线索，开始深入研究Dom、Bom和浏览器的渲染机制等，html/css在这些人手中就像进攻兵器，而JavaScript则更如防守的盾牌。（好透彻！我就是这种）</p>
+
+<p>还有另外一群人从另一条道路接触Web前端，即工程师转行做前端，他们有较多的后台语言开发背景，从读写数据开始，渐渐触及浏览器端，接触JavaScript库，起初是在html代码上加js逻辑，后来开始涉及html和css，他们喜欢OO、逻辑清晰、结构悦目的代码，更关注界面背后的“程序语言”和数据逻辑。html/css在这些人手中则更像盾牌，而JavaScript更如进攻的兵器。</p>
+
+<p>应当说这两类人是互补的，他们各自了解浏览器本质的一部分，一拨人对渲染引擎了如指掌，另一拨人则将JS引擎奉为至宝，其实任何一部分的优势发挥出来都能做出精品。大部分前端工程师都能从这两条渊源中找到自己的影子。但，这两类人的思维模式和观点是如此不同，以至于形成了一些不必要的对抗，比如在某些公司，干脆将Web前端技术一分为二，“切页面的”和“写js的”。这样做看上去明确了分工提高了效率，但他对员工的职业发展带来巨大伤害。在第二日“科班秀才”中会有进一步讨论。</p>
+
+<p>我应该属于第二类，即在学校正儿八经的学习C/Java和C#之类，以为大学毕业后能去做ERP软件、桌面软件或者进某些通信公司写TCP/IP相关的程序。校园招聘时选择了中国雅虎，因为当年（08年）雅虎还是有一点儿名气，而且我听说雅虎比较算技术流的公司……自此就上了贼船，一发不可收拾。</p>
+
+<p>在雅虎的这段时间，我有幸接触到一股正气凛然的技术流派，也形成了我对前端技术的一些基本看法，这些基本观点一直影响我至今。</p>
+
+<p>【优雅的学院派】</p>
+
+<p>当年雅虎的技术流派正如日中天，拥有众多“之父”级的高人，所营造出的Hack氛围实在让人陶醉的无法自拔，那段时间我甚至宁愿加班到深夜阅读海量的文档和源代码，感觉真的很舒服，我深深的被雅虎工程师这种低调务实、精工细琢的“服务精神”所打动，而这种不起眼的优秀品质很大程度的影响雅虎产品的用户体验和高质量的技术输出。那么，何谓“服务精神”？即你所做的东西是服务于人的，要么是产品客户、要么是接手你项目的人、要么是使用你开发的功能的人，所以技术文档成为伴随代码的标配。因此，工程师之间通过代码就能做到心有灵犀的沟通。这是工程师的一项基本素质，即，思路清晰的完成项目，且配备了有价值的技术文档，如果你的程序是给其他程序员用的，则更要如此，就好比你制造一款家电都要配备说明书一样。因此，YDN成了当时最受全球程序员最喜爱的技术文档库，这种优雅务实的“学院气息”让人感觉独具魅力。</p>
+
+<p>让人感觉奇怪的是，在中文社区始终未见这种学院派。甚至在具有先天开源优势的Web前端技术社区里也是波澜不惊，可见写一篇好的技术文案真的比登天还难。我所见到的大部分所谓文档索性把代码里输出数据的语句块拷贝粘贴出来，至于为什么数据格式要设计成这样、如果字段有修改怎么做、编码解码要求如何等等关键信息只字不提，或者开发者也没想过这些问题呢。因此，我们一直在强调代码的质量和可维护性，但一直以来都未见效，盖源于缺少这种“服务”意识的灌输。这种意识在下文中还会多次提到，因为它能影响你做事的每个细节，是最应当首先突破的思想纠结。</p>
+
+<p>除了意识问题，另一方面是技术问题，即文笔。这也是工程师最瞧不上眼的问题，难以置信这竟然是阻碍工程师突破瓶颈的关键所在。我已看到过数不清的人在晋升这道关卡吃了大亏，很多工程师技术实力很强，但就是表达不出来，要么罗列一大堆信息毫无重点、要么毫无趣味的讲代码细节，不知云云。除非你走狗屎运碰到一个懂技术的老板，否则真的没办法逃脱码农的宿命。但大部分人还振振有词不以为然。而在Web前端开发领域情况更甚。前端工程师是最喜欢搞重构的，但在快节奏的需求面前，你很难用“提高了可维护性”、“提升了性能”这类虚无缥缈的词藻为自己争取到时间来搞重构，说的露骨一点，可能你真的对某次重构带来的实际价值无法量化，只是“感觉代码更整洁了”而已。我会在下文的“伪架构”中会展开分析前端工程师的这种浮躁献媚的技术情结。而这正是前端工程师最欠缺的素质之一：用数据说话，用严谨科学的论据来支撑你的观点，老板不傻，有价值的东西当然会让你去做。（振聋发聩）</p>
+
+<p>当然，情况不总是这么糟糕，我们看到中文社区中已经锻炼出了很多写手，他们在用高质量的文字推销自己的技术理念，这是一个好兆头，好的文笔是可以锻炼出来的。而在职场，特别是对前端工程师这个特殊职位来讲，这种基本技能可以帮你反思梳理需求的轻重缓急，从凌乱的需求中把握七寸所在。因为当你开始认真写一封邮件的时候，这种思考已经包含其中了。</p>
+
+<p>所以，雅虎技术的推销是相对成功和远播的。关键在于两方面，扎实的技术功底和高超的写手。而真正的技术大牛一定是集两者与一身，不仅钻研剑道，还能产出秘籍。这也是Yahoo!优雅的学院派气息的动力源泉。国内很多技术团体想在这方面有所建树，应当首先想清楚这一点。</p>
+
+<p>【规范的破与立 1】</p>
+
+<p>雅虎的技术运作非常规范，刚才已经提到，包括技术、组织、文化，一切看起来有模有样，也堪称标杆，自然成了国内很多技术团队和社区的效仿对象。一时间各种“规范“成风、各色“标准“大行其道，结果是质量参差不齐。</p>
+
+<p>我们到底需要什么样的规范？雅虎的技术规范到底有何种魔力？以何种思路构建的规范才是货真价实的？规范有着怎样的生命周期？想清楚这些问题，能很大程度减轻很多Web前端工程师的思想负担，看清一部分技术本质，避免盲目跟风。</p>
+
+<p>我们的确需要规范，但好的规范一定是务实的，一定是“解决问题“的。比如针对项目构建的DPL可以收纳公用的视觉元件以减少重复开发、规定某OPOA项目的事件分发原则以确立增量开发的代码惯性。反之，糟糕的规范却显得过于“抽象“，比如页面性能指标、响应式设计原则。另外，尽管他山之石可以攻玉，但拿来主义有一个大前提，就是你了解你的项目的关键问题，你要优先解决的是些关键问题，而外来规范正好能解决你的问题。因此规范是一本案头手册，是一揽子问题的解决方案，应当是“字典”，而不是“教程“。可见规范的源头是“问题”。所以，当你想用CoffeeScript重构你的项目时、当你想引入CommonJS规范时、当你想在页面中揉进Bootstrap时、当你打算重复造轮子搞一套JS库时、当你想重写一套assets打包工具时，想想这些东东解决了你的什么问题？会不会带来新的问题、把事情搞复杂了？还是为了尝鲜？或者为了在简历中堂而皇之的写上使用并精通各种新技术？</p>
+
+<p>规范之立应当有动因，动因来源于项目需求，项目需求则来自对产品的理解和把握，这是Web前端初级工程师走向中级甚至高级的一次重要蜕变，软件工程领域早就有“架构师”角色，而架构师往往存在于项目需求分析和概设、详设阶段。我看到的情况是，Web前端工程师的思维过多的限制在“界面”之内，向前和产品需求离的太远（认为这是视觉设计师的事）、向后和数据逻辑又隔离开来（认为这是后台工程师该干的事），因此前端规范也大都泛泛，无关项目痛痒，成了玩具。</p>
+
+<p>雅虎技术规范的优秀之初在于它们解决问题。所以，学习使用规范应当多问一句，“他们为什么这样做？”其实，想清楚这些问题时，脑海中自然形成了一种“遇山开山”的创造性思维。</p>
+
+<p>【规范的破与立 2】</p>
+
+<p>如果说新技术的尝鲜缺少针对性，但至少满足程序员的某种洁癖和快感，那么“负担”从何而来呢？对于初学者来说，有价值学习资料可能只有这些规范，如果说规范价值不大，那又当从何入手呢？</p>
+
+<p>刚才我说的不是依赖于规范，而是对规范的反思，摆脱规范灌输给我们的思维定势。新人们大概是看了Wiki中的很多指标、结论、实践，在做项目之初就附加了不少“八股式”的负担，甚至影响我们对项目关键需求和关键问题的洞察力和判断力，负担过重就无法轻装上阵，Wiki中提到的这些指标和规范是结论性的，是大量的实践之后得出的，也只有经历过大量实践才会真正理解这些结论，比如DomReady时间和http请求数是否有因果关系，http请求数增加是否真的会导致页面性能下降，什么条件下会导致性能下降？我们从那些条文和结论中无法找到答案。</p>
+
+<p>举个具体的例子，Kissy刚刚出了DPL，也是一大堆结论，比如他的布局就采用了经典的双飞翼，使用容器浮动来实现，那么，这种做法就是不可撼动的“标准”吗？看看淘宝车险首页，布局容器齐刷刷的inline-block，只要顶层容器去掉宽度，布局容器自身就能根据浏览器宽度调整自然水平/垂直排列，轻易的适应终端宽度了。</p>
+
+<p>再比如，淘宝旅行计划项目中的部署方式，也没有完全使用Loader管理依赖，而是将依赖层级做的很少，业务逻辑使用脚本来合并，这样就可以更容易在build环节加入语法检查和代码风格检查。</p>
+
+<p>类似这种摆脱原有编程思维，有针对性的用新思路新方法解决问题的做法显然让人感觉更加清爽，编程的乐趣也正体现在打破常规的快感之中，小马曾经说过：“制造规范是为了打破规范”，万不要因为这些规范标准加重负担，导致开始做一个简单页面时也显得缩手缩脚，无法放开身手。大胆的动手实践，才能真正得出属于自己的“结论 “和“标准“，才会真正深刻理解那些“结论”的意义所在。代码写的多了，自然熟能生巧，也容易形成成熟的技术观点。</p>
+
+<p>在这个过程中，我们唯一的对手是懒惰，惰于思考，就无法真正发现问题，自然形不成自己的观点。还是那句话，任何规范、方法、结论、实践都是为了解决项目中的问题的，所以，我们所接触到那些看似“八股文”式的规范标准也是为了解决某些问题而提出的，想清楚这些问题，理解方法论背后的“因“，内心自然有“果”。</p>
+
+<p>因此，“着眼当下、对症下药”的品质就显得弥足珍贵了，比如，双飞翼布局方法是为了解决一套（html）代码适应多种布局设计，这里的布局相对于固定的产品来说也是固定的，而无针对终端的自适应（适用于移动端的榻榻米布局似乎还没有最佳实践）。这是双飞翼产生的背景，如今终端环境较之5年前已经翻天覆地，问题早已不在“多种布局”上，而在“终端适应“上，这才是我们面临的问题，需要我们给出新的技术方案。</p>
+
+<p>所以，勤于思考，轻装上阵，大胆实践，勇于创新，发掘问题所在，实打实的解决（潜在）问题，这才是我们真正需要的能力。放下思维定势枷锁，也会有一种豁然开朗的感觉。</p>
+
+<h3>第二日：科班秀才</h3>
+
+<p>【秀才仕途】</p>
+
+<p>Web前端工程师是一个特别的岗位，只存在于互联网领域。最近几年随着互联网产业的火爆，对前端工程师的需求量暴增，兵源几近枯竭。各大公司技术掌门一定都有过类似的苦恼：“招一个靠谱的前端工程师、难于上青天”。</p>
+
+<p>我想，一部分原因是，当前不少入道的前端工程师大都是转行而来，毕竟，正儿八经的学校里也不会教这玩意，觉得“切页面”有啥好教的，甚至不觉得html/css是一门语言。转行这事自不必详说，大家也各自瞄准当前市场需求，造成的现象是，初级前端工程师堆成山，中高级人才却一将难求，计算机系的科班出身就更加凤毛麟角了。一方面反映了教育部门的后知后觉，另一方面也体现了大部分人急功近利的跟风。当然最重要的原因是，所谓中国“第一代前端工程师”并未做好布道的工作。导致大家对于基础和潜力的态度从之前的忽视演变为如今的蔑视。所谓基础，就是在大学上的那些计算机基础课。所谓潜力，就是戒骄戒躁的务实作风。这些会在后文中多次提到。</p>
+
+<p>对于科班出身的莘莘学苗来说，根正苗红本身就是一种优势，事实证明，这些人在前端技术上的成长轨迹有一定的套路，而且大都能如期的突破技能瓶颈。从一个人大学毕业到他最满意的工作状态，中间会经过几个阶段。</p>
+
+<p>前2年是学习技能的阶段，这个阶段主要精力放在专业技能的提升上，2年内起码要赶上平均水平，即所谓“中级“，在这个阶段的人通常对软技能不怎么关注，沟通能力达不到平均水平，基本上是来啥活干啥活，干不完就加班的这种，对需求的合理性不甚理解，对项目也没什么把控，尽管在技能上有提高的空间，也不是公司最需要的人，但有不少成长空间。</p>
+
+<p>工作2-3年的人在前端技能上趋于稳定，也就是技能上的第一次瓶颈，这种人干活熟练，切页面可能也很快，代码看上去也比较规范，属于熟练工，开始注重沟通技巧和一些职业技能的积累，比如带人带项目，至少有这方面的意识，并有过推动项目、和业务方pk需求的经历，这就达到了中级应当具备的职业技能，但应当注意的是，这时最容易出现偏科的情况，特别是对于那些“专门切页面的“和“专门写脚本的“人，毕竟html/css/js三者不分彼此，三者是一个合格前端工程师都必须要掌握的。如果你觉察到自身有偏废的嫌疑，则要小心了，要清楚的了解自身的差距，并意识到瓶颈的存在，为过渡到“中级“的打下基础。</p>
+
+<p>过了这道坎之后，工作3年以上的人大部分技能也趋稳，有些人对前端新技术有钻研，能够熟练应对日常工作，软技能也ok，具备有针对性的“拿来主义“，代码也具有一定的架构性，开始突破“代码民工”的这一层瓶颈，对团队气氛、培训、工作环境有个性化的要求，一般来讲，这种人是典型的具有潜力的“中级”工程师，但很快会遇到职业发展中的第二个技术瓶颈。</p>
+
+<p>有少数工作3年或4年以上，在不断寻求新的技能上的突破，最明显的一点体现是，开始关注“底层协议”，即HTTP、第三方应用、系统对接、制造工具、工作流程等，这时思考的重点已经脱离了“切页面”，变为“出方案“，比如要架设一个站点，能够搭建站点框架，预见站点后续（前端）开发中的所有风险，并一一给出解决方案。项目后续开发遇到问题只要翻阅你提供的“手册”即能找到答案。这种人是标准的“高级”Web前端工程师。</p>
+
+<p>出方案是一件挺难的事情，它要求一个工程师同时具备经验、技术、气场等诸多硬技能。尤其是对技术底子的要求非常高。</p>
+
+<p>【半路出家】</p>
+
+<p>那么，转行做前端的人又当如何呢？其实发展轨迹和科班秀才们非常类似，只是时间跨度可能会长一些，你要花更多的精力、做更多的项目、更多的反思和总结才能理解某个知识点的本质（比如HTTP协议）。当然这只是一般情况。</p>
+
+<p>此外，这些人还需要摆脱很多思维定势的禁锢。这里我推荐大家阅读阿当的《Web前端开发修炼之道》。当然，如果你有一个靠谱的师兄带你入道，自然幸运万倍。</p>
+
+<p>但不管怎样，我始终认为应当秉承兴趣第一的原则，不管你是误打误撞、还是意欲为之，不管你是科班秀才、还是半路出家，兴趣始终应当是第一原则，然后才是你“想做好“。我对自己的要求无法强加于人，所以很多业界大牛在回顾自己成功之路时，提到最多的是：“热爱你的工作、拥抱它给你带来的挑战”。N.C.Zakas曾经这样勉励大家：</p>
+
+<p>“我对Web开发人员最大的建议就是：热爱你的工作。热爱跨浏览器开发带来的挑战、热爱互联网技术的种种异端，热爱业内的同行，热爱你的工 具。互联网发展太快了，如果你不热爱它的话，不可能跟上它的步伐。这意味着你必须多阅读，多动手，保证自己的才能与日俱增。下了班也不能闲着，要做一些对自己有用的 事儿。可以参与一些开源软件的开发，读读好书，看看牛人的博客。经常参加一些会议，看看别人都在干什么。要想让自己快速成长，有很多事儿可以去做，而且付出一定会有回报。“</p>
+
+<h3>第三日，幸福感</h3>
+
+<p>【先精通十行？！】</p>
+
+<p>兴趣第一，听上去很美，但现实却不总是这么酷。练就了一身本领，那也要找到对口的怪物来打一打才过瘾。</p>
+
+<p>自然，每个人都想做出好东西，每个工程师也都渴求这样的机遇，用层次分明的设计、漂亮优雅的代码、精妙的细节雕琢，做出美观、安全、实用耐用的产品，不过现实是如此残酷，以至于工程师们一直都缺乏对产品的归属感。作为前端工程师，如何才能在江湖中把握住前进方向、步步走高？毕竟，在职位繁杂的大公司，缺乏人性化的工作流程影响着工程师的工作幸福感。产品从设计之初、到技术方案评审、再到实现，处处充满了妥协，大部分产品都是杂交的产物，人与人相互掣肘，每个人都对产品不满意……，大跃进式的敏捷开发早就被证明百害无一利。但，或许这就是成长的代价。年轻的工程师需要更多的了解需求和设计、产品经理更要懂得软件迭代规律。对于前端工程师来讲更是如此，多学习交互设计和UI，多了解网络协议和软件迭代模型，更能帮助前端工程师和需求方沟通、和后台的衔接、以及控制版本的迭代。(大师高德纳就写过：错，再错，又再错，但少了，更少了，越来越少了)</p>
+
+<p>说来奇怪，前端工程师不是写html/css/js的吗，搞懂那些边缘知识有什么用？《Web前端开发修炼之道》中也提到，精通一行需要先精通十行。这里我来解释一下原因。</p>
+
+<p>作为交互设计师的下游，前端工程师学需要习设计知识是很容易理解的，因为它能帮助你更准确的理解设计师的意图，在原型不完整的时候也能正确的反馈设计缺陷，将问题阻挡在设计的环节，会大大减少UI bug数量，比如说，设计师会给出理想状态下的容器样式，却往往忽略了文字溢出折行、长连续字符、容器宽高是否适应内容尺寸变化而变化，溢出部分是作截字还是隐藏等诸多细节，因为设计师不懂“边界值测试”的道理，而这些问题往往在测试阶段才被发现，所以，如果能在拿到UI设计稿时就提醒设计师补充完整这些场景，自然减少测试回归次数。</p>
+
+<p>另外，前端工程师必须要了解网络协议，原因很简单，我们做的产品运行在Web上。很多依赖于Ajax的实现，只有前端工程师才会提出实现方案，产品经理不了解技术瓶颈，后台工程师更不会在意客户端的用户体验，举个简单的例子：通过JS实现一个Ajax，如果Ajax抓取的数据源是一个302跳转，则需要在JS程序中多做一些事情，这就需要前端工程师了解一些HTTP协议。应当说，这是很常见的一个场景。</p>
+
+<p>那么，为什么说前端工程师也要关注代码版本控制呢？因为web开发和软件开发本质无异，同样具有迭代周期，需求不是一揽子提完、一口气开发完的，是有步骤的开发，因此，每次上线开发哪些功能、为后续扩展功能留足哪些接口、代码在可扩展和可维护性上应当作哪些考虑……，这些应当是每个工程师关注的事情，所谓迭代就是指这种需求的叠加，这是软件开发的常态，也是web开发的常态，刚开始，前端工程师总会不断抱怨没完没了的需求，代码起初还算干净，但很快就越来越乱，代码的版本管理对于Web前端工程师来说有些困难，这也使得大部分前端工程师很难上档次，从这个角度讲，前端工程师是需要向后台工程师学习的，他们的开发量不比前端少，维护代码的能力要超过前端工程师。另外，对于刚入行的前端工程师，心态要放对，提需求是产品经理的职责所在，整理出有价值的需求是交互设计师的职责所在，将需求作版本控制分步实现是前端工程师的职责所在，前端工程师没必要去抱怨产品经理提一大堆没规律的需求，而更应当去理解需求缘由，将需求提炼成UC（用例），让需求在自己手中可控制。只是多数前端工程师缺乏提炼、整理需求的能力，一味的在接需求，才会搞的手忙脚乱，带着情绪堆代码。（我已身中数枪）</p>
+
+<p>所以，只有练就了一身本领，才会更有目标的去寻找对产品的责任感和对团队的归属感，不要误以为能切出漂亮的页面就是能力的提高，纯粹的写代码每个人都差不多的，要成为合格的工程师，眼界要进一步放开，前端工程师能做的，不仅仅是切页面而已，作一个精品项目，一定不乏专业的过程把控，这也是大多数人最易忽略的地方。</p>
+
+<p>【励志之本】</p>
+
+<p>其实，除了个人需要明确努力的方向，每个人都更渴望身处一个好团队，谁都不希望有猪一样的队友。我们都很羡慕处身这样的团队，可以放心的将精力放在纯粹的技术上，身边每个人都自觉的补充文档注释，代码也层次清晰解偶充分重用率高，精妙的设计实现可以更快的传播，bug得到的改进建议也是务实专业的，技术在这种良性互动中价值倍增。我想这也算是好团队的一种境界了，这有赖于团队成员水平水涨船高。不过，反观Yahoo的成长之路，他们的技术积淀也是靠点滴的积累，其实他们当初的状况不比现在的我们好哪去，10年的进化，才造就了Yahoo技术团队的专业性和Hack精神，我们每个人才刚刚起步而已。为了积攒工作中的幸福感，多付出一些是值得的。</p>
+
+<p>但我猜，你现在的处境一定不会太过乐观，产品乱提需求、一句话的PRD、不被重视，被生硬的当作“资源“……反正，情况就是这么个情况，要么你选择抱怨下去，要么想办法去改变。“积极主动“是源自内心的一种坚韧品质，也是励志之本，有些人在现实中被磨平了理想，有些人却在黑暗森林中找到了方向，这就是犬儒主义和英雄气概之间的差别。这自不必详说，因为这让我想起了“大长今”，这简直就是前端工程师的励志典范：“这是一个可怕的环境，足以消磨任何人的斗志和信念，所有来这里的人都变得麻木和无所作为，‘多栽轩‘恶劣的环境没有改变长今，但长今却改变了‘多栽轩‘所有的人“。</p>
+
+<p>如果你想做到“资深”，就一定要想清楚这一点，因为你是团队的顶梁柱（业务），也是幸福感的源头（士气）。</p>
+
+<h3>第四日，架构和伪架构</h3>
+
+<p>【代码设计的本质】</p>
+
+<p>读到这里，你不禁会问，前端领域存在“架构师”吗？这个问题会在后面的“码农的宿命”中展开解释。这里先说下代码架构的一些琐事吧。</p>
+
+<p>什么是架构？架构是由“架”和“构”组成，架，即元件，构，即连接件。因此，架构即是将总体分解为单元，然后定义单元之间的连接方式。架构的含义源自禅宗，而禅宗的基本信条则之一就是真理是无法用语言来描述的。这个基本信条有其背景，即语言具有某种抽象性。而人们对这种抽象性的悟道则直接影响对事物的看法，进而决定了对客观世界的分解方法。</p>
+
+<p>而在编程语言中，同样存在这种禅宗所隐喻的悖论。在面向对象的教科书中，通常举一些显而易见的例子，比如“水果”是一个类，包含有苹果、桔子、香蕉等实例，“蔬菜”也是一个类，包含白菜、冬瓜、茄子等实例。这两个类之间并无交集，因此很容易理解。但实际项目中情况要复杂的多，比如两个图书类目“文学”和“历史”，那么“明朝那些事”应当是“文学”类的实例还是“历史”类的实例呢？即一旦用语言说出了某一事物，即人为的割裂了世界，于是就会陷入迷途。这在程序设计领域情况更甚，也是造成混乱的主要根源，也就是说，如果你的程序可扩展性不好，一定是程序作者对“单元”的定义不够准确，即单元的概念之间不够“正交”。而这种架构终是徒有其形，根基不稳。</p>
+
+<p>因此，变量和类的命名才是真正考验架构功力的关键（命名是否准确清晰、单元之间是否有概念重叠或盲区），而和所谓“组合”、“继承”、“桥接”等模式化的“外表”无本质联系。</p>
+
+<p>【伪架构】</p>
+
+<p>实际情况是，程序员早早的就想让自己和“架构”扯上关系，并自封xx架构师。在项目中应用各种模式分层、解耦方法，每个项目都可以产出一套看上去很复杂的“架构图”，感觉很牛逼的样子，没错，实践这些方法论总不是坏事，但世界观才是方法论的基础，只有在概念上对产品模块有科学的定义，方法论便自然形成了，《编程珠玑》中一再提及数据结构就是静态的算法，在Web前端领域亦是如此，在页面的建模过程中，定义分解维度要比分解方法更加基础和重要。我想阿当可以在《Web前端开发修炼之道》的第二版里加上这部分内容。</p>
+
+<p>真正的高手用记事本就能写出高质量的代码、用cvs就能做到完美的版本控制、用字典式的分解就能做好系统架构，我想，这正是剑宗一派的最高境界吧。</p>
+
+<h3>第五日：寻找突破</h3>
+
+<p>【动心忍性】</p>
+
+<p>技术流派看上去是如此吸引人，高手就像侠客一般，来去如风潇洒自如。但反观自己怎么看怎么没有侠客那股范儿。尽管上文提到了一些道理，了解这些尽管不是坏事，但缺少实践总感觉是纸上谈兵。更何况，日常的工作又是枯燥无味、繁杂单调。每个人都盼望更高的目标、接触新鲜技术、将新技术运用到日常，在探索尝试之中寻找成就感。这种感觉可以理解，但却缺少更深层次的思考。因为越到最后越会发现一线的工作才是最有挑战的。当然，我说这话的前提是，你能如前文所说具备合格的软技能，需要一些技巧让工作变得工整有序、节奏健康，这样你才能将注意力放在纯粹的代码中，摆脱了外界的烦扰，方能从技术的角度思考突破。这也是从初级到高级的进化过程需要大量的历练的原因。正如玉伯所说，“枯燥是创新的源泉。如果你发现自己没什么新想法，做事缺少激情，很可能是因为你还未曾体验过真正的枯燥的工作”。</p>
+
+<p>关于如何寻找突破，我的建议是马上动手做、不要等，相信自己的直觉（这里和上文提到的先思后行是两码事）。比如，Slide幻灯控件理应支持触屏事件以更好的适应移动终端，或许你在用的Slide幻灯版本很旧、或者时间不允许、再或者你害怕对Slide改造而引入bug，不要担心，大不了多花业余时间，只要想，只要感觉合理和必要，就去做。因为这个过程带来的编程体验才是工程师们独有的美妙体味。我现在还时常深夜写代码，没有打扰、思如泉涌、代码也更加工整严谨，不失为一种享受。因此，用眼睛去观察，用心去感触，“所以动心忍性，才会增益其所不能”啊。</p>
+
+<p>【得与失】</p>
+
+<p>互联网的发展的确太快，Web前端技术也在花样翻新，有人经不起诱惑，开始做新的尝试。前端技术虽然范围广，但各个分支都还比较容易入门，比如服务器端脚本编程、再比如纯粹的WebApp，我认为这两者都是前端技术的范畴，毕竟他们都没有脱离“浏览器”，或者说类似浏览器的环境。NodeJS依赖于V8，WebApp更是软件化的WebPage。只要打好基础，这些方向都是值得深入钻研的，因为，互联网的形态越发多元，新的技术总能找到用武之地，这就要凭借自己的技术嗅觉和产品直觉，寻找技术和业务的契合点。</p>
+
+<p>这看上去是一种放弃，放弃了自己赖以生存的铁饭碗（熟练的切页面至少不会失业），实则不然。这种想法是一种误区，新的选择并不会让你放弃什么，就像学会了开车，并不意味着就不会骑车了。其实改变的是思维方式而已，是一种进步，如果你能想通这一点，你也能跟得上互联网发展的脚步了，打开你的思维，让技术变成你的金刚钻，而不是包袱。</p>
+
+<p>所以，所谓得失之间的权衡，其实就是“解放思想”。做到了这一点，那么你已经在做“技术驱动”了。</p>
+
+<p>【误区】</p>
+
+<p>但是，不要高兴的太早，“技术驱动”是需要大量的积累和经验的。在入行初期，很多人过于着迷与此，从而陷入了迷途。比如有人纠结于是否将dt、dd的样式清除从reset.css中拿掉，原因是觉得这两个标签的清除样式会耗费一些渲染性能；或者是否需要将for循环改为while循环以提高js执行速度。尽管这些考虑看上去是合理的，但并不是性能的瓶颈所在，也就是说，你花了很大力气重构的代码带来的页面性能提升，往往还不如将两个css文件合成一个带来的提升明显。就好比用一把米尺量东西，没必要精确到小数点后10位，因为精确到小数点后2位就已经是不准确的了。这种技术误区常常让人捡了芝麻丢了西瓜。</p>
+
+<p>话说回来，这里提到的怀疑权威的精神是绝对应当鼓励的，但不应当止于表象，如果怀疑dt的清除样式会对性能带来影响，就应当想办法拿到数据，用事实来证明自己的猜测。数据是不会骗人的。而求证过程本身就是一种能力的锻炼。</p>
+
+<p>【技术驱动】</p>
+
+<p>说到这里，你大概对“技术驱动”有那么一点点感觉了。身边太多人在抱怨“公司不重视前端”、公司不是技术驱动的、技术没机会推动产品业绩、我的价值得不到体现？</p>
+
+<p>什么是技术驱动？简单讲，就是技术对业务有积极推动作用。更多的是工程师发起、工程师影响、工程师负责。刚才提到的用数据说话只是一种“驱动”技巧，那么我需要何种数据，数据从哪里来？我来分享一个实际的场景吧。</p>
+
+<p>工程师A被委派一个重要的频道首页，因为是新年版，所以要赶在年前上线。A学了一点点响应式设计，想在这次重构中加上，但谁也没做过响应式设计，需求方根本不懂，设计师也懵懵懂懂，交互设计师太忙，做完交互稿就忙别的去了。A纠结了，按部就班的把项目做完上线发布，尽管不会出什么问题，但总觉少点什么。这时A做了两个决定，1，我要按时完成项目，2，趁机实践我在响应式设计中的想法和思考，若成功，作为附加值赠送给需求方，若失败，权当技术玩具耍一耍罢了。所以A熟练的提前完成了项目，剩下的时间开始考虑如何将首页适应到各个平台中，视觉设计是一大难题，他用吃饭的时间找了设计师收集建议，对窄屏中的内容模块做了看似合理的编排，代码上hack一下，能够正确适配，就发布上线了。这件事情需求方不知道，视觉设计师也不了解，交互设计师更没工夫操心。A感觉挺爽，开始给工程师弟兄们到处炫耀这个好玩的功能，B看了问，手机端访问量如何，A觉得这个问题有道理，就去部署埋点，一周后拿到数据出奇的意外，首先，移动段的访问量稳步增加，趋势健康，再者，移动端首屏焦点广告位的点击率较PC端高了近一倍，这个数据让A喜出望外，兴奋的拿着报表找到交互设计师C和市场研究的同事D，D看了报表之后立即启动一个项目，专门调研公司全站响应式设计页面在PC端和移动端的点击率、PV、UV趋势方面的影响……后来发生的事情就都水到渠成了，设计师C开始注意设计页面交互时（至少是有条件的考虑）对移动端的适配，D的调研报告也放到了UED老大的案头……接下来的事情，你懂得。A被指派要出一套响应式最佳实践和规范，最终，A走在了技术的前沿，也因此拿到了好绩效。</p>
+
+<p>这件事情就是一个典型的技术驱动的例子。谁不让你玩技术了，谁不重视你了，谁把你当工具了，谁觉得你的代码没价值？这世界只有自己把自己看扁，谁想跟你这个蝇头小卒过不去？用实力说话，用数据说话，用独到的见解说话，想不做技术驱动都难（是啊，自己的位置都是自己之前所作所为的体现，更多的是人祸而不是天灾，不能再抱怨了）。</p>
+
+<h3>第六日：码农的宿命</h3>
+
+<p>【青春饭】</p>
+
+<p>“码农”是IT从业者一个自嘲的称号，也有从事没有发展前景的软件开发职位，靠写代码为生的意思。但我认为码农是一个爱称，编码的农民，和农民一样有着执着纯真朴实豪爽的共性，仅仅分工不同而已。就好比农业社会对粮食的依赖，工业化进程对计算机应用也有着很强的依赖，大量的需求催生出这样一群人。他们有智慧的大脑，对于编程，设计，开发都有着熟练的技巧，但多数人看来，码农的特点是：</p>
+
+<p>　　1，收入低
+　　2，工作单调
+　　3，工作时间长</p>
+
+<p>实际上这个描述非常片面，或者说是外行看热闹。第一，全行业比较来看，软件开发领域收入为中等偏上；第二，程序员一般都是有癖好的，沉浸在自己的癖好中是不会感觉单调的；第三，程序员有一定的时间自由度（如果你是一名合格的程序员的话），至少不会像流水生产线工人一样。其实，通过几十年的发展，我们对程序员的定义更加科学，比如很多IT企业都开始建立详细的JM（Job Module），即职级模型，程序员沿着专业方向可以走到很高，甚至可以说，程序员是可以被当成一生的事业的。</p>
+
+<p>然而，有一个非常普遍的观点是，程序员和做模特一样是吃青春饭的，到了三十岁就要考虑转行或者转管理。尽管这种观点颇具欺骗性，但至少它对一种人是适用的，即入错了行的人。如果你骨子里不想写程序，就算年纪轻轻为了生计写几年代码，之后肯定会另有他途。心非所属则不必勉强，但问题是，即便如此，你知道你的心之所属吗？</p>
+
+<p>我们知道，一个成熟的产业一定需要各色岗位来支撑，若要成熟，则需要时间的沉淀，比如实体经济制造业，创意、生产线、高级技工、技术管理四个方面都产出大量的高级人才。因为历史悠久，我们能看得到。而软件产业则不然，九成以上是刚出道的新手，并没有太多“高级”和“资深”的具体样板可供参照，在前端开发领域中情况更甚，绝大部分人根本搞不清楚什么样才是“资深”前端工程师，相比传统软件行业近四十年的进化，我不相信仅有几年光景的前端技术岗位能产出多少货真价实的“资深”。但互联网崛起速度太快，还没有等技术基础打牢，互联网形态就又花样翻新了，这种变化是一种常态，而岗位的设定也在这种变化之中自然的优胜劣汰，比如两年前可能还难以想象数据部门会需要前端工程师，他们甚至不直接和浏览器打交道。前端工程师需要适应这种变化带来的观念冲击，不要以为自己只能做切页面、或者只会给页面搞重构、只会搞兼容性，要把自己放在整个软件行业来看。</p>
+
+<p>所以，由于历史“不悠久”导致的岗位模糊本身不是什么大问题，岗位的演化本身就包含在互联网的发展轨迹之中。所以，当今的互联网IT状况，就好比移动终端的大哥大时代、云计算的肉鸡时代、或者桌面操作系统的DOS时代。因此，前端工程师当前要务是要想清楚看清楚，在互联网中我能做什么，而不是作为前端工程师我能做什么，所以，从这个角度讲，技术是一个工具，放大来看，技术也只是你职业生涯中很小的组成部分，而你的从业积累、和知识面的广度深度才是你随着时间的推移慢慢步入“资深”的原因所在，而不是写了个什么框架就变“资深”了。如果有一天互联网形态固定了，它的岗位可能真正就定型了，才会有真正清晰的职能边界，就像蓝色巨人IBM中的各色岗位一样，边界清晰，权责分明，普通程序员只能实现接口而无机会设计接口、低层级的工程师也无机会跃进式的接触项目架构、技术经理人也不能轻易对产品有决策性影响，到这时，人的能力才真正的被限制在方圆之内，容不得越界，这种环境下人的成长非常缓慢。根本不会有像今天互联网乱局之中所提倡的创新、革命、成长和思想解放。简单讲，一旦产业定型，就不太需要很多“创造”了，更多的是“维护”。所以，我个人宁愿互联网IT“黑暗”的中世纪越久越好，至少对于年轻气盛程序员来说，黑暗的丛林环境才是真正的自然进化最理想的土壤，这时我想起了狄更斯在“双城记”中的开篇。</p>
+
+<p>“这是最好的时代，这是最坏的时代；这是智慧的时代，这是愚蠢的时代；这是信仰的时期，这是怀疑的时期；这是光明的季节，这是黑暗的季节；这是希望之春，这是失望之冬；人们面前有着各样事物，人们面前一无所有；人们正在直登天堂，人们正在直下地狱”。</p>
+
+<p>【半路出家的危与机】</p>
+
+<p>然而，不管怎样，信心的树立不是一蹴而就的，对于转行做前端的人来说更是如此。俗话说，隔行入隔山。每个行业自有其道，自然不是想做就做。前端技术领域半路出家者非常多，我们来分析一下转行的心理。第一，看到前端技术入门简单、互联网对前端技术的需求缺口巨大；第二，前端技术所见即所得、感觉学习起来很快；第三，我身边的某某转行作前端看上去不错、我似乎也可以；第四，我不喜欢我现在做的工作、想换行业、正好前端技术上手较快，就选他吧；第五，我真的喜欢做Web前端，为它付出再多都是值得的。</p>
+
+<p>转行者的心态比较容易走两个极端，一是只看到新行业的好，二是只觉得原工作很糟糕。但不管是什么行业的转行，对自己的职业规划的思考都应当先行一步。即务必首先清晰的回答这些问题：</p>
+
+<p>　　1，我能做什么？
+　　2，我不能做什么？
+　　3，我的优势是什么？
+　　4，我的劣势是什么？
+　　5，做新行业对我有何好处？
+　　6，换行会让我付出何种代价？
+　　7，如何定义转行成功？</p>
+
+<p>因为面试的时候一定会被这些问题所挑战。如果支支吾吾说不清楚，要么是对自己未来不负责任，要么骨子里就是草根一族，习惯做什么都蜻蜓点水浅尝辄止，也难让人信服你的转行是一个权衡再三看起来合理的选择。我无法帮每个人回答这些问题，但至少有两点是确定的，第一，Web前端技术是一个朝阳行业，绝对值得义无反顾的坚持下去；第二，你将经历从未有过的枯燥、苛刻的历练，所谓痛苦的“行弗乱其所为“阶段。不过话说回来，经历过高考的人，还怕个屁啊。（同时还经历过复读的人，还有什么可怕的压力？）</p>
+
+<p>有心之人自有城府、懂得放弃，看得清大势中的危机、识得懂繁华里的机遇。尤其当立足于Web前端技术时，这种感觉就愈发强烈。因为国内外前端技术领域从2000年至今一直非常活跃，前端技术前进的步伐也很快，对于一些人来说，不管你是在大公司供职还是创业，不管你是在接外包项目还是自己写开源项目，从转行到跟得上新技术的脚步是有一些方法和“捷径”的。</p>
+
+<p>第一，梳理知识架构</p>
+
+<p>我们知道知识积累有两种思路，第一种是先构建知识面、建立技术体系的大局观，即构建树干，然后分别深入每一个知识点，即构建枝叶，最终形成大树。第二种是先收集知识点，越多越好，最后用一根线索将这些知识点串接起来，同样形成大树。第一种方法比较适合科班秀才，第二种方法则更适合转行作前端的人，即实践先行，理论升华在后。比如对“IE6怪异模式“这条线索来说，要首先将遇到的IE6下的样式bug收集起来，每个bug都力争写一个简单的demo复现之，等到你收集到第100个bug的时候，再笨的人都能看出一些规律，这时就会自然的理解IE的hasLayout、BFC和各种bug的原因、你就成为了IE6的hack专家了，当你成为100个知识线索的专家的时候，你已经可以称得上“资深”的水平了。我们知道，10个人中有9个是坚持不下来的，他们会以项目忙等各种理由万般推托，将自己硬生生的限制在草根一族，坐等被淘汰。所以，对于立志作前端的人来说，这种点滴积累和梳理知识非常重要。</p>
+
+<p>第二，分解目标</p>
+
+<p>将手头的工作分解为几部分来看待，1，基本技能，2，项目经验，3，沟通能力，4，主动性和影响力。想清楚做一件事情你想在哪方面得到历练，比如，我之前在做第一次淘宝彩票常规性重构的时候（正好是一次视觉和交互上的全新设计），我清楚的明白这次重构的目的是锻炼自己在架构准富应用时的模块解偶能力，寻找在其他项目中架构的共通之处，所以我宁愿加班或花更多精力做这个事情，当然更没打算向业务方多解释什么，这件事情对我来说纯粹是技能的锻炼。而经过这一次重构之后，我意外的发现对业务的理解更透彻深入、更清晰的把握用户体验上的瓶颈所在。如果一开始就把这次常规改版当成一个普通的项目按部就班的做，我只能说，你也能按时完成项目，按时发布，但真真浪费了一次宝贵的锻炼机会，项目总结时也难有“动心忍性”的体会。</p>
+
+<p>所以，每个项目的每个事情都应当认真对待，甚至要超出认真的对待，想清楚做好每件事对于自己哪方面有所提升？哪怕是一个bug的解决，即便不是自己的问题也不要草草踢出去了事，而是分析出问题原因，给出方案，有目的involve各方知晓……，正规的对待每个不起眼的小事，时间久了历练了心智，这时如果突然遇到一个p0级的严重线上bug（比如淘宝首页白屏，够严重的了吧）也不会立即乱了方寸，这也是我上文提到的心有城府自然淡定万倍，而这种淡定的气场对身边浮躁的人来说也是一种震慑和疗伤，影响力自然而然就形成了。</p>
+
+<p>第三，作分享</p>
+
+<p>做分享这事儿真的是一本万利。有心的人一定要逼着自己做分享，而且要做好。首先，自己了解的知识不叫掌握，只有理解并表达出来能让别人理解才叫掌握，比如如果你解释不清楚hasLayout，多半说明自己没理解，如果你搞不懂双飞翼的使用场景，可能真的不知道布局的核心要素。再者，作分享绝对锻炼知识点的提炼能力和表达能力，我们作为工程师不知道多少次和强硬的需求方pk，被击败的一塌糊涂。也反映出工程师很难提炼出通俗易懂的语言将技术要点表述清楚。而做ppt和分享正是锻炼这种能力，将自己的观点提炼出要点和线索，分享次数多了，自然熟能生巧。档次也再慢慢提高。另一方面，逼迫自己站在公众场合里大声讲话，本来就是提高自信的一种锻炼。</p>
+
+<p>这时，你或许会问，我讲的东西大家都明白，我讲的是不是多余，我第一次讲讲不好怎么办，大家会不会像看玩猴似的看我“这SB，讲这么烂还上来讲”？要是讲不好我以后再讲没人听怎么办，我今后怎么做人啊？</p>
+
+<p>老实说，这是一道坎，任何人都要跨过去的，谁都一样，你敢鼓起勇气在大庭广众之下向爱人表白，就没勇气对自己的职业宿命说不？其实勇敢的跨越这一步，你会意外的收获他人的掌声和赞许，这些掌声和赞许不是送给你所分享的内容，而是送给你的认真和勇气。这个心结过不去，那就老老实实呆在自己的象牙塔里遗老终生，当一辈子工程师里的钻石王老五吧。</p>
+
+<p>【匠人多福】</p>
+
+<p>如果你能耐心读到这里，心里一定有一个疑问，上面说的都是技术上能力上怎样怎样，那我所做项目不给力又当如何？如果项目不挣钱、黄了、裁了，我的努力不就白费了吗？我又有什么绩效和价值呢？</p>
+
+<p>没错，有这种想法的人不在少数。特别是刚出道的校招同学往往更加心高气傲，以为自己有改变世界的本事，一定要参与一个牛逼的团队做一款光鲜靓丽受人追捧能给自己脸上贴金的项目。如果你有这种想法，趁早打消掉这个念头，当然，我们这里先不讨论创业的情形。</p>
+
+<p>第一，如果你刚毕业就加入一个牛逼团队，说难听点，你就是团队中其他人眼中的“猪一样的队友”，不创造价值且拖项目后腿（显然大家都要照顾你的成长啊），按照271理论，你没有理由不是这个1。至少相当长一段时间内是这样。</p>
+
+<p>第二，你在所谓牛逼团队中的创造性受限，因为创新多来自于团队中的“资深“和大牛们，你参与讨论但观点通常不会被采纳，他们只会给你这个菜鸟分活干，想想看，你如何能花两到三年就超越身边的大牛们？甚至连拉近与他们的距离都难。</p>
+
+<p>第三，如果身在牛逼团队，自然心理对周围的牛人们有所期待，希望他们能灌输给你一些牛逼的知识和牛逼的理念。这种思想上的惰性在职场生涯之初是非常危险的。要知道技术和知识本身是很简单和淳朴的，只不过披上了一个光鲜项目的外衣而让人感觉与众不同。</p>
+
+<p>第四，由简入奢易，由奢入简难，做过一个看似光彩的项目，心理再难放平稳，去踏实的做一个看上去不那么酷的产品。这种浮躁心态会严重影响今后的职业发展和成长。</p>
+
+<p>第五，光鲜靓丽的项目被各种老大关注，是难容忍犯错误的，傻瓜都知道犯错误在成长之初的重要性。</p>
+
+<p>就我所看到的情形看，一开始加入看似很牛的项目组，三年后得到的成长，比那些开始加入一个不被重视的项目的同学要小很多，而后者在能力上的弹性却更大。所以，道理很简单，你是要把一个很酷的项目做的和之前差不多酷，还是把一个不酷的项目做的很酷？项目是不是因为你的加入而变得与众不同了？</p>
+
+<p>从这个角度讲，不管是转行的新人还是刚出道的秀才，最好将自己当作“匠人”来对待，你的工作是“打磨”你的项目，并在这个过程中收获经验和成长。付出的是勤奋，锻炼的是手艺，磨练的是心智。因此，你的价值来自于你“活儿“的质量，“活儿”的质量来自于你接手的项目之前和之后的差别。做好活儿是匠人应有的职业心态。想通这一点，内心自然少一些纠结，才会对自己对项目的贡献度有客观的认识，不会感觉被项目所绑架。</p>
+
+<p>做一名多福的匠人，拥有了金刚钻、就不怕揽不到瓷器活儿。但对于人的成长来说，如果说“项目”重要但不关键，那么什么才是关键呢？这个话题还会在接下来的“伯乐与千里马”这篇中给出答案。</p>
+
+<p>【若干年后】</p>
+
+<p>现在，让我们回过头回答一下“青春饭”的问题。在“青春饭”小节中提到，“程序员到三十岁之后需要转行或者转管理吗？”</p>
+
+<p>上文提到，工业化生产的四个领域，1，创意，2，生产线，3，高级技工，4，技术管理。Web前端技术也是如此，可以在这四个领域找到各自的归宿。</p>
+
+<p>第一，“创意“</p>
+
+<p>即和产品需求越走越近，拥有良好的产品感，对产品需求、设计交互把握准确，能够用适当的技术方案推动产品用户体验，属于“架构师”的范畴，因为职能更加靠前，偏“出主意”型的。这种人更贴近用户，需要活跃的思维、广阔眼界、厚实的项目经验。更多的影响产品体验方面的决策。</p>
+
+<p>第二，“生产线“</p>
+
+<p>即前端基础设施建设，优化前端开发流程，开发工具，包括开发环境、打包上线自动化、和各种监控平台和数据收集等，属于“技术支持”的范畴，相比于很多企业粗犷难用的平台工具，前端技术方面的基础设施建设基础还需更加夯实，因为这是高效生产的基本保证。</p>
+
+<p>第三，“高级技工“</p>
+
+<p>即高级前端开发工程师，专职做项目，将产品做精做透，用代码将产品用户体验推向极致，偏“实战”型的，是项目的中坚力量，直接产出成果，影响产品效益。属于项目里的“资深”。</p>
+
+<p>第四，“技术管理“</p>
+
+<p>即做技术经理，这才是多数人所理解的“管理”，其实就是带团队、靠团队拿成果。这类人具有敏感的技术情结，在技术风潮中把握方向，能够指导培训新人，为各个业务输出前端人才，偏“教练”型的，促进新技术对业务的影响。并有意识的开辟新的技术领域。</p>
+
+<p>可见，转管理可不是想当然，也不是所谓做项目变资深了就能转管理，转了也不一定能做好。根据“彼得原理”，即人总是倾向于晋升到他所不能胜任的岗位，这时就又陷入“帕金森”定律所隐喻的恶性循环之中，直到你带的团队整个垮掉。</p>
+
+<p>所以，转管理应当是一件非常慎重的事情，不是所谓程序员混不下去就转管理这么简单。但不管怎样，有一件事情是需要尤其要想清楚，即，转了管理，技术就丢了吗？我们在第七日“伯乐与千里马”中再深入聊聊这个事儿。</p>
+
+<h3>第七日，伯乐与千里马</h3>
+
+<p>【师兄们的抉择 1】</p>
+
+<p>千里马常有，而伯乐不常有。——韩愈，“马说”。</p>
+
+<p>一个人这辈子能遇到一个好师兄是一种缘分，可遇不可求。很多人工作中的幸福感似乎也源自这种被认同，被师兄的了解和认同，有人能直言不讳的指出你的不足，帮你发现机会，并将最适合你做的事情分配给你，这是莫大的幸运，但如此幸运的人十之一二，大多数人因为缺少伯乐的提点，渐渐辱于“奴隶人之手“，潜力渐失，毁于中庸。</p>
+
+<p>在前端技术领域，这种情况很普遍也很特殊，当然有很多客观原因。即前端技术进入公众视野时间不长，有实力的伯乐更加是凤毛麟角。更何况，Web前端技术还有着一些江湖气，知识点过于琐碎，技术价值观的博弈也难分伯仲，即全局的系统的知识结构并未成体系，这些因素也客观上影响了“正统“前端技术的沉淀，奇技淫巧被滥用，前端技术知识的传承也过于泛泛，新人很难看清时局把握主次，加之业务上的压力，未免过早导致技术动作变形。而这些问题也无法全赖自己全盘消化，若有人指点迷津，情况要好上万倍。因此，前端技术领域，为自己觅得一个靠谱的师兄，重要性要盖过项目、团队、公司、甚至薪水。</p>
+
+<p>这也是上文所说的“项目不重要，师兄才重要“的原因。说到这里就有一个问题，每个人都问下自己，你是想当师弟呢还是想当师兄呢？当师兄有什么好处呢？</p>
+
+<p>没错，很多师兄都是被师兄，甚至没有做好当师兄的准备，更进一步说，不少经理人也都是“被经理人“，没有做好准备就被推到了管理岗位。带人是耗精力的，师兄要做很多思想斗争才舍得把这些宝贵的精力放在那些菜鸟身上，这不是一个技术问题，而是一个道德问题。要记住，没有谁应该无缘无故把自己所掌握技能给你倾囊相授，如此皆命也。读到这里，作为菜鸟，作为学徒，作为新人，作为师弟，你做到对这份命运的足够尊重了吗？</p>
+
+<p>尊师重教的传统美德并没有在技术领域得以很好的延续。也正因为此，人才梯队难建立起来，但对于师兄来说，却是有更多机遇的。</p>
+
+<p>【师兄们的抉择 2】</p>
+
+<p>作为师兄，不管是主动还是被动，肯定会想当师兄对我有什么提升？对于初次做师兄的人来说，最大的提升在于两方面，1，任务分解，2，问题分析。</p>
+
+<p>第一，任务分解，作为师兄要给师弟派分任务，就涉及到任务分解，分解这事儿往低了说，就是派活，往高了说，其实就是做“架构”，比如一个页面，按照什么思路进行模块划分，模块划分是否适合单人开发，如何控制共用样式和共用脚本，我需要为他提供什么接口，如何控制他的代码并入整个页面时不会影响整体页面代码的熵值，这些都是实打实的“架构“应该包含的问题，而从小页面开始就做这种锻炼，做的多了，“架构感”自然就形成了。</p>
+
+<p>第二，问题分析，在之前自己写代码都是单打独斗，什么都是用代码解决问题，但一旦涉及协作，就要强迫自己分析问题，或者说给徒弟分析问题，告诉他应当用什么方法来解决问题，当说到“方法”时，脑子里定形成了一个方案，按照这个方案路子走一定能解决问题。分析问题比写代码要更抽象、更高效，因为在脑子里构建方案要比写代码要快，思考也会更加缜密，当锻炼的多了，思考越来越快，代码的草稿也很快就在脑海中形成了，这也是我们说为什么很多人不写代码但编码思路和水平都很高的原因。</p>
+
+<p>这些工作方法对了，积累多了，就是提高。对于技术经理人来说，也是同样的道理。所以，就像在第五日的“得与失”部分提到的那样，转身师兄、变身管理并不意味着“失“掉技术饭碗，而是一种进步。</p>
+
+<p>【做自己的伯乐】</p>
+
+<p>那么，在前端技术领域里什么样的人才算千里马，其实人人都是千里马，人人都可以发掘自己的潜力，如果上面的文字你能读懂，能认可，这种自我发掘已经开始了，没有一个好伯乐又何妨呢？做一个勤快的小码农，少一些势利的纷争，很快会发现，自己才是最好的伯乐。</p>
+
+<p>但这并不是说，他人对自己的观点不重要，有时甚至要综合各种声音，所以，多找身边的大牛们聊聊天，多找你的师兄和主管，不管他们给你的建议是多么形而上，总有一些声音对你是有益的，多收集，有好处。</p>
+
+<h3>第八日，做地球上最牛的UED</h3>
+
+<p>【谁推动了历史前进，英雄？还是人民？】</p>
+
+<p>“做地球上最牛的UED！”，这是淘宝UED创立之初的口号，现在被渐渐淡忘了，因为微博上的一些讨论，又想起了这份曾经美好的初衷。玉伯也感叹道：“这愿景曾吸引了多少好汉前往投奔呀。只可惜短短几年间，这愿景好像越来越远了”。问题是，要做好一个团队，靠的是个人、还是整体？愿景是越来越远了吗？</p>
+
+<p>是谁推动了历史的前进，是英雄？还是人民？微观来看，是英雄，宏观来看，是人民。再放大了看，是互联网大潮之崛起推动了前端技术的进步，时势需要UED、需要用户体验。</p>
+
+<p>所以，UED团队的创立发展受这些积极的外因影响，赶上了好时候，成员也跟着沾光。然而，我并不关心这个口号，我只关心体制内的关键人物，那些带动整个团队水涨船高的人们。往往我们发现，某些人的高度代表了整个团队的高度，个体的影响力代表了整个团队的影响力，某个人的水平代表了整个团队的水平。支付宝、淘宝、腾讯、百度、盛大，都是如此。而我们作为普通的个体，正是要励志成为这种人，成为真真用技术推动用户体验前进的尖刀人物。</p>
+
+<p>这时我想起了很多人在知乎上的问题，关于跳槽、关于转行、关于创业、关于各种UED团队。我想，读得懂我上面的文字，你心理也许会有自己的答案。</p>
+
+<p>【归宿】</p>
+
+<p>最后，还有一个不得不说的问题，即归属问题，前端开发应当归属于UED还是技术部门？应当说，当前Web前端技术的价值体现在“用户体验“上。是用户体验这块阵地最后一道坎。也就是说，前端工程师应当重点考虑我所作的页面的感官体验。这是需要一些灵感和感性的，应当看到帅气优雅的界面会心有所动、或者实现一款精巧的小组件时萌生一阵快意。这种所见即所得的美妙编程体验正是其他后端工程师无法体验到的。因此，这种精确到像素级的精工雕琢虽然不直接决定产品生死，但却是提升产品品味和时尚感的要素。物质越来越丰富的今天，大众的更高诉求不就是品味和时尚吗？</p>
+
+<p>如果将前端归到技术部门，一方面和“设计“离的更远，代码写的规规矩矩但渐缺少了灵性，另一方面作为工程师又缺少计算机专业课的功底，才真正丧失了优势所在，如果有一天，前端工程师的平均水平足够高，清一色的计算机科班出身，似乎更合适归入到技术部门。所以，Web前端工程师是“工程师“，需要科学严谨的编程能力，但身处UED所应当具备的美感和灵性是万不可被剥夺去的。</p>
+
+<p>还有一点，Web前端工程师作为UED之中最具实践精神和逻辑思维的工种，是能够将技术对设计的影响发挥到最大，可以催生出大量的创造和革新的，这一点也是传统后端工程师所不具备的。</p>
+
+<h3>第九日，前端技术体系</h3>
+
+<p>现在越来越感觉到前端技术需要成体系的积累，一方面可以规范我们的前端技术培训，另一方面，作为知识线索为新人做指引，省的走弯路，避免陷入奇技淫巧的深坑之中不能自拔。</p>
+
+<p>之前我整理了一下“前端技术知识结构”，罗列的比较散，但也基本表述清楚了我的观点。今年上半年也在整个研发中心组织了一次前端技术培训，对于前端技术的演化规律也有过整理，都放在了这个ppt中，希望对大家有所帮助。</p>
+
+<p>概观国内前端技术界，其实我不认为和国外顶尖的前端技术有多少年差别，甚至很多方面都走在了他们前面，比如对IE6暴力式的兼容，以及各种外壳浏览器的风靡（呵呵，开玩笑哈）。唯一的美中不足是国外顶尖的前端技术很难第一时间就在国内普及，可能是两方面原因，一是多数人英文底子很差，这可是个大问题啊。二是国内前端技术方面高质量的译文图书实在是少的可怜。那么……</p>
+
+<p>接下来的最后一日，想了想还是留给答疑吧，一方面很多人读到这里肯定满肚子问题，我收集下，争取及时回复大家。另一方面，万一上面的话的有得罪人的地方，还好留有余地来补救，哈哈。</p>
+
+<p>ps：一直很喜欢“神曲”的插图，从“天堂篇”里摘出一张作为封面吧，呵呵。</p>
+
+<h3>第十日：QA</h3>
+
+<pre><code>Follow Your Heart!
+</code></pre>
+
+<p>原文出自：<a href="http://www.cnblogs.com/liufxlucky365/archive/2013/06/14/3136867.html">http://www.cnblogs.com/liufxlucky365/archive/2013/06/14/3136867.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[网页艺术：CSS选择器]]></title>
+    <link href="http://fegg.github.io/blog/2014/08/02/web-art-css-selectors/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2014/08/02/web-art-css-selectors</id>
+    <content type="html"><![CDATA[<h3>一、前言</h3>
+
+<p>现在JQuery很火，大部分原因还是它强大的选择器，但是JQuery的选择器引用了CSS选择器的规则，所以学好CSS选择器不仅仅是对写CSS有好处，在学习JQuery选择器的时候也会更快上手，几乎是一看就明白。</p>
+
+<h3>二、CSS选择器</h3>
+
+<p>在学习CSS选择器之前，我们应该理解DOM树的生成，这里我们举一个例子：</p>
+
+<pre><code>&lt;body&gt;
+    &lt;h1&gt;
+        &lt;em&gt;h1-em&lt;/em&gt;
+    &lt;/h1&gt;
+    &lt;p&gt;
+        &lt;em&gt;p-em&lt;/em&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;span&gt;
+            &lt;em&gt;p-span-em&lt;/em&gt;
+        &lt;/span&gt;
+    &lt;/p&gt;
+&lt;/body&gt;
+</code></pre>
+
+<p>这样对应的DOM树结构如下(忽略#text)：</p>
+
+<p><img src="http://fegg.github.io/images/post/dom.jpg" alt="Mou icon" /></p>
+
+<p>下面我们再依次介绍每种选择器才有意义。</p>
+
+<!--more-->
+
+
+<h4>(1) 上下文选择符</h4>
+
+<p>这是一种根据DOM树结构利用的典型例子，我们用上面的例子来写一个CSS。</p>
+
+<pre><code>em { color: red; }
+p em { color: blue; }
+</code></pre>
+
+<p>这样的结果就是：</p>
+
+<p>红色：<span style="color: red;">h1-em</span></p>
+
+<p>蓝色：<span style="color: blue;">p-em和p-span-em</span></p>
+
+<p>ps:
+为什么还有p-span-em呢？</p>
+
+<p>因为这"p em"这样的选择器，不一定em是p的直接元素(直接元素就是紧挨着两个元素，你可以这样理解)。那么你要选择更加精确一点，只选择p-span-em呢？那么你可以这样变通一下：</p>
+
+<pre><code>p span em { color: green; }
+</code></pre>
+
+<h4>(2) 子选择器(IE6不支持，所以你要兼容IE6尽量不使用)</h4>
+
+<p>上面的上下文选择器不能选择直接后代标签，在这里就可以实现了。</p>
+
+<pre><code>p &gt; em { color: red; }
+</code></pre>
+
+<p>主要就是“>”这个符号，这样的结果就是：</p>
+
+<p>红色：<span style="color: red;">p-em</span></p>
+
+<p>其他保持默认浏览器样式表的效果或者用户样式表的效果（这里以后会有一篇“CSS层叠机制”会介绍）。</p>
+
+<p><em>以上两种都需要考虑文档的层次结构，下面要介绍的"类和id选择器"不需要考虑。</em></p>
+
+<h4>(3) id选择器(符号："#&ldquo;)</h4>
+
+<p>id选择器是使用起来最简单的，性能也比较高，但是唯一要注意的就是要和数据库的key一样，拥有“唯一性”，不能够重复。</p>
+
+<pre><code>&lt;div&gt;
+    &lt;div class="wrap"&gt;
+        &lt;p id="content"&gt;&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>对应的样式：</p>
+
+<pre><code>#content { font-size: 1.7em; }
+</code></pre>
+
+<h4>(4) 类选择器(又称：class选择器，符号：".&ldquo;)</h4>
+
+<p>以(3)种的例子来写对应的class选择器：</p>
+
+<pre><code>.wrap { 
+    width: 100%;  
+    height: 200px;
+    background-color: #ccc;
+}
+</code></pre>
+
+<h4>(5) 多个类的选择器(使用空格间隔)</h4>
+
+<p>这个还是比较好理解，就是给一个DOM标签设置多个类名，不过特殊的就是在类名之间以“空格”来间隔。</p>
+
+<pre><code>&lt;div class="wrap"&gt;
+    &lt;h1&gt;标题&lt;/h1&gt;
+    &lt;div class="wrap hack"&gt;
+        &lt;h2&gt;标题 内容&lt;/h2&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>对应的样式：</p>
+
+<pre><code>.wrap {
+    font-style: italic;
+}
+.hack {
+    color: red;
+}
+</code></pre>
+
+<p>这样的结果是：</p>
+
+<h1 style="font-style: italic;">标题</h1>
+
+
+<h2 style="font-style: italic; color: red;">标题 内容</h2>
+
+
+<p>其实解释起来挺简单，就是设置".wrap"和".hack"都会对class=&ldquo;wrap hack"这个元素的样式产生影响。</p>
+
+<h4>(6) 通配选择符</h4>
+
+<p>就是选中所有的元素（Elements）</p>
+
+<pre><code>* {
+    margin: 0;
+    padding: 0;
+}
+</code></pre>
+
+<p>这种选择符效率比较低，尽量少用或者不使用，但是一般我们都会设置如上的样式，以取消所有元素的margin和padding（当然设置该属性没有效果的就没影响）。</p>
+
+<h4>(7) 相邻同辈选择符（IE6不支持）</h4>
+
+<p>这种选择符，会选种“拥有同一个父标签”的元素。</p>
+
+<pre><code>&lt;div&gt;
+    &lt;h1&gt;标题&lt;/h1&gt;
+    &lt;p&gt;内容1&lt;/p&gt;
+    &lt;p&gt;内容2&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>对应的样式：</p>
+
+<pre><code>h1 + p {
+    color: red;
+}
+</code></pre>
+
+<p>这样的结果是：</p>
+
+<h1>标题</h1>
+
+
+<p style="color: red;">内容1</p>
+
+
+<p>内容2</p>
+
+
+<p>ps：因为第一个p标签与h1是相邻，第二个p标签与h1并不相邻，所以第二个p标签并没有受到影响。</p>
+
+<h4>(8) 属性选择符（IE6/7不支持）</h4>
+
+<p>A.第一种</p>
+
+<pre><code>&lt;img src="../img/logo.png" title="lou-logo" alt="这里是一个logo" /&gt;
+</code></pre>
+
+<p>可以这样写样式来选择这个元素：</p>
+
+<pre><code>img[title] {
+    border: 2px solid blue;
+}
+</code></pre>
+
+<p>ps: 这样其实只需要标签带有title属性即可，并不需要title有一个值。</p>
+
+<p>B.第二种</p>
+
+<p>也可以这样写样式来更精确的选择这个元素：</p>
+
+<pre><code>img[title="lou-logo"] {
+    border: 2px solid blue;
+}
+</code></pre>
+
+<p>C.第三种</p>
+
+<p>还有一种比较奇葩的，可以选择指定属性值的第一个字符。</p>
+
+<pre><code>img[title|="lou"] {
+    border: 2px solid blue;
+}
+</code></pre>
+
+<h4>(9) 伪类</h4>
+
+<p>这个比较特殊，但是有时候还挺有用。</p>
+
+<p>A.常用的a标签的伪类，这里就不描述了，网上太多了，可以Google一下。</p>
+
+<pre><code>a:link {}
+a:visited {}
+a:hove {}
+a:active {}
+</code></pre>
+
+<p>B.x:first-child（IE6不支持）</p>
+
+<p>这个伪类选择的是：x元素的第一个子元素，比如：</p>
+
+<pre><code>ul li:first-child {}
+</code></pre>
+
+<p>选择的是ul元素的第一个li子元素。</p>
+
+<p>C.x:focus（IE6/7和早期safari不支持）</p>
+
+<p>这里的safari兼容我是经过测试的，有书籍说的是safari不支持，也许是比较老的版本，我亲自在safari 6.0的版本测试通过。但是和google chrome一样，有浏览器自带的一些样式干扰，网上也有处理办法。比如：</p>
+
+<pre><code>&lt;input type="text" /&gt;
+</code></pre>
+
+<p>对应的样式：</p>
+
+<pre><code>input:focus {
+    border: 3px solid red;
+}
+</code></pre>
+
+<p>ps: 这样的效果就是在input获取焦点的时候，将input的边框设置一个新的样式。</p>
+
+<h4>(10) 伪元素(IE6不支持)</h4>
+
+<blockquote><p>值得注意的就是搜索引擎不会收录伪元素种的内容（它不会出现在标识中），所以不要使用这些元素来添加希望由搜索引擎索引的重要内容</p></blockquote>
+
+<p>A.x:first-letter</p>
+
+<pre><code>p:first-letter {
+    font-size: 300%;
+    float: left;
+}
+</code></pre>
+
+<p>这里的样式能够让段落的开头创建首字放大的效果。</p>
+
+<p>B.x:first-line</p>
+
+<pre><code>p:first-line {
+    color: red;
+}
+</code></pre>
+
+<p>这里的样式能够让段落的第一行字体变红。</p>
+
+<p>ps：如果第一排的段落内容在调整，那么效果也是保证变化后的段落第一行的效果。</p>
+
+<p>所以SCB和IE7支持x:first-letter和x:first-line</p>
+
+<p>C.x:before和x:after(IE6/7不支持)</p>
+
+<p>就是在选择的元素前后设置样式，这个空洞了点，来看看一段代码：</p>
+
+<pre><code>&lt;p&gt;21&lt;/p&gt;
+</code></pre>
+
+<p>对应的样式:</p>
+
+<pre><code>p:before { content: "Age: "; }
+p:after { content: " years old."; }
+</code></pre>
+
+<p>执行的结果：
+    Age: 21 years old.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[腾讯QQ的黑名单功能]]></title>
+    <link href="http://fegg.github.io/blog/2014/08/02/qq-enter-black-list/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/2014/08/02/qq-enter-black-list</id>
+    <content type="html"><![CDATA[<h3>一、拉入黑名单实质</h3>
+
+<p>当你把别人加入黑名单,在你这头看来,他是在黑名单列表里;在他的QQ里，你的号仍在原来位置，只不过，那只是对他的安慰罢了，事实上，他永远无法看到你在线，他给你发送消息，也会被QQ后台的数据库拦截，不能发送成功。在QQ后台数据库中，你在他的好友列表中已经不存在了，所以他给你的消息是你永远收不到的。</p>
+
+<h3>二、删除好友实质</h3>
+
+<p>如果你把你的好友删除,但是在他QQ里还是有你,他给你发信息的时候会出现在你的陌生人里,你可以直接拉他到黑名单里,相应的他QQ号里的你也会被系统删除掉~。</p>
+
+<!-- more -->
+
+
+<h3>三、黑名单的信息处理</h3>
+
+<ol>
+<li>黑名单可以让你永远避免被某人打扰，把一个好友或陌生人加到黑名单以后，他就再不能给你发信息，也不能发请求你加他为好友的信息了，除非你把他从黑名单里删除。</li>
+<li>如果把某人被拉进我的QQ黑名单， 那么在他那边看来你不会在对方好友里消失,但对方联系不到你,给你发消息,你收不到.还有就是他好友里你的QQ不再更新,自定义图标也变成QQ原始图标,就是一个QQ那样的图标。</li>
+</ol>
+
+
+<h3>四、黑名单在群中的作用</h3>
+
+<p>拖入黑名单里，删除所有的记录，彼此便消失于对方的生活中。不会再见到他的头像亮起，不再会收到他的任何消息，不再有文字提示你们曾经快乐过，还是忧伤过。一切都留给时间。</p>
+
+<h3>五、黑名单特点总结</h3>
+
+<ol>
+<li>如果你被加入了黑名单，由于QQ好友列表未更新，对方QQ号仍在好友列表里，但是你如果是QQ会员，用在线对其隐身或者隐身对其可见，就会提示好友不存在。</li>
+<li>在群里，如果有加对方，你可以看到在线，但是你们在群里发的话相互都看不到，系统会自动屏蔽。</li>
+<li>被加入黑名单后，如果对方QQ空间有设置好友才能登陆的权限，你也是进不去的，因为已经不是好友了。</li>
+</ol>
+
+
+<p>原文出自：<a href="http://www.douban.com/note/79465910/">http://www.douban.com/note/79465910/</a></p>
+]]></content>
+  </entry>
+  
+</feed>

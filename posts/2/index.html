@@ -1,0 +1,682 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="前言 今天，ECMAScript正处于定稿中。ECMAScript是JavaScript的基础，因此，今天我们浏览一下提出的新特性，能够让我们了解以后我们将能怎样编写JavaScript。在文章中，我们将讲解10个新特性，以及重要的热门工具、浏览器和跨平台编译器。 PS：没写过ES 6相关的文章， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/posts/2/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/18/ECMAScript%206%EF%BC%88%E4%B8%80%EF%BC%89/">（译）ECMAScript 6（一）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-18T00:00:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>前言</h2>
+
+<p>今天，ECMAScript正处于定稿中。ECMAScript是JavaScript的基础，因此，今天我们浏览一下提出的新特性，能够让我们了解以后我们将能怎样编写JavaScript。在文章中，我们将讲解10个新特性，以及重要的热门工具、浏览器和跨平台编译器。</p>
+
+<p>PS：没写过ES 6相关的文章，感觉就是一些特性，但是比较好用，看到这篇原文挺不错，就翻译了一下，原文太长，翻译的时候就分开了一下，方便上个洗手间就看完的样子。翻译不对的地方请指出，一定修改 ^0^. 在文章末尾推荐了一些特定特性介绍的资料。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/03/18/ECMAScript%206%EF%BC%88%E4%B8%80%EF%BC%89/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/25/%E5%85%A8%E6%96%B0%E5%8D%9A%E5%AE%A2%E5%88%9D%E7%A8%BF/">全新博客初稿</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-25T00:00:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>现在的博客主题总是有不满意的地方，所以决定自己设计一版，依然采用F法则。</p>
+
+<p>不知道大家会不会也喜欢，现在只是再画手稿，设计稿可能得自己慢慢出了 >0&lt;</p>
+
+<p><img src="http://p3.qhimg.com/t0155e219a40ea18b46.jpg" alt="稿子" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/01/25/%E5%85%A8%E6%96%B0%E5%8D%9A%E5%AE%A2%E5%88%9D%E7%A8%BF/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/14/GitHub%20Pages%E6%90%AD%E5%BB%BA%E4%B9%8Bhexo/">GitHub Pages搭建之hexo（待更新版本）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-14T00:00:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>0  引言</h3>
+
+<p>GitHub 是一个用于使用Git版本控制系统项目的共享虚拟主机服务。它由GitHub公司（曾称Logical Awesome）的开发者Chris Wanstrath、PJ Hyett和Tom Preston-Werner使用Ruby on Rails编写而成。您能够开通一个免费账户进行使用。hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上。并且hexo支持markdown写文章，用户能够使用自己喜欢的工具书写文章。hexo具有易用、轻巧、用户群体增长快等优点。由于hexo基于Node.js技术，如今Node.js技术的流行，hexo也会变得越来越热门，所以选择hexo在Github上创建一个静态博客是不错的选择。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/01/14/GitHub%20Pages%E6%90%AD%E5%BB%BA%E4%B9%8Bhexo/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/02/%E5%83%8F%E7%A7%AF%E6%9C%A8%E4%B8%80%E6%A0%B7%E6%90%AD%E5%BB%BA%E7%BD%91%E9%A1%B5/">像积木一样搭建网页</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-02T00:00:00+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>前言</h3>
+
+<p>我们在浏览网页的时候，经常会看到很相似的几种内容。比如下面这两种样子：</p>
+
+<p><img src="http://p4.qhimg.com/t010118aee227f746a5.png" alt="视图1" /></p>
+
+<p><img src="http://p4.qhimg.com/t0188a9a78a17386fb9.png" alt="视图2" /></p>
+
+<p>看上去是不是比较像呢？其实就是图片的位置不一样，大致上可以认为是一样的吧，那么针对这样子的相似度较高的网页，我们应该怎么样开发呢？</p>
+
+<blockquote><p>其实这就得谈谈“页面重用机制”了，下面所写的积木式网页构建方式就能够很好的处理页面重用这个问题。</p></blockquote>
+
+<p>接下来将从以下4个方面对积木式网页开发进行描述：</p>
+
+<ol>
+<li>分析页面结构</li>
+<li>构建网页的结构</li>
+<li>编写网页基本的样式</li>
+<li>编写不同表现的样式</li>
+</ol>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/02/%E5%83%8F%E7%A7%AF%E6%9C%A8%E4%B8%80%E6%A0%B7%E6%90%AD%E5%BB%BA%E7%BD%91%E9%A1%B5/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/27/%E4%B8%80%E6%AD%A5%E6%AD%A5%E5%AD%A6%E4%B9%A0ThinkJS%EF%BC%88%E4%B8%80%EF%BC%89/">一步步学习ThinkJS（一）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-11-27T00:00:00+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>八卦</h3>
+
+<p>在2014年9月22日的时候，ThinkJS 1.0开了一个简单的发布会，去抢啦几块蛋糕来吃~现在还记得蛋糕超级好吃！- 0 - 不过成银这套NodeJS框架真心很好用（可能是以前用J2EE的框架用得比较多，所以感觉MVC这类框架比较好理解，不过文章写得很详细，相信看完就能上手），也很强大，上手极快，我相信它将越来越火！下面我们来入个门哈，如果有写得不对的可以直接指出来，使自己进步 ^o^</p>
+
+<p>如果要看官方文档资料，可以进入<a href="http://thinkjs.org/doc.html">ThinkJS官网地址</a></p>
+
+<p>当然，也少不了手把手视频教程，大家可以去看哦！</p>
+
+<p><a href="http://thinkjs.org/video.html">ThinkJS视频教程</a></p>
+
+<h3>一、安装ThinkJS</h3>
+
+<p>首先得知道ThinkJS是基于NodeJS来玩的MVC框架，所以第一步是先安装NodeJS，直接去官网下载一个pkg的安装包即可。</p>
+
+<p><a href="http://nodejs.org/">NodeJS官网</a></p>
+
+<p>如果你翻墙不了，可以到我分享的360云盘去下载：</p>
+
+<p><a href="http://yunpan.cn/cAtcbhmeYZKss">NodeJS 360云盘地址</a>  （提取码：47a2）</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/11/27/%E4%B8%80%E6%AD%A5%E6%AD%A5%E5%AD%A6%E4%B9%A0ThinkJS%EF%BC%88%E4%B8%80%EF%BC%89/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/26/Mac%20OS%20X%2010.9%E9%85%8D%E7%BD%AEAMP%E7%8E%AF%E5%A2%83/">Mac OS X 10.9配置AMP环境</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-11-26T00:00:00+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>2015年5月9日更新</h3>
+
+<p>更新内容：针对Mac OS X 10.10.3不能访问用户目录</p>
+
+<pre><code>http://localhost/~lulin
+</code></pre>
+
+<p>检查Apache版本是否升级</p>
+
+<pre><code>Server version: Apache/2.4.10 (Unix)
+Server built:   Jan  8 2015 20:48:33
+</code></pre>
+
+<p>修改的地方有以下 3 点：</p>
+
+<p><strong>（1）/etc/apache2/httpd.conf</strong></p>
+
+<p>打开如下配置（去除#注释）</p>
+
+<pre><code>LoadModule authz_core_module libexec/apache2/mod_authz_core.so
+LoadModule authz_host_module libexec/apache2/mod_authz_host.so
+# 这两项是重点检查对象
+LoadModule userdir_module libexec/apache2/mod_userdir.so
+Include /private/etc/apache2/extra/httpd-userdir.conf
+</code></pre>
+
+<p>修改完后访问会出现，所以还需要修改（2）中的文件</p>
+
+<p>Forbidden
+You don&rsquo;t have permission to access /~lulin/ on this server.</p>
+
+<p><strong>（2）/etc/apache2/extra/httpd-userdir.conf</strong></p>
+
+<p>打开如下配置（去除#注释）</p>
+
+<pre><code>Include /private/etc/apache2/users/*.conf
+</code></pre>
+
+<p><strong>（3）修改之前 10.9 中 /etc/apache2/users/<youusername>.conf</strong></p>
+
+<pre><code>&lt;Directory "/Users/lulin/Sites/"&gt;
+    Options Indexes MultiViews
+    AllowOverride None
+    Require all granted
+&lt;/Directory&gt;
+</code></pre>
+
+<h3>前言</h3>
+
+<p>因为每次重新安装系统都需要配置一下Apache、MySQL、PHP的环境，网上的文章又不完整或者不完全符合自己的情况，所以写下一篇文章来记录一下，保证99%配置成功，还剩1%由于各种奇葩环境原因。。。主要从 6 个方面进行记录：</p>
+
+<ol>
+<li>启动Apache</li>
+<li>建立个人的网站目录</li>
+<li>启动php的解析功能</li>
+<li>安装、启动mysql</li>
+<li>修改mysql root密码</li>
+<li>使用客户端连接mysql</li>
+</ol>
+
+
+<h3>一、启动Apache</h3>
+
+<p>查看Apache的版本信息：</p>
+
+<pre><code>$ httpd -v
+
+Server version: Apache/2.2.26 (Unix)
+Server built:   Dec 10 2013 22:09:38
+</code></pre>
+
+<p>启动Apache</p>
+
+<pre><code>$ sudo apachectl start
+</code></pre>
+
+<p>如果终端中显示：</p>
+
+<pre><code>org.apache.httpd: Already loaded
+</code></pre>
+
+<p>就表示已经启动过了，可以使用重启命令：</p>
+
+<pre><code>$ sudo apachectl restart
+</code></pre>
+
+<p>这样我们的准备工作就做完了，第一步不要太复杂，不然配置会混乱，不太好还原之前的状态。接下来访问：</p>
+
+<p><a href="http://localhost">http://localhost</a></p>
+
+<p>如果出现如下图情况，就表示一切顺利，我们再接下去配置，如果没有成功，其实就不推荐再折腾啦，重装系统是最快的解决方案。。。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/11/26/Mac%20OS%20X%2010.9%E9%85%8D%E7%BD%AEAMP%E7%8E%AF%E5%A2%83/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/19/yanxihu/">Yanxihu</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-09-19T00:00:00+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><hr />
+
+<p>layout: post
+title: 骑行－雁栖湖游记</p>
+
+<h2>tags: [&ldquo;游记&rdquo;]</h2>
+
+<p>路程：来回110公里</p>
+
+<p>时间：2014年9月20日</p>
+
+<p>我、智杰、成银、肆爷、文武、文成、孟孟（7人）</p>
+
+<hr />
+
+<h3>1. 景点简介</h3>
+
+<p>雁栖湖，是位于北京市怀柔区北部北台上村的水库，拦截雁栖河，北临雄伟的万里长城，南偎一望无际的华北平原。雁栖湖水面宽阔，湖水清澈，每年春秋两季常有成群的大雁来湖中栖息，故而得名。</p>
+
+<h3>2. 出发前的集合</h3>
+
+<p>跟之前约好的一样，早上9点到公司集合出发。大家像打了鸡血一样吃完了早餐，摆好了出发的架势准备出发，在出发前文成比较有经验，还教我们一些骑行中要用到的常用手势，感觉很专业的样子<sup>0</sup>^</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/09/19/yanxihu/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/web-ten-days/">Web前端十日谈</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>前言</h3>
+
+<p>一直想写这篇“十日谈”，聊聊我对Web前端开发的体会，顺便解答下周围不少人的困惑和迷惘。我不打算聊太多技术，我想，通过技术的历练，得到的反思应当更重要。</p>
+
+<p>我一直认为自己是“初级”前端开发工程师，一方面我入道尚浅，只有短短几年，另一方面我自知对技术的钻研并不深入，可能是由于环境的原因，当然最重要的是，我幸运的参与到互联网崛起的浪潮之巅。时势造就了一批技能薄弱但备受追捧的“弄潮者”，这在很大程度上影响我们对“技术本质”的洞察力，多年来也一直未有成体系的“前端技术”布道佳作，以至于当下多数人对前端技术的了解，盖始于表述并不严谨的岗位招聘描述，而这正恰恰反映了Web前端开发对自身的模糊定位。对于很多Web前端工程师来说，初尝禁果的快感无法持续很久，就陷入一轮又一轮的迷惘，思索自己的职业规划，试图寻找到适合自己的成长道路、看清自身技能的瓶颈，寻找突破。但遗憾的是，Web前端技术被广泛接纳时日尚短，没有多少励志的成功样板可供遵循。然而情况不总是这么糟，毕竟Web前端技术是一门“技术”，和计算机科学系出同门，只是因为互联网的高速崛起而被蒙上了迷雾，遮住了双眼，让我们傻傻看不清时局。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/web-ten-days/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/web-art-css-selectors/">网页艺术：CSS选择器</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一、前言</h3>
+
+<p>现在JQuery很火，大部分原因还是它强大的选择器，但是JQuery的选择器引用了CSS选择器的规则，所以学好CSS选择器不仅仅是对写CSS有好处，在学习JQuery选择器的时候也会更快上手，几乎是一看就明白。</p>
+
+<h3>二、CSS选择器</h3>
+
+<p>在学习CSS选择器之前，我们应该理解DOM树的生成，这里我们举一个例子：</p>
+
+<pre><code>&lt;body&gt;
+    &lt;h1&gt;
+        &lt;em&gt;h1-em&lt;/em&gt;
+    &lt;/h1&gt;
+    &lt;p&gt;
+        &lt;em&gt;p-em&lt;/em&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;span&gt;
+            &lt;em&gt;p-span-em&lt;/em&gt;
+        &lt;/span&gt;
+    &lt;/p&gt;
+&lt;/body&gt;
+</code></pre>
+
+<p>这样对应的DOM树结构如下(忽略#text)：</p>
+
+<p><img src="/images/post/dom.jpg" alt="Mou icon" /></p>
+
+<p>下面我们再依次介绍每种选择器才有意义。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/web-art-css-selectors/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/qq-enter-black-list/">腾讯QQ的黑名单功能</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一、拉入黑名单实质</h3>
+
+<p>当你把别人加入黑名单,在你这头看来,他是在黑名单列表里;在他的QQ里，你的号仍在原来位置，只不过，那只是对他的安慰罢了，事实上，他永远无法看到你在线，他给你发送消息，也会被QQ后台的数据库拦截，不能发送成功。在QQ后台数据库中，你在他的好友列表中已经不存在了，所以他给你的消息是你永远收不到的。</p>
+
+<h3>二、删除好友实质</h3>
+
+<p>如果你把你的好友删除,但是在他QQ里还是有你,他给你发信息的时候会出现在你的陌生人里,你可以直接拉他到黑名单里,相应的他QQ号里的你也会被系统删除掉~。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/qq-enter-black-list/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/3">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/index.html">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/17/redux-can-do/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/10/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/hi-vue/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/24/postcss-introduce/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/09/pro-js-2/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

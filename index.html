@@ -1,1 +1,667 @@
-My Octopress Page is coming soon &hellip;
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="一、我先给一个 Redux 的定义 Redux 被大家知道应该都是来自于 React 的出现，但是这篇文章会通过介绍一个 React 之外的例子，来让大家理解 Redux 是什么东西，到底还能够做点撒。 我自己的理解是： Redux 是一个改变状态(state)的模型， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/05/17/redux-can-do/">Redux 能做什么？</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-17T00:00:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一、我先给一个 Redux 的定义</h3>
+
+<p><code>Redux</code> 被大家知道应该都是来自于 <code>React</code> 的出现，但是这篇文章会通过介绍一个 <code>React</code> 之外的例子，来让大家理解 <code>Redux</code> 是什么东西，到底还能够做点撒。</p>
+
+<p>我自己的理解是：</p>
+
+<blockquote><p>Redux 是一个改变<strong>状态(state)</strong>的模型，这个模型通过一个单向操作的方式来改变<strong>状态</strong>，用数学符号的方式来理解我认为应该是：<code>y = f(x)</code>，嗯，就是一个最简单的函数模型。</p></blockquote>
+
+<p>不过这样说，有些人还会不理解，毕竟以前撸代码不是这个样子的，那么我们先反向的来获取自己的理解。</p>
+
+<p>首先，我们需要知道 Redux 有的以下几个东西：</p>
+
+<ul>
+<li>createStore</li>
+<li>reducer</li>
+<li>dispatch</li>
+</ul>
+
+
+<p>我觉得需要介绍清楚 Redux ，知道这三个就行了，至于还有一些函数我觉得都是调味料，这里先不介绍。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/05/17/redux-can-do/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/01/10/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-10T00:00:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>废话</h3>
+
+<p>＝＝晚上失眠了，在网页上看到一个好玩的效果，自己模拟了一下，最开始用SVG写的。。。不多说了，简单记录一下思路和写法。</p>
+
+<h3>思路</h3>
+
+<p>先贴一下效果图，脑袋里面留下直观印象。录的效果可能不太好，大家可以用代码本地跑起来看真实的效果。</p>
+
+<p><img src="/images/checkbox-anim.gif" alt="动态效果" /></p>
+
+<ol>
+<li>构造一个简单的组件元素，采用 <code>::after</code> 伪元素来实现</li>
+<li>利用 CSS 中 <code>border</code> 来实现，并且利用 CSS3 动画来添加切换的动画效果</li>
+<li>主要利用 <code>rotate</code> 和 <code>scale</code> 的效果来实现</li>
+<li>JS 部分对类名的 <code>toggle</code></li>
+</ol>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2016/01/10/checkbox-anim/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/12/16/hi-vue/">乱玩 Vue Todo</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-12-16T00:00:00+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>前言</h3>
+
+<p>最近感觉人比较疲倦，但是又想坚持写博客的习惯，就随便写点吧，就说一下我是怎么学习一个框架的，比如 Vue 这种框架其实学起来很快，1，2个小时就能入门做。主要总结起来有几点：</p>
+
+<ol>
+<li>直接看官方 API 这是不太靠谱的，枯燥，而且没有体系；</li>
+<li>通过一个 DEMO 的结构来梳理清晰；</li>
+<li>除了梳理，还应该结合 API 和官方的资料来了解 DEMO 中的每一个知识点；</li>
+<li>这样下来过后，对一个框架的基本 API 和 思想应该会比较清晰了（除非 DEMO 比较差，所以选 DEMO 的代码是比较重要的，最好是选大家都认可的，GitHub start 比较高的）；</li>
+<li>重要的还是经常学习东西，体会思想，形成自己的一套对代码的理解，这样学东西就比较快了；</li>
+<li>下面的例子都是采用伪代码的方式来描述，也可以认为就是一些思路的比划。</li>
+</ol>
+
+
+<p>看文章前需要下载一下 DEMO 代码：<a href="https://github.com/vuejs/vue/tree/dev/examples/todomvc">源代码</a></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/12/16/hi-vue/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/24/postcss-introduce/">PostCSS是个什么鬼东西？</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-24T00:00:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>前言</h3>
+
+<p>最近大漠前辈在群里发关于<code>PostCSS</code>的系列文章，但是耗子姐姐又说看了有点云里雾里的感觉，所以这篇文章将按一个思考的角度来理解一下 PostCSS 到底是一个什么东西。</p>
+
+<p><img src="/images/postcss/top.png" alt="配图" /></p>
+
+<h3>一、提出不懂的地方</h3>
+
+<p>很多时候第一次在网上查询 PostCSS 概念的时候，大家都解释成一个<code>后处理器</code>的概念，其实个人觉得这些概念不重要，更为重要的有以下几点：</p>
+
+<ol>
+<li>它本质上是一个什么东西？</li>
+<li>它能解决我们什么问题？</li>
+<li>它是通过什么方式来解决我们的问题？</li>
+<li>它解决我们的问题是为什么？</li>
+<li>怎么实现与 <code>SASS</code>、<code>LESS</code>、<code>Stylus</code> 相同的功能（因为它们被经常拿来比较）</li>
+<li>它由哪些东西组成？</li>
+<li>既然是程序可以用的，那么它的API呢？</li>
+</ol>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/10/24/postcss-introduce/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/09/pro-js-2/">JavaScript的特性、函数、对象</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-09T00:00:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>提供者：js-渣渣</p>
+
+<p>原文：[<a href="http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0">http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0</a>][1]</p>
+
+<p>对象是JavaScript的重要单元。事实上JavaScript的一切都是对象或者是面向对象的接口。</p>
+
+<h3> 语言特性</h3>
+
+<h4>引用和值 </h4>
+
+<p>JavaScript变量持有的数据有两种形式：拷贝和引用。任何的基本类型值都是拷贝到变量。基本类型值最重要的特性就是它们是以值的形式赋值、拷贝、传递以及从函数总返回。</p>
+
+<p>JavaScript非基本类型值则是依赖引用。 任何不持有基本类型值的变量持有的是对象的引用。引用是指向对象内存位置的指针。这样有效率的是两个或者多个变量不会都来持有对象的拷贝；它们只是简单的指向这个对象就好。一个引用对对象的更新直接影响到另一个引用。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/10/09/pro-js-2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/10/09/only-one/">影响一生的职业建议</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-09T00:00:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/fish.jpg" title="鱼" alt="" /></p>
+
+<h3>影响一生的职业建议</h3>
+
+<p>前段时间我和一个同事进行了一次有趣的讨论。我们重新审视了我们的工作历史，并探讨了那些可以称之为丰富多彩的个人特性是如何对我们产生长期的负面影响的。之后我发现在我刚走出校园的时候确实有点混蛋（某些人也许会说我现在依然有点混蛋，不过这是题外话了）。那时候的我是一个自负，刻薄并不知道尊重其他人的人。不过我想那时候的我知道这些并反而对于这样的我感到自豪。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/10/09/only-one/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/26/induction-react-component-dev/">React 组件开发入门</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-26T00:00:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>前言</h3>
+
+<p>熟悉 React 的思想后，我们先来尝试开发一个单纯的小组件，可以对比一下是不是比以前的开发模式更加舒适了，这里我主要以一个 Loadding 组件来举栗子，实现了几个基本的功能：</p>
+
+<ul>
+<li>一种类型的 loadding（菊花转）</li>
+<li>能够设置 loadding 的三个属性：width height color</li>
+<li>能够控制 loadding 的显示和隐藏</li>
+</ul>
+
+
+<p>其实对于一个简单需求来说，这三个属性已经很实用了。但是去网上看一些外国大神写的组件，有一些不明白的地方，所以自己就慢慢搞，do it！</p>
+
+<h3>设计</h3>
+
+<p>我想这样用 loadding 组件：</p>
+
+<p><img src="/images/react/code-loadding.png" alt="使用代码" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/07/26/induction-react-component-dev/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/19/react-component-communicate/">React 组件之间如何交流</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-19T00:00:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>前言</h3>
+
+<p>今天群里面有很多都在问关于 React 组件之间是如何通信的问题，之前自己写的时候也遇到过这类问题。下面是我看到的一篇不错英文版的翻译，看过我博客的人都知道，我翻译可能不会按部就班，会尽可能用中文的意思，来将作者要讲述的技术描述清楚。英文能力有限，如果有不对的地方请跟我留言，一定修改……^_^</p>
+
+<h3>原著序</h3>
+
+<p>处理 React 组件之间的交流方式，主要取决于组件之间的关系，然而这些关系的约定人就是你。</p>
+
+<p>我不会讲太多关于 data-stores、data-adapters 或者 data-helpers 之类的话题。我下面只专注于 React 组件本身的交流方式的讲解。</p>
+
+<p>React 组件之间交流的方式，可以分为以下 3 种：</p>
+
+<ul>
+<li>【父组件】向【子组件】传值；</li>
+<li>【子组件】向【父组件】传值；</li>
+<li>没有任何嵌套关系的组件之间传值（PS：比如：兄弟组件之间传值）</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/07/19/react-component-communicate/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/09/Hello-Angular2/">Hello Angular2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-09T00:00:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>前言</h3>
+
+<p>Angular 2 正式版还没有出来，但是发现官网已经推广开发版本了，所以尝了一下鲜，来吧，从 Hello World 开始。</p>
+
+<h3>1. 安装需要的工具</h3>
+
+<p>这部分和 ng 2 没多大关系，但是我第一次根据官网 5 分钟配置中发现了一些坑，所以做一下准备，免得打击了第一次使用技术的自信心。</p>
+
+<ol>
+<li>Node 和 NPM 最新版（省略）</li>
+<li>jspm 包管理器来初始化 SystemJS 模块加载器那一套</li>
+</ol>
+
+
+<p><strong>创建一个项目目录</strong></p>
+
+<pre><code>mkdir ng &amp;&amp; cd ng
+</code></pre>
+
+<p><strong>安装 jspm 环境</strong></p>
+
+<pre><code>sudo npm install jspm/jspm-cli -g
+npm init
+npm install jspm --save-dev
+// 一路回车就行了
+jspm init
+</code></pre>
+
+<p><strong>配置一下 config.js</strong></p>
+
+<pre><code>System.config({
+    "baseURL": "/",
+    "transpiler": "traceur",
+    "paths": {
+        "*": "*.js",
+        "github:*": "jspm_packages/github/*.js"
+    },
+    "map": {
+        "traceur": "github:jmcriffey/bower-traceur@0.0.88",
+        "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88"
+    }
+});
+</code></pre>
+
+<p><strong>安装一个本地服务工具</strong></p>
+
+<pre><code>sudo npm install -g http-server
+// ng 目录下启动
+http-server 
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/07/09/Hello-Angular2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/24/%E4%BB%8E%E8%A7%A6%E6%91%B8%E5%BC%80%E5%A7%8B/">从触摸开始（一）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-24T00:00:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>1. 前言</h3>
+
+<p>最近看了一本《移动Web手册》的书，奇舞团翻译的，非常不错。个人觉得在进入移动端的时候最先应该了解移动端新的交互模式：<strong>触摸</strong>。为什么这样说呢？在PC端，我们大多数的交互都是通过<strong>鼠标</strong>来实现，在开发过程中，对鼠标事件的处理也非常多，通过之前在移动端的开发经验，在移动端的交互也避免不了经常与触摸打交道，所以我们有必要单独学习一下它。</p>
+
+<h3>2. 触摸、鼠标交互模式</h3>
+
+<p><strong>(1) 连续性</strong></p>
+
+<p>触摸事件是不连续的，鼠标事件是连续的。</p>
+
+<p><img src="http://p1.qhimg.com/t01995847f1bbafff14.png" alt="连续性" /></p>
+
+<p>操作顺序：A -> B -> C</p>
+
+<p>在鼠标上：鼠标点击A -> 划过B -> 点击C</p>
+
+<p>在触摸上：手指触摸A -> 跨过B -> 触摸C</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/05/24/%E4%BB%8E%E8%A7%A6%E6%91%B8%E5%BC%80%E5%A7%8B/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/2">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/17/redux-can-do/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/10/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/hi-vue/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/24/postcss-introduce/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/09/pro-js-2/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

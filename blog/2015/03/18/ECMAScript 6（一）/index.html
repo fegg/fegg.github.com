@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>（译）ECMAScript 6（一） - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="前言 今天，ECMAScript正处于定稿中。ECMAScript是JavaScript的基础，因此，今天我们浏览一下提出的新特性，能够让我们了解以后我们将能怎样编写JavaScript。在文章中，我们将讲解10个新特性，以及重要的热门工具、浏览器和跨平台编译器。 PS：没写过ES 6相关的文章， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/blog/2015/03/18/ECMAScript%206%EF%BC%88%E4%B8%80%EF%BC%89/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">（译）ECMAScript 6（一）</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-18T00:00:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>前言</h2>
+
+<p>今天，ECMAScript正处于定稿中。ECMAScript是JavaScript的基础，因此，今天我们浏览一下提出的新特性，能够让我们了解以后我们将能怎样编写JavaScript。在文章中，我们将讲解10个新特性，以及重要的热门工具、浏览器和跨平台编译器。</p>
+
+<p>PS：没写过ES 6相关的文章，感觉就是一些特性，但是比较好用，看到这篇原文挺不错，就翻译了一下，原文太长，翻译的时候就分开了一下，方便上个洗手间就看完的样子。翻译不对的地方请指出，一定修改 ^0^. 在文章末尾推荐了一些特定特性介绍的资料。</p>
+
+<!-- more -->
+
+
+<h3>一、ECMA，ECMAScript 和 JavaScript 的发展史</h3>
+
+<p>JavaScript最初是由Brendan Eich网景公司开发的,在1995年，正式发布出来，成为Netscape Navigator 2.0的一部分。一年后,将 JavaScript 提交给 ECMA International, JavaScript成为促进信息和通讯技术的标准化和消费电子产品的一部分,为了它能够在智能工业中得到正式确定。因此, 在ECMA-262的时候，命名为ECMAScript, 成为了标准化脚本语言。</p>
+
+<p>以ECMAScript标准的形式为主,有很多其他的派生语言,其中包括ActionScript和JScript。至今,ECMAScript总共经历了4个版本,今天的讨论我们将围绕第六个版本，将其命名为：ECMAScript Harmony。</p>
+
+<h3>二、ECMAScript和JavaScript对应的版本</h3>
+
+<p>在我们即将深入ECMAScript 6的新特性之前，比较重要的是需要了解ECMAScript标准和JavaScript的关系，他们之间存在着数字上对应的差异。这表明JavaScript与ECMAScript标准兼容,同时提供更多的功能。下面的表格中，总结了JavaScript和ECMAScript之间的关系：（mou打表格比较麻烦，就截图了）</p>
+
+<p><img src="http://p4.qhimg.com/t01f7b309fac3cc5bbf.png" alt="JavaScript和ECMAScript之间的关系" /></p>
+
+<h3>三、ES6 概述</h3>
+
+<h4>1. 目标</h4>
+
+<p>JavaScript已经诞生接近20年，今天，开发者们编写了成千上万行代码的复杂JavaScript应用程序。在我们深入介绍ES 6特性之前，你可能想看看规范中定义的需求、模板、含义以及主题草稿。ES 6的目标之一就是为了创建一个更好的语言：</p>
+
+<ol>
+<li>复杂应用程序</li>
+<li>库</li>
+<li>代码生成器</li>
+</ol>
+
+
+<h4>2. ES 6的兼容性</h4>
+
+<p>大家可以访问 <a href="http://kangax.github.io/compat-table/es6/">ES 6兼容表</a>，它能够告诉我们当前ES 6的特性在当代浏览器中的支持情况。它也给我们提供了一个各个新特性的说明链接（浏览了一下，属于官方的讲解，可以随时查阅）。注意,一些特性的存在并不意味着完全符合规范。在Chrome中测试新特性，应该使用"Experimental JavaScript"的flags选项。以下是一个兼容性的截图：（现在应该不需要了，版本以及到了V40，可以下载黄金版测试）</p>
+
+<p><img src="http://p9.qhimg.com/t0173f03192041ea6d5.png" alt="兼容性的截图" /></p>
+
+<h4>3. 将要介绍的10个特性</h4>
+
+<p>在下面几节中,我们将讨论十ES6的特点,使用各种工具,这样我们可以了解ES6无论是在理论和实践。JavaScript的先验知识是首要的,所以需要随时查阅<a href="http://code.tutsplus.com/tutorials/the-best-way-to-learn-javascript--net-21954">JavaScript资源</a>。</p>
+
+<p>下面列出的特性,我们将通过使用不同的工具。以下是将要讲解的目录，能够点一下直接到你想了解的特性：</p>
+
+<blockquote><p>&ldquo;[]"中表示使用的开发工具。</p></blockquote>
+
+<ol>
+<li><a href="#let">块级作用域：let</a> [Firefox]</li>
+<li><a href="#const">块级作用域：const</a> [Chrome]</li>
+<li><a href="#classes">Classes</a> [traceur]（不知道traceur工具的可以直接理解为Javascript 编译器）</li>
+<li><a href="#params">默认函数参数</a> [TypeScript]（开源的一个东西，可以到官网了解）</li>
+<li><a href="#collections">集合</a> [NodeJS]</li>
+<li><a href="#destructuring">解构</a> [Firefox]</li>
+<li><a href="#rest-spread">Rest parameters &amp; Spread operator</a> [Grunt plugin Traceur]</li>
+<li><a href="#for">迭代器</a> [Firefox]</li>
+<li><a href="#arr">数组的操作</a></li>
+<li><a href="#module">模块</a></li>
+</ol>
+
+
+<h4><h3 name="let" id="let"><em>特性一：</em>块级作用域：let</h3></h4>
+
+<p>wiki资料：<a href="http://wiki.ecmascript.org/doku.php?id=harmony:let">let</a></p>
+
+<p>工具：Firefox 20.0，打开调试工具的步骤如下：</p>
+
+<p>（快捷键：windows F12，mac alt+command+i）</p>
+
+<blockquote><p>操作步骤：菜单 -> 工具 -> Web开发者 -> Web控制台</p></blockquote>
+
+<p>JavaScript的变量是函数作用域的，这就意味着，即使变量声明在最近的代码块，它们的实际作用域也会在整个函数中。我们看一下下面的简短例子；我们将简单地用Firefox和Chrome运行试试。</p>
+
+<p>思考一下下面JS中jsFuture变量的最后结果是什么？</p>
+
+<pre><code>var jsFuture = "es6";
+(function () {
+    if (!jsFuture) {
+        var jsFuture = "es5";
+    }
+    console.log(jsFuture);
+}());
+</code></pre>
+
+<p>在上面的例子中，<strong>console.log(jsFuture);</strong> 将打印出"es5"。这段代码主要需要理解的就是，在JavaScript代码中，有<a href="http://code.tutsplus.com/tutorials/quick-tip-javascript-hoisting-explained--net-15092">变量声明提升</a>的概念（原文推荐的是英文版，这里我推荐一个中文版<a href="http://openwares.net/js/javascript_declaration_hoisting.html">变量声明提升</a>的讲解），然后再进行变量的初始化工作。另一方面，不管变量是在那里初始化和声明的，都属于函数作用域范围，他们将总是会被声明提升。</p>
+
+<p>下面这段代码将简单描述一下变量声明提升，与上面那份代码等价：</p>
+
+<pre><code>var jsFuture = "es6";
+(function() {
+    // 在这里将jsFuture变量声明提升
+    // var jsFuture = undefined;
+    // 然后这里判断，得出true的结果，进入if语句，初始化jsFuture的值
+    if (!jsFuture) {
+        var jsFuture = "es5";
+    }
+    console.log(jsFuture); // "es5"
+}());
+</code></pre>
+
+<p>在ES 6中，通过 <strong>let</strong> 来解决这个问题。比如像：var，它实际上是一个块级范围，而不是函数范围。让我们来思考一下下面的一个例子，调用了 <strong>es[6]()</strong> 将打印出 <strong>i=10</strong> 的结果。值得注意的是：尽管声明了 <strong>var i = 0;</strong> 的一个for循环，在for循环中，<strong>var i</strong> 的作用域默认是全局global的。所以当<strong>es[es6]()</strong> 方法被执行的时候，<strong>i</strong> 的值已经等于 <strong>10</strong> 了。看一下下面的例子：</p>
+
+<pre><code>var es = [];
+for (var i = 0; i &lt; 10; i++) {
+    es[i] = function() {
+        console.log("即将出版的 ECMAScript 是 ES" + i);
+    };
+}
+es[6](); // 即将出版的 ECMAScript 是 ES10
+</code></pre>
+
+<p>执行结果如下图：</p>
+
+<p><img src="http://p5.qhimg.com/t013b7ea4502696494a.png" alt="执行结果" /></p>
+
+<p>接下来我们用一下 <strong>let</strong> 关键字，可以打开Firefox的开发者工具运行一下。在一个for循环中，使用  <strong>let c = i;</strong> 声明了一个块级作用域的变量。</p>
+
+<pre><code>'use strict'; // 这句是我翻译加的，保证代码的可运行
+var es = [];
+for (var i = 0; i &lt; 10; i++) {
+    let c = i;
+    es[i] = function() {
+        console.log("即将出版的 ECMAScript 是 ES" + c);
+    };
+}
+es[6](); // 即将出版的 ECMAScript 是 ES10
+</code></pre>
+
+<p>执行结果如下图：</p>
+
+<p><img src="http://p4.qhimg.com/t018773497660b758ef.png" alt="执行结果" /></p>
+
+<p>火狐已经支持很多ES 6的特性。能够在<a href="https://developer.mozilla.org/en-US/docs/JavaScript/ECMAScript_6_support_in_Mozilla">更新表</a>中找到Firefox的更新点，其功能都支持，也符合当前规范。</p>
+
+<p>PS：网上有很多资源，是专属 <strong>let</strong> 的讲解，这里推荐几个吧，这样对这个特性应该就理解差不多了。</p>
+
+<blockquote><p>其实之前对作用域知识比较扎实，理解很快，用法也很简单。go go go!</p></blockquote>
+
+<p><strong>英文资料</strong></p>
+
+<ol>
+<li>MDN还是要看的：<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let">资料</a></li>
+<li>实例讨论的文章：<a href="http://davidwalsh.name/for-and-against-let">资料</a></li>
+<li>let与var的一篇帖子：<a href="http://stackoverflow.com/questions/762011/javascript-let-keyword-vs-var-keyword">资料</a></li>
+</ol>
+
+
+<p><strong>中文资料</strong></p>
+
+<ol>
+<li>segmentfault上的一篇翻译文：<a href="http://segmentfault.com/blog/kk_470661/1190000000518683">资料</a></li>
+</ol>
+
+
+<p>原文出自：<a href="http://code.tutsplus.com/articles/use-ecmascript-6-today--net-31582">http://code.tutsplus.com/articles/use-ecmascript-6-today&ndash;net-31582</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-03-18T00:00:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://fegg.github.io/blog/2015/03/18/ECMAScript%206%EF%BC%88%E4%B8%80%EF%BC%89/" data-via="" data-counturl="http://fegg.github.io/blog/2015/03/18/ECMAScript%206%EF%BC%88%E4%B8%80%EF%BC%89/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/01/25/%E5%85%A8%E6%96%B0%E5%8D%9A%E5%AE%A2%E5%88%9D%E7%A8%BF/" title="Previous Post: 全新博客初稿">&laquo; 全新博客初稿</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/05/24/%E4%BB%8E%E8%A7%A6%E6%91%B8%E5%BC%80%E5%A7%8B/" title="Next Post: 从触摸开始（一）">从触摸开始（一） &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/17/redux-can-do/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/10/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/hi-vue/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/24/postcss-introduce/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/09/pro-js-2/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,421 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>React 组件开发入门 - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="前言 熟悉 React 的思想后，我们先来尝试开发一个单纯的小组件，可以对比一下是不是比以前的开发模式更加舒适了，这里我主要以一个 Loadding 组件来举栗子，实现了几个基本的功能： 一种类型的 loadding（菊花转）
+能够设置 loadding 的三个属性：width height &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/blog/2015/07/26/induction-react-component-dev/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">React 组件开发入门</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-26T00:00:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>前言</h3>
+
+<p>熟悉 React 的思想后，我们先来尝试开发一个单纯的小组件，可以对比一下是不是比以前的开发模式更加舒适了，这里我主要以一个 Loadding 组件来举栗子，实现了几个基本的功能：</p>
+
+<ul>
+<li>一种类型的 loadding（菊花转）</li>
+<li>能够设置 loadding 的三个属性：width height color</li>
+<li>能够控制 loadding 的显示和隐藏</li>
+</ul>
+
+
+<p>其实对于一个简单需求来说，这三个属性已经很实用了。但是去网上看一些外国大神写的组件，有一些不明白的地方，所以自己就慢慢搞，do it！</p>
+
+<h3>设计</h3>
+
+<p>我想这样用 loadding 组件：</p>
+
+<p><img src="/images/react/code-loadding.png" alt="使用代码" /></p>
+
+<!-- more -->
+
+
+<p>所以我定义这个组件的基本结构如下：</p>
+
+<pre><code>var Loadding = React.createClass({
+    // 控制组件属性的类型
+    propTypes: {},
+    // 控制组件属性的默认值
+    getDefaultProps: function () {},
+    // 组装基本的内联样式
+    getComponentStyle: function () {},
+    // 渲染基本的组件，拆分 render 方法的粒度
+    renderBaseComp: function () {},
+    // 最终的渲染方法
+    render: function () {}
+});
+</code></pre>
+
+<p>这个组件中，我使用的 内联样式 来控制组件的内部基本样式的稳定。其实有时候我们会觉得内联样式不好，但是我个人觉得每一种设置 CSS 形式的方法，用在合适的场景中就是正确的。</p>
+
+<p>每部分的具体实现如下，代码中有一些讲解（这里我不会介绍具体 loadding 效果是怎么出来的，看代码应该就会明白，主要介绍一个 react 制作简单组件的思路和写法）对于扩展性来说，</p>
+
+<blockquote><p>你还可以加入 className 和 type 这些修饰性的属性，但是我更倾向于迭代式的组件开发，小组件就要具有良好的封闭性，使用接口简单，大组件才考虑更好的鲁棒性和可扩展性，这样开发一个组件的性价比才高。需要注意对 getDefaultProps 的理解，只有当使用接口的人代码中根本没有写那个属性的时候，才会使用定义的默认值。</p></blockquote>
+
+<h3>实现</h3>
+
+<pre><code>var Loadding = React.createClass({
+    propTypes: {
+        width: React.PropTypes.oneOfType([
+            React.PropTypes.number,
+            React.PropTypes.string
+        ]),
+        height: React.PropTypes.oneOfType([
+            React.PropTypes.number,
+            React.PropTypes.string
+        ]),
+        color: React.PropTypes.string,
+        active: React.PropTypes.bool
+    },
+    getDefaultProps: function() {
+        return {
+            color: '#00be9c',
+            height: 30,
+            width: 30,
+            active: false
+        };
+    },
+
+    getComponentStyle: function() {
+        var width = this.props.width,
+            height = this.props.height,
+            color = this.props.color;
+        /* 中间圆心 */
+        var cWidth = 0.4 * width,
+            cHeight = 0.4 * height,
+            cMarginLeft = -0.5 * cWidth,
+            cMarginTop = -0.5 * cHeight;
+
+        /* 基本样式 */
+        return {
+            loaddingStyle: { // loadding 容器
+                width: width,
+                height: height
+            },
+            lineStyle: { // loadding 元件样式
+                background: color
+            },
+            centerStyle: { // loadding 圆心样式
+                width: cWidth,
+                height: cHeight,
+                marginLeft: cMarginLeft,
+                marginTop: cMarginTop
+            }
+        };
+    },
+
+    renderBaseComp: function(compStyle) {
+        /* 生成动画元件 */
+        var n = 4; // 元件个数，todo: 定制个数
+        var lines = []; // 元件元素集合
+        for (var i = 0; i &lt; n; i++) {
+            lines.push(
+                &lt;div className="line"&gt;
+                    &lt;span className="top" style={ compStyle.lineStyle }&gt;&lt;/span&gt;
+                    &lt;span className="bottom" style={ compStyle.lineStyle }&gt;&lt;/span&gt;
+                &lt;/div&gt;
+            );
+        }
+        return lines;
+    },
+
+    render: function() {
+        /* 生成组件自己的样式 */
+        var compStyle = this.getComponentStyle();
+        /* 模拟渲染基本动画元件 */
+        var lines = this.renderBaseComp(compStyle);
+
+        // loadding 的class，控制交互
+        var loaddingClasses = cx({
+            loadding: true,
+            active: this.props.active
+        });
+
+        return (
+            &lt;div className={ loaddingClasses } style={ compStyle.loaddingStyle }&gt;
+                {lines}
+                &lt;div className="loadding-center" style={ compStyle.centerStyle }&gt;&lt;/div&gt;
+            &lt;/div&gt;
+
+        );
+    }
+
+});
+</code></pre>
+
+<p>最后，下面是基本的 SASS（不考虑不支持的情况，不支持都不用开发，直接用图，性价比更高）</p>
+
+<pre><code>@include keyframes(load) {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: .25;
+    }
+    50% {
+        opacity: .5;
+    }
+    75% {
+        opacity: .75;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.loadding {
+    display: none;
+    position: absolute;
+    &amp;.active {
+        display: block;
+    }
+    .loadding-center {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        background: #fff;
+        border-radius: 50%;
+    }
+    .line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        .top {
+            content: '';
+            display: block;
+            width: 1px;
+            font-size: 0;
+            height: 50%;
+        }
+        .bottom {
+            @extend .top;
+        }
+        @for $i from 1 through 4 {
+            &amp;:nth-child(#{$i}) {
+                transform:rotate(45deg * ($i - 1));
+                .top {
+                    @include animation(load, 0.8s, linear, 0s, infinite);
+                }
+                .bottom {
+                    @include animation(load, 0.8s, linear, 0.4s + $i/10, infinite);
+                }
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>里面用到的一个 animation 混淆方法：</p>
+
+<pre><code>@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+    @-ms-keyframes #{$name} {
+        @content;
+    }
+    @keyframes #{$name} {
+        @content;
+    }
+}
+
+@mixin animation ($name, $duration, $func, $delay, $count, $direction: normal) {
+    -webkit-animation: $name $duration $func $delay $count $direction;
+    -moz-animation: $name $duration $func $delay $count $direction;
+    -o-animation: $name $duration $func $delay $count $direction;
+    animation: $name $duration $func $delay $count $direction;
+}
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-07-26T00:00:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:00 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://fegg.github.io/blog/2015/07/26/induction-react-component-dev/" data-via="" data-counturl="http://fegg.github.io/blog/2015/07/26/induction-react-component-dev/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/07/19/react-component-communicate/" title="Previous Post: React 组件之间如何交流">&laquo; React 组件之间如何交流</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/10/09/only-one/" title="Next Post: 影响一生的职业建议">影响一生的职业建议 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/17/redux-can-do/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/10/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/hi-vue/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/24/postcss-introduce/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/09/pro-js-2/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

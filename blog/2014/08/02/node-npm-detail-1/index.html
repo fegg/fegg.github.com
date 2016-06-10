@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Node.js Npm 详解（1） - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="一、npm简介 安装npm请阅读我之前的文章Hello Node中npm安装那一部分，不过只介绍了linux平台，如果是其它平台，有前辈写了更加详细的介绍。 npm的全称：Node Package Manager. （1）通俗的理解 其实从字面意思就可以理解这个产品有什么作用翻译为“ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/blog/2014/08/02/node-npm-detail-1/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Node.js Npm 详解（1）</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>一、npm简介</h3>
+
+<p>安装npm请阅读我之前的文章<a href="http://blog.51yuekan.com/2014/10/08/2014-08-02-hello-nodejs/">Hello Node</a>中npm安装那一部分，不过只介绍了linux平台，如果是其它平台，有<a href="http://www.infoq.com/cn/articles/nodejs-npm-install-config">前辈</a>写了更加详细的介绍。</p>
+
+<p>npm的全称：Node Package Manager.</p>
+
+<h4>（1）通俗的理解</h4>
+
+<p>其实从字面意思就可以理解这个产品有什么作用翻译为“Node包管理器”。对，就是Node的包的一个管理工具，目前我尝试的有</p>
+
+<ol>
+<li>下载并安装包（npm install [pkg]）</li>
+<li>升级安装包（npm update [pkg]）</li>
+<li>卸载安装包（npm uninstall/rm [pkg]），可以指定卸载包的版本号
+&hellip;</li>
+</ol>
+
+
+<p>其实这些命令很简单，常用的必须记住，不常用的查询即可，这才是比较好的学习知识方式。</p>
+
+<!-- more -->
+
+
+<p>在终端输入：</p>
+
+<pre><code>//查看npm拥有的全部命令
+$ npm --help
+$ npm help
+//查看某一个npm命令的详细用法
+$ npm &lt;command&gt; --help
+$ npm help &lt;command&gt;
+</code></pre>
+
+<h4>（2）专业的解释</h4>
+
+<p>npm（Node Package Manager）是Node.js下的主流套件管理程式。它在Node.js v0.6.x版本之后，内建于Node系统。通过npm可以协助开发者安装、卸载、删除、更新Node.js套件，并且可以通过npm发布自己的插件。</p>
+
+<h3>二、类似的产品</h3>
+
+<p>其实学习一个产品，可以联系其它产品，能够更好的理解现在手头的产品。第一次学习npm我的第一反应就是，很像linux/mac平台的很多软件，依赖管理的方式可以参考maven&hellip;当然相似性可以随便联想。</p>
+
+<p>接下来，举几个例子吧，当然详细了解可以查baidu &amp;&amp; google。</p>
+
+<ol>
+<li>gem</li>
+<li>PyPL</li>
+<li>pear</li>
+<li>macPort</li>
+<li>Homebrew</li>
+<li>rem</li>
+<li>apt-get</li>
+<li>yum
+&hellip;</li>
+</ol>
+
+
+<p>是不是很多都很熟悉？这样对于npm的认识就不用局限于概念啦。</p>
+
+<h3>三、npm基础功能</h3>
+
+<h4>（1）npmrc文件介绍</h4>
+
+<p>首先介绍一下npmrc文件，这个文件是npm包管理器的配置文件。</p>
+
+<p>与npmrc相关的三个文件：</p>
+
+<ol>
+<li>用户配置文件：~/.npmrc</li>
+<li>全局配置文件：$PREFIX/npmrc</li>
+<li>npm内部配置文件：安装npm的目录下</li>
+</ol>
+
+
+<p>下面仔细看一下npm config的配置。</p>
+
+<h4>（2）npm获取配置的6种方式（优先级从高到低）：</h4>
+
+<p>1.命令行参数</p>
+
+<pre><code>$ --proxy http://&lt;server&gt;:&lt;port&gt;
+</code></pre>
+
+<p>2.环境变量</p>
+
+<p>以"npm_config_&ldquo;为前缀的环境变量将会被认为是npm的配置属性。
+像Maven镜像的概念，方便通信吧。</p>
+
+<pre><code>$ npm_config_proxy=http://&lt;server&gt;:&lt;port&gt;
+</code></pre>
+
+<p>3.用户配置文件</p>
+
+<pre><code>//查看文件路径
+$ npm config get userconfig
+
+//mac系统默认路径
+$HOME/.npmrc
+</code></pre>
+
+<p>4.全局配置文件</p>
+
+<pre><code>//查看文件路径
+$ npm config get globalconfig
+
+//mac系统默认路径
+/usr/local/etc/npmrc
+</code></pre>
+
+<blockquote><p>3，4中输入终端的效果如图：</p></blockquote>
+
+<p><img src="/images/post/node-npm/node-npm-3-and-4.png" alt="3，4在终端的结果" /></p>
+
+<p>5.内置配置文件</p>
+
+<p>安装npm的目录下的npmrc文件。</p>
+
+<p>6.默认配置</p>
+
+<p>如果前5条均未设置，npm会使用默认配置参数。</p>
+
+<h4>（4）npm install <pkg name></h4>
+
+<p>“安装指定包”：这个命令不难，但是也有需要注意的地方，就是安装的模式有两种，在后面会单独讲解。</p>
+
+<blockquote><p>如果不知道包的具体名称，可以在<a href="http://search.npmjs.org">http://search.npmjs.org</a>上进行搜索。</p></blockquote>
+
+<h4>（5）npm uninstall <pkg name></h4>
+
+<p>“卸载指定包”：在help的时候，会给你推荐npm rm <pkg name>这个命令，uninstall会卸载掉包的依赖，rm。</p>
+
+<h4>（6）npm ls</h4>
+
+<p>查看安装的包清单，其实和linux的ls命令很像，可以跟很多参数，详情可以使用</p>
+
+<pre><code>$ npm help ls
+</code></pre>
+
+<h4>（7）npm search <pkg name></h4>
+
+<p>搜索包的详细信息，比如我们搜索express试试。第一次搜索，会提示建立索引，需要耐心等待片刻，大家测试的时候不要就关掉啦终端。</p>
+
+<pre><code>npm WARN Building the local index for the first time, please be patient
+</code></pre>
+
+<p><img src="/images/post/node-npm/node-npm-search.png" alt="express包的搜索结果" /></p>
+
+<p>其实看上去复杂，只是东西有点大，不过主要包含以下6个部分：</p>
+
+<ol>
+<li>名称</li>
+<li>描述</li>
+<li>作者</li>
+<li>发布时间</li>
+<li>发布版本号</li>
+<li>关键字</li>
+</ol>
+
+
+<h4>（8）npm update <pkg name></h4>
+
+<p>更新安装的包</p>
+
+<p>更多API可以查看官网：<a href="https://npmjs.org/doc/">https://npmjs.org/doc/</a></p>
+
+<h3>四、版本号的知识。</h3>
+
+<p>在node.js中的package.json配置文件中，我们需要配置版本号，比如0.1.2</p>
+
+<p>第一位数字：主版本号</p>
+
+<p>第二位数字：子版本号</p>
+
+<p>第三位数字：补丁版本号</p>
+
+<p>找到一个不错的介绍软件项目版本号的文章</p>
+
+<p><a href="http://www.cnblogs.com/sdjxcolin/archive/2007/07/02/803376.html">软件项目版本号的命名规则及格式</a></p>
+
+<p>为什么要解释这个呢？肯定是有用，因为npm安装的时候是可以选择版本号的，有点理解会比较好吧，至少我是这么认为的。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://fegg.github.io/blog/2014/08/02/node-npm-detail-1/" data-via="" data-counturl="http://fegg.github.io/blog/2014/08/02/node-npm-detail-1/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/08/02/mongodb-install/" title="Previous Post: MongoDB Install">&laquo; MongoDB Install</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/08/02/node-npm-detail-2/" title="Next Post: Node.js npm 详解（2）">Node.js npm 详解（2） &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/17/redux-can-do/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/10/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/hi-vue/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/24/postcss-introduce/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/09/pro-js-2/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

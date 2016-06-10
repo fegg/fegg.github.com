@@ -1,0 +1,636 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="一、make 规则 Target: Dependencies &lt;TAB&gt;Commands 例子： main.o: main.c common.c common.h gcc -c main.c 二、建立 Makefile (这里不带后缀名，并且根据习惯首字母大写) 输入以下内容： &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/posts/3/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/power-by-makefile/">强大的Makefile</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一、make 规则</h3>
+
+<pre><code>Target: Dependencies
+    &lt;TAB&gt;Commands
+</code></pre>
+
+<p>例子：</p>
+
+<pre><code>main.o: main.c common.c common.h
+    gcc -c main.c
+</code></pre>
+
+<h3>二、建立 Makefile (这里不带后缀名，并且根据习惯首字母大写)</h3>
+
+<p>输入以下内容：</p>
+
+<pre><code>clean: 
+    @echo hello
+    echo hello
+</code></pre>
+
+<p>ps:
+在终端输入命令：make clean 执行（但是需要在Makefile的同级目录）
+如果是在windows环境下，你也可以使用nmake进行测试，但是我相信在windows就不用这种方式了。
+1. clean: 定义执行的make的命令。
+2. @echo: 直接输出“hello”字符串，但是不打印代码。
+3. echo: 输出“hello”字符串，并且打印代码。</p>
+
+<p>执行结果如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/power-by-makefile/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/node-npm-detail-2/">Node.js Npm 详解（2）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>安装Node和npm前半部分的配置可以参考之前我的两篇文章：</p>
+
+<ol>
+<li><a href="http://blog.51yuekan.com/2014/10/08/2014-08-02-hello-nodejs/">Hello Node</a></li>
+<li><a href="http://blog.51yuekan.com/2014/10/08/2014-08-02-node-npm-detail-1/">Node npm 详解（1）</a></li>
+</ol>
+
+
+<h3>四、本地模式和全局模式</h3>
+
+<p>如果你了解环境变量里面的，用户变量和系统变量。可以做一个类比进行理解。当然，windows上面的环境变量概念比较好理解。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/node-npm-detail-2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/node-npm-detail-1/">Node.js Npm 详解（1）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一、npm简介</h3>
+
+<p>安装npm请阅读我之前的文章<a href="http://blog.51yuekan.com/2014/10/08/2014-08-02-hello-nodejs/">Hello Node</a>中npm安装那一部分，不过只介绍了linux平台，如果是其它平台，有<a href="http://www.infoq.com/cn/articles/nodejs-npm-install-config">前辈</a>写了更加详细的介绍。</p>
+
+<p>npm的全称：Node Package Manager.</p>
+
+<h4>（1）通俗的理解</h4>
+
+<p>其实从字面意思就可以理解这个产品有什么作用翻译为“Node包管理器”。对，就是Node的包的一个管理工具，目前我尝试的有</p>
+
+<ol>
+<li>下载并安装包（npm install [pkg]）</li>
+<li>升级安装包（npm update [pkg]）</li>
+<li>卸载安装包（npm uninstall/rm [pkg]），可以指定卸载包的版本号
+&hellip;</li>
+</ol>
+
+
+<p>其实这些命令很简单，常用的必须记住，不常用的查询即可，这才是比较好的学习知识方式。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/node-npm-detail-1/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/mongodb-install/">MongoDB Install</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一、前言</h3>
+
+<p>其实之前还未接触nosql类型，我觉得这项技术应该是值得学习和研究的。如果读者有扎实的Linux基础和MySQL等知识，那么配置mongodb应该是比较容易的。下面我们按照步骤来吧。</p>
+
+<h3>二、下载需要的安装包</h3>
+
+<p>我是第一次配置mongodb，没有像redmine这个软件一样有太多依赖，直接下载即可，这里我下载的2.2.x版本（注意系统版本），比较新。</p>
+
+<p><a href="http://www.mongodb.org/downloads">Mongodb下载</a></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/mongodb-install/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/mac-svn-update/">Mac SVN Update</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一、前言</h3>
+
+<p>由于svn server版本是1.6.x的原因，Mac自带的svn client是1.6.x，当连接svn server的时候出现版本过低等问题，所以需要把svn client升级要1.7.x或者1.8.x，以下就是将svn client升级到1.8.1的过程。</p>
+
+<h3>二、下载SVN源代码包（采用源代码安装的方式）</h3>
+
+<p>下载地址：</p>
+
+<pre><code>http://subversion.apache.org/download/#recommended-release
+</code></pre>
+
+<p><em>注意</em>
+需要下载：subversion-1.8.1.tar.gz
+因为zip里面缺少一些东西，他们两个还是有差别的，具体见google。
+下载后解压到Mac的盘即可（不需要命令了，用解压软件就可以了）</p>
+
+<h3>三、构建并安装SVN</h3>
+
+<p>解压后SVN的目录，其中安装需要的文件被圈出。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/mac-svn-update/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/laiwang-vs-weixin-1/">来往 vs 微信（第一回合）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一、前言</h3>
+
+<p>喜欢体验一下新产品，但是我最开始并不想安装来往，但是同学发了一个“暗号”给我，说是安装上来往，再输入暗号，我和他都可以获取5块钱的话费。最后想，还是安装体验下吧，虽然知道微信还是比较无敌的，但是阿里的产品一直还是不错的，就谈一下使用的感受，四个字：还不成熟。虽然微信是霸主，但是来往也有自己的特色功能，还是值得关注（易信不谈）。虽然我不是专业搞产品的，但是人人都能够对产品进行评价。</p>
+
+<h3>二、从产品名字看产品定位</h3>
+
+<p>在用产品的时候，最开始就是知道的产品的名字或者产品直接的外貌。从体验上来说，微信和来往其实定位还是有一定区别。</p>
+
+<p><img src="/images/post/er-wei-ma/name.png" alt="产品图标" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/laiwang-vs-weixin-1/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/key-pages-html/">网页的钥匙：HTML/XHTML</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一、web标准的重要性以及好处</h3>
+
+<ol>
+<li>可以交付到更多的用户代理，也就是可以更好的适应多种浏览网页的容器。</li>
+<li>能够改善性能，也就是可以利用更少的代码实现相同的功能。</li>
+<li>更能够适合浏览器，对于兼容早期浏览器作出的努力更少。</li>
+<li>分离内容和表现。</li>
+<li>能够构建流动式（自适应的）页面。</li>
+<li>流水线式生产，可以让内容和表现的开发分开进行，并且能够无缝地衔接起来。</li>
+<li>使内容具有可访问性。</li>
+<li>减轻维护代码的负担。</li>
+<li>代码可以更好的适应未来。</li>
+<li>&hellip;</li>
+</ol>
+
+
+<h3>二、XHTML的理解</h3>
+
+<p>在学习XHTML前应该先学习XML的基础知识，这样XHTML理解起来更加容易。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/key-pages-html/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/jquery-selector-optimize/">JQuery选择器优化策略</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>1. 多用ID选择器</h3>
+
+<p>1) getElementById：是浏览器的内置函数，所以效率比较高；</p>
+
+<p>2) getElementsByTag：也是浏览器内置函数，效率由于唯一性，低于id选择器；</p>
+
+<p>3) getElementsByClassName：浏览器没有内置函数，我们要解析HTML文档树来外递归实现选择，所以效率很慢。</p>
+
+<p>对于选择器，<a href="http://www.w3.org/TR/2005/WD-css3-selectors-20051215/">w3c官方有全面介绍</a>，其实JQuery的选择器模块参考的CSS，这里给出浏览器对CSS 2.1和CSS 3的支持情况。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/jquery-selector-optimize/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/javascript-width-and-height/">JavaScript中的Width和Height</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一、window.innerWidth和window.innerHeight</h3>
+
+<p>概念：计算浏览器窗口的内部高度（不包括工具栏和滚动条）。
+通俗的来讲：整个浏览器中能够显示网页内容的部分。
+特殊情况
+1. 滚动条：减去滚动条部分，滚动条宽度15px;
+2. 开发者工具：比如firebug，如果开发者工具处于打开的情况，在当前情况计算的innerHeight数值是不包括开发者工具所占高度。</p>
+
+<p><img src="/images/post/safari-client.png" alt="Mou icon" /></p>
+
+<pre><code>var windowSize = {
+    width : function () {
+        return window.innerWidth 
+            || document.body.clientWidth 
+            || document.documentElement.clientWidth;
+    },
+    height : function () {
+        return window.innerHeight 
+            || document.body.clientHeight
+            || document.documentElement.clientHeight;
+    }
+};
+console.log(windowSize.width());
+console.log(windowSize.height());
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/javascript-width-and-height/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/02/javascript-module-define/">Javascript模块化开发－轻巧自制</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>一、前言</h3>
+
+<p>现在javascript的流行，前端的代码越来越复杂，所以我们需要软件工程的思想来开发前端。模块化是必不可少的，这样不仅能够提高代码的可维护性、可扩展性以及鲁棒性，更大的好处就是能够提升整个团队的开发效率，也能够让新进的程序员更快的接手工作。今天晚上根据前辈们的经验，写啦一个简单的模块定义的封装组件，当是练手吧。不过感觉还是蛮好用的。</p>
+
+<h3>二、学习模块化前我们应该先了解点什么呢？</h3>
+
+<p>其实突然就学习模块化的javascript开发，那还是比较丈二和尚，摸不着头脑的。不过如果是做过后台开发的程序员们，可能对于模块化的开发思想并不陌生，因为后台的这方面技术已经很熟悉了。那么这里我就分享一下前端javascript模块化开发的学习。</p>
+
+<h4>1. 了解模块化开发思想</h4>
+
+<p>如果有软件工程背景，那么这一思想就是你自身就应该掌握的。模块（module）就是可以组合、分解以及更换的单元，其实也满足组合大于继承等这些带来的好处吧。如果看成一个系统的话，我们可以从软件体系结构来理解，模块是较大系统中的独立部件，功能、状态与接口反映外部特性，逻辑反映的是内部特性。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/02/javascript-module-define/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/4">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/posts/2">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/17/redux-can-do/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/10/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/hi-vue/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/24/postcss-introduce/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/09/pro-js-2/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

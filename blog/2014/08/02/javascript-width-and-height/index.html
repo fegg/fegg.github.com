@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JavaScript中的Width和Height - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="一、window.innerWidth和window.innerHeight 概念：计算浏览器窗口的内部高度（不包括工具栏和滚动条）。
+通俗的来讲：整个浏览器中能够显示网页内容的部分。
+特殊情况
+1. 滚动条：减去滚动条部分，滚动条宽度15px;
+2. 开发者工具：比如firebug， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/blog/2014/08/02/javascript-width-and-height/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">JavaScript中的Width和Height</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>一、window.innerWidth和window.innerHeight</h3>
+
+<p>概念：计算浏览器窗口的内部高度（不包括工具栏和滚动条）。
+通俗的来讲：整个浏览器中能够显示网页内容的部分。
+特殊情况
+1. 滚动条：减去滚动条部分，滚动条宽度15px;
+2. 开发者工具：比如firebug，如果开发者工具处于打开的情况，在当前情况计算的innerHeight数值是不包括开发者工具所占高度。</p>
+
+<p><img src="/images/post/safari-client.png" alt="Mou icon" /></p>
+
+<pre><code>var windowSize = {
+    width : function () {
+        return window.innerWidth 
+            || document.body.clientWidth 
+            || document.documentElement.clientWidth;
+    },
+    height : function () {
+        return window.innerHeight 
+            || document.body.clientHeight
+            || document.documentElement.clientHeight;
+    }
+};
+console.log(windowSize.width());
+console.log(windowSize.height());
+</code></pre>
+
+<!--more-->
+
+
+<h3>二、availWidth和availHeight</h3>
+
+<p>概念：计算用户电脑屏幕的可用宽、高，不包括任务栏。
+特殊情况
+1. Mac OS系统中，需要去除上、下两部分；
+2. Mac OS系统中，使用QQ截图，默认选中区域 availHeight 测量出来少了6px，我猜想是由于窗口的阴影部分没有截取；
+3. Window系统中，需要去除下放的任务栏。</p>
+
+<p><img src="/images/post/screen.png" alt="Mou icon" /></p>
+
+<p>这里未发现兼容性问题</p>
+
+<pre><code>console.log(screenSize.availWidth());
+console.log(screenSize.availHeight());
+</code></pre>
+
+<h3>三、offsetWidth和offsetHeight</h3>
+
+<h3>四、scrollWidth和scrollHeight</h3>
+
+<h3>五、outerWidth和outerHeight</h3>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>12:00 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://fegg.github.io/blog/2014/08/02/javascript-width-and-height/" data-via="" data-counturl="http://fegg.github.io/blog/2014/08/02/javascript-width-and-height/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/08/02/javascript-module-define/" title="Previous Post: Javascript模块化开发－轻巧自制">&laquo; Javascript模块化开发－轻巧自制</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/08/02/jquery-selector-optimize/" title="Next Post: JQuery选择器优化策略">JQuery选择器优化策略 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/05/17/redux-can-do/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/10/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/12/16/hi-vue/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/24/postcss-introduce/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/10/09/pro-js-2/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
