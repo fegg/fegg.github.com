@@ -4,7 +4,7 @@
   <title><![CDATA[小撸]]></title>
   <link href="http://fegg.github.io/atom.xml" rel="self"/>
   <link href="http://fegg.github.io/"/>
-  <updated>2016-06-11T00:08:26+08:00</updated>
+  <updated>2016-06-11T00:10:47+08:00</updated>
   <id>http://fegg.github.io/</id>
   <author>
     <name><![CDATA[小撸]]></name>
@@ -15,7 +15,7 @@
   
   <entry>
     <title type="html"><![CDATA[Redux 能做什么？]]></title>
-    <link href="http://fegg.github.io/blog/20160517/redux-can-do.html/"/>
+    <link href="http://fegg.github.io/blog/20160517/redux-can-do/"/>
     <updated>2016-05-17T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20160517/redux-can-do</id>
     <content type="html"><![CDATA[<h3>一、我先给一个 Redux 的定义</h3>
@@ -217,7 +217,7 @@ function dispatch(action) {
   
   <entry>
     <title type="html"><![CDATA[一个好玩的 CSS 技术 CheckBox]]></title>
-    <link href="http://fegg.github.io/blog/20160110/checkbox-anim.html/"/>
+    <link href="http://fegg.github.io/blog/20160110/checkbox-anim/"/>
     <updated>2016-01-10T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20160110/checkbox-anim</id>
     <content type="html"><![CDATA[<h3>废话</h3>
@@ -398,7 +398,7 @@ function dispatch(action) {
   
   <entry>
     <title type="html"><![CDATA[乱玩 Vue Todo]]></title>
-    <link href="http://fegg.github.io/blog/20151216/hi-vue.html/"/>
+    <link href="http://fegg.github.io/blog/20151216/hi-vue/"/>
     <updated>2015-12-16T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20151216/hi-vue</id>
     <content type="html"><![CDATA[<h3>前言</h3>
@@ -527,7 +527,7 @@ allDone -&gt; {
   
   <entry>
     <title type="html"><![CDATA[PostCSS是个什么鬼东西？]]></title>
-    <link href="http://fegg.github.io/blog/20151024/postcss-introduce.html/"/>
+    <link href="http://fegg.github.io/blog/20151024/postcss-introduce/"/>
     <updated>2015-10-24T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20151024/postcss-introduce</id>
     <content type="html"><![CDATA[<h3>前言</h3>
@@ -986,7 +986,7 @@ Result {
   
   <entry>
     <title type="html"><![CDATA[JavaScript的特性、函数、对象]]></title>
-    <link href="http://fegg.github.io/blog/20151009/pro-js-2.html/"/>
+    <link href="http://fegg.github.io/blog/20151009/pro-js-2/"/>
     <updated>2015-10-09T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20151009/pro-js-2</id>
     <content type="html"><![CDATA[<p>提供者：js-渣渣</p>
@@ -1466,7 +1466,7 @@ makeTypeError();
   
   <entry>
     <title type="html"><![CDATA[影响一生的职业建议]]></title>
-    <link href="http://fegg.github.io/blog/20151009/only-one.html/"/>
+    <link href="http://fegg.github.io/blog/20151009/only-one/"/>
     <updated>2015-10-09T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20151009/only-one</id>
     <content type="html"><![CDATA[<p><img src="http://fegg.github.io/images/fish.jpg" title="鱼" alt="" /></p>
@@ -1572,7 +1572,7 @@ makeTypeError();
   
   <entry>
     <title type="html"><![CDATA[React 组件开发入门]]></title>
-    <link href="http://fegg.github.io/blog/20150726/induction-react-component-dev.html/"/>
+    <link href="http://fegg.github.io/blog/20150726/induction-react-component-dev/"/>
     <updated>2015-07-26T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20150726/induction-react-component-dev</id>
     <content type="html"><![CDATA[<h3>前言</h3>
@@ -1802,7 +1802,7 @@ makeTypeError();
   
   <entry>
     <title type="html"><![CDATA[React 组件之间如何交流]]></title>
-    <link href="http://fegg.github.io/blog/20150719/react-component-communicate.html/"/>
+    <link href="http://fegg.github.io/blog/20150719/react-component-communicate/"/>
     <updated>2015-07-19T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20150719/react-component-communicate</id>
     <content type="html"><![CDATA[<h3>前言</h3>
@@ -2245,7 +2245,7 @@ while(!cur.done) {
   
   <entry>
     <title type="html"><![CDATA[Hello Angular2]]></title>
-    <link href="http://fegg.github.io/blog/20150709/Hello-Angular2.html/"/>
+    <link href="http://fegg.github.io/blog/20150709/Hello-Angular2/"/>
     <updated>2015-07-09T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20150709/Hello-Angular2</id>
     <content type="html"><![CDATA[<h3>前言</h3>
@@ -2387,7 +2387,7 @@ bootstrap(MyAppComponent);
   
   <entry>
     <title type="html"><![CDATA[从触摸开始（一）]]></title>
-    <link href="http://fegg.github.io/blog/20150524/%E4%BB%8E%E8%A7%A6%E6%91%B8%E5%BC%80%E5%A7%8B.html/"/>
+    <link href="http://fegg.github.io/blog/20150524/%E4%BB%8E%E8%A7%A6%E6%91%B8%E5%BC%80%E5%A7%8B/"/>
     <updated>2015-05-24T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20150524/从触摸开始</id>
     <content type="html"><![CDATA[<h3>1. 前言</h3>
@@ -2646,7 +2646,7 @@ bootstrap(MyAppComponent);
   
   <entry>
     <title type="html"><![CDATA[（译）ECMAScript 6（一）]]></title>
-    <link href="http://fegg.github.io/blog/20150318/ECMAScript%206%EF%BC%88%E4%B8%80%EF%BC%89.html/"/>
+    <link href="http://fegg.github.io/blog/20150318/ECMAScript%206%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <updated>2015-03-18T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20150318/ECMAScript 6（一）</id>
     <content type="html"><![CDATA[<h2>前言</h2>
@@ -2810,7 +2810,7 @@ es[6](); // 即将出版的 ECMAScript 是 ES10
   
   <entry>
     <title type="html"><![CDATA[全新博客初稿]]></title>
-    <link href="http://fegg.github.io/blog/20150125/%E5%85%A8%E6%96%B0%E5%8D%9A%E5%AE%A2%E5%88%9D%E7%A8%BF.html/"/>
+    <link href="http://fegg.github.io/blog/20150125/%E5%85%A8%E6%96%B0%E5%8D%9A%E5%AE%A2%E5%88%9D%E7%A8%BF/"/>
     <updated>2015-01-25T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20150125/全新博客初稿</id>
     <content type="html"><![CDATA[<p>现在的博客主题总是有不满意的地方，所以决定自己设计一版，依然采用F法则。</p>
@@ -2854,7 +2854,7 @@ es[6](); // 即将出版的 ECMAScript 是 ES10
   
   <entry>
     <title type="html"><![CDATA[GitHub Pages搭建之hexo（待更新版本）]]></title>
-    <link href="http://fegg.github.io/blog/20150114/GitHub%20Pages%E6%90%AD%E5%BB%BA%E4%B9%8Bhexo.html/"/>
+    <link href="http://fegg.github.io/blog/20150114/GitHub%20Pages%E6%90%AD%E5%BB%BA%E4%B9%8Bhexo/"/>
     <updated>2015-01-14T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20150114/GitHub Pages搭建之hexo</id>
     <content type="html"><![CDATA[<h3>0  引言</h3>
@@ -3044,7 +3044,7 @@ npm update hexo -g
   
   <entry>
     <title type="html"><![CDATA[像积木一样搭建网页]]></title>
-    <link href="http://fegg.github.io/blog/20141202/%E5%83%8F%E7%A7%AF%E6%9C%A8%E4%B8%80%E6%A0%B7%E6%90%AD%E5%BB%BA%E7%BD%91%E9%A1%B5.html/"/>
+    <link href="http://fegg.github.io/blog/20141202/%E5%83%8F%E7%A7%AF%E6%9C%A8%E4%B8%80%E6%A0%B7%E6%90%AD%E5%BB%BA%E7%BD%91%E9%A1%B5/"/>
     <updated>2014-12-02T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20141202/像积木一样搭建网页</id>
     <content type="html"><![CDATA[<h3>前言</h3>
@@ -3315,7 +3315,7 @@ class psTreatmentN implements productStackWrap {
   
   <entry>
     <title type="html"><![CDATA[一步步学习ThinkJS（一）]]></title>
-    <link href="http://fegg.github.io/blog/20141127/%E4%B8%80%E6%AD%A5%E6%AD%A5%E5%AD%A6%E4%B9%A0ThinkJS%EF%BC%88%E4%B8%80%EF%BC%89.html/"/>
+    <link href="http://fegg.github.io/blog/20141127/%E4%B8%80%E6%AD%A5%E6%AD%A5%E5%AD%A6%E4%B9%A0ThinkJS%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <updated>2014-11-27T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20141127/一步步学习ThinkJS（一）</id>
     <content type="html"><![CDATA[<h3>八卦</h3>
@@ -3603,7 +3603,7 @@ thinkjs .
   
   <entry>
     <title type="html"><![CDATA[Mac OS X 10.9配置AMP环境]]></title>
-    <link href="http://fegg.github.io/blog/20141126/Mac%20OS%20X%2010.9%E9%85%8D%E7%BD%AEAMP%E7%8E%AF%E5%A2%83.html/"/>
+    <link href="http://fegg.github.io/blog/20141126/Mac%20OS%20X%2010.9%E9%85%8D%E7%BD%AEAMP%E7%8E%AF%E5%A2%83/"/>
     <updated>2014-11-26T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20141126/Mac OS X 10.9配置AMP环境</id>
     <content type="html"><![CDATA[<h3>2015年5月9日更新</h3>
@@ -3918,7 +3918,7 @@ mysql &gt; show databases; //看一下所有数据是否齐全
   
   <entry>
     <title type="html"><![CDATA[Yanxihu]]></title>
-    <link href="http://fegg.github.io/blog/20140919/yanxihu.html/"/>
+    <link href="http://fegg.github.io/blog/20140919/yanxihu/"/>
     <updated>2014-09-19T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20140919/yanxihu</id>
     <content type="html"><![CDATA[<hr />
@@ -4007,7 +4007,7 @@ title: 骑行－雁栖湖游记</p>
   
   <entry>
     <title type="html"><![CDATA[Web前端十日谈]]></title>
-    <link href="http://fegg.github.io/blog/20140802/web-ten-days.html/"/>
+    <link href="http://fegg.github.io/blog/20140802/web-ten-days/"/>
     <updated>2014-08-02T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20140802/web-ten-days</id>
     <content type="html"><![CDATA[<h3>前言</h3>
@@ -4364,7 +4364,7 @@ title: 骑行－雁栖湖游记</p>
   
   <entry>
     <title type="html"><![CDATA[网页艺术：CSS选择器]]></title>
-    <link href="http://fegg.github.io/blog/20140802/web-art-css-selectors.html/"/>
+    <link href="http://fegg.github.io/blog/20140802/web-art-css-selectors/"/>
     <updated>2014-08-02T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20140802/web-art-css-selectors</id>
     <content type="html"><![CDATA[<h3>一、前言</h3>
@@ -4656,7 +4656,7 @@ p:after { content: " years old."; }
   
   <entry>
     <title type="html"><![CDATA[腾讯QQ的黑名单功能]]></title>
-    <link href="http://fegg.github.io/blog/20140802/qq-enter-black-list.html/"/>
+    <link href="http://fegg.github.io/blog/20140802/qq-enter-black-list/"/>
     <updated>2014-08-02T00:00:00+08:00</updated>
     <id>http://fegg.github.io/blog/20140802/qq-enter-black-list</id>
     <content type="html"><![CDATA[<h3>一、拉入黑名单实质</h3>

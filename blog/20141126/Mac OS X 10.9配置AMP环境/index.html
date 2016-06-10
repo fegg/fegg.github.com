@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Mac OS X 10.9配置AMP环境 - 小撸</title>
+  <meta name="author" content="小撸">
+
+  
+  <meta name="description" content="2015年5月9日更新 更新内容：针对Mac OS X 10.10.3不能访问用户目录 http://localhost/~lulin 检查Apache版本是否升级 Server version: Apache/2.4.10 (Unix)
+Server built: Jan 8 2015 20: &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/blog/20141126/Mac%20OS%20X%2010.9%E9%85%8D%E7%BD%AEAMP%E7%8E%AF%E5%A2%83/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="小撸" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">小撸</a></h1>
+  
+    <h2>Follow Your Heart.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Mac OS X 10.9配置AMP环境</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-11-26T00:00:00+08:00'><span class='date'>2014 年11 月26 日</span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>2015年5月9日更新</h3>
+
+<p>更新内容：针对Mac OS X 10.10.3不能访问用户目录</p>
+
+<pre><code>http://localhost/~lulin
+</code></pre>
+
+<p>检查Apache版本是否升级</p>
+
+<pre><code>Server version: Apache/2.4.10 (Unix)
+Server built:   Jan  8 2015 20:48:33
+</code></pre>
+
+<p>修改的地方有以下 3 点：</p>
+
+<p><strong>（1）/etc/apache2/httpd.conf</strong></p>
+
+<p>打开如下配置（去除#注释）</p>
+
+<pre><code>LoadModule authz_core_module libexec/apache2/mod_authz_core.so
+LoadModule authz_host_module libexec/apache2/mod_authz_host.so
+# 这两项是重点检查对象
+LoadModule userdir_module libexec/apache2/mod_userdir.so
+Include /private/etc/apache2/extra/httpd-userdir.conf
+</code></pre>
+
+<p>修改完后访问会出现，所以还需要修改（2）中的文件</p>
+
+<p>Forbidden
+You don&rsquo;t have permission to access /~lulin/ on this server.</p>
+
+<p><strong>（2）/etc/apache2/extra/httpd-userdir.conf</strong></p>
+
+<p>打开如下配置（去除#注释）</p>
+
+<pre><code>Include /private/etc/apache2/users/*.conf
+</code></pre>
+
+<p><strong>（3）修改之前 10.9 中 /etc/apache2/users/<youusername>.conf</strong></p>
+
+<pre><code>&lt;Directory "/Users/lulin/Sites/"&gt;
+    Options Indexes MultiViews
+    AllowOverride None
+    Require all granted
+&lt;/Directory&gt;
+</code></pre>
+
+<h3>前言</h3>
+
+<p>因为每次重新安装系统都需要配置一下Apache、MySQL、PHP的环境，网上的文章又不完整或者不完全符合自己的情况，所以写下一篇文章来记录一下，保证99%配置成功，还剩1%由于各种奇葩环境原因。。。主要从 6 个方面进行记录：</p>
+
+<ol>
+<li>启动Apache</li>
+<li>建立个人的网站目录</li>
+<li>启动php的解析功能</li>
+<li>安装、启动mysql</li>
+<li>修改mysql root密码</li>
+<li>使用客户端连接mysql</li>
+</ol>
+
+
+<h3>一、启动Apache</h3>
+
+<p>查看Apache的版本信息：</p>
+
+<pre><code>$ httpd -v
+
+Server version: Apache/2.2.26 (Unix)
+Server built:   Dec 10 2013 22:09:38
+</code></pre>
+
+<p>启动Apache</p>
+
+<pre><code>$ sudo apachectl start
+</code></pre>
+
+<p>如果终端中显示：</p>
+
+<pre><code>org.apache.httpd: Already loaded
+</code></pre>
+
+<p>就表示已经启动过了，可以使用重启命令：</p>
+
+<pre><code>$ sudo apachectl restart
+</code></pre>
+
+<p>这样我们的准备工作就做完了，第一步不要太复杂，不然配置会混乱，不太好还原之前的状态。接下来访问：</p>
+
+<p><a href="http://localhost">http://localhost</a></p>
+
+<p>如果出现如下图情况，就表示一切顺利，我们再接下去配置，如果没有成功，其实就不推荐再折腾啦，重装系统是最快的解决方案。。。</p>
+
+<!-- more -->
+
+
+<p><img src="http://p4.qhimg.com/t019a3b13c20aab70a4.png" alt="It works!" /></p>
+
+<blockquote><p>接下来我们来看看为什么吧。</p></blockquote>
+
+<ul>
+<li>Apache默认的网站目录：/Library/WebServer/Documents</li>
+<li>默认访问的文件：/Library/WebServer/Documents/index.html.en</li>
+</ul>
+
+
+<p>好吧，这样就很好理解了，我们不需要看Apache的配置文件，这样只会让配置变得复杂。</p>
+
+<p>当然，配置好啦之后，我们就应该了解为什么是这个目录，现在可以使用快捷键(shift+command+G)打开对应目录(有界面还是尽量使用可视化操作，会让你更加专注的学习正在配置的东西)：</p>
+
+<blockquote><p>/etc/apache2</p></blockquote>
+
+<p>你会发现有一个：httpd.conf 文件，这个文件里面就配置了默认的网站目录，你可以使用sublime text等编辑器(使用编辑器可以更好的处理权限等问题)查找“/Library/WebServer/Documents”，一看就明白了。</p>
+
+<p>OK，现在上面的入门配置好啦，接下来就需要在/Users/<yourname>下配置自己的网站目录，你可能要问为什么，首先，使用默认的目录不是程序员的范，其次就是那个目录的权限太高，每次修改内容都需要使用sudo权限，不太方便。</p>
+
+<h3>二、建立个人的网站目录</h3>
+
+<p>首先，需要在你的个人目录下面创建一个Sites目录（为什么叫这个名字呢？可以google一下，是有故事的，这里就不多描述了，单纯的先把成果搞出来），网上教使用：</p>
+
+<pre><code>$ mkdir Sites
+</code></pre>
+
+<p>这种方式来创建目录，这里必须要说一下，既然你用的Mac OS X可视化系统，需要这么复杂吗？右键，新建文件夹，就OK。</p>
+
+<p>接下来我们就需要修改一些配置了：</p>
+
+<ul>
+<li><p>搞一个自己的配置文件，放入：/etc/apache2/users，比如我的配置</p>
+
+<pre><code>  /etc/apache2/users/lulin.conf
+</code></pre></li>
+<li><p>提升你对该配置文件的权限，这个用终端瞬间秒杀</p>
+
+<pre><code>  $ sudo chmod 755 /etc/apache2/users/lulin.conf
+  //验证一下修改正确没有，首先验证lulin.conf文件，其次验证/etc/apache2/users这个目录的权限，不然遇到蛋疼的时候没头绪
+  $ cd /etc/apache2/users &amp;&amp; ls -la
+  $ cd .. &amp;&amp; ls -la
+</code></pre></li>
+</ul>
+
+
+<p>显示如下图情况就表示没问题了：</p>
+
+<p><img src="http://p3.qhimg.com/t0146e8cad6473dccfd.png" alt="验证权限" /></p>
+
+<p>最后需要配置一下"/etc/apache2/users/lulin.conf"这个conf文件，使用sublime text打开加入内容如下：</p>
+
+<pre><code>&lt;Directory "/Users/lulin/Sites/"&gt;
+    Options Indexes MultiViews
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+&lt;/Directory&gt;
+</code></pre>
+
+<p>改了配置嘛，不管怎么，要我们的环境保证是修改后的结果，就重启一下Apache吧。</p>
+
+<pre><code>$ sudo apachectl restart
+</code></pre>
+
+<p>输入访问地址：</p>
+
+<pre><code>http://localhost/~lulin/
+</code></pre>
+
+<blockquote><p>如果出现权限问题，那么可以查看一下“/etc/apache2/users/lulin.conf”这里的文件权限是否正确。</p></blockquote>
+
+<p><img src="http://p8.qhimg.com/t01bd67e9b3dc1099bc.png" alt="个人网站目录" /></p>
+
+<p>这样个人的自定义目录也搞定了，接下我们如果想访问php文件的话就还需要一点简单配置，不然的话php文件会被当做普通文本来解析，离成功不远啦。</p>
+
+<h3>三、启动php的解析功能</h3>
+
+<p>使用快捷键直接定位到配置文件：</p>
+
+<pre><code>/etc/apache2/httpd.conf
+</code></pre>
+
+<p>打开后只需要去除一句话的注释即可搞定，使用编辑器来搜索吧，so easy!（去除前面的#号即可，这就是conf的特性而已）</p>
+
+<pre><code>LoadModule php5_module libexec/apache2/libphp5.so
+</code></pre>
+
+<p>接下来老规矩，保证不踩坑，重启一下Apache。</p>
+
+<pre><code>$ sudo apachectl restart
+</code></pre>
+
+<p>写一个简单的php文件测试一下配置结果，这次我们把php文件建在我们个人的网站目录"/Users/lulin/Sites"吧。</p>
+
+<ul>
+<li>新建一个 index.php 页面，Apache会默认解析index.php</li>
+<li><p>敲入简单代码，别偷懒，敲完整哦，不然万一你的某个配置没开就踩坑里了：</p>
+
+<pre><code>  &lt;?php
+      echo phpinfo();
+  ?&gt;
+</code></pre></li>
+</ul>
+
+
+<p><img src="http://p9.qhimg.com/t0120bef7ecbe5b7f46.png" alt="PHP经典页面" /></p>
+
+<p>显示下面经典测试php的页面，即OK。</p>
+
+<h3>四、安装、启动mysql</h3>
+
+<p>安装去官网下载一份就行，我这里下载的版本是：mysql-5.6.21-osx10.9-x86_64.dmg</p>
+
+<blockquote><p>建立下载dmg文件，安装方便，会默认建立软连接等东西。</p></blockquote>
+
+<p>安装完后，我们先找到安装的mysql，这样方便以后配置，简单的查看目录就在：</p>
+
+<pre><code>//软连接
+/usr/local/mysql
+//真实目录
+/usr/local/mysql-5.6.21-osx10.8-x86_64
+</code></pre>
+
+<p>安装的详情可以查看官方说明，我找了很多资料发现还是官方比较直观。</p>
+
+<p><a href="http://dev.mysql.com/doc/refman/5.6/en/macosx-installation-pkg.html">MySQL安装官网</a></p>
+
+<p>不过官网更新不是特别快，其中的安装默认启动项已经在我安装的版本不需要自己搞了，已经有了，可以查看【系统偏好设置查看】，安装MySQL后默认是关闭的，我们也进去启动一下。</p>
+
+<p><img src="http://p0.qhimg.com/t014982da363f4740a8.png" alt="入口" /></p>
+
+<p><img src="http://p3.qhimg.com/t01a64f1284d81b06e7.jpg" alt="MySQL启动配置" /></p>
+
+<p>现在依然在终端输入：mysql 命令还不能识别到命令，我们需要配置环境变量，这个在终端下面好弄一点，我们就采用命令的方式修改：</p>
+
+<pre><code>$ sudo vim ~/.bash_profile
+</code></pre>
+
+<p>在.bash_profile文件中加入MySQL的可执行目录：</p>
+
+<pre><code>export PATH="/usr/local/mysql/bin:$PATH"
+</code></pre>
+
+<p>最后刷新一下配置：</p>
+
+<pre><code>$ source ~/.bash_profile
+</code></pre>
+
+<p>接下来我们就可以在终端之间输入：mysql 命令就能够以非root用户登录了。</p>
+
+<p>现在MySQL环境搭建完成，要正常使用我们需要配置root用户，默认root用户的密码是空值，实际使用肯定需要修改一下。</p>
+
+<h3>五、修改mysql root密码</h3>
+
+<p>网上介绍了很多方法，我觉得最直接，最快速的方法是使用空密码，以root用户的身份登录进入MySQL控制台，然后再去更新密码即可。</p>
+
+<pre><code>$ mysql -u root -p
+$ 直接回车登录
+//下面模拟MySQL控制台
+//因为是在MySQL下，所以SQL关键字采用小写更方便，如果你是Oracle的话还是推荐都是用大写
+mysql &gt; show databases; //看一下所有数据是否齐全
+      &gt; use mysql; //切换到mysql库
+      &gt; update user set password=password('lulin') where user='root';
+      &gt; flush privileges; //一定要记住刷新权限，不然修改密码不生效
+      &gt; exit; //退出，使用修改后的密码重新登录，确定是否修改成功
+</code></pre>
+
+<p>现在MySQL的配置基本上结束了，更多的配置可以配置my.cnf，在windows下是my.ini，都是其他文件重命名的，这个可以google查阅到详细配置。</p>
+
+<h3>六、使用客户端连接mysql</h3>
+
+<p>上面的配置结束啦，我们不可能每次都在MySQL控制台搞吧，效率太low，这里我介绍几个客户端：</p>
+
+<ul>
+<li>Mac OS X平台</li>
+</ul>
+
+
+<p><strong>Querious</strong></p>
+
+<p>这个使用过一段时间，需要收费，不太好破解官方出的最新版本，不过还挺好用，这里我就不用了，找个免费的用用。</p>
+
+<p><strong>Sequel Pro</strong></p>
+
+<p>下载地址：<a href="http://www.sequelpro.com/download">http://www.sequelpro.com/download</a></p>
+
+<p>可能被墙访问有点慢，我就将最新版放入了360云盘，大家可以去下。</p>
+
+<p>云盘地址：<a href="http://yunpan.cn/cA5FY26fdqTsm">http://yunpan.cn/cA5FY26fdqTsm</a> （提取码：b343）</p>
+
+<p>使用就so easy啦，Sequel Pro 配置如下图：</p>
+
+<p><img src="http://p2.qhimg.com/t0172923d750ff38455.png" alt="Sequel Pro 连接MySQL" /></p>
+
+<p>记得把常用连接加入收藏就行，不然每次都要输来输去，Host建立使用127.0.0.1，原因可以google，不过Querious之前我用的时候输入localhost会默认转换成127.0.0.1，还比较人性化。</p>
+
+<ul>
+<li>Windows平台</li>
+</ul>
+
+
+<p>只推荐一款利器，用过很多，没有之一，就它最好用：</p>
+
+<p><strong>navicat for mysql</strong></p>
+
+<p>这个客户端是收费的，不过如果你使用的时8.0版本，在baidu搜索：</p>
+
+<pre><code>navicat for mysql 注册码
+</code></pre>
+
+<p>关键字，第一个搜索结果里面就有注册码。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">小撸</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-11-26T00:00:00+08:00'><span class='date'>2014 年11 月26 日</span> <span class='time'>12:00 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://fegg.github.io/blog/20141126/Mac%20OS%20X%2010.9%E9%85%8D%E7%BD%AEAMP%E7%8E%AF%E5%A2%83/" data-via="lulin666000" data-counturl="http://fegg.github.io/blog/20141126/Mac%20OS%20X%2010.9%E9%85%8D%E7%BD%AEAMP%E7%8E%AF%E5%A2%83/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/20140919/yanxihu/" title="Previous Post: Yanxihu">&laquo; Yanxihu</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/20141127/%E4%B8%80%E6%AD%A5%E6%AD%A5%E5%AD%A6%E4%B9%A0ThinkJS%EF%BC%88%E4%B8%80%EF%BC%89/" title="Next Post: 一步步学习ThinkJS（一）">一步步学习ThinkJS（一） &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/20160517/redux-can-do/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20160110/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/fegg">@fegg</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'fegg',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 小撸 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

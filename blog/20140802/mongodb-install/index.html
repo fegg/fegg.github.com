@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MongoDB Install - 小撸</title>
+  <meta name="author" content="小撸">
+
+  
+  <meta name="description" content="一、前言 其实之前还未接触nosql类型，我觉得这项技术应该是值得学习和研究的。如果读者有扎实的Linux基础和MySQL等知识，那么配置mongodb应该是比较容易的。下面我们按照步骤来吧。 二、下载需要的安装包 我是第一次配置mongodb，没有像redmine这个软件一样有太多依赖， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/blog/20140802/mongodb-install/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="小撸" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">小撸</a></h1>
+  
+    <h2>Follow Your Heart.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">MongoDB Install</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>一、前言</h3>
+
+<p>其实之前还未接触nosql类型，我觉得这项技术应该是值得学习和研究的。如果读者有扎实的Linux基础和MySQL等知识，那么配置mongodb应该是比较容易的。下面我们按照步骤来吧。</p>
+
+<h3>二、下载需要的安装包</h3>
+
+<p>我是第一次配置mongodb，没有像redmine这个软件一样有太多依赖，直接下载即可，这里我下载的2.2.x版本（注意系统版本），比较新。</p>
+
+<p><a href="http://www.mongodb.org/downloads">Mongodb下载</a></p>
+
+<!-- more -->
+
+
+<h3>三、建立良好的目录（所有软件配置的重点）</h3>
+
+<ol>
+<li>不应该有空格（好的情况是被转义，坏的情况会出现错误，不好发现）</li>
+<li>目录结构不要太深（有时候需要命令操作，麻烦，也许还有其它坏处吧，这是经验之谈）</li>
+<li>见名知意（这个和code命名一样，不解释啦吧）</li>
+</ol>
+
+
+<p>下载完安装包后，直接解压，将根目录改为："mongodb"，以下是目录截图。</p>
+
+<p><img src="/images/post/mongodb-install-1.png" alt="Mou icon" /></p>
+
+<p>但是在mac或者linux上面安装不需要那么麻烦，只要你有包集成软件，很方便，这也是为什么我喜欢mac或者linux的原因。</p>
+
+<pre><code>brew update
+brew install mongodb
+</code></pre>
+
+<p>不过brew需要读者自己安装哦。</p>
+
+<h3>四、建立数据存储、操作日志常用文件夹</h3>
+
+<p>如上图中，我建立了：</p>
+
+<pre><code>data/db
+log/mongodb.log
+</code></pre>
+
+<p>如果你调用的是有读写权限的目录，那么你需要手动开启权限哦，chown命令即可。</p>
+
+<p>建立好之后，我们启动mongodb会在data/db目录下产生一些文件，最开始我们不需要关心，mongodb.log是记录日志的文件（在mac终端可以利用touch命令创建文件，其实这点确实没有windows方便），对于维护很重要。其实这些和mysql能够找到相似的地方，不信大家可以翻开mysql安装目录结构看一看哦。</p>
+
+<h3>五、建立配置文件</h3>
+
+<p>mongodb默认没有提供conf配置文件，如果你要问我为什么知道。。。其实我也是猜的，数据库配置文件，mysql&ndash;>.ini，svn版本管理软件&ndash;>.conf，你只需要尝试一下，看能够识别不就能够知道，但是最后确认还是去官方文档确认的，这里只是说一说当没有文档的时候，我们可以用这种方式来做配置。</p>
+
+<p>配置文件名称：</p>
+
+<pre><code>mongodb.conf
+</code></pre>
+
+<p>其中写入：</p>
+
+<pre><code>dbpath=../data/db
+logpath=../log/mongodb.log
+logappend=true
+</code></pre>
+
+<p>上面参数的意思，其实从字面上就能够理解了。</p>
+
+<ol>
+<li>datapath： data文件的存放路径（根据自己的实际情况）</li>
+<li>logpath：同理，log文件的路径（根据自己的实际情况）</li>
+<li>logappend：log是追加，还是覆盖的方式，我们这里最好用追加吧，好观察。</li>
+</ol>
+
+
+<h3>六、启动mongodb</h3>
+
+<p>启动很简单，但是很容易忘记一件事情，就是非install方式，会忘记配置环境变量，环境变量的配置我在之前文章<a href="http://60sky.com/blog/2014/01/11/mac-svn-update/">Mac环境下SVN升级详解</a>中有介绍。这里我们还是进入mongodb的bin目录进行操作，保证不错才是王道。</p>
+
+<p>终端启动命令如下：</p>
+
+<pre><code>./mongod -f ../mongodb.conf 
+</code></pre>
+
+<p> 这里你必须指定-f参数，紧跟conf文件路径（根据你的存放位置，我的位置如上图），不然就会按照默认方式，出现不能发现文件的问题，因为我没有建，嘿嘿。</p>
+
+<h3>七、配置验证（搞配置的必要环节）</h3>
+
+<p>如果终端输出以下内容即安装成功：</p>
+
+<pre><code>$ ./mongod -f ../mongodb.conf 
+all output going to: ../log/mongodb.log
+</code></pre>
+
+<p>如果你没有指定log文件，log的信息会打印到终端，这里我们指定了，看起来也清晰，就在log文件中，读者可以打开看看。</p>
+
+<p>我们再进入mongodb输入点命令试试，很简单，输入1＋1就行，它会给你执行结果 2，好玩。（不过不要关掉你启动的窗口哦，当然也有后台模式，读者可以google一下，只是一条命令）</p>
+
+<p>进入mongodb的命令：</p>
+
+<pre><code>$ ./mongo
+</code></pre>
+
+<p>执行后输出的内容（1+1是我自己输入的）：</p>
+
+<pre><code>MongoDB shell version: 2.2.2
+connecting to: test
+&gt; 1+1
+2
+&gt; 
+</code></pre>
+
+<p>得到以上结果，恭喜你，已经安装完毕了，尽情的玩吧。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">小撸</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://fegg.github.io/blog/20140802/mongodb-install/" data-via="lulin666000" data-counturl="http://fegg.github.io/blog/20140802/mongodb-install/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/20140802/mac-svn-update/" title="Previous Post: Mac SVN Update">&laquo; Mac SVN Update</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/20140802/node-npm-detail-1/" title="Next Post: Node.js npm 详解（1）">Node.js npm 详解（1） &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/20160517/redux-can-do/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20160110/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/fegg">@fegg</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'fegg',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 小撸 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
