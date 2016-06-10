@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[小撸]]></title>
   <link href="http://fegg.github.io/atom.xml" rel="self"/>
   <link href="http://fegg.github.io/"/>
-  <updated>2016-06-10T23:40:25+08:00</updated>
+  <updated>2016-06-11T00:08:26+08:00</updated>
   <id>http://fegg.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[小撸]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Redux 能做什么？]]></title>
-    <link href="http://fegg.github.io/blog/2016/05/17/redux-can-do/"/>
+    <link href="http://fegg.github.io/blog/20160517/redux-can-do.html/"/>
     <updated>2016-05-17T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2016/05/17/redux-can-do</id>
+    <id>http://fegg.github.io/blog/20160517/redux-can-do</id>
     <content type="html"><![CDATA[<h3>一、我先给一个 Redux 的定义</h3>
 
 <p><code>Redux</code> 被大家知道应该都是来自于 <code>React</code> 的出现，但是这篇文章会通过介绍一个 <code>React</code> 之外的例子，来让大家理解 <code>Redux</code> 是什么东西，到底还能够做点撒。</p>
@@ -217,9 +217,9 @@ function dispatch(action) {
   
   <entry>
     <title type="html"><![CDATA[一个好玩的 CSS 技术 CheckBox]]></title>
-    <link href="http://fegg.github.io/blog/2016/01/10/checkbox-anim/"/>
+    <link href="http://fegg.github.io/blog/20160110/checkbox-anim.html/"/>
     <updated>2016-01-10T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2016/01/10/checkbox-anim</id>
+    <id>http://fegg.github.io/blog/20160110/checkbox-anim</id>
     <content type="html"><![CDATA[<h3>废话</h3>
 
 <p>＝＝晚上失眠了，在网页上看到一个好玩的效果，自己模拟了一下，最开始用SVG写的。。。不多说了，简单记录一下思路和写法。</p>
@@ -398,9 +398,9 @@ function dispatch(action) {
   
   <entry>
     <title type="html"><![CDATA[乱玩 Vue Todo]]></title>
-    <link href="http://fegg.github.io/blog/2015/12/16/hi-vue/"/>
+    <link href="http://fegg.github.io/blog/20151216/hi-vue.html/"/>
     <updated>2015-12-16T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2015/12/16/hi-vue</id>
+    <id>http://fegg.github.io/blog/20151216/hi-vue</id>
     <content type="html"><![CDATA[<h3>前言</h3>
 
 <p>最近感觉人比较疲倦，但是又想坚持写博客的习惯，就随便写点吧，就说一下我是怎么学习一个框架的，比如 Vue 这种框架其实学起来很快，1，2个小时就能入门做。主要总结起来有几点：</p>
@@ -527,9 +527,9 @@ allDone -&gt; {
   
   <entry>
     <title type="html"><![CDATA[PostCSS是个什么鬼东西？]]></title>
-    <link href="http://fegg.github.io/blog/2015/10/24/postcss-introduce/"/>
+    <link href="http://fegg.github.io/blog/20151024/postcss-introduce.html/"/>
     <updated>2015-10-24T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2015/10/24/postcss-introduce</id>
+    <id>http://fegg.github.io/blog/20151024/postcss-introduce</id>
     <content type="html"><![CDATA[<h3>前言</h3>
 
 <p>最近大漠前辈在群里发关于<code>PostCSS</code>的系列文章，但是耗子姐姐又说看了有点云里雾里的感觉，所以这篇文章将按一个思考的角度来理解一下 PostCSS 到底是一个什么东西。</p>
@@ -986,9 +986,9 @@ Result {
   
   <entry>
     <title type="html"><![CDATA[JavaScript的特性、函数、对象]]></title>
-    <link href="http://fegg.github.io/blog/2015/10/09/pro-js-2/"/>
+    <link href="http://fegg.github.io/blog/20151009/pro-js-2.html/"/>
     <updated>2015-10-09T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2015/10/09/pro-js-2</id>
+    <id>http://fegg.github.io/blog/20151009/pro-js-2</id>
     <content type="html"><![CDATA[<p>提供者：js-渣渣</p>
 
 <p>原文：[<a href="http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0">http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0</a>][1]</p>
@@ -1466,9 +1466,9 @@ makeTypeError();
   
   <entry>
     <title type="html"><![CDATA[影响一生的职业建议]]></title>
-    <link href="http://fegg.github.io/blog/2015/10/09/only-one/"/>
+    <link href="http://fegg.github.io/blog/20151009/only-one.html/"/>
     <updated>2015-10-09T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2015/10/09/only-one</id>
+    <id>http://fegg.github.io/blog/20151009/only-one</id>
     <content type="html"><![CDATA[<p><img src="http://fegg.github.io/images/fish.jpg" title="鱼" alt="" /></p>
 
 <h3>影响一生的职业建议</h3>
@@ -1572,9 +1572,9 @@ makeTypeError();
   
   <entry>
     <title type="html"><![CDATA[React 组件开发入门]]></title>
-    <link href="http://fegg.github.io/blog/2015/07/26/induction-react-component-dev/"/>
+    <link href="http://fegg.github.io/blog/20150726/induction-react-component-dev.html/"/>
     <updated>2015-07-26T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2015/07/26/induction-react-component-dev</id>
+    <id>http://fegg.github.io/blog/20150726/induction-react-component-dev</id>
     <content type="html"><![CDATA[<h3>前言</h3>
 
 <p>熟悉 React 的思想后，我们先来尝试开发一个单纯的小组件，可以对比一下是不是比以前的开发模式更加舒适了，这里我主要以一个 Loadding 组件来举栗子，实现了几个基本的功能：</p>
@@ -1802,9 +1802,9 @@ makeTypeError();
   
   <entry>
     <title type="html"><![CDATA[React 组件之间如何交流]]></title>
-    <link href="http://fegg.github.io/blog/2015/07/19/react-component-communicate/"/>
+    <link href="http://fegg.github.io/blog/20150719/react-component-communicate.html/"/>
     <updated>2015-07-19T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2015/07/19/react-component-communicate</id>
+    <id>http://fegg.github.io/blog/20150719/react-component-communicate</id>
     <content type="html"><![CDATA[<h3>前言</h3>
 
 <p>今天群里面有很多都在问关于 React 组件之间是如何通信的问题，之前自己写的时候也遇到过这类问题。下面是我看到的一篇不错英文版的翻译，看过我博客的人都知道，我翻译可能不会按部就班，会尽可能用中文的意思，来将作者要讲述的技术描述清楚。英文能力有限，如果有不对的地方请跟我留言，一定修改……^_^</p>
@@ -2245,9 +2245,9 @@ while(!cur.done) {
   
   <entry>
     <title type="html"><![CDATA[Hello Angular2]]></title>
-    <link href="http://fegg.github.io/blog/2015/07/09/Hello-Angular2/"/>
+    <link href="http://fegg.github.io/blog/20150709/Hello-Angular2.html/"/>
     <updated>2015-07-09T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2015/07/09/Hello-Angular2</id>
+    <id>http://fegg.github.io/blog/20150709/Hello-Angular2</id>
     <content type="html"><![CDATA[<h3>前言</h3>
 
 <p>Angular 2 正式版还没有出来，但是发现官网已经推广开发版本了，所以尝了一下鲜，来吧，从 Hello World 开始。</p>
@@ -2387,9 +2387,9 @@ bootstrap(MyAppComponent);
   
   <entry>
     <title type="html"><![CDATA[从触摸开始（一）]]></title>
-    <link href="http://fegg.github.io/blog/2015/05/24/%E4%BB%8E%E8%A7%A6%E6%91%B8%E5%BC%80%E5%A7%8B/"/>
+    <link href="http://fegg.github.io/blog/20150524/%E4%BB%8E%E8%A7%A6%E6%91%B8%E5%BC%80%E5%A7%8B.html/"/>
     <updated>2015-05-24T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2015/05/24/从触摸开始</id>
+    <id>http://fegg.github.io/blog/20150524/从触摸开始</id>
     <content type="html"><![CDATA[<h3>1. 前言</h3>
 
 <p>最近看了一本《移动Web手册》的书，奇舞团翻译的，非常不错。个人觉得在进入移动端的时候最先应该了解移动端新的交互模式：<strong>触摸</strong>。为什么这样说呢？在PC端，我们大多数的交互都是通过<strong>鼠标</strong>来实现，在开发过程中，对鼠标事件的处理也非常多，通过之前在移动端的开发经验，在移动端的交互也避免不了经常与触摸打交道，所以我们有必要单独学习一下它。</p>
@@ -2646,9 +2646,9 @@ bootstrap(MyAppComponent);
   
   <entry>
     <title type="html"><![CDATA[（译）ECMAScript 6（一）]]></title>
-    <link href="http://fegg.github.io/blog/2015/03/18/ECMAScript%206%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <link href="http://fegg.github.io/blog/20150318/ECMAScript%206%EF%BC%88%E4%B8%80%EF%BC%89.html/"/>
     <updated>2015-03-18T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2015/03/18/ECMAScript 6（一）</id>
+    <id>http://fegg.github.io/blog/20150318/ECMAScript 6（一）</id>
     <content type="html"><![CDATA[<h2>前言</h2>
 
 <p>今天，ECMAScript正处于定稿中。ECMAScript是JavaScript的基础，因此，今天我们浏览一下提出的新特性，能够让我们了解以后我们将能怎样编写JavaScript。在文章中，我们将讲解10个新特性，以及重要的热门工具、浏览器和跨平台编译器。</p>
@@ -2810,9 +2810,9 @@ es[6](); // 即将出版的 ECMAScript 是 ES10
   
   <entry>
     <title type="html"><![CDATA[全新博客初稿]]></title>
-    <link href="http://fegg.github.io/blog/2015/01/25/%E5%85%A8%E6%96%B0%E5%8D%9A%E5%AE%A2%E5%88%9D%E7%A8%BF/"/>
+    <link href="http://fegg.github.io/blog/20150125/%E5%85%A8%E6%96%B0%E5%8D%9A%E5%AE%A2%E5%88%9D%E7%A8%BF.html/"/>
     <updated>2015-01-25T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2015/01/25/全新博客初稿</id>
+    <id>http://fegg.github.io/blog/20150125/全新博客初稿</id>
     <content type="html"><![CDATA[<p>现在的博客主题总是有不满意的地方，所以决定自己设计一版，依然采用F法则。</p>
 
 <p>不知道大家会不会也喜欢，现在只是再画手稿，设计稿可能得自己慢慢出了 >0&lt;</p>
@@ -2854,9 +2854,9 @@ es[6](); // 即将出版的 ECMAScript 是 ES10
   
   <entry>
     <title type="html"><![CDATA[GitHub Pages搭建之hexo（待更新版本）]]></title>
-    <link href="http://fegg.github.io/blog/2015/01/14/GitHub%20Pages%E6%90%AD%E5%BB%BA%E4%B9%8Bhexo/"/>
+    <link href="http://fegg.github.io/blog/20150114/GitHub%20Pages%E6%90%AD%E5%BB%BA%E4%B9%8Bhexo.html/"/>
     <updated>2015-01-14T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2015/01/14/GitHub Pages搭建之hexo</id>
+    <id>http://fegg.github.io/blog/20150114/GitHub Pages搭建之hexo</id>
     <content type="html"><![CDATA[<h3>0  引言</h3>
 
 <p>GitHub 是一个用于使用Git版本控制系统项目的共享虚拟主机服务。它由GitHub公司（曾称Logical Awesome）的开发者Chris Wanstrath、PJ Hyett和Tom Preston-Werner使用Ruby on Rails编写而成。您能够开通一个免费账户进行使用。hexo是一个基于Node.js的静态博客程序，可以方便的生成静态网页托管在github和Heroku上。并且hexo支持markdown写文章，用户能够使用自己喜欢的工具书写文章。hexo具有易用、轻巧、用户群体增长快等优点。由于hexo基于Node.js技术，如今Node.js技术的流行，hexo也会变得越来越热门，所以选择hexo在Github上创建一个静态博客是不错的选择。</p>
@@ -3044,9 +3044,9 @@ npm update hexo -g
   
   <entry>
     <title type="html"><![CDATA[像积木一样搭建网页]]></title>
-    <link href="http://fegg.github.io/blog/2014/12/02/%E5%83%8F%E7%A7%AF%E6%9C%A8%E4%B8%80%E6%A0%B7%E6%90%AD%E5%BB%BA%E7%BD%91%E9%A1%B5/"/>
+    <link href="http://fegg.github.io/blog/20141202/%E5%83%8F%E7%A7%AF%E6%9C%A8%E4%B8%80%E6%A0%B7%E6%90%AD%E5%BB%BA%E7%BD%91%E9%A1%B5.html/"/>
     <updated>2014-12-02T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2014/12/02/像积木一样搭建网页</id>
+    <id>http://fegg.github.io/blog/20141202/像积木一样搭建网页</id>
     <content type="html"><![CDATA[<h3>前言</h3>
 
 <p>我们在浏览网页的时候，经常会看到很相似的几种内容。比如下面这两种样子：</p>
@@ -3315,9 +3315,9 @@ class psTreatmentN implements productStackWrap {
   
   <entry>
     <title type="html"><![CDATA[一步步学习ThinkJS（一）]]></title>
-    <link href="http://fegg.github.io/blog/2014/11/27/%E4%B8%80%E6%AD%A5%E6%AD%A5%E5%AD%A6%E4%B9%A0ThinkJS%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <link href="http://fegg.github.io/blog/20141127/%E4%B8%80%E6%AD%A5%E6%AD%A5%E5%AD%A6%E4%B9%A0ThinkJS%EF%BC%88%E4%B8%80%EF%BC%89.html/"/>
     <updated>2014-11-27T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2014/11/27/一步步学习ThinkJS（一）</id>
+    <id>http://fegg.github.io/blog/20141127/一步步学习ThinkJS（一）</id>
     <content type="html"><![CDATA[<h3>八卦</h3>
 
 <p>在2014年9月22日的时候，ThinkJS 1.0开了一个简单的发布会，去抢啦几块蛋糕来吃~现在还记得蛋糕超级好吃！- 0 - 不过成银这套NodeJS框架真心很好用（可能是以前用J2EE的框架用得比较多，所以感觉MVC这类框架比较好理解，不过文章写得很详细，相信看完就能上手），也很强大，上手极快，我相信它将越来越火！下面我们来入个门哈，如果有写得不对的可以直接指出来，使自己进步 ^o^</p>
@@ -3603,9 +3603,9 @@ thinkjs .
   
   <entry>
     <title type="html"><![CDATA[Mac OS X 10.9配置AMP环境]]></title>
-    <link href="http://fegg.github.io/blog/2014/11/26/Mac%20OS%20X%2010.9%E9%85%8D%E7%BD%AEAMP%E7%8E%AF%E5%A2%83/"/>
+    <link href="http://fegg.github.io/blog/20141126/Mac%20OS%20X%2010.9%E9%85%8D%E7%BD%AEAMP%E7%8E%AF%E5%A2%83.html/"/>
     <updated>2014-11-26T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2014/11/26/Mac OS X 10.9配置AMP环境</id>
+    <id>http://fegg.github.io/blog/20141126/Mac OS X 10.9配置AMP环境</id>
     <content type="html"><![CDATA[<h3>2015年5月9日更新</h3>
 
 <p>更新内容：针对Mac OS X 10.10.3不能访问用户目录</p>
@@ -3918,9 +3918,9 @@ mysql &gt; show databases; //看一下所有数据是否齐全
   
   <entry>
     <title type="html"><![CDATA[Yanxihu]]></title>
-    <link href="http://fegg.github.io/blog/2014/09/19/yanxihu/"/>
+    <link href="http://fegg.github.io/blog/20140919/yanxihu.html/"/>
     <updated>2014-09-19T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2014/09/19/yanxihu</id>
+    <id>http://fegg.github.io/blog/20140919/yanxihu</id>
     <content type="html"><![CDATA[<hr />
 
 <p>layout: post
@@ -4007,9 +4007,9 @@ title: 骑行－雁栖湖游记</p>
   
   <entry>
     <title type="html"><![CDATA[Web前端十日谈]]></title>
-    <link href="http://fegg.github.io/blog/2014/08/02/web-ten-days/"/>
+    <link href="http://fegg.github.io/blog/20140802/web-ten-days.html/"/>
     <updated>2014-08-02T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2014/08/02/web-ten-days</id>
+    <id>http://fegg.github.io/blog/20140802/web-ten-days</id>
     <content type="html"><![CDATA[<h3>前言</h3>
 
 <p>一直想写这篇“十日谈”，聊聊我对Web前端开发的体会，顺便解答下周围不少人的困惑和迷惘。我不打算聊太多技术，我想，通过技术的历练，得到的反思应当更重要。</p>
@@ -4364,9 +4364,9 @@ title: 骑行－雁栖湖游记</p>
   
   <entry>
     <title type="html"><![CDATA[网页艺术：CSS选择器]]></title>
-    <link href="http://fegg.github.io/blog/2014/08/02/web-art-css-selectors/"/>
+    <link href="http://fegg.github.io/blog/20140802/web-art-css-selectors.html/"/>
     <updated>2014-08-02T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2014/08/02/web-art-css-selectors</id>
+    <id>http://fegg.github.io/blog/20140802/web-art-css-selectors</id>
     <content type="html"><![CDATA[<h3>一、前言</h3>
 
 <p>现在JQuery很火，大部分原因还是它强大的选择器，但是JQuery的选择器引用了CSS选择器的规则，所以学好CSS选择器不仅仅是对写CSS有好处，在学习JQuery选择器的时候也会更快上手，几乎是一看就明白。</p>
@@ -4656,9 +4656,9 @@ p:after { content: " years old."; }
   
   <entry>
     <title type="html"><![CDATA[腾讯QQ的黑名单功能]]></title>
-    <link href="http://fegg.github.io/blog/2014/08/02/qq-enter-black-list/"/>
+    <link href="http://fegg.github.io/blog/20140802/qq-enter-black-list.html/"/>
     <updated>2014-08-02T00:00:00+08:00</updated>
-    <id>http://fegg.github.io/blog/2014/08/02/qq-enter-black-list</id>
+    <id>http://fegg.github.io/blog/20140802/qq-enter-black-list</id>
     <content type="html"><![CDATA[<h3>一、拉入黑名单实质</h3>
 
 <p>当你把别人加入黑名单,在你这头看来,他是在黑名单列表里;在他的QQ里，你的号仍在原来位置，只不过，那只是对他的安慰罢了，事实上，他永远无法看到你在线，他给你发送消息，也会被QQ后台的数据库拦截，不能发送成功。在QQ后台数据库中，你在他的好友列表中已经不存在了，所以他给你的消息是你永远收不到的。</p>

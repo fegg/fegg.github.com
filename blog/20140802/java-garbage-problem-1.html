@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Java中的乱码问题研究（一） - 小撸</title>
+  <meta name="author" content="小撸">
+
+  
+  <meta name="description" content="一、前言 最近感觉自己对编码的理解还不够透彻，研究一下编码的问题，我觉得这个是值得研究的地方。自己开始研究的时候，很细心的看了不少的资料，这里和大家分享一下，希望对大家有用，原理有些我就不一条一条的来了，重点描述下吧。 二、控制台中的编码问题 查看操作系统（OS）的默认编码（这点还是有必要的， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/blog/20140802/java-garbage-problem-1.html/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="小撸" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">小撸</a></h1>
+  
+    <h2>Follow Your Heart.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Java中的乱码问题研究（一）</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>一、前言</h3>
+
+<p>最近感觉自己对编码的理解还不够透彻，研究一下编码的问题，我觉得这个是值得研究的地方。自己开始研究的时候，很细心的看了不少的资料，这里和大家分享一下，希望对大家有用，原理有些我就不一条一条的来了，重点描述下吧。</p>
+
+<h3>二、控制台中的编码问题</h3>
+
+<ol type="a">
+<li><p>查看操作系统（OS）的默认编码（这点还是有必要的，但是大多数在中国用的都是默认GBK）</p>
+
+<p> Properties props = System.getProperties();
+ //操作系统信息
+ System.out.println(&ldquo;操作系统默认编码: &rdquo; + props.getProperty(&ldquo;file.encoding&rdquo;));</p></li>
+<li><p>确定了默认的情况后，在java文件编译成class文件到内存年的时候，使用GBK编码编译【-encoding】，IDE可以使用默认。（中途的UNICODE编码可以查阅相关资料）</p></li>
+<li><p>输出的时候也设置成GBK就成了</p></li>
+</ol>
+
+
+<!--more-->
+
+
+<pre><code>package com.test.two;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+/**
+  * JAVA编码测试
+  * @author 60
+  */
+public class Test {
+    public static void main(String[] args) throws IOException {
+        //接收输入串的变量
+        String str_in = "";
+        //定义流：设置输入接口按照中文的编码
+        BufferedReader std_in = new BufferedReader(
+            new InputStreamReader(System.in, "GBK"));
+        //定义流：设置输出接口按照中文的编码
+        BufferedWriter std_out = new BufferedWriter(
+            new OutputStreamWriter(System.out, "GBK"));
+            //从控制台输出程序中的内容
+            std_out.write("请输入：");
+            std_out.flush();
+            //从控制台输入到程序
+            str_in = std_in.readLine();
+            //从程序输出到控制台
+            std_out.write("这是输入的字符串：\n" + str_in);
+            std_out.flush();
+    }
+}
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">小撸</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://fegg.github.io/blog/20140802/java-garbage-problem-1.html/" data-via="lulin666000" data-counturl="http://fegg.github.io/blog/20140802/java-garbage-problem-1.html/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/20140802/hexo-blog.html/" title="Previous Post: Hexo">&laquo; Hexo</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/20140802/java-garbage-problem-2.html/" title="Next Post: Java中的乱码问题研究（二）">Java中的乱码问题研究（二） &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/20160517/redux-can-do.html/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20160110/checkbox-anim.html/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151216/hi-vue.html/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151024/postcss-introduce.html/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151009/pro-js-2.html/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/fegg">@fegg</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'fegg',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 小撸 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

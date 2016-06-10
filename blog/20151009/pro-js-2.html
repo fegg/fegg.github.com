@@ -1,0 +1,699 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JavaScript的特性、函数、对象 - 小撸</title>
+  <meta name="author" content="小撸">
+
+  
+  <meta name="description" content="提供者：js-渣渣 原文：[http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0][1] 对象是JavaScript的重要单元。事实上JavaScript的一切都是对象或者是面向对象的接口。  语言特性 引用和值  &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/blog/20151009/pro-js-2.html/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="小撸" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">小撸</a></h1>
+  
+    <h2>Follow Your Heart.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">JavaScript的特性、函数、对象</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-09T00:00:00+08:00'><span class='date'>2015 年10 月9 日</span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>提供者：js-渣渣</p>
+
+<p>原文：[<a href="http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0">http://www.cnblogs.com/zha-zha/articles/4863472.html%C2%A0</a>][1]</p>
+
+<p>对象是JavaScript的重要单元。事实上JavaScript的一切都是对象或者是面向对象的接口。</p>
+
+<h3> 语言特性</h3>
+
+<h4>引用和值 </h4>
+
+<p>JavaScript变量持有的数据有两种形式：拷贝和引用。任何的基本类型值都是拷贝到变量。基本类型值最重要的特性就是它们是以值的形式赋值、拷贝、传递以及从函数总返回。</p>
+
+<p>JavaScript非基本类型值则是依赖引用。 任何不持有基本类型值的变量持有的是对象的引用。引用是指向对象内存位置的指针。这样有效率的是两个或者多个变量不会都来持有对象的拷贝；它们只是简单的指向这个对象就好。一个引用对对象的更新直接影响到另一个引用。</p>
+
+<!-- more -->
+
+
+<pre><code>// Set obj to an empty object
+// (Using {} is shorter than 'new Object()')
+var obj = {};
+
+// objRef now refers to the other object
+var refToObj = obj;
+
+// Modify a property in the original object
+obj.oneProperty = true;
+
+// We now see that the change is represented in both variables
+// (Since they both refer to the same object)
+console.log(obj.oneProperty === refToObj.oneProperty); //true
+
+// This change goes both ways, since obj and refToObj are both references
+refToObj.anotherProperty = 1;
+console.log(obj.anotherProperty === refToObj.anotherProperty); //true
+</code></pre>
+
+<h4>自我调整的对象</h4>
+
+<pre><code>// Create an array of items
+// (Similar to 2-1, using [] is shorter than 'new Array()')
+var items = ['one', 'two', 'three'];
+// Create a reference to the array of items
+var itemsRef = items;
+// Add an item to the original array
+items.push('four');
+
+// The length of each array should be the same,
+// since they both point to the same array object
+console.log(items.length == itemsRef.length); //true
+</code></pre>
+
+<blockquote><p>重要的是要记住引用只指向所指对象，而不是另一个引用。</p></blockquote>
+
+<p>我们看一个实体对象改变，而引用继续指向旧式对象的例子：</p>
+
+<pre><code>// Set items to an array (object) of strings
+var items = ['one', 'two', 'three'];
+// Set itemsRef to a reference to items
+var itemsRef = items;
+// Set items to equal a new object
+items = ['new', 'array'];
+
+// items and itemsRef now point to different objects.
+// items points to [ 'new', 'array' ]
+// itemsRef points to [ 'one', 'two', 'three' ]
+console.log(items !== itemsRef);
+</code></pre>
+
+<p>字符串是较有迷惑性的</p>
+
+<pre><code>var item = new String('test');
+var itemRef = item;
+item += 'ing'; //这里创建新的对象，但是基本类型
+console.log(item, itemRef, item != itemRef);
+//test result:
+//testing 
+//String {0: "t", 1: "e", 2: "s", 3: "t", length: 4, [[PrimitiveValue]]: "test"}
+//false
+
+// Set item equal to a new string object
+var item = 'test';
+// itemRef now refers to the same string object
+var itemRef = item;
+// Concatenate some new text onto the string object
+// NOTE: This creates a new object and does not modify
+// the original object.
+item += 'ing';
+// The values of item and itemRef are NOT equal, as a whole
+// new string object has been created
+console.log(item != itemRef);
+</code></pre>
+
+<h3>作用域</h3>
+
+<p>JavaScript只有两个作用域：函数作用域和全局作用域。但是Es6里引入了块作用域。</p>
+
+<p>JavaScript里变量作用域的运行原理 </p>
+
+<pre><code>// Set a global variable, foo, equal to test
+var foo = 'test';
+// Within an if block
+if (true) {
+    // Set foo equal to 'new test'
+    // NOTE: This still belongs to the global scope!
+    var foo = 'new test';
+}
+
+// As we can see here, as foo is now equal to 'new test'
+console.log(foo === 'new test');
+
+// Create a function that will modify the variable foo
+function test() {
+    var foo = 'old test';
+}
+
+// However, when called, 'foo' remains within the scope
+// of the function
+test();
+
+// Which is confirmed, as foo is still equal to 'new test'
+console.log(foo === 'new test');
+</code></pre>
+
+<p>隐式的全局变量</p>
+
+<pre><code>// A function in which the value of foo is set
+function test() {
+    foo = 'test';
+}
+
+// Call the function to set the value of foo
+test();
+// We see that foo is now globally scoped
+console.log(window.foo === 'test');
+</code></pre>
+
+<p>在函数里 声明变量的时候，要注意变量提升问题。任何声明在函数里 的作用域都将会把它的声明提升作用域的顶端。这样做的目的是保障变量名在整个作用域都能访问。</p>
+
+<h3>Context上下文环境</h3>
+
+<p>通过this访问环境，它经常指向代码运行的环境。 </p>
+
+<pre><code>function setFoo(fooInput) {
+    this.foo = fooInput;
+}
+var foo = 5;
+console.log('foo at the window level is set to: ' + foo);
+
+var obj = {
+    foo: 10
+};
+console.log('foo inside of obj is set to: ' + obj.foo);
+
+// This will change window-level foo
+setFoo(15);
+console.log('foo at the window level is now set to: ' + foo);
+
+// This will change the foo inside the object
+obj.setFoo = setFoo;
+obj.setFoo(20);
+console.log('foo inside of obj is now set to: ' + obj.foo);
+</code></pre>
+
+<p>这个函数setFoo有点奇怪。通常不会在普通的函数里使用this，这里是因为我们是要把setFoo关联到obj对象的。JavaScript有两种方法让你指定运行环境的：call、apply；</p>
+
+<pre><code>// A simple function that sets the color style of its context
+function changeColor(color) {
+    this.style.color = color;
+}
+
+// Calling it on the window object, which fails, since it doesn't
+// have a style object
+changeColor('white');
+
+// Create a new div element, which will have a style object
+var main = document.createElement('div');
+
+// Set its color to black, using the call method
+// The call method sets the context with the first argument
+// and passes all the other arguments as arguments to the function
+changeColor.call(main, 'black');
+
+//Check results using console.log
+//The output should say 'black'
+console.log(main.style.color);
+
+// A function that sets the color on the body element
+function setBodyColor() {
+    // The apply method sets the context to the body element
+    // with the first argument, and the second argument is an array
+    // of arguments that gets passed to the function
+    changeColor.apply(document.body, arguments);
+}
+// Set the background color of the body to black
+setBodyColor('black');
+</code></pre>
+
+<h3>闭包</h3>
+
+<p>闭包是一种工具，我们可以通过它在内部函数中 在外部函数终止执行的时候访问外部函数出现的变量。</p>
+
+<p>它提供给我们一种上下文环境，只能以某种形式访问。</p>
+
+<pre><code>// Find the element with an ID of 'main'
+var obj = document.getElementById('main');
+// Change its border styling
+obj.style.border = '1px solid red';
+// Initialize a callback that will occur in one second
+setTimeout(function() {
+    // Which will hide the object
+    obj.style.display = 'none';
+}, 1000);
+
+// A generic function for displaying a delayed alert message
+function delayedAlert(msg, time) {
+    // Initialize an enclosed callback
+    setTimeout(function() {
+        // Which utilizes the msg passed in from the enclosing function
+        console.log(msg);
+    }, time);
+}
+// Call the delayedAlert function with two arguments
+delayedAlert('Welcome!', 2000);
+
+setTimeout('otherFunction()', 1000); 
+//or even  
+setTimeout('otherFunction(' + num + ',' + num2 + ')', 1000);
+</code></pre>
+
+<p>这两种形式容易在发布代码到production过程中中压缩的时候易出现问题。</p>
+
+<h4>使用闭包实现科里化</h4>
+
+<pre><code>// A function that generates a new function for adding numbers
+function addGenerator(num) {
+    // Return a simple function for adding two numbers
+    // with the first number borrowed from the generator
+    return function(toAdd) {
+        return num + toAdd
+    };
+}
+
+// addFive now contains a function that takes one argument,
+// adds five to it, and returns the resulting number
+var addFive = addGenerator(5);
+// We can see here that the result of the addFive function is 9,
+// when passed an argument of 4
+console.log( addFive( 4 ) == 9 );
+</code></pre>
+
+<h4>使用匿名函数来隐藏全局作用域中的变量</h4>
+
+<pre><code>// Create a new anonymous function, to use as a wrapper
+(function() {
+    // The variable that would normally be global
+    var msg = 'Thanks for visiting! ';
+    // Binding a new function to a global object
+    window.onload = function() {
+        // Which uses the 'hidden' variable
+        console.log(msg);
+    };
+    // Close off the anonymous function and execute it
+})();
+</code></pre>
+
+<p>闭包允许引用存在于父函数中的变量。但是它在刚创建的时候并不提供变量的值。它提供的是变量最终的值。 </p>
+
+<pre><code>// An element with an ID of main
+var obj = document.getElementById('main');
+// An array of items to bind to
+var items = ['click', 'keypress'];
+
+// Iterate through each of the items
+for (var i = 0; i &lt; items.length; i++) {
+    // Use a self-executed anonymous function to induce scope
+    (function() {
+        // Remember the value within this scope
+        // Each 'item' is unique.
+        //Not relying on variables created in the parent context.
+        var item = items[i];
+        // Bind a function to the element
+        obj['on' + item] = function() {
+            // item refers to a parent variable that has been successfully
+            // scoped within the context of this for loop
+            console.log('Thanks for your ' + item);
+        };
+    })();
+}
+</code></pre>
+
+<h3>函数重载类型检查</h3>
+
+<p>JavaScript并不提供函数重载的特性，但是存在功能让我们可以实现重载。</p>
+
+<p>函数的重载我们需要知道两件事参数的数量和参数的类型：</p>
+
+<p>我们可以借助每个JavaScript函数都有的语境变量arguments类数组对象。
+重载的例子：</p>
+
+<pre><code>// A simple function for sending a message
+function sendMessage(msg, obj) {
+    // If both a message and an object are provided
+    if (arguments.length === 2) {
+        // Send the message to the object
+        // (Assumes that obj has a log property!)
+        obj.log(msg);
+    } else {
+        // Otherwise, assume that only a message was provided
+        // So just display the default error message
+        console.log(msg);
+    }
+}
+
+// Both of these function calls work
+sendMessage('Hello, World!');
+sendMessage('How are you?', console);
+</code></pre>
+
+<p>你可能想知道有没有办法让arguments拥有Array的全部功能。就其本身来说是不可能的。但是arguments的拷贝倒是可以</p>
+
+<p>将arguments转换成数组</p>
+
+<pre><code>function  aFunction(x,  y,  z)  {
+    var  argsArray  =  Array.prototype.slice.call( arguments,  0 );
+    console.log( 'The last argument is: '  +  argsArray.pop() );
+}
+
+// Will output 'The last argument is 3'.
+aFunction( 1, 2, 3 ); 
+</code></pre>
+
+<h3>关于类型检查</h3>
+
+<h4>1.第一种就是使用typeof检查</h4>
+
+<pre><code>var num = '50';
+var arr = 'apples,oranges,pears';
+
+// Check to see if our number is actually a string
+if (typeof num === 'string') {
+    // If it is, then parse a number out of it
+    num = parseInt(num);
+}
+// Check to see if our array is actually a string
+if (typeof arr == 'string') {
+    // If that's the case, make an array, splitting on commas
+    arr = arr.split(',');
+}
+</code></pre>
+
+<p>在变量不是Object Array 或者是 自定义对象的时候，这个方案是完美的。</p>
+
+<h4>2.第二种方式是使用instanceof，它检查右操作数是不是左操作数的构造函数。</h4>
+
+<pre><code>var today = new Date();
+var re = /[a-z]+/i;
+
+// These don't give us enough details
+console.log('typeof today: ' + typeof today);
+console.log('typeof re: ' + typeof re);
+
+// Let's find out if the variables are of a more specific type
+if (today instanceof Date) {
+    console.log('today is an instance of a Date.');
+}
+if (re instanceof RegExp) {
+    console.log('re is an instance of a RegExp object.');
+}
+</code></pre>
+
+<blockquote><p>更好的检查方法是使用Object.prototype.toString.call(obj).</p></blockquote>
+
+<h3>新的对象工具</h3>
+
+<p>对象的修改JavaScript有3种方法控制一个对象是否可以被修改</p>
+
+<h4>1.Object.preventExtensions()阻止添加新的属性，强行添加会导致typeError.但是可以修改\删除已经存在的属性</h4>
+
+<pre><code>// Creates a new object and stores it in 'obj'
+var obj = {};
+// Creates a new Object object using preventExtensions
+var obj2 = Object.preventExtensions(obj);
+
+// Generates TypeError when trying to define a new property
+function makeTypeError() {
+    'use strict';
+    //Generates TypeError when trying to define a new property
+    Object.defineProperty(obj2, 'greeting', {
+        value: 'Hello World'
+    }); 
+}
+makeTypeError();
+</code></pre>
+
+<h4>2.Object.seal()不能新添属性和删除属性及转换成getter。</h4>
+
+<pre><code>// Creates a new object and uses object.seal to restrict it
+var obj = {};
+obj.greeting = 'Welcome';
+Object.seal(obj);
+//Updating the existing writable property
+//Cannot convert existing property to accessor, throws TypeErrors
+obj.greeting = 'Hello World';
+Object.defineProperty(obj, 'greeting', {
+    get: function() {
+        return 'Hello World';
+    }
+});
+
+// Cannot delete property, fails silently
+delete obj.greeting;
+
+function makeTypeError() {
+    'use strict';
+    //Generates TypeError when trying to delete a property
+    delete obj.greeting;
+    //Can still update property
+    obj.greeting = 'Welcome';
+    console.log(obj.greeting);
+}
+makeTypeError();
+</code></pre>
+
+<h4>3.Object.freeze</h4>
+
+<p>这里的对象就是不能有任何的改变了，但是它的某个属性是对象的话仍然可以改变的</p>
+
+<pre><code>//Creates a new object with two properties. Second property is an object
+var obj = {
+    greeting: "Welcome",
+    innerObj: {}
+};
+//Freeezes our obj
+Object.freeze(obj);
+//silently fails
+obj.greeting = 'Hello World';
+//innerObj can still be updated
+obj.innerObj.greeting = 'Hello World';
+console.log('obj.innerObj.greeting = ' + obj.innerObj.greeting);
+
+//Cannot convert existing property to accessor
+//Throws TypeError
+Object.defineProperty(obj, 'greeting', {
+    get: function() {
+        return 'Hello World';
+    }
+});
+// Cannot delete property, fails silently
+delete obj.greeting;
+
+function makeTypeError() {
+    'use strict';
+}
+//Generates TypeError when trying to delete a property
+delete obj.greeting;
+
+//Freeze inner object
+Object.freeze(obj.innerObj);
+//innerObj is now frozen. Fails silently
+obj.innerObj.greeting = 'Worked so far...';
+
+function makeTypeError() {
+    'use strict';
+    //all attempts will throw TypeErrors
+    delete obj.greeting;
+    obj.innerObj.greeting = 'Worked so far...';
+    obj.greeting = "Welcome";
+};
+makeTypeError();
+</code></pre>
+
+<p>原文出自：<a href="http://www.cnblogs.com/zha-zha/articles/4863472.html">http://www.cnblogs.com/zha-zha/articles/4863472.html</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">小撸</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-10-09T00:00:00+08:00'><span class='date'>2015 年10 月9 日</span> <span class='time'>12:00 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://fegg.github.io/blog/20151009/pro-js-2.html/" data-via="lulin666000" data-counturl="http://fegg.github.io/blog/20151009/pro-js-2.html/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/20151009/only-one.html/" title="Previous Post: 影响一生的职业建议">&laquo; 影响一生的职业建议</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/20151024/postcss-introduce.html/" title="Next Post: PostCSS是个什么鬼东西？">PostCSS是个什么鬼东西？ &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/20160517/redux-can-do.html/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20160110/checkbox-anim.html/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151216/hi-vue.html/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151024/postcss-introduce.html/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151009/pro-js-2.html/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/fegg">@fegg</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'fegg',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 小撸 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Hello Angular2 - 小撸</title>
+  <meta name="author" content="小撸">
+
+  
+  <meta name="description" content="前言 Angular 2 正式版还没有出来，但是发现官网已经推广开发版本了，所以尝了一下鲜，来吧，从 Hello World 开始。 1. 安装需要的工具 这部分和 ng 2 没多大关系，但是我第一次根据官网 5 分钟配置中发现了一些坑，所以做一下准备，免得打击了第一次使用技术的自信心。 Node &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/blog/20150709/Hello-Angular2.html/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="小撸" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">小撸</a></h1>
+  
+    <h2>Follow Your Heart.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Hello Angular2</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-09T00:00:00+08:00'><span class='date'>2015 年7 月9 日</span> <span class='time'>12:00 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>前言</h3>
+
+<p>Angular 2 正式版还没有出来，但是发现官网已经推广开发版本了，所以尝了一下鲜，来吧，从 Hello World 开始。</p>
+
+<h3>1. 安装需要的工具</h3>
+
+<p>这部分和 ng 2 没多大关系，但是我第一次根据官网 5 分钟配置中发现了一些坑，所以做一下准备，免得打击了第一次使用技术的自信心。</p>
+
+<ol>
+<li>Node 和 NPM 最新版（省略）</li>
+<li>jspm 包管理器来初始化 SystemJS 模块加载器那一套</li>
+</ol>
+
+
+<p><strong>创建一个项目目录</strong></p>
+
+<pre><code>mkdir ng &amp;&amp; cd ng
+</code></pre>
+
+<p><strong>安装 jspm 环境</strong></p>
+
+<pre><code>sudo npm install jspm/jspm-cli -g
+npm init
+npm install jspm --save-dev
+// 一路回车就行了
+jspm init
+</code></pre>
+
+<p><strong>配置一下 config.js</strong></p>
+
+<pre><code>System.config({
+    "baseURL": "/",
+    "transpiler": "traceur",
+    "paths": {
+        "*": "*.js",
+        "github:*": "jspm_packages/github/*.js"
+    },
+    "map": {
+        "traceur": "github:jmcriffey/bower-traceur@0.0.88",
+        "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88"
+    }
+});
+</code></pre>
+
+<p><strong>安装一个本地服务工具</strong></p>
+
+<pre><code>sudo npm install -g http-server
+// ng 目录下启动
+http-server 
+</code></pre>
+
+<!-- more -->
+
+
+<h3>2. 开始体验</h3>
+
+<p>（1）使用 TypeScript，所以先安装 tsd 包管理器</p>
+
+<pre><code>sudo npm install -g tsd@^0.6.0
+</code></pre>
+
+<p>（2）安装 ng 2 依赖的核心</p>
+
+<pre><code>tsd install angular2 es6-promise rx rx-lite
+</code></pre>
+
+<p>这里安装完成后会创建包管理器的文件夹：typings</p>
+
+<p>（3）在 ng 目录下创建代码文件</p>
+
+<pre><code>touch app.ts index.html
+</code></pre>
+
+<p>（4）配置一下 TypeScript</p>
+
+<pre><code>sudo npm install -g typescript@^1.5.0-beta
+// 在 ng 目录下运行监听编译
+tsc --watch -m commonjs -t es5 --emitDecoratorMetadata app.ts
+</code></pre>
+
+<p>（5）接下来编写 app.ts 文件</p>
+
+<pre><code>///&lt;reference path="typings/angular2/angular2.d.ts" /&gt;
+import {Component, View, bootstrap} from 'angular2/angular2';
+
+// Annotation section
+@Component({
+  selector: 'my-app'
+})
+@View({
+  template: '&lt;h1&gt;Hello &lt;/h1&gt;'
+})
+// Component controller
+class MyAppComponent {
+  name: string;
+
+  constructor() {
+    this.name = 'Angular2';
+  }
+}
+
+bootstrap(MyAppComponent);
+</code></pre>
+
+<p>（6）下载官方的 traceur-runtime.js 和 angular2.dev.js（为了速度，你也可以直接引入）</p>
+
+<pre><code>&lt;!-- index.html --&gt;
+&lt;html&gt;
+    &lt;head&gt;
+    &lt;title&gt;Angular 2 Quickstart&lt;/title&gt;
+    &lt;script src="typings/js/traceur-runtime.js"&gt;&lt;/script&gt;
+    &lt;script src="jspm_packages/system.js"&gt;&lt;/script&gt;
+    &lt;script src="config.js"&gt;&lt;/script&gt;
+    &lt;script src="typings/js/angular2.dev.js"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;!-- The app component created in app.ts --&gt;
+    &lt;my-app&gt;&lt;/my-app&gt;
+    &lt;script&gt;System.import('./app');&lt;/script&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>最后的文件目录如下：</p>
+
+<p><img src="/images/js/ng2-dev.png" alt="文件目录" /></p>
+
+<p>运行的结果图：</p>
+
+<p><img src="/images/js/ng2-hello.png" alt="ng2 hello" /></p>
+
+<p>源码下载：<a href="http://yunpan.cn/ccy6mh9hrSwHK">360云盘下载</a> （提取码：0da5）</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">小撸</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-07-09T00:00:00+08:00'><span class='date'>2015 年7 月9 日</span> <span class='time'>12:00 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://fegg.github.io/blog/20150709/Hello-Angular2.html/" data-via="lulin666000" data-counturl="http://fegg.github.io/blog/20150709/Hello-Angular2.html/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/20150524/%E4%BB%8E%E8%A7%A6%E6%91%B8%E5%BC%80%E5%A7%8B.html/" title="Previous Post: 从触摸开始（一）">&laquo; 从触摸开始（一）</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/20150719/react-component-communicate.html/" title="Next Post: React 组件之间如何交流">React 组件之间如何交流 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/20160517/redux-can-do.html/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20160110/checkbox-anim.html/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151216/hi-vue.html/">乱玩 Vue Todo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151024/postcss-introduce.html/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151009/pro-js-2.html/">JavaScript的特性、函数、对象</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/fegg">@fegg</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'fegg',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 小撸 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
