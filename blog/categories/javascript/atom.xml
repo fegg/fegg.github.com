@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Javascript | 小撸]]></title>
+  <link href="http://fegg.github.io/blog/categories/javascript/atom.xml" rel="self"/>
+  <link href="http://fegg.github.io/"/>
+  <updated>2016-06-11T02:41:11+08:00</updated>
+  <id>http://fegg.github.io/</id>
+  <author>
+    <name><![CDATA[小撸]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[JavaScript中的Width和Height]]></title>
+    <link href="http://fegg.github.io/blog/20140802/javascript-width-and-height/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20140802/javascript-width-and-height</id>
+    <content type="html"><![CDATA[<h3 id="windowinnerwidthwindowinnerheight">一、window.innerWidth和window.innerHeight</h3>
+
+<p>概念：计算浏览器窗口的内部高度（不包括工具栏和滚动条）。
+通俗的来讲：整个浏览器中能够显示网页内容的部分。
+特殊情况
+1. 滚动条：减去滚动条部分，滚动条宽度15px;
+2. 开发者工具：比如firebug，如果开发者工具处于打开的情况，在当前情况计算的innerHeight数值是不包括开发者工具所占高度。</p>
+
+<p><img src="/images/post/safari-client.png" alt="Mou icon" /></p>
+
+<p><code>javascript
+var windowSize = {
+	width : function () {
+		return window.innerWidth 
+			|| document.body.clientWidth 
+			|| document.documentElement.clientWidth;
+	},
+	height : function () {
+		return window.innerHeight 
+			|| document.body.clientHeight
+			|| document.documentElement.clientHeight;
+	}
+};
+console.log(windowSize.width());
+console.log(windowSize.height());
+</code></p>
+
+<!--more-->
+
+<h3 id="availwidthavailheight">二、availWidth和availHeight</h3>
+
+<p>概念：计算用户电脑屏幕的可用宽、高，不包括任务栏。
+特殊情况
+1. Mac OS系统中，需要去除上、下两部分；
+2. Mac OS系统中，使用QQ截图，默认选中区域 availHeight 测量出来少了6px，我猜想是由于窗口的阴影部分没有截取；
+3. Window系统中，需要去除下放的任务栏。</p>
+
+<p><img src="/images/post/screen.png" alt="Mou icon" /></p>
+
+<p>这里未发现兼容性问题</p>
+
+<p><code>javascript
+console.log(screenSize.availWidth());
+console.log(screenSize.availHeight());
+</code></p>
+
+<h3 id="offsetwidthoffsetheight">三、offsetWidth和offsetHeight</h3>
+
+<h3 id="scrollwidthscrollheight">四、scrollWidth和scrollHeight</h3>
+
+<h3 id="outerwidthouterheight">五、outerWidth和outerHeight</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Javascript模块化开发－轻巧自制]]></title>
+    <link href="http://fegg.github.io/blog/20140802/javascript-module-define/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20140802/javascript-module-define</id>
+    <content type="html"><![CDATA[<h3 id="section">一、前言</h3>
+
+<p>现在javascript的流行，前端的代码越来越复杂，所以我们需要软件工程的思想来开发前端。模块化是必不可少的，这样不仅能够提高代码的可维护性、可扩展性以及鲁棒性，更大的好处就是能够提升整个团队的开发效率，也能够让新进的程序员更快的接手工作。今天晚上根据前辈们的经验，写啦一个简单的模块定义的封装组件，当是练手吧。不过感觉还是蛮好用的。</p>
+
+<h3 id="section-1">二、学习模块化前我们应该先了解点什么呢？</h3>
+
+<p>其实突然就学习模块化的javascript开发，那还是比较丈二和尚，摸不着头脑的。不过如果是做过后台开发的程序员们，可能对于模块化的开发思想并不陌生，因为后台的这方面技术已经很熟悉了。那么这里我就分享一下前端javascript模块化开发的学习。</p>
+
+<h4 id="section-2">1. 了解模块化开发思想</h4>
+
+<p>如果有软件工程背景，那么这一思想就是你自身就应该掌握的。模块（module）就是可以组合、分解以及更换的单元，其实也满足组合大于继承等这些带来的好处吧。如果看成一个系统的话，我们可以从软件体系结构来理解，模块是较大系统中的独立部件，功能、状态与接口反映外部特性，逻辑反映的是内部特性。</p>
+
+<!-- more -->
+
+<h4 id="section-3">2. 了解前端模块化开发带来的好处</h4>
+
+<p>模块化的开发模式为前端带来了新大陆，这点不得不承认，现在前端的越发成熟，需要软件工程的这种思想。
+玉伯也发表过<a href="https://github.com/seajs/seajs/issues/547">前端模块化开发的价值</a></p>
+
+<p>3.了解目前技术，哪些和模块化开发沾边</p>
+
+<p>1) 开发功能模块的时候，可以采用Eva的解决方案（YUI3 + Minify）。</p>
+
+<p>2) 使用流行的javascript模块加载框架：seajs。</p>
+
+<p>3) 如果喜欢轻巧的东西，也可以尝试<a href="http://stylechen.com/">带刀</a>的<a href="http://easyjs.org/">easy.js</a>，不错的一个模块加载框架。</p>
+
+<p>4) 也可以尝试支付宝的Alice，这是一款基于CMD规范的东东，首页倒是挺小清新的。</p>
+
+<p>5) 如今比较火的NodeJS这是必须要了解和学习的。</p>
+
+<p>好啦，了解完上面那些技术后，模块化的前端模式应该很熟悉了，如果想扎实一下的话还可以了解一下AMD、CMD规范，具体是什么东西，google一下。接下来我们就来构造一个简单的模块定义器吧，其实写的时候还挺简单的，不过主要是吸收思想，这样学习技术才不会跟不上时代。</p>
+
+<h3 id="section-4">三、轻巧范例</h3>
+
+<h4 id="json">1. 模块的数据结构（JSON表示）</h4>
+
+<p><code>javascript
+module: {
+	//模块名称
+	moduleName: moduleName,
+	//模块依赖集合
+	dependencies: dependencies,
+	//模块实例工厂
+	factory: factory
+}
+</code></p>
+
+<h4 id="section-5">2. 模块定义</h4>
+
+<p>所以我们最后能够形成模块定义的代码如下：</p>
+
+<p>``` javascript
+define: function ( moduleName, dependencies, factory ) {
+	if( !modules[moduleName] ) {
+		//模块信息
+		var module = {
+			moduleName: moduleName,
+			dependencies: dependencies,
+			factory: factory
+		};</p>
+
+<pre><code>	modules[moduleName] = module;
+}
+
+return modules[moduleName]; } ```
+</code></pre>
+
+<h4 id="section-6">3. 模块调用</h4>
+
+<p>这样我们就定义好了模块，那么我们的入口在哪里呢？我们还需要定义一个use的方法，来成为所谓的main，这样绑定好了才能够调用，现在想来程序也都是这样的。下面这段代码通过递归的产生模块依赖的所有实例，但是这里浪费了一部分instances数组的空间，有时间可以再做哈优化。</p>
+
+<p>``` javascript
+use: function ( moduleName ) {
+	//使用括号的方式访问属性，实现动态的赋值（详情查阅“.”和[]的区别）
+	var module = modules[moduleName];</p>
+
+<pre><code>//产生单个实例
+if( !module.instance ) {
+	var instances = [], 
+		len = module.dependencies.length - 1;
+
+		for( var i = 0; i &lt;= len; i++ ) {
+			var dependency = module.dependencies[i],
+				instance = dependency.instance;
+
+			if( instance ) {
+				instances.push( instance );
+			} else {
+				//递归，将每次产生的实例放入数组
+				instances.push( arguments.callee( dependency ) );
+			}
+		}
+		//生成实例
+		module.instance = module.factory.apply( null, instances );
+}
+
+return module.instance; } ```
+</code></pre>
+
+<h4 id="section-7">4. 完整代码</h4>
+
+<p>最后我形成完整的自己的小库。</p>
+
+<p>``` javascript
+(function ( window, undefined ) {
+	var modules = {};
+	var Sky = {
+		//定义模块的基本信息
+		//1.模块名称，2.模块的依赖，3.产生实例的工厂
+		define: function ( moduleName, dependencies, factory ) {
+			if( !modules[moduleName] ) {
+				//模块信息
+				var module = {
+					moduleName: moduleName,
+					dependencies: dependencies,
+					factory: factory
+				};</p>
+
+<pre><code>			modules[moduleName] = module;
+		}
+
+		return modules[moduleName];
+	},
+	//使用依赖
+	use: function ( moduleName ) {
+		var module = modules[moduleName];
+
+		//产生单个实例
+		if( !module.instance ) {
+			var instances = [], 
+				len = module.dependencies.length - 1;
+
+			for( var i = 0; i &lt;= len; i++ ) {
+				var dependency = module.dependencies[i],
+					instance = dependency.instance;
+
+				if( instance ) {
+					instances.push( instance );
+				} else {
+					//递归，将每次产生的实例放入数组
+					instances.push( arguments.callee( dependency ) );
+				}
+			}
+			//生成实例
+			module.instance = module.factory.apply( null, instances );
+		}
+
+		return module.instance;
+	}
+};
+
+window.Sky = Sky || {}; })(window); ```
+</code></pre>
+
+<p>下面我们来一个完整的例子来使用一下以上我们构建的轻巧代码。</p>
+
+<p>``` javascript
+Sky.define(“constant.PI”, [], function() {
+	return 3.1415926;
+});</p>
+
+<p>Sky.define(“shape.Circle”, [“constant.PI”], function( pi ) {
+	function Circle(r) {
+		this.r = r || 0;
+	};</p>
+
+<pre><code>Circle.prototype.area = function() {
+	return pi * this.r * this.r;
+};
+
+return Circle; });
+</code></pre>
+
+<p>Sky.define(“shape.Rectangle”, [], function() {
+	function Rectangle(width, height) {
+		this.width = width || 0;
+		this.height = height || 0;
+	};</p>
+
+<pre><code>Rectangle.prototype.area = function() {
+	return this.width * this.height;
+};
+
+return Rectangle; });
+</code></pre>
+
+<p>Sky.define(“ShapeTypes”, [“shape.Circle”, “shape.Rectangle”], function( Circle, Rectangle ) {
+	return {
+		‘CIRCLE’: Circle,
+		‘RECTANGLE’: Rectangle
+	};
+});</p>
+
+<p>Sky.define(“ShapeFactory”, [“ShapeTypes”], function( ShapeTypes ) {
+	return {
+		getShape: function(type) {
+			var shape;</p>
+
+<pre><code>		switch (type) {
+		case 'CIRCLE':
+			shape = new ShapeTypes[type](arguments[1]);
+			break;
+		case 'RECTANGLE':
+			shape = new ShapeTypes[type](arguments[1], arguments[2]);
+			break;
+		}
+		return shape;
+	}
+}; });
+</code></pre>
+
+<p>var ShapeFactory = Sky.use(“ShapeFactory”);
+console.log(ShapeFactory.getShape(“CIRCLE”).area());
+console.log(ShapeFactory.getShape(“RECTANGLE”, 2, 3).area());
+```</p>
+
+<p>是不是感觉js代码变得更加清爽了？嘿嘿，上面的例子也是面向接口的，大家也可以看看。</p>
+
+<p>参考前辈：<a href="http://blog.jobbole.com/43649/">http://blog.jobbole.com/43649/</a></p>
+
+<p>也许代码有出入，有些地方前辈写得不够细心的我补上了一些，嘿嘿，但是思路是参考这位前辈的。</p>
+
+<p>原文出自：<a href="http://www.60sky.com/">http://www.60sky.com/</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JavaScript的参数传递]]></title>
+    <link href="http://fegg.github.io/blog/20140802/javascript-arguments/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20140802/javascript-arguments</id>
+    <content type="html"><![CDATA[<h3 id="section">一、前言</h3>
+
+<p>ECMA中所有函数的参数都是按照<em>值传递</em>。</p>
+
+<h3 id="section-1">二、基本数据类型</h3>
+
+<p>在向函数传递基本数据类型的时候，被传递的值会被复制给一个局部变量（arguments对象的一个元素）。</p>
+
+<p><code>javascript
+function test( x ) {
+    x = 10; //第一次赋值
+    console.log( 'x1 : ' + x );	
+    console.log( 'arguments1 : ' + arguments )
+    console.log( 'arguments[0]1 : ' + arguments[0] )
+    arguments[0] = 100;
+    console.log( 'x2 : ' + x );	
+    console.log( 'arguments2 : ' + arguments )
+    console.log( 'arguments[0]2 : ' + arguments[0] )
+};
+test(5);
+</code></p>
+
+<!--more-->
+
+<p><code>javascript
+function test( num ) {
+    num = num + 10;
+    return num;
+};
+var num = 20;
+var result = test( num );
+console.log( 'num : ' + num );
+console.log( 'result : ' + result );
+</code></p>
+
+<h3 id="section-2">三、引用数据类型</h3>
+
+<p>在向函数传递引用数据类型的时候，会把这个值的内存地址复制给一个局部变量。所以局部变量的变化会反映到函数外部。</p>
+
+<p><code>javascript
+function setName( obj ) {
+    obj.name = '卢林';
+};
+var lou = new Object();
+window.setName( lou );
+console.log( lou.name );
+function setName( obj ) {
+    obj.name = '卢林';
+    //重新new
+    obj = new Object();
+    obj.name = 'others'; //其实已经不是传入的内存地址
+};
+var lou = new Object();
+window.setName( lou );
+console.log( lou.name );
+</code></p>
+
+<p>其实原理很简单，引用类型传入的是内存地址的值（当然JavaScript操作内存地址），比如是8bit，内存地址是：1100 1010，指向的内容是person对象。所以你修改了name属性会影响到函数外部。</p>
+]]></content>
+  </entry>
+  
+</feed>

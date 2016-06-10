@@ -180,44 +180,77 @@
 
 <p>首先，我们需要做一些准备，安装好需要的东西。</p>
 
-<pre><code>// postcss 的命令行工具
-sudo npm install  -g postcss-cli
-// autoprefixer 插件
-sudo npm install -g autoprefixer
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">// postcss 的命令行工具
+</span><span class="line">sudo npm install  -g postcss-cli
+</span><span class="line">// autoprefixer 插件
+</span><span class="line">sudo npm install -g autoprefixer
+</span></code></pre></td></tr></table></div></figure>
 
 <p>第一次用命令行能让你更直观去理解它哈，所以请要有一颗折腾的心。</p>
 
-<pre><code>// 1. 先看下这个命令有哪些参数可以用
-postcss --help
-
-Usage: /usr/local/bin/postcss -use plugin [--config|-c config.json] [--output|-o
-output.css] [input.css]
-
-选项：
-  -c, --config       JSON file with plugin configuration
-  -u, --use          postcss plugin name (can be used multiple times)
-  -o, --output       Output file (stdout if not provided)
-  -d, --dir          Output directory
-  -r, --replace      Replace input file(s) with generated output       [boolean]
-  -s, --syntax       Alternative input syntax parser
-  -p, --parser       Alternative CSS parser
-  -t, --stringifier  Alternative output stringifier
-  -w, --watch        auto-recompile when detecting source changes
-  -v, --version      显示版本号                                        [boolean]
-  -h, --help         显示帮助信息                                      [boolean]
-
-示例：
-  postcss --use autoprefixer -c             Use autoprefixer as a postcss plugin
-  options.json -o screen.css screen.css
-  postcss --use autoprefixer                Pass plugin parameters in
-  --autoprefixer.browsers "&gt; 5%" -o         plugin.option notation
-  screen.css screen.css
-  postcss -u postcss-cachify -u             Use multiple plugins and multiple
-  autoprefixer -d build *.css               input files
-
-Please specify at least one plugin name.
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">// 1. 先看下这个命令有哪些参数可以用
+</span><span class="line">postcss --help
+</span><span class="line">
+</span><span class="line">Usage: /usr/local/bin/postcss -use plugin <span class="o">[</span>--config<span class="p">|</span>-c config.json<span class="o">]</span> <span class="o">[</span>--output<span class="p">|</span>-o
+</span><span class="line">output.css<span class="o">]</span> <span class="o">[</span>input.css<span class="o">]</span>
+</span><span class="line">
+</span><span class="line">选项：
+</span><span class="line">	-c, --config       JSON file with plugin configuration
+</span><span class="line">	-u, --use          postcss plugin name <span class="o">(</span>can be used multiple <span class="nb">times</span><span class="o">)</span>
+</span><span class="line">	-o, --output       Output file <span class="o">(</span>stdout <span class="k">if</span> not provided<span class="o">)</span>
+</span><span class="line">	-d, --dir          Output directory
+</span><span class="line">	-r, --replace      Replace input file<span class="o">(</span>s<span class="o">)</span> with generated output       <span class="o">[</span>boolean<span class="o">]</span>
+</span><span class="line">	-s, --syntax       Alternative input syntax parser
+</span><span class="line">	-p, --parser       Alternative CSS parser
+</span><span class="line">	-t, --stringifier  Alternative output stringifier
+</span><span class="line">	-w, --watch        auto-recompile when detecting <span class="nb">source </span>changes
+</span><span class="line">	-v, --version      显示版本号                                        <span class="o">[</span>boolean<span class="o">]</span>
+</span><span class="line">	-h, --help         显示帮助信息                                      <span class="o">[</span>boolean<span class="o">]</span>
+</span><span class="line">
+</span><span class="line">示例：
+</span><span class="line">	postcss --use autoprefixer -c             Use autoprefixer as a postcss plugin
+</span><span class="line">	options.json -o screen.css screen.css
+</span><span class="line">	postcss --use autoprefixer                Pass plugin parameters in
+</span><span class="line">	--autoprefixer.browsers <span class="s2">&quot;&gt; 5%&quot;</span> -o         plugin.option notation
+</span><span class="line">	screen.css screen.css
+</span><span class="line">	postcss -u postcss-cachify -u             Use multiple plugins and multiple
+</span><span class="line">	autoprefixer -d build *.css               input files
+</span><span class="line">
+</span><span class="line">Please specify at least one plugin name.
+</span></code></pre></td></tr></table></div></figure>
 
 <p>PS: 我贴出来是方便大家在看的时候不用电脑……^_^</p>
 
@@ -225,49 +258,81 @@ Please specify at least one plugin name.
 
 <p><img src="/images/postcss/menu.png" alt="目录结构" /></p>
 
-<pre><code>// config.json: 所有的配置
-// p.json: 仅有 autoprefixer 插件的配置
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="json"><span class="line"><span class="err">//</span> <span class="err">config.json:</span> <span class="err">所有的配置</span>
+</span><span class="line"><span class="err">//</span> <span class="err">p.json:</span> <span class="err">仅有</span> <span class="err">autoprefixer</span> <span class="err">插件的配置</span>
+</span><span class="line"><span class="err">//</span> <span class="err">config.json</span> <span class="err">的内容</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">	<span class="nt">&quot;use&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;autoprefixer&quot;</span><span class="p">],</span>
+</span><span class="line">	<span class="nt">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;src/index.css&quot;</span><span class="p">,</span>
+</span><span class="line">	<span class="nt">&quot;output&quot;</span><span class="p">:</span> <span class="s2">&quot;index.css&quot;</span><span class="p">,</span>
+</span><span class="line">	<span class="nt">&quot;autoprefixer&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class="line">		<span class="nt">&quot;browsers&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt; 5%&quot;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-// config.json 的内容
-{
-	"use": ["autoprefixer"],
-	"input": "src/index.css",
-	"output": "index.css",
-	"autoprefixer": {
-		"browsers": "&gt; 5%"
-	}
-}
-
-// p.json 的内容
-{
-	"autoprefixer": {
-		"browsers": "&gt; 5%"
-	}
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="json"><span class="line"><span class="err">//</span> <span class="err">p.json</span> <span class="err">的内容</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">	<span class="nt">&quot;autoprefixer&quot;</span><span class="p">:</span> <span class="p">{</span>
+</span><span class="line">		<span class="nt">&quot;browsers&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt; 5%&quot;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>接下来我们在终端里面输入：</p>
 
-<pre><code>// 最简洁的方式
-postcss -c config.json
-// 稍微复杂一点的方式，这里要用 -i 参数，help里面没有，我是从config.json里面的配置猜出来的，官方的那个写法出不来
-postcss -u autoprefixer -c p.json -i src/index.css -o index.css
-// 最复杂的方式
-// 还是不写比较好。。。
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">// 最简洁的方式
+</span><span class="line">postcss -c config.json
+</span><span class="line">// 稍微复杂一点的方式，这里要用 -i 参数，help里面没有，我是从config.json里面的配置猜出来的，官方的那个写法出不来
+</span><span class="line">postcss -u autoprefixer -c p.json -i src/index.css -o index.css
+</span><span class="line">// 最复杂的方式
+</span><span class="line">// 还是不写比较好。。。
+</span></code></pre></td></tr></table></div></figure>
 
 <p>跟平时想到的效果一样：</p>
 
-<pre><code>// src/index.css 中的源码
-* {
-	transition: all .1s;
-}
-// 转换过后的代码 index.css
-* {
-	-webkit-transition: all .1s;
-        transition: all .1s;
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="css"><span class="line"><span class="o">//</span> <span class="nt">src</span><span class="o">/</span><span class="nt">index</span><span class="nc">.css</span> <span class="err">中的源码</span>
+</span><span class="line"><span class="o">*</span> <span class="p">{</span>
+</span><span class="line">	<span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.1s</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="o">//</span> <span class="err">转换过后的代码</span> <span class="nt">index</span><span class="nc">.css</span>
+</span><span class="line"><span class="o">*</span> <span class="p">{</span>
+</span><span class="line">	<span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.1s</span><span class="p">;</span>
+</span><span class="line">		<span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.1s</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>好吧，现在肯定就对 PostCSS 有一个感官的认识了，接下来就是需要自己动手去用一下 <code>cssnext</code> 这个插件了～看会发生什么，这里就不写了，也挺好用的，不过应该还是草案状态。</p>
 
@@ -275,35 +340,53 @@ postcss -u autoprefixer -c p.json -i src/index.css -o index.css
 
 <p>我们开发不可能用命令行吧，所以这里再接着介绍代码编写，然后用 node 去执行文件的方式。直接上代码吧。</p>
 
-<pre><code>// 1. 先安装一下需要的库
-npm install postcss --save-dev
-npm install autoprefixer --save-dev
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">// 1. 先安装一下需要的库
+</span><span class="line">npm install postcss --save-dev
+</span><span class="line">npm install autoprefixer --save-dev
+</span></code></pre></td></tr></table></div></figure>
 
-// 2. 其实应该先看看 postcss 的 package.json 文件，来看看包含了些什么，留个印象
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">// 2. 其实应该先看看 postcss 的 package.json 文件，来看看包含了些什么，留个印象</span>
+</span><span class="line"><span class="c1">// 3. p.js 中的代码</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">postcss</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;postcss&#39;</span><span class="p">);</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">autoprefixer</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;autoprefixer&#39;</span><span class="p">);</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">css</span> <span class="o">=</span> <span class="s1">&#39;* { transition: all .1s; }&#39;</span><span class="p">;</span>
+</span><span class="line"><span class="nx">postcss</span><span class="p">([</span><span class="nx">autoprefixer</span><span class="p">]).</span><span class="nx">process</span><span class="p">(</span><span class="nx">css</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="c1">// 这一行是学习的时候需要的，看一下到底对象里面包含什么</span>
+</span><span class="line">	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</span><span class="line">	<span class="k">if</span> <span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">css</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span><span class="p">(</span><span class="s1">&#39;index.css&#39;</span><span class="p">,</span> <span class="nx">result</span><span class="p">.</span><span class="nx">css</span><span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line">	<span class="k">if</span> <span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">map</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span><span class="p">(</span><span class="s1">&#39;index.css.map&#39;</span><span class="p">,</span> <span class="nx">result</span><span class="p">.</span><span class="nx">map</span><span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
-// 3. p.js 中的代码
-var postcss = require('postcss');
-var autoprefixer = require('autoprefixer');
-var fs = require('fs');
-
-var css = '* { transition: all .1s; }';
-
-postcss([autoprefixer])
-	.process(css)
-	.then(function(result) {
-		// 这一行是学习的时候需要的，看一下到底对象里面包含什么
-		console.log(result);
-		if (result.css) {
-			fs.writeFileSync('index.css', result.css);
-		}
-		if (result.map) {
-			fs.writeFileSync('index.css.map', result.map);
-		}
-	});
-
-// 4. 执行 p.js
-node p
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">// 4. 执行 p.js
+</span><span class="line">node p
+</span></code></pre></td></tr></table></div></figure>
 
 <p>好吧，最后的结果和之前用命令行的方式一样，只不过过程不同。这样下来应该对 PostCSS 有了更多的感觉了吧。还没完，不用慌～我们还需要提出一个问题，我都有 <code>SASS</code> 等预处理器了，还拿它来不是又给前端届添乱么？因为这2年东西确实太多了～</p>
 
@@ -317,22 +400,33 @@ node p
 
 <p>比如，我们用 SASS 来处理 box-shadow 的前缀，我们需要这样写：</p>
 
-<pre><code>/* CSS3 box-shadow */
-@mixin box-shadow($top, $left, $blur, $size, $color, $inset: false) {
-	@if $inset {
-		-webkit-box-shadow: inset $top $left $blur $size $color;
-		box-shadow: inset $top $left $blur $size $color;
-	} @else {
-		-webkit-box-shadow: $top $left $blur $size $color;
-		box-shadow: $top $left $blur $size $color;
-	}
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="css"><span class="line"><span class="c">/* CSS3 box-shadow */</span>
+</span><span class="line"><span class="k">@mixin</span> <span class="nt">box-shadow</span><span class="o">($</span><span class="nt">top</span><span class="o">,</span> <span class="o">$</span><span class="nt">left</span><span class="o">,</span> <span class="o">$</span><span class="nt">blur</span><span class="o">,</span> <span class="o">$</span><span class="nt">size</span><span class="o">,</span> <span class="o">$</span><span class="nt">color</span><span class="o">,</span> <span class="o">$</span><span class="nt">inset</span><span class="o">:</span> <span class="nt">false</span><span class="o">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">@if</span> <span class="o">$</span><span class="nt">inset</span> <span class="p">{</span>
+</span><span class="line">		<span class="nt">-webkit-box-shadow</span><span class="o">:</span> <span class="nt">inset</span> <span class="o">$</span><span class="nt">top</span> <span class="o">$</span><span class="nt">left</span> <span class="o">$</span><span class="nt">blur</span> <span class="o">$</span><span class="nt">size</span> <span class="o">$</span><span class="nt">color</span><span class="o">;</span>
+</span><span class="line">		<span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">inset</span> <span class="o">$</span><span class="nt">top</span> <span class="o">$</span><span class="nt">left</span> <span class="o">$</span><span class="nt">blur</span> <span class="o">$</span><span class="nt">size</span> <span class="o">$</span><span class="nt">color</span><span class="o">;</span>
+</span><span class="line">	<span class="p">}</span> <span class="k">@else</span> <span class="p">{</span>
+</span><span class="line">		<span class="nt">-webkit-box-shadow</span><span class="o">:</span> <span class="o">$</span><span class="nt">top</span> <span class="o">$</span><span class="nt">left</span> <span class="o">$</span><span class="nt">blur</span> <span class="o">$</span><span class="nt">size</span> <span class="o">$</span><span class="nt">color</span><span class="o">;</span>
+</span><span class="line">		<span class="nt">box-shadow</span><span class="o">:</span> <span class="o">$</span><span class="nt">top</span> <span class="o">$</span><span class="nt">left</span> <span class="o">$</span><span class="nt">blur</span> <span class="o">$</span><span class="nt">size</span> <span class="o">$</span><span class="nt">color</span><span class="o">;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>使用 PostCSS 我们只需要按标准的 CSS 来写就行了，因为最后 autoprefixer 会帮我们做添加这个事情～</p>
 
-<pre><code>box-shadow: 0 0 3px 5px rgba(222, 222, 222, .3);
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="css"><span class="line"><span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">0</span> <span class="nt">0</span> <span class="nt">3px</span> <span class="nt">5px</span> <span class="nt">rgba</span><span class="o">(</span><span class="nt">222</span><span class="o">,</span> <span class="nt">222</span><span class="o">,</span> <span class="nt">222</span><span class="o">,</span> <span class="nc">.3</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>所以，这里就出现了一个经常大家说的未来编码的问题。实际上，PostCSS 改变的是一种开发模式。</p>
 
@@ -381,97 +475,181 @@ node p
 
 <p>CSS Parser 可以理解为一个内部过程，而插件程式主要体现在：</p>
 
-<pre><code>postcss([ autoprefixer ])
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">postcss</span><span class="p">([</span> <span class="nx">autoprefixer</span> <span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>最后生成的节点树串体现在：</p>
 
-<pre><code>postcss().process().then(function (result) {
-	// 就是这里了
-	console.log(result.css);
-});
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">postcss</span><span class="p">().</span><span class="nx">process</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="c1">// 就是这里了</span>
+</span><span class="line">	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">css</span><span class="p">);</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line"><span class="c1">// 现在我贴一下上面 result 对象的一个输出结果</span>
+</span><span class="line"><span class="c1">// 这里我多引入了一个 cssnano 插件</span>
+</span><span class="line"><span class="c1">// 改变的代码就这点，为了更全的看 result</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">opts</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">	<span class="nx">from</span><span class="o">:</span> <span class="s1">&#39;src/index.css&#39;</span><span class="p">,</span>
+</span><span class="line">	<span class="nx">to</span><span class="o">:</span> <span class="s1">&#39;index.css&#39;</span><span class="p">,</span>
+</span><span class="line">	<span class="c1">// 配置 map</span>
+</span><span class="line">	<span class="nx">map</span><span class="o">:</span> <span class="p">{</span> <span class="nx">inline</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="nx">postcss</span><span class="p">([</span> <span class="nx">autoprefixer</span><span class="p">,</span> <span class="nx">cssnano</span><span class="p">()</span> <span class="p">]).</span><span class="nx">process</span><span class="p">(</span><span class="nx">css</span><span class="p">,</span> <span class="nx">opts</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-// 现在我贴一下上面 result 对象的一个输出结果
-// 这里我多引入了一个 cssnano 插件
-// 改变的代码就这点，为了更全的看 result
-var opts = {
-	from: 'src/index.css',
-	to: 'index.css',
-	// 配置 map
-	map: { inline: false }
-};
-postcss([ autoprefixer, cssnano() ]).process(css, opts)
-
-Result {
-	processor: Processor {
-		// 处理器的版本号
-		version: '5.0.10',
-		// 加载的一堆插件
-		plugins: [
-			[Object], [Object], [Object], [Object], [Object],
-			[Object], [Object], [Object], [Object], [Object],
-			[Object], [Object], [Object], [Object], [Object],
-			[Object], [Object], [Object], [Object], [Object],
-			[Object], [Object], [Object], [Object], [Object],
-			[Object], [Object]
-		]
-	},
-	messages: [],
-	root: Root {
-		raws: {
-			semicolon: false,
-			after: ''
-		},
-		type: 'root',
-		nodes: [
-			[Object]
-		],
-		source: {
-			input: [Object],
-			start: [Object]
-		},
-		_autoprefixerDisabled: false,
-		_autoprefixerPrefix: false,
-		rawCache: {
-			colon: ':',
-			indent: '',
-			beforeDecl: '',
-			beforeRule: '',
-			beforeOpen: '',
-			beforeClose: '',
-			beforeComment: '',
-			after: '',
-			emptyBody: '',
-			commentLeft: '',
-			commentRight: ''
-		}
-	},
-	// 我们代码中配置 opts 变量
-	opts: {
-		from: 'src/index.css',
-		to: 'index.css'
-	},
-	// 这就是重新生成的 节点树串
-	// 这里有自动补全和高效压缩的效果
-	css: '*{-webkit-transition:all .1s;transition:all .1s}',
-	// map的文件的配置
-	map: 
-		SourceMapGenerator {
-			_file: 'index.css',
-			_sourceRoot: null,
-			_skipValidation: false,
-			_sources: ArraySet { _array: [Object], _set: [Object] },
-			_names: ArraySet { _array: [], _set: {} },
-			_mappings: MappingList { _array: [Object], _sorted: true, _last: [Object] },
-			_sourcesContents: { '$src/index.css': '* { transition: all .1s; }' } },
-	// 这里应该是链式要用的吧，暂时不深究
-	lastPlugin: {
-		[Function]
-		postcssPlugin: 'cssnano-reset-stylecache',
-			postcssVersion: '5.0.10'
-	}
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">Result</span> <span class="p">{</span>
+</span><span class="line">	<span class="nx">processor</span><span class="o">:</span> <span class="nx">Processor</span> <span class="p">{</span>
+</span><span class="line">		<span class="c1">// 处理器的版本号</span>
+</span><span class="line">		<span class="nx">version</span><span class="o">:</span> <span class="s1">&#39;5.0.10&#39;</span><span class="p">,</span>
+</span><span class="line">		<span class="c1">// 加载的一堆插件</span>
+</span><span class="line">		<span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+</span><span class="line">			<span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span>
+</span><span class="line">			<span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span>
+</span><span class="line">			<span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span>
+</span><span class="line">			<span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span>
+</span><span class="line">			<span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span>
+</span><span class="line">			<span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="p">[</span><span class="nb">Object</span><span class="p">]</span>
+</span><span class="line">		<span class="p">]</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">messages</span><span class="o">:</span> <span class="p">[],</span>
+</span><span class="line">	<span class="nx">root</span><span class="o">:</span> <span class="nx">Root</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">raws</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="line">			<span class="nx">semicolon</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">after</span><span class="o">:</span> <span class="s1">&#39;&#39;</span>
+</span><span class="line">		<span class="p">},</span>
+</span><span class="line">		<span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+</span><span class="line">		<span class="nx">nodes</span><span class="o">:</span> <span class="p">[</span>
+</span><span class="line">			<span class="p">[</span><span class="nb">Object</span><span class="p">]</span>
+</span><span class="line">		<span class="p">],</span>
+</span><span class="line">		<span class="nx">source</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="line">			<span class="nx">input</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span>
+</span><span class="line">			<span class="nx">start</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">]</span>
+</span><span class="line">		<span class="p">},</span>
+</span><span class="line">		<span class="nx">_autoprefixerDisabled</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class="line">		<span class="nx">_autoprefixerPrefix</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class="line">		<span class="nx">rawCache</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="line">			<span class="nx">colon</span><span class="o">:</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">indent</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">beforeDecl</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">beforeRule</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">beforeOpen</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">beforeClose</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">beforeComment</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">after</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">emptyBody</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">commentLeft</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">commentRight</span><span class="o">:</span> <span class="s1">&#39;&#39;</span>
+</span><span class="line">		<span class="p">}</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="c1">// 我们代码中配置 opts 变量</span>
+</span><span class="line">	<span class="nx">opts</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">from</span><span class="o">:</span> <span class="s1">&#39;src/index.css&#39;</span><span class="p">,</span>
+</span><span class="line">		<span class="nx">to</span><span class="o">:</span> <span class="s1">&#39;index.css&#39;</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="c1">// 这就是重新生成的 节点树串</span>
+</span><span class="line">	<span class="c1">// 这里有自动补全和高效压缩的效果</span>
+</span><span class="line">	<span class="nx">css</span><span class="o">:</span> <span class="s1">&#39;*{-webkit-transition:all .1s;transition:all .1s}&#39;</span><span class="p">,</span>
+</span><span class="line">	<span class="c1">// map的文件的配置</span>
+</span><span class="line">	<span class="nx">map</span><span class="o">:</span>
+</span><span class="line">		<span class="nx">SourceMapGenerator</span> <span class="p">{</span>
+</span><span class="line">			<span class="nx">_file</span><span class="o">:</span> <span class="s1">&#39;index.css&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">_sourceRoot</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">_skipValidation</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">_sources</span><span class="o">:</span> <span class="nx">ArraySet</span> <span class="p">{</span> <span class="nx">_array</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="nx">_set</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">]</span> <span class="p">},</span>
+</span><span class="line">			<span class="nx">_names</span><span class="o">:</span> <span class="nx">ArraySet</span> <span class="p">{</span> <span class="nx">_array</span><span class="o">:</span> <span class="p">[],</span> <span class="nx">_set</span><span class="o">:</span> <span class="p">{}</span> <span class="p">},</span>
+</span><span class="line">			<span class="nx">_mappings</span><span class="o">:</span> <span class="nx">MappingList</span> <span class="p">{</span> <span class="nx">_array</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span> <span class="nx">_sorted</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">_last</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">]</span> <span class="p">},</span>
+</span><span class="line">			<span class="nx">_sourcesContents</span><span class="o">:</span> <span class="p">{</span> <span class="s1">&#39;$src/index.css&#39;</span><span class="o">:</span> <span class="s1">&#39;* { transition: all .1s; }&#39;</span> <span class="p">}</span> <span class="p">},</span>
+</span><span class="line">	<span class="c1">// 这里应该是链式要用的吧，暂时不深究</span>
+</span><span class="line">	<span class="nx">lastPlugin</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="line">		<span class="p">[</span><span class="nb">Function</span><span class="p">]</span>
+</span><span class="line">		<span class="nx">postcssPlugin</span><span class="o">:</span> <span class="s1">&#39;cssnano-reset-stylecache&#39;</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">postcssVersion</span><span class="o">:</span> <span class="s1">&#39;5.0.10&#39;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>其实吧，这样有点抽象的，还是来看熟悉的 API 吧。</p>
 
@@ -493,14 +671,21 @@ Result {
 
 <p>这里看一个 DEMO，主要做 rem 和 px 单位之间的互换，加入 processors 就可以用了，很方便：</p>
 
-<pre><code>var custom = function(css, opts){
-	css.eachDecl(function(decl){
-		decl.value = decl.value.replace(/\d+rem/, function(str){
-			return 16 * parseFloat(str) + "px";
-		});
-	});
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">var</span> <span class="nx">custom</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">css</span><span class="p">,</span> <span class="nx">opts</span><span class="p">){</span>
+</span><span class="line">	<span class="nx">css</span><span class="p">.</span><span class="nx">eachDecl</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">decl</span><span class="p">){</span>
+</span><span class="line">		<span class="nx">decl</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">decl</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\d+rem/</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">){</span>
+</span><span class="line">			<span class="k">return</span> <span class="mi">16</span> <span class="o">*</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;px&quot;</span><span class="p">;</span>
+</span><span class="line">		<span class="p">});</span>
+</span><span class="line">	<span class="p">});</span>
+</span><span class="line"><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>开发插件可以看一下 <a href="https://github.com/postcss/postcss/blob/master/docs/guidelines/plugin.md">官方插件指南</a></p>
 
@@ -572,6 +757,12 @@ Result {
 <time class='entry-date' datetime='2015-10-24T00:00:00+08:00'><span class='date'>2015 年10 月24 日</span> <span class='time'>12:00 am</span></time>
       
 
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/css/'>css</a>
+  
+</span>
+
 
     </p>
     
@@ -586,14 +777,20 @@ Result {
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/20151009/pro-js-2/" title="Previous Post: JavaScript的特性、函数、对象">&laquo; JavaScript的特性、函数、对象</a>
+        <a class="basic-alignment left" href="/blog/20150726/induction-react-component-dev/" title="Previous Post: React 组件开发入门">&laquo; React 组件开发入门</a>
       
       
-        <a class="basic-alignment right" href="/blog/20151216/hi-vue/" title="Next Post: 乱玩 Vue Todo">乱玩 Vue Todo &raquo;</a>
+        <a class="basic-alignment right" href="/blog/20160110/checkbox-anim/" title="Next Post: 一个好玩的 CSS 技术 CheckBox">一个好玩的 CSS 技术 CheckBox &raquo;</a>
       
     </p>
   </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -612,15 +809,15 @@ Result {
       </li>
     
       <li class="post">
-        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
       </li>
     
       <li class="post">
-        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>
@@ -677,7 +874,10 @@ Result {
       var disqus_shortname = 'lulin';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://fegg.github.io/blog/20151024/postcss-introduce/';
+        var disqus_url = 'http://fegg.github.io/blog/20151024/postcss-introduce/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

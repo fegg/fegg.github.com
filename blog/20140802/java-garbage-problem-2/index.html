@@ -130,61 +130,95 @@
 
 <!--more-->
 
-<pre><code>package com.test.one;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class Hello extends HttpServlet {
-    private static final long serialVersionUID = 4878915372815719687L;
-	
-    public Hello() {
-        super();
-    }
-    public void destroy() {
-        super.destroy(); // Just puts "destroy" string in log
-    }
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-        //输入：设置请求编码格式
-        request.setCharacterEncoding("GBK");
-        //输出：设置响应编码格式
-        response.setContentType("text/html; charset=GBK");
-        PrintWriter out = response.getWriter();
-        out.write("&lt;hr&gt;");
-        out.write("Hello, 中文！");
-        out.write("&lt;hr&gt;");
-    }
-    public void doPost(HttpServletRequest request, HttpServletResponse response) 
-        throws ServletException, IOException {
-        //输入：设置请求编码格式
-        request.setCharacterEncoding("GBK");
-        //输出：设置响应编码格式
-        response.setContentType("text/html; charset=GBK");
-        //从请求中接收参数
-        String input_str = request.getParameter("input_str");
-        String url_arg = request.getParameter("url_arg");
-        //出错处理
-        input_str = (null == input_str) ? "" : input_str;
-        url_arg = (null == url_arg) ? "" : url_arg;
-        PrintWriter out = response.getWriter();
-        out.write("&lt;hr&gt;");
-        out.println("您输入的字符串是：" + input_str);
-        out.write("&lt;hr&gt;");
-        //out.println("您的表单传递的URL参数是：" + new String(url_arg.getBytes("ISO-8859-1"), "GBK"));
-        out.println("您的表单传递的URL参数是：" + url_arg);
-        out.write("&lt;hr&gt;");
-    }
-    public void init() throws ServletException {
-        // Put your code here
-    }
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hello</span> <span class="kd">extends</span> <span class="n">HttpServlet</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="mi">4878915372815719687L</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="nf">Hello</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="kd">super</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroy</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="kd">super</span><span class="o">.</span><span class="na">destroy</span><span class="o">();</span> <span class="c1">// Just puts &quot;destroy&quot; string in log</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doGet</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">)</span>
+</span><span class="line">        <span class="kd">throws</span> <span class="n">ServletException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class="line">        <span class="c1">//输入：设置请求编码格式</span>
+</span><span class="line">        <span class="n">request</span><span class="o">.</span><span class="na">setCharacterEncoding</span><span class="o">(</span><span class="s">&quot;GBK&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="c1">//输出：设置响应编码格式</span>
+</span><span class="line">        <span class="n">response</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="s">&quot;text/html; charset=GBK&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="n">PrintWriter</span> <span class="n">out</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getWriter</span><span class="o">();</span>
+</span><span class="line">        <span class="n">out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">&quot;&lt;hr&gt;&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="n">out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">&quot;Hello, 中文！&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="n">out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">&quot;&lt;hr&gt;&quot;</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doPost</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">)</span>
+</span><span class="line">        <span class="kd">throws</span> <span class="n">ServletException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class="line">        <span class="c1">//输入：设置请求编码格式</span>
+</span><span class="line">        <span class="n">request</span><span class="o">.</span><span class="na">setCharacterEncoding</span><span class="o">(</span><span class="s">&quot;GBK&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="c1">//输出：设置响应编码格式</span>
+</span><span class="line">        <span class="n">response</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="s">&quot;text/html; charset=GBK&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="c1">//从请求中接收参数</span>
+</span><span class="line">        <span class="n">String</span> <span class="n">input_str</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">&quot;input_str&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="n">String</span> <span class="n">url_arg</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">&quot;url_arg&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="c1">//出错处理</span>
+</span><span class="line">        <span class="n">input_str</span> <span class="o">=</span> <span class="o">(</span><span class="kc">null</span> <span class="o">==</span> <span class="n">input_str</span><span class="o">)</span> <span class="o">?</span> <span class="s">&quot;&quot;</span> <span class="o">:</span> <span class="n">input_str</span><span class="o">;</span>
+</span><span class="line">        <span class="n">url_arg</span> <span class="o">=</span> <span class="o">(</span><span class="kc">null</span> <span class="o">==</span> <span class="n">url_arg</span><span class="o">)</span> <span class="o">?</span> <span class="s">&quot;&quot;</span> <span class="o">:</span> <span class="n">url_arg</span><span class="o">;</span>
+</span><span class="line">        <span class="n">PrintWriter</span> <span class="n">out</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getWriter</span><span class="o">();</span>
+</span><span class="line">        <span class="n">out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">&quot;&lt;hr&gt;&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="n">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;您输入的字符串是：&quot;</span> <span class="o">+</span> <span class="n">input_str</span><span class="o">);</span>
+</span><span class="line">        <span class="n">out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">&quot;&lt;hr&gt;&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="c1">//out.println(&quot;您的表单传递的URL参数是：&quot; + new String(url_arg.getBytes(&quot;ISO-8859-1&quot;), &quot;GBK&quot;));</span>
+</span><span class="line">        <span class="n">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;您的表单传递的URL参数是：&quot;</span> <span class="o">+</span> <span class="n">url_arg</span><span class="o">);</span>
+</span><span class="line">        <span class="n">out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">&quot;&lt;hr&gt;&quot;</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">ServletException</span> <span class="o">{</span>
+</span><span class="line">        <span class="c1">// Put your code here</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 </div>
 
 
@@ -202,6 +236,12 @@ public class Hello extends HttpServlet {
 
 <time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>
+  
+</span>
 
 
     </p>
@@ -243,15 +283,15 @@ public class Hello extends HttpServlet {
       </li>
     
       <li class="post">
-        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
       </li>
     
       <li class="post">
-        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 兴趣 | 小撸]]></title>
+  <link href="http://fegg.github.io/blog/categories/xing-qu/atom.xml" rel="self"/>
+  <link href="http://fegg.github.io/"/>
+  <updated>2016-06-11T02:41:11+08:00</updated>
+  <id>http://fegg.github.io/</id>
+  <author>
+    <name><![CDATA[小撸]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[一个好玩的 CSS 技术 CheckBox]]></title>
+    <link href="http://fegg.github.io/blog/20160110/checkbox-anim/"/>
+    <updated>2016-01-10T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20160110/checkbox-anim</id>
+    <content type="html"><![CDATA[<h3 id="section">废话</h3>
+
+<p>＝＝晚上失眠了，在网页上看到一个好玩的效果，自己模拟了一下，最开始用SVG写的。。。不多说了，简单记录一下思路和写法。</p>
+
+<h3 id="section-1">思路</h3>
+
+<p>先贴一下效果图，脑袋里面留下直观印象。录的效果可能不太好，大家可以用代码本地跑起来看真实的效果。</p>
+
+<p><img src="/images/checkbox-anim.gif" alt="动态效果" /></p>
+
+<ol>
+  <li>构造一个简单的组件元素，采用 <code>::after</code> 伪元素来实现</li>
+  <li>利用 CSS 中 <code>border</code> 来实现，并且利用 CSS3 动画来添加切换的动画效果</li>
+  <li>主要利用 <code>rotate</code> 和 <code>scale</code> 的效果来实现</li>
+  <li>JS 部分对类名的 <code>toggle</code></li>
+</ol>
+
+<!-- more -->
+
+<h3 id="section-2">基本结构</h3>
+
+<p><code>html
+	&lt;checkbox-anim class="checkbox_anim js_anim_normal"&gt;
+        &lt;span class="checkbox checkbox-span"&gt;&lt;/span&gt;
+    &lt;/checkbox-anim&gt;
+    &lt;checkbox-anim class="checkbox_anim js_anim_half"&gt;
+        &lt;span class="checkbox checkbox-span checkbox_half"&gt;&lt;/span&gt;
+    &lt;/checkbox-anim&gt;
+</code></p>
+
+<p>这里我的结构比较简单，<code>checkbox-anim</code> 组件属于 <strong>namespace</strong> 里面就是真正的组件肉体了。在真实使用的时候需要引入 <code>input</code> 组件，为了简单，这里就省略了，更清晰的看交互的实现。</p>
+
+<h3 id="section-3">漂亮的修饰</h3>
+
+<blockquote>
+  <p>两个组件最基本的样式</p>
+</blockquote>
+
+<p>``` css
+	/<strong>**</strong><strong>** checkbox 基本样式 **</strong><strong>**</strong>***/
+	.checkbox {
+        display: block;
+        width: 50px;
+        height: 50px;
+        background: white;
+        border: 1px solid #e9e9e9;
+        border-radius: 3px;
+        position: relative;</p>
+
+<pre><code>    transition: all .2s cubic-bezier(.68,-.55,.27,1.55);
+}
+
+.checkbox::after {
+    display: block;
+    content: '\20';
+    width: 14px;
+    height: 24px;
+    border: 4px solid white;
+    border-top: 0;
+    border-left: 0;
+
+    transform: rotate(45deg) scale(0);
+    position: absolute;
+    top: 14px;
+    left: 16px;
+
+	transition: all .2s cubic-bezier(.18,.89,.32,1.28) .1s;
+}
+
+/********** checkbox_half 基本样式 *************/
+.checkbox_half {
+	background: #2db7f5;
+	border: 1px solid #2db7f5;
+}
+
+.checkbox_half::after {
+	width: 16px;
+	height: 0;
+	top: 23px;
+	transform: scale(1);
+} ```
+</code></pre>
+
+<blockquote>
+  <p>状态改变后的样式</p>
+</blockquote>
+
+<p>``` css
+	/* checkbox 激活样式 */
+	.checked .checkbox {
+		background: #2db7f5;
+        border: 1px solid #2db7f5;
+	}
+    .checked .checkbox::after {
+		top: 7px;
+		transform: rotate(45deg) scale(1);
+    }</p>
+
+<pre><code>/********** checkbox_half 激活样式 *************/
+/* 没有修改背景色的部分哦～ */
+.checked .checkbox_half::after {
+	width: 12px;
+	height: 24px;
+} ```
+</code></pre>
+
+<blockquote>
+  <p>其余附带的一点样式，非主要，修饰用的</p>
+</blockquote>
+
+<p>``` css
+	/* other 修饰类型样式 */
+	.checkbox_anim {
+    	cursor: pointer;
+        display: block;
+    }</p>
+
+<pre><code>.checkbox-span {
+    margin: 20px;
+} ```
+</code></pre>
+
+<p>其实现在我们就算写完了，加入点 JS 就能够完整的动起来了。这里贴一下，可以拿来跑来看看效果 ^0^ 兼容神马的我不知道。。。不知道。。。</p>
+
+<p>``` javascript
+	(function(window, document, undefined) {
+        if (window.HTMLElement) {
+            HTMLElement.prototype.on = function(type, cb, isbb) {
+                if (window.addEventListener) {
+                    this.addEventListener(type, cb, isbb || false);
+                }</p>
+
+<pre><code>            return this;
+        };
+        HTMLElement.prototype.toggleClass = function(cls) {
+            if (this.classList) {
+                this.classList.toggle(cls);
+            }
+
+            return this;
+        };
+    }
+
+    function select(selector) {
+        return document.querySelector(selector);
+    }
+
+    var CheckBox = {
+        checked: 'checked'
+    };
+
+    var CheckBoxNormal = {
+        _self: select('.js_anim_normal'),
+        init: function() {
+            this.bind();
+        },
+        bind: function() {
+            this._self.on('click', this.handleCheckbox.bind(this));
+        },
+        handleCheckbox: function(e) {
+            this._self.toggleClass(CheckBox.checked);
+        }
+    };
+
+    var CheckBoxHalf = {
+        _self: select('.js_anim_half'),
+        init: function() {
+            this.bind();
+        },
+        bind: function() {
+            this._self.on('click', this.handleCheckbox.bind(this));
+        },
+        handleCheckbox: function(e) {
+            this._self.toggleClass(CheckBox.checked);
+        }
+    };
+
+    [CheckBoxNormal, CheckBoxHalf].forEach(function(checkbox) {
+    	checkbox.init();
+    });
+})(window, document); ```
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

@@ -142,33 +142,59 @@
 
 <p>这个是相当容易的，在使用 React 开发的过程中经常会使用到，主要是利用 props 来进行交流。例子如下：</p>
 
-<pre><code>// 父组件
-var MyContainer = React.createClass({
-  getInitialState: function () {
-    return {
-      checked: true
-    };
-  },
-  render: function() {
-    return (
-      &lt;ToggleButton text="Toggle me" checked={this.state.checked} /&gt;
-    );
-  }
-});
-
-// 子组件
-var ToggleButton = React.createClass({
-  render: function () {
-    // 从【父组件】获取的值
-	var checked = this.props.checked,
-        text = this.props.text;
-
-	return (
-        &lt;label&gt;{text}: &lt;input type="checkbox" checked={checked} /&gt;&lt;/label&gt;
-    );
-  }
-});
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">// 父组件</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">MyContainer</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">getInitialState</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">{</span>
+</span><span class="line">			<span class="nx">checked</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class="line">		<span class="p">};</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">(</span>
+</span><span class="line">			<span class="o">&lt;</span><span class="nx">ToggleButton</span> <span class="nx">text</span><span class="o">=</span><span class="s2">&quot;Toggle me&quot;</span> <span class="nx">checked</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">checked</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class="line">		<span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// 子组件</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">ToggleButton</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="c1">// 从【父组件】获取的值</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">checked</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">checked</span><span class="p">,</span>
+</span><span class="line">				<span class="nx">text</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">text</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">		<span class="k">return</span> <span class="p">(</span>
+</span><span class="line">				<span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">text</span><span class="p">}</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span> <span class="nx">checked</span><span class="o">=</span><span class="p">{</span><span class="nx">checked</span><span class="p">}</span> <span class="o">/&gt;&lt;</span><span class="err">/label&gt;</span>
+</span><span class="line">		<span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <blockquote>
   <p>进一步讨论</p>
@@ -176,91 +202,169 @@ var ToggleButton = React.createClass({
 
 <p>如果组件嵌套层次太深，那么从外到内组件的交流成本就变得很高，通过 props 传递值的优势就不那么明显了。（PS：所以我建议尽可能的减少组件的层次，就像写 HTML 一样，简单清晰的结构更惹人爱）</p>
 
-<pre><code>// 父组件
-var MyContainer = React.createClass({
-  render: function() {
-    return (
-      &lt;Intermediate text="where is my son?" /&gt;
-    );
-  }
-});
-
-// 子组件1：中间嵌套的组件
-var Intermediate = React.createClass({
-  render: function () {
-    return (
-      &lt;Child text={this.props.text} /&gt;
-    );
-  }
-});
-
-// 子组件2：子组件1的子组件
-var Child = React.createClass({
-  render: function () {
-    return (
-      &lt;span&gt;{this.props.text}&lt;/span&gt;
-    );
-  }
-});
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">// 父组件</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">MyContainer</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">(</span>
+</span><span class="line">			<span class="o">&lt;</span><span class="nx">Intermediate</span> <span class="nx">text</span><span class="o">=</span><span class="s2">&quot;where is my son?&quot;</span> <span class="o">/&gt;</span>
+</span><span class="line">		<span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// 子组件1：中间嵌套的组件</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">Intermediate</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">(</span>
+</span><span class="line">			<span class="o">&lt;</span><span class="nx">Child</span> <span class="nx">text</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class="line">		<span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// 子组件2：子组件1的子组件</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">Child</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">(</span>
+</span><span class="line">			<span class="o">&lt;</span><span class="nx">span</span><span class="o">&gt;</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/span&gt;</span>
+</span><span class="line">		<span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <h3 id="section-3">二、【子组件】向【父组件】传值</h3>
 
 <p>接下来，我们介绍【子组件】控制自己的 state 然后告诉【父组件】的点击状态，然后在【父组件】中展示出来。因此，我们添加一个 change 事件来做交互。</p>
 
-<pre><code>// 父组件
-var MyContainer = React.createClass({
-  getInitialState: function () {
-    return {
-      checked: false
-    };
-  },
-  onChildChanged: function (newState) {
-    this.setState({
-      checked: newState
-    });
-  },
-  render: function() {
-    var isChecked = this.state.checked ? 'yes' : 'no';
-    return (
-      &lt;div&gt;
-        &lt;div&gt;Are you checked: {isChecked}&lt;/div&gt;
-        &lt;ToggleButton text="Toggle me"
-          initialChecked={this.state.checked}
-          callbackParent={this.onChildChanged}
-          /&gt;
-      &lt;/div&gt;
-    );
-  }
-});
-
-// 子组件
-var ToggleButton = React.createClass({
-  getInitialState: function () {
-    return {
-      checked: this.props.initialChecked
-    };
-  },
-  onTextChange: function () {
-    var newState = !this.state.checked;
-    this.setState({
-      checked: newState
-    });
-    // 这里要注意：setState 是一个异步方法，所以需要操作缓存的当前值
-    this.props.callbackParent(newState);
-  },
-  render: function () {
-    // 从【父组件】获取的值
-    var text = this.props.text;
-    // 组件自身的状态数据
-    var checked = this.state.checked;
-
-    return (
-        &lt;label&gt;{text}: &lt;input type="checkbox" checked={checked} 				onChange={this.onTextChange} /&gt;&lt;/label&gt;
-    );
-  }
-});
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">// 父组件</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">MyContainer</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">getInitialState</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">{</span>
+</span><span class="line">			<span class="nx">checked</span><span class="o">:</span> <span class="kc">false</span>
+</span><span class="line">		<span class="p">};</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">onChildChanged</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newState</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+</span><span class="line">			<span class="nx">checked</span><span class="o">:</span> <span class="nx">newState</span>
+</span><span class="line">		<span class="p">});</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">isChecked</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">checked</span> <span class="o">?</span> <span class="s1">&#39;yes&#39;</span> <span class="o">:</span> <span class="s1">&#39;no&#39;</span><span class="p">;</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">(</span>
+</span><span class="line">			<span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+</span><span class="line">				<span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="nx">Are</span> <span class="nx">you</span> <span class="nx">checked</span><span class="o">:</span> <span class="p">{</span><span class="nx">isChecked</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class="line">				<span class="o">&lt;</span><span class="nx">ToggleButton</span> <span class="nx">text</span><span class="o">=</span><span class="s2">&quot;Toggle me&quot;</span>
+</span><span class="line">					<span class="nx">initialChecked</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">checked</span><span class="p">}</span>
+</span><span class="line">					<span class="nx">callbackParent</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">onChildChanged</span><span class="p">}</span>
+</span><span class="line">					<span class="o">/&gt;</span>
+</span><span class="line">			<span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class="line">		<span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// 子组件</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">ToggleButton</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">getInitialState</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">{</span>
+</span><span class="line">			<span class="nx">checked</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">initialChecked</span>
+</span><span class="line">		<span class="p">};</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">onTextChange</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">newState</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">checked</span><span class="p">;</span>
+</span><span class="line">		<span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+</span><span class="line">			<span class="nx">checked</span><span class="o">:</span> <span class="nx">newState</span>
+</span><span class="line">		<span class="p">});</span>
+</span><span class="line">		<span class="c1">// 这里要注意：setState 是一个异步方法，所以需要操作缓存的当前值</span>
+</span><span class="line">		<span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">callbackParent</span><span class="p">(</span><span class="nx">newState</span><span class="p">);</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="c1">// 从【父组件】获取的值</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">text</span><span class="p">;</span>
+</span><span class="line">		<span class="c1">// 组件自身的状态数据</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">checked</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">checked</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">		<span class="k">return</span> <span class="p">(</span>
+</span><span class="line">				<span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">text</span><span class="p">}</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span> <span class="nx">checked</span><span class="o">=</span><span class="p">{</span><span class="nx">checked</span><span class="p">}</span> 				<span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">onTextChange</span><span class="p">}</span> <span class="o">/&gt;&lt;</span><span class="err">/label&gt;</span>
+</span><span class="line">		<span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p><img src="/images/react/demo3.gif" alt="运行效果" /></p>
 
@@ -285,27 +389,41 @@ var ToggleButton = React.createClass({
 
 <p>React 对所有事件的管理都是自己实现的，与我们之前使用的 onclick、onchange 事件不一样。从根本上来说，他们都是绑定到 body 上。</p>
 
-<pre><code>document.on('change', 'input[data-reactid=".0.2"]', function () {...});
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nb">document</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="s1">&#39;input[data-reactid=&quot;.0.2&quot;]&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{...});</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>上面这份代码不是来自于 React，只是打一个比方而已。</p>
 
 <p>如果我没有猜错的话，React 真正处理一个事件的代码如下：</p>
 
-<pre><code>var listenTo = ReactBrowserEventEmitter.listenTo;
-...
-function putListener(id, registrationName, listener, transaction) {
-  ...
-  var container = ReactMount.findReactContainerForID(id);
-  if (container) {
-    var doc = container.nodeType === ELEMENT_NODE_TYPE ? container.ownerDocument : container;
-	listenTo(registrationName, doc);
-  }
-  ...
-}
-// 在监听事件的内部，我们能发现如下：
-target.addEventListener(eventType, callback, false);
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">var</span> <span class="nx">listenTo</span> <span class="o">=</span> <span class="nx">ReactBrowserEventEmitter</span><span class="p">.</span><span class="nx">listenTo</span><span class="p">;</span>
+</span><span class="line"><span class="p">...</span>
+</span><span class="line"><span class="kd">function</span> <span class="nx">putListener</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">registrationName</span><span class="p">,</span> <span class="nx">listener</span><span class="p">,</span> <span class="nx">transaction</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="p">...</span>
+</span><span class="line">	<span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">ReactMount</span><span class="p">.</span><span class="nx">findReactContainerForID</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+</span><span class="line">	<span class="k">if</span> <span class="p">(</span><span class="nx">container</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">doc</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">===</span> <span class="nx">ELEMENT_NODE_TYPE</span> <span class="o">?</span> <span class="nx">container</span><span class="p">.</span><span class="nx">ownerDocument</span> <span class="o">:</span> <span class="nx">container</span><span class="p">;</span>
+</span><span class="line">		<span class="nx">listenTo</span><span class="p">(</span><span class="nx">registrationName</span><span class="p">,</span> <span class="nx">doc</span><span class="p">);</span>
+</span><span class="line">		<span class="p">}</span>
+</span><span class="line">	<span class="p">...</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="c1">// 在监听事件的内部，我们能发现如下：</span>
+</span><span class="line"><span class="nx">target</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">eventType</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这里有所有 React 支持的事件：<a href="http://reactjs.cn/react/docs/events.html">中文文档-事件系统</a></p>
 
@@ -313,69 +431,131 @@ target.addEventListener(eventType, callback, false);
   <p>多个子组件使用同一个回调的情况</p>
 </blockquote>
 
-<pre><code>// 父组件
-var MyContainer = React.createClass({
-  getInitialState: function () {
-    return {
-      totalChecked: 0
-    };
-  },
-  onChildChanged: function (newState) {
-    var newToral = this.state.totalChecked
-      + (newState ? 1 : -1);
-    this.setState({
-      totalChecked: newToral
-    });
-  },
-  render: function() {
-    var totalChecked = this.state.totalChecked;
-    return (
-      &lt;div&gt;
-        &lt;div&gt;How many are checked: {totalChecked}&lt;/div&gt;
-        &lt;ToggleButton text="Toggle me"
-          initialChecked={this.state.checked}
-          callbackParent={this.onChildChanged}
-          /&gt;
-        &lt;ToggleButton text="Toggle me too"
-            initialChecked={this.state.checked}
-            callbackParent={this.onChildChanged}
-          /&gt;
-        &lt;ToggleButton text="And me"
-          initialChecked={this.state.checked}
-          callbackParent={this.onChildChanged}
-          /&gt;
-      &lt;/div&gt;
-	);
-  }
-});
-
-// 子组件
-var ToggleButton = React.createClass({
-  getInitialState: function () {
-    return {
-      checked: this.props.initialChecked
-    };
-  },
-  onTextChange: function () {
-    var newState = !this.state.checked;
-    this.setState({
-      checked: newState
-    });
-    // 这里要注意：setState 是一个异步方法，所以需要操作缓存的当前值
-	this.props.callbackParent(newState);
-  },
-  render: function () {
-    // 从【父组件】获取的值
-    var text = this.props.text;
-    // 组件自身的状态数据
-    var checked = this.state.checked;
-
-    return (
-        &lt;label&gt;{text}: &lt;input type="checkbox" checked={checked} onChange={this.onTextChange} /&gt;&lt;/label&gt;
-    );
-  }
-});
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">// 父组件</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">MyContainer</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">getInitialState</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">{</span>
+</span><span class="line">			<span class="nx">totalChecked</span><span class="o">:</span> <span class="mi">0</span>
+</span><span class="line">		<span class="p">};</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">onChildChanged</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newState</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">newToral</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">totalChecked</span>
+</span><span class="line">			<span class="o">+</span> <span class="p">(</span><span class="nx">newState</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span><span class="line">		<span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+</span><span class="line">			<span class="nx">totalChecked</span><span class="o">:</span> <span class="nx">newToral</span>
+</span><span class="line">		<span class="p">});</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">totalChecked</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">totalChecked</span><span class="p">;</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">(</span>
+</span><span class="line">			<span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+</span><span class="line">				<span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="nx">How</span> <span class="nx">many</span> <span class="nx">are</span> <span class="nx">checked</span><span class="o">:</span> <span class="p">{</span><span class="nx">totalChecked</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class="line">				<span class="o">&lt;</span><span class="nx">ToggleButton</span> <span class="nx">text</span><span class="o">=</span><span class="s2">&quot;Toggle me&quot;</span>
+</span><span class="line">					<span class="nx">initialChecked</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">checked</span><span class="p">}</span>
+</span><span class="line">					<span class="nx">callbackParent</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">onChildChanged</span><span class="p">}</span>
+</span><span class="line">					<span class="o">/&gt;</span>
+</span><span class="line">				<span class="o">&lt;</span><span class="nx">ToggleButton</span> <span class="nx">text</span><span class="o">=</span><span class="s2">&quot;Toggle me too&quot;</span>
+</span><span class="line">						<span class="nx">initialChecked</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">checked</span><span class="p">}</span>
+</span><span class="line">						<span class="nx">callbackParent</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">onChildChanged</span><span class="p">}</span>
+</span><span class="line">						<span class="o">/&gt;</span>
+</span><span class="line">					<span class="o">&lt;</span><span class="nx">ToggleButton</span> <span class="nx">text</span><span class="o">=</span><span class="s2">&quot;And me&quot;</span>
+</span><span class="line">						<span class="nx">initialChecked</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">checked</span><span class="p">}</span>
+</span><span class="line">						<span class="nx">callbackParent</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">onChildChanged</span><span class="p">}</span>
+</span><span class="line">						<span class="o">/&gt;</span>
+</span><span class="line">			<span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class="line">		<span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// 子组件</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">ToggleButton</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">getInitialState</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">{</span>
+</span><span class="line">			<span class="nx">checked</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">initialChecked</span>
+</span><span class="line">		<span class="p">};</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">onTextChange</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">newState</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">checked</span><span class="p">;</span>
+</span><span class="line">		<span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+</span><span class="line">			<span class="nx">checked</span><span class="o">:</span> <span class="nx">newState</span>
+</span><span class="line">		<span class="p">});</span>
+</span><span class="line">		<span class="c1">// 这里要注意：setState 是一个异步方法，所以需要操作缓存的当前值</span>
+</span><span class="line">		<span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">callbackParent</span><span class="p">(</span><span class="nx">newState</span><span class="p">);</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="c1">// 从【父组件】获取的值</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">text</span><span class="p">;</span>
+</span><span class="line">		<span class="c1">// 组件自身的状态数据</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">checked</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">checked</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">		<span class="k">return</span> <span class="p">(</span>
+</span><span class="line">				<span class="o">&lt;</span><span class="nx">label</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">text</span><span class="p">}</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;checkbox&quot;</span> <span class="nx">checked</span><span class="o">=</span><span class="p">{</span><span class="nx">checked</span><span class="p">}</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">onTextChange</span><span class="p">}</span> <span class="o">/&gt;&lt;</span><span class="err">/label&gt;</span>
+</span><span class="line">		<span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p><img src="/images/react/demo4.gif" alt="运行结果" /></p>
 
@@ -393,58 +573,90 @@ var ToggleButton = React.createClass({
 
 <p>特点：需要一个指定的订阅源</p>
 
-<pre><code>// to subscribe
-otherObject.addEventListener(‘click’, function() { alert(‘click!’); });
-// to dispatch
-this.dispatchEvent(‘click’);
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">// to subscribe</span>
+</span><span class="line"><span class="nx">otherObject</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="err">‘</span><span class="nx">click</span><span class="err">’</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="err">‘</span><span class="nx">click</span><span class="o">!</span><span class="err">’</span><span class="p">);</span> <span class="p">});</span>
+</span><span class="line"><span class="c1">// to dispatch</span>
+</span><span class="line"><span class="k">this</span><span class="p">.</span><span class="nx">dispatchEvent</span><span class="p">(</span><span class="err">‘</span><span class="nx">click</span><span class="err">’</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>(2) Publish / Subscribe</p>
 
 <p>特点：触发事件的时候，你不需要指定一个特定的源，因为它是使用一个全局对象来处理事件（其实就是一个全局
 广播的方式来处理事件）</p>
 
-<pre><code>// to subscribe
-globalBroadcaster.subscribe(‘click’, function() { alert(‘click!’); });
-// to dispatch
-globalBroadcaster.publish(‘click’);
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">// to subscribe</span>
+</span><span class="line"><span class="nx">globalBroadcaster</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="err">‘</span><span class="nx">click</span><span class="err">’</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="err">‘</span><span class="nx">click</span><span class="o">!</span><span class="err">’</span><span class="p">);</span> <span class="p">});</span>
+</span><span class="line"><span class="c1">// to dispatch</span>
+</span><span class="line"><span class="nx">globalBroadcaster</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="err">‘</span><span class="nx">click</span><span class="err">’</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>(3) Signals</p>
 
 <p>特点：与Event Emitter/Target/Dispatcher相似，但是你不要使用随机的字符串作为事件触发的引用。触发事件的每一个对象都需要一个确切的名字（就是类似硬编码类的去写事件名字），并且在触发的时候，也必须要指定确切的事件。（看例子吧，很好理解）</p>
 
-<pre><code>// to subscribe
-otherObject.clicked.add(function() { alert(‘click’); });
-// to dispatch
-this.clicked.dispatch();
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">// to subscribe</span>
+</span><span class="line"><span class="nx">otherObject</span><span class="p">.</span><span class="nx">clicked</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="err">‘</span><span class="nx">click</span><span class="err">’</span><span class="p">);</span> <span class="p">});</span>
+</span><span class="line"><span class="c1">// to dispatch</span>
+</span><span class="line"><span class="k">this</span><span class="p">.</span><span class="nx">clicked</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>如果你只想简单的使用一下，并不需要其他操作，可以用简单的方式来实现：</p>
 
-<pre><code>// 简单实现了一下 subscribe 和 dispatch
-var EventEmitter = {
-    _events: {},
-    dispatch: function (event, data) {
-        if (!this._events[event]) { // 没有监听事件
-          return;
-        }
-        for (var i = 0; i &lt; this._events[event].length; i++) {
-            this._events[event][i](data);
-        }
-	},
-    subscribe: function (event, callback) {
-      // 创建一个新事件数组
-      if (!this._events[event]) {
-        this._events[event] = [];
-      }
-      this._events[event].push(callback);
-    }
-};
-
-otherObject.subscribe('namechanged', function(data) { alert(data.name); });
-this.dispatch('namechanged', { name: 'John' });
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">// 简单实现了一下 subscribe 和 dispatch</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">EventEmitter</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">_events</span><span class="o">:</span> <span class="p">{},</span>
+</span><span class="line">		<span class="nx">dispatch</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_events</span><span class="p">[</span><span class="nx">event</span><span class="p">])</span> <span class="p">{</span> <span class="c1">// 没有监听事件</span>
+</span><span class="line">					<span class="k">return</span><span class="p">;</span>
+</span><span class="line">				<span class="p">}</span>
+</span><span class="line">				<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_events</span><span class="p">[</span><span class="nx">event</span><span class="p">].</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">						<span class="k">this</span><span class="p">.</span><span class="nx">_events</span><span class="p">[</span><span class="nx">event</span><span class="p">][</span><span class="nx">i</span><span class="p">](</span><span class="nx">data</span><span class="p">);</span>
+</span><span class="line">				<span class="p">}</span>
+</span><span class="line">		<span class="p">},</span>
+</span><span class="line">		<span class="nx">subscribe</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">			<span class="c1">// 创建一个新事件数组</span>
+</span><span class="line">			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_events</span><span class="p">[</span><span class="nx">event</span><span class="p">])</span> <span class="p">{</span>
+</span><span class="line">				<span class="k">this</span><span class="p">.</span><span class="nx">_events</span><span class="p">[</span><span class="nx">event</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
+</span><span class="line">			<span class="p">}</span>
+</span><span class="line">			<span class="k">this</span><span class="p">.</span><span class="nx">_events</span><span class="p">[</span><span class="nx">event</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
+</span><span class="line">		<span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="nx">otherObject</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">&#39;namechanged&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span> <span class="p">});</span>
+</span><span class="line"><span class="k">this</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;namechanged&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;John&#39;</span> <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>如果你想使用 Publish/Subscribe 模型，可以使用：<a href="https://github.com/mroderick/PubSubJS">PubSubJS</a></p>
 
@@ -454,9 +666,11 @@ this.dispatch('namechanged', { name: 'John' });
 
 <p>使用 React 事件的时候，必须关注下面两个方法：</p>
 
-<pre><code>componentDidMount
-componentWillUnmount
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">componentDidMount</span>
+</span><span class="line"><span class="nx">componentWillUnmount</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>在处理事件的时候，需要注意：</p>
 
@@ -472,52 +686,95 @@ componentWillUnmount
 
 <p>(我在例子中引入了之前推荐的 PubSubJS 库，如果你觉得引入代价太大，也可以手写一个简版，还是比较容易的，很好用哈，大家也可以体验，但是我还是不推荐全局广播的方式)</p>
 
-<pre><code>// 定义一个容器
-var ProductList = React.createClass({
-    render: function () {
-      return (
-        &lt;div&gt;
-          &lt;ProductSelection /&gt;
-          &lt;Product name="product 1" /&gt;
-          &lt;Product name="product 2" /&gt;
-          &lt;Product name="product 3" /&gt;
-        &lt;/div&gt;
-      );
-    }
-});
-// 用于展示点击的产品信息容器
-var ProductSelection = React.createClass({
-  getInitialState: function() {
-    return {
-      selection: 'none'
-    };
-  },
-  componentDidMount: function () {
-    this.pubsub_token = PubSub.subscribe('products', function (topic, product) {
-      this.setState({
-        selection: product
-      });
-    }.bind(this));
-  },
-  componentWillUnmount: function () {
-    PubSub.unsubscribe(this.pubsub_token);
-  },
-  render: function () {
-    return (
-      &lt;p&gt;You have selected the product : {this.state.selection}&lt;/p&gt;
-    );
-  }
-});
-
-var Product = React.createClass({
-  onclick: function () {
-    PubSub.publish('products', this.props.name);
-  },
-  render: function() {
-    return &lt;div onClick={this.onclick}&gt;{this.props.name}&lt;/div&gt;;
-  }
-});
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">// 定义一个容器</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">ProductList</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">		<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">			<span class="k">return</span> <span class="p">(</span>
+</span><span class="line">				<span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+</span><span class="line">					<span class="o">&lt;</span><span class="nx">ProductSelection</span> <span class="o">/&gt;</span>
+</span><span class="line">					<span class="o">&lt;</span><span class="nx">Product</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;product 1&quot;</span> <span class="o">/&gt;</span>
+</span><span class="line">					<span class="o">&lt;</span><span class="nx">Product</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;product 2&quot;</span> <span class="o">/&gt;</span>
+</span><span class="line">					<span class="o">&lt;</span><span class="nx">Product</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;product 3&quot;</span> <span class="o">/&gt;</span>
+</span><span class="line">				<span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class="line">			<span class="p">);</span>
+</span><span class="line">		<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line"><span class="c1">// 用于展示点击的产品信息容器</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">ProductSelection</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">getInitialState</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">{</span>
+</span><span class="line">			<span class="nx">selection</span><span class="o">:</span> <span class="s1">&#39;none&#39;</span>
+</span><span class="line">		<span class="p">};</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">componentDidMount</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">this</span><span class="p">.</span><span class="nx">pubsub_token</span> <span class="o">=</span> <span class="nx">PubSub</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">topic</span><span class="p">,</span> <span class="nx">product</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">			<span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span>
+</span><span class="line">				<span class="nx">selection</span><span class="o">:</span> <span class="nx">product</span>
+</span><span class="line">			<span class="p">});</span>
+</span><span class="line">		<span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">componentWillUnmount</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">PubSub</span><span class="p">.</span><span class="nx">unsubscribe</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">pubsub_token</span><span class="p">);</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="p">(</span>
+</span><span class="line">			<span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">You</span> <span class="nx">have</span> <span class="nx">selected</span> <span class="nx">the</span> <span class="nx">product</span> <span class="o">:</span> <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">selection</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class="line">		<span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">Product</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createClass</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">onclick</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">PubSub</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">onclick</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/div&gt;;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p><img src="/images/react/demo5.gif" alt="运行结果" /></p>
 
@@ -527,21 +784,31 @@ var Product = React.createClass({
 
 <p>（这里我写一个简单的 DEMO 介绍一下这种新的传递方式，其实大同小异）</p>
 
-<pre><code>function* list() {
-    for(var i = 0; i &lt; arguments.length; i++) {
-        yield arguments[i];
-    }
-    return "done.";
-}
-
-var o = list(1, 2, 3);
-
-var cur = o.next;
-while(!cur.done) {
-    cur = o.next();
-    console.log(cur);
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">function</span><span class="o">*</span> <span class="nx">list</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">				<span class="k">yield</span> <span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+</span><span class="line">		<span class="p">}</span>
+</span><span class="line">		<span class="k">return</span> <span class="s2">&quot;done.&quot;</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="nx">list</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+</span><span class="line"><span class="kd">var</span> <span class="nx">cur</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">next</span><span class="p">;</span>
+</span><span class="line"><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="nx">cur</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">cur</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+</span><span class="line">		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">cur</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>以上例子来自于屈屈的一篇博客：<a href="http://imququ.com/post/generator-function-in-es6.html">ES6 中的生成器函数介绍</a> 屈屈是一个大牛，大家可以经常关注他的博客。</p>
 
@@ -575,6 +842,12 @@ while(!cur.done) {
 <time class='entry-date' datetime='2015-07-19T00:00:00+08:00'><span class='date'>2015 年7 月19 日</span> <span class='time'>12:00 am</span></time>
       
 
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/react/'>react</a>, <a class='category' href='/blog/categories/fan-yi/'>翻译</a>
+  
+</span>
+
 
     </p>
     
@@ -598,6 +871,12 @@ while(!cur.done) {
   </footer>
 </article>
 
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
 </div>
 
 <aside class="sidebar">
@@ -615,15 +894,15 @@ while(!cur.done) {
       </li>
     
       <li class="post">
-        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
       </li>
     
       <li class="post">
-        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>
@@ -680,7 +959,10 @@ while(!cur.done) {
       var disqus_shortname = 'lulin';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://fegg.github.io/blog/20150719/react-component-communicate/';
+        var disqus_url = 'http://fegg.github.io/blog/20150719/react-component-communicate/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

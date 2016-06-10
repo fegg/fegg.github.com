@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Java | 小撸]]></title>
+  <link href="http://fegg.github.io/blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://fegg.github.io/"/>
+  <updated>2016-06-11T02:41:11+08:00</updated>
+  <id>http://fegg.github.io/</id>
+  <author>
+    <name><![CDATA[小撸]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Java中的乱码问题研究（二）]]></title>
+    <link href="http://fegg.github.io/blog/20140802/java-garbage-problem-2/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20140802/java-garbage-problem-2</id>
+    <content type="html"><![CDATA[<h3 id="section">一、前言</h3>
+
+<p>上面写了console的乱码问题，接下来写的是web中servlet中的问题，大楷我比较关心一点，因为遇到这个的情况多一些吧。直接开始吧。</p>
+
+<h3 id="jspservlet">二、jsp和servlet中的乱码问题</h3>
+
+<p>其实在java文件的编译的情况和（一）中的情况是一样的，不过这里是由WEB容器去调用JVM而已，那么我们得知道一些默认的东西</p>
+
+<p>比如特别重要的：（摘要）</p>
+
+<p>如果Servlet 在运行的过程中，需要接受从客户端传来的字符如：表单输入的值和URL中传入的值，此时如果程序中没有设定接受参数时采用的编码格式，则WEB 容器会默认采用ISO-8859-1 编码格式来接受传入的值并在JVM 中转化为UNICODE 格式的保存在WEB 容器的内存中。Servlet 运行后生成输出，输出的字符串是UNICODE 格式的，紧接着，容器将Servlet 运行产生的UNICODE 格式的串（如html语法，用户输出的串等）直接发送到客户端浏览器上并输出给用户，如果此时指定了发送时输出的编码格式，则按指定的编码格式输出到浏览器上，如果没有指定，则默认按ISO-8859-1 编码发送到客户的浏览器上。</p>
+
+<p>注意是ISO-8859-1就行了，tomcat 5.0之前采用是由用户设置的编码方式解析，tomcat 5.0过后有个参数（useBodyEncodingForURI）被默认了false，就使用了ISO-8859-1解析了，这儿是配置中的关键。</p>
+
+<!--more-->
+
+<p>``` java
+public class Hello extends HttpServlet {
+    private static final long serialVersionUID = 4878915372815719687L;</p>
+
+<pre><code>public Hello() {
+    super();
+}
+public void destroy() {
+    super.destroy(); // Just puts "destroy" string in log
+}
+public void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+    //输入：设置请求编码格式
+    request.setCharacterEncoding("GBK");
+    //输出：设置响应编码格式
+    response.setContentType("text/html; charset=GBK");
+    PrintWriter out = response.getWriter();
+    out.write("&lt;hr&gt;");
+    out.write("Hello, 中文！");
+    out.write("&lt;hr&gt;");
+}
+public void doPost(HttpServletRequest request, HttpServletResponse response) 
+    throws ServletException, IOException {
+    //输入：设置请求编码格式
+    request.setCharacterEncoding("GBK");
+    //输出：设置响应编码格式
+    response.setContentType("text/html; charset=GBK");
+    //从请求中接收参数
+    String input_str = request.getParameter("input_str");
+    String url_arg = request.getParameter("url_arg");
+    //出错处理
+    input_str = (null == input_str) ? "" : input_str;
+    url_arg = (null == url_arg) ? "" : url_arg;
+    PrintWriter out = response.getWriter();
+    out.write("&lt;hr&gt;");
+    out.println("您输入的字符串是：" + input_str);
+    out.write("&lt;hr&gt;");
+    //out.println("您的表单传递的URL参数是：" + new String(url_arg.getBytes("ISO-8859-1"), "GBK"));
+    out.println("您的表单传递的URL参数是：" + url_arg);
+    out.write("&lt;hr&gt;");
+}
+public void init() throws ServletException {
+    // Put your code here
+} } ```
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Java中的乱码问题研究（一）]]></title>
+    <link href="http://fegg.github.io/blog/20140802/java-garbage-problem-1/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20140802/java-garbage-problem-1</id>
+    <content type="html"><![CDATA[<h3 id="section">一、前言</h3>
+
+<p>最近感觉自己对编码的理解还不够透彻，研究一下编码的问题，我觉得这个是值得研究的地方。自己开始研究的时候，很细心的看了不少的资料，这里和大家分享一下，希望对大家有用，原理有些我就不一条一条的来了，重点描述下吧。</p>
+
+<h3 id="section-1">二、控制台中的编码问题</h3>
+
+<p>a. 查看操作系统（OS）的默认编码（这点还是有必要的，但是大多数在中国用的都是默认GBK）</p>
+
+<p><code>java
+Properties props = System.getProperties();
+//操作系统信息
+System.out.println("操作系统默认编码: " + props.getProperty("file.encoding"));
+</code></p>
+
+<p>b. 确定了默认的情况后，在java文件编译成class文件到内存年的时候，使用GBK编码编译【-encoding】，IDE可以使用默认。（中途的UNICODE编码可以查阅相关资料）</p>
+
+<p>c. 输出的时候也设置成GBK就成了</p>
+
+<!--more-->
+
+<p><code>java
+/**
+    * JAVA编码测试
+    * @author 60
+    */
+public class Test {
+    public static void main(String[] args) throws IOException {
+        //接收输入串的变量
+        String str_in = "";
+        //定义流：设置输入接口按照中文的编码
+        BufferedReader std_in = new BufferedReader(
+            new InputStreamReader(System.in, "GBK"));
+        //定义流：设置输出接口按照中文的编码
+        BufferedWriter std_out = new BufferedWriter(
+            new OutputStreamWriter(System.out, "GBK"));
+            //从控制台输出程序中的内容
+            std_out.write("请输入：");
+            std_out.flush();
+            //从控制台输入到程序
+            str_in = std_in.readLine();
+            //从程序输出到控制台
+            std_out.write("这是输入的字符串：\n" + str_in);
+            std_out.flush();
+    }
+}
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

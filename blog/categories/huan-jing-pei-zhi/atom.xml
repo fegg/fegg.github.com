@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 环境配置 | 小撸]]></title>
+  <link href="http://fegg.github.io/blog/categories/huan-jing-pei-zhi/atom.xml" rel="self"/>
+  <link href="http://fegg.github.io/"/>
+  <updated>2016-06-11T02:41:11+08:00</updated>
+  <id>http://fegg.github.io/</id>
+  <author>
+    <name><![CDATA[小撸]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Mac OS X 10.9配置AMP环境]]></title>
+    <link href="http://fegg.github.io/blog/20141126/mac-os-x-10.9-config-amp/"/>
+    <updated>2014-11-26T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20141126/mac-os-x-10.9-config-amp</id>
+    <content type="html"><![CDATA[<h3 id="section">2015年5月9日更新</h3>
+
+<p>更新内容：针对Mac OS X 10.10.3不能访问用户目录</p>
+
+<p><code>bash
+http://localhost/~lulin
+</code></p>
+
+<p>检查Apache版本是否升级</p>
+
+<p><code>bash
+Server version: Apache/2.4.10 (Unix)
+Server built:   Jan  8 2015 20:48:33
+</code></p>
+
+<p>修改的地方有以下 3 点：</p>
+
+<p><strong>（1）/etc/apache2/httpd.conf</strong></p>
+
+<p>打开如下配置（去除#注释）</p>
+
+<p><code>apache
+LoadModule authz_core_module libexec/apache2/mod_authz_core.so
+LoadModule authz_host_module libexec/apache2/mod_authz_host.so
+# 这两项是重点检查对象
+LoadModule userdir_module libexec/apache2/mod_userdir.so
+Include /private/etc/apache2/extra/httpd-userdir.conf
+</code></p>
+
+<p>修改完后访问会出现，所以还需要修改（2）中的文件</p>
+
+<p><code>bash
+Forbidden
+You don't have permission to access /~lulin/ on this server.
+</code></p>
+
+<p><strong>（2）/etc/apache2/extra/httpd-userdir.conf</strong></p>
+
+<p>打开如下配置（去除#注释）</p>
+
+<p><code>apache
+Include /private/etc/apache2/users/*.conf
+</code></p>
+
+<p>**（3）修改之前 10.9 中 /etc/apache2/users/<youusername>.conf**</youusername></p>
+
+<p><code>apache
+&lt;Directory "/Users/lulin/Sites/"&gt;
+	Options Indexes MultiViews
+	AllowOverride None
+	Require all granted
+&lt;/Directory&gt;
+</code></p>
+
+<h3 id="section-1">前言</h3>
+
+<p>因为每次重新安装系统都需要配置一下Apache、MySQL、PHP的环境，网上的文章又不完整或者不完全符合自己的情况，所以写下一篇文章来记录一下，保证99%配置成功，还剩1%由于各种奇葩环境原因。。。主要从 6 个方面进行记录：</p>
+
+<ol>
+  <li>启动Apache</li>
+  <li>建立个人的网站目录</li>
+  <li>启动php的解析功能</li>
+  <li>安装、启动mysql</li>
+  <li>修改mysql root密码</li>
+  <li>使用客户端连接mysql</li>
+</ol>
+
+<h3 id="apache">一、启动Apache</h3>
+
+<p>查看Apache的版本信息：</p>
+
+<p>``` bash
+$ httpd -v</p>
+
+<p>Server version: Apache/2.2.26 (Unix)
+Server built:   Dec 10 2013 22:09:38
+```</p>
+
+<p>启动Apache</p>
+
+<p><code>bash
+$ sudo apachectl restart
+</code></p>
+
+<p>如果终端中显示：</p>
+
+<p><code>bash
+org.apache.httpd: Already loaded
+</code></p>
+
+<p>就表示已经启动过了，可以使用重启命令：</p>
+
+<p><code>bash
+$ sudo apachectl restart
+</code></p>
+
+<p>这样我们的准备工作就做完了，第一步不要太复杂，不然配置会混乱，不太好还原之前的状态。接下来访问：</p>
+
+<p><a href="http://localhost">http://localhost</a></p>
+
+<p>如果出现如下图情况，就表示一切顺利，我们再接下去配置，如果没有成功，其实就不推荐再折腾啦，重装系统是最快的解决方案。。。</p>
+
+<!-- more -->
+
+<p><img src="http://p4.qhimg.com/t019a3b13c20aab70a4.png" alt="It works!" /></p>
+
+<blockquote>
+  <p>接下来我们来看看为什么吧。</p>
+</blockquote>
+
+<ul>
+  <li>Apache默认的网站目录：/Library/WebServer/Documents</li>
+  <li>默认访问的文件：/Library/WebServer/Documents/index.html.en</li>
+</ul>
+
+<p>好吧，这样就很好理解了，我们不需要看Apache的配置文件，这样只会让配置变得复杂。</p>
+
+<p>当然，配置好啦之后，我们就应该了解为什么是这个目录，现在可以使用快捷键(shift+command+G)打开对应目录(有界面还是尽量使用可视化操作，会让你更加专注的学习正在配置的东西)：</p>
+
+<blockquote>
+  <p>/etc/apache2</p>
+</blockquote>
+
+<p>你会发现有一个：httpd.conf 文件，这个文件里面就配置了默认的网站目录，你可以使用sublime text等编辑器(使用编辑器可以更好的处理权限等问题)查找“/Library/WebServer/Documents”，一看就明白了。</p>
+
+<p>OK，现在上面的入门配置好啦，接下来就需要在/Users/<yourname>下配置自己的网站目录，你可能要问为什么，首先，使用默认的目录不是程序员的范，其次就是那个目录的权限太高，每次修改内容都需要使用sudo权限，不太方便。</yourname></p>
+
+<h3 id="section-2">二、建立个人的网站目录</h3>
+
+<p>首先，需要在你的个人目录下面创建一个Sites目录（为什么叫这个名字呢？可以google一下，是有故事的，这里就不多描述了，单纯的先把成果搞出来），网上教使用：</p>
+
+<p><code>bash
+$ mkdir Sites
+</code></p>
+
+<p>这种方式来创建目录，这里必须要说一下，既然你用的Mac OS X可视化系统，需要这么复杂吗？右键，新建文件夹，就OK。</p>
+
+<p>接下来我们就需要修改一些配置了：</p>
+
+<ul>
+  <li>搞一个自己的配置文件，放入：/etc/apache2/users，比如我的配置</li>
+</ul>
+
+<p><code>bash
+/etc/apache2/users/lulin.conf
+</code></p>
+
+<ul>
+  <li>提升你对该配置文件的权限，这个用终端瞬间秒杀</li>
+</ul>
+
+<p><code>bash
+$ sudo chmod 755 /etc/apache2/users/lulin.conf
+//验证一下修改正确没有，首先验证lulin.conf文件，其次验证/etc/apache2/users这个目录的权限，不然遇到蛋疼的时候没头绪
+$ cd /etc/apache2/users &amp;&amp; ls -la
+$ cd .. &amp;&amp; ls -la
+</code></p>
+
+<p>显示如下图情况就表示没问题了：</p>
+
+<p><img src="http://p3.qhimg.com/t0146e8cad6473dccfd.png" alt="验证权限" /></p>
+
+<p>最后需要配置一下”/etc/apache2/users/lulin.conf”这个conf文件，使用sublime text打开加入内容如下：</p>
+
+<p><code>apache
+&lt;Directory "/Users/lulin/Sites/"&gt;
+	Options Indexes MultiViews
+	AllowOverride All
+	Order allow,deny
+	Allow from all
+&lt;/Directory&gt;
+</code></p>
+
+<p>改了配置嘛，不管怎么，要我们的环境保证是修改后的结果，就重启一下Apache吧。</p>
+
+<p><code>bash
+$ sudo apachectl restart
+</code></p>
+
+<p>输入访问地址：</p>
+
+<p><code>bash
+http://localhost/~lulin/
+</code></p>
+
+<blockquote>
+  <p>如果出现权限问题，那么可以查看一下“/etc/apache2/users/lulin.conf”这里的文件权限是否正确。</p>
+</blockquote>
+
+<p><img src="http://p8.qhimg.com/t01bd67e9b3dc1099bc.png" alt="个人网站目录" /></p>
+
+<p>这样个人的自定义目录也搞定了，接下我们如果想访问php文件的话就还需要一点简单配置，不然的话php文件会被当做普通文本来解析，离成功不远啦。</p>
+
+<h3 id="php">三、启动php的解析功能</h3>
+
+<p>使用快捷键直接定位到配置文件：</p>
+
+<p><code>bash
+/etc/apache2/httpd.conf
+</code></p>
+
+<p>打开后只需要去除一句话的注释即可搞定，使用编辑器来搜索吧，so easy!（去除前面的#号即可，这就是conf的特性而已）</p>
+
+<p><code>apache
+LoadModule php5_module libexec/apache2/libphp5.so
+</code></p>
+
+<p>接下来老规矩，保证不踩坑，重启一下Apache。</p>
+
+<p><code>bash
+$ sudo apachectl restart
+</code></p>
+
+<p>写一个简单的php文件测试一下配置结果，这次我们把php文件建在我们个人的网站目录”/Users/lulin/Sites”吧。</p>
+
+<ul>
+  <li>新建一个 index.php 页面，Apache会默认解析index.php</li>
+  <li>敲入简单代码，别偷懒，敲完整哦，不然万一你的某个配置没开就踩坑里了：</li>
+</ul>
+
+<p><code>php
+&lt;?php
+	echo phpinfo();
+?&gt;
+</code></p>
+
+<p><img src="http://p9.qhimg.com/t0120bef7ecbe5b7f46.png" alt="PHP经典页面" /></p>
+
+<p>显示下面经典测试php的页面，即OK。</p>
+
+<h3 id="mysql">四、安装、启动mysql</h3>
+
+<p>安装去官网下载一份就行，我这里下载的版本是：mysql-5.6.21-osx10.9-x86_64.dmg</p>
+
+<blockquote>
+  <p>建立下载dmg文件，安装方便，会默认建立软连接等东西。</p>
+</blockquote>
+
+<p>安装完后，我们先找到安装的mysql，这样方便以后配置，简单的查看目录就在：</p>
+
+<p><code>bash
+//软连接
+/usr/local/mysql
+//真实目录
+/usr/local/mysql-5.6.21-osx10.8-x86_64
+</code></p>
+
+<p>安装的详情可以查看官方说明，我找了很多资料发现还是官方比较直观。</p>
+
+<p><a href="http://dev.mysql.com/doc/refman/5.6/en/macosx-installation-pkg.html">MySQL安装官网</a></p>
+
+<p>不过官网更新不是特别快，其中的安装默认启动项已经在我安装的版本不需要自己搞了，已经有了，可以查看【系统偏好设置查看】，安装MySQL后默认是关闭的，我们也进去启动一下。</p>
+
+<p><img src="http://p0.qhimg.com/t014982da363f4740a8.png" alt="入口" /></p>
+
+<p><img src="http://p3.qhimg.com/t01a64f1284d81b06e7.jpg" alt="MySQL启动配置" /></p>
+
+<p>现在依然在终端输入：mysql 命令还不能识别到命令，我们需要配置环境变量，这个在终端下面好弄一点，我们就采用命令的方式修改：</p>
+
+<p><code>bash
+$ sudo vim ~/.bash_profile
+</code></p>
+
+<p>在.bash_profile文件中加入MySQL的可执行目录：</p>
+
+<p><code>bash
+export PATH="/usr/local/mysql/bin:$PATH"
+</code></p>
+
+<p>最后刷新一下配置：</p>
+
+<p><code>bash
+$ source ~/.bash_profile
+</code></p>
+
+<p>接下来我们就可以在终端之间输入：mysql 命令就能够以非root用户登录了。</p>
+
+<p>现在MySQL环境搭建完成，要正常使用我们需要配置root用户，默认root用户的密码是空值，实际使用肯定需要修改一下。</p>
+
+<h3 id="mysql-root">五、修改mysql root密码</h3>
+
+<p>网上介绍了很多方法，我觉得最直接，最快速的方法是使用空密码，以root用户的身份登录进入MySQL控制台，然后再去更新密码即可。</p>
+
+<p><code>bash
+$ mysql -u root -p
+$ 直接回车登录
+//下面模拟MySQL控制台
+//因为是在MySQL下，所以SQL关键字采用小写更方便，如果你是Oracle的话还是推荐都是用大写
+</code></p>
+
+<p><code>sql
+mysql &gt; show databases; //看一下所有数据是否齐全
+		&gt; use mysql; //切换到mysql库
+		&gt; update user set password=password('lulin') where user='root';
+		&gt; flush privileges; //一定要记住刷新权限，不然修改密码不生效
+		&gt; exit; //退出，使用修改后的密码重新登录，确定是否修改成功
+</code></p>
+
+<p>现在MySQL的配置基本上结束了，更多的配置可以配置my.cnf，在windows下是my.ini，都是其他文件重命名的，这个可以google查阅到详细配置。</p>
+
+<h3 id="mysql-1">六、使用客户端连接mysql</h3>
+
+<p>上面的配置结束啦，我们不可能每次都在MySQL控制台搞吧，效率太low，这里我介绍几个客户端：</p>
+
+<ul>
+  <li>Mac OS X平台</li>
+</ul>
+
+<p><strong>Querious</strong></p>
+
+<p>这个使用过一段时间，需要收费，不太好破解官方出的最新版本，不过还挺好用，这里我就不用了，找个免费的用用。</p>
+
+<p><strong>Sequel Pro</strong></p>
+
+<p>下载地址：<a href="http://www.sequelpro.com/download">http://www.sequelpro.com/download</a></p>
+
+<p>可能被墙访问有点慢，我就将最新版放入了360云盘，大家可以去下。</p>
+
+<p>云盘地址：<a href="http://yunpan.cn/cA5FY26fdqTsm">http://yunpan.cn/cA5FY26fdqTsm</a> （提取码：b343）</p>
+
+<p>使用就so easy啦，Sequel Pro 配置如下图：</p>
+
+<p><img src="http://p2.qhimg.com/t0172923d750ff38455.png" alt="Sequel Pro 连接MySQL" /></p>
+
+<p>记得把常用连接加入收藏就行，不然每次都要输来输去，Host建立使用127.0.0.1，原因可以google，不过Querious之前我用的时候输入localhost会默认转换成127.0.0.1，还比较人性化。</p>
+
+<ul>
+  <li>Windows平台</li>
+</ul>
+
+<p>只推荐一款利器，用过很多，没有之一，就它最好用：</p>
+
+<p><strong>navicat for mysql</strong></p>
+
+<p>这个客户端是收费的，不过如果你使用的时8.0版本，在baidu搜索：</p>
+
+<p><code>bash
+navicat for mysql 注册码
+</code></p>
+
+<p>关键字，第一个搜索结果里面就有注册码。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[MongoDB Install]]></title>
+    <link href="http://fegg.github.io/blog/20140802/mongodb-install/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20140802/mongodb-install</id>
+    <content type="html"><![CDATA[<h3 id="section">一、前言</h3>
+
+<p>其实之前还未接触nosql类型，我觉得这项技术应该是值得学习和研究的。如果读者有扎实的Linux基础和MySQL等知识，那么配置mongodb应该是比较容易的。下面我们按照步骤来吧。</p>
+
+<h3 id="section-1">二、下载需要的安装包</h3>
+
+<p>我是第一次配置mongodb，没有像redmine这个软件一样有太多依赖，直接下载即可，这里我下载的2.2.x版本（注意系统版本），比较新。</p>
+
+<p><a href="http://www.mongodb.org/downloads">Mongodb下载</a></p>
+
+<!-- more -->
+
+<h3 id="section-2">三、建立良好的目录（所有软件配置的重点）</h3>
+
+<ol>
+  <li>不应该有空格（好的情况是被转义，坏的情况会出现错误，不好发现）</li>
+  <li>目录结构不要太深（有时候需要命令操作，麻烦，也许还有其它坏处吧，这是经验之谈）</li>
+  <li>见名知意（这个和code命名一样，不解释啦吧）</li>
+</ol>
+
+<p>下载完安装包后，直接解压，将根目录改为：”mongodb”，以下是目录截图。</p>
+
+<p><img src="/images/post/mongodb-install-1.png" alt="Mou icon" /></p>
+
+<p>但是在mac或者linux上面安装不需要那么麻烦，只要你有包集成软件，很方便，这也是为什么我喜欢mac或者linux的原因。</p>
+
+<pre><code>brew update
+brew install mongodb
+</code></pre>
+
+<p>不过brew需要读者自己安装哦。</p>
+
+<h3 id="section-3">四、建立数据存储、操作日志常用文件夹</h3>
+
+<p>如上图中，我建立了：</p>
+
+<pre><code>data/db
+log/mongodb.log
+</code></pre>
+
+<p>如果你调用的是有读写权限的目录，那么你需要手动开启权限哦，chown命令即可。</p>
+
+<p>建立好之后，我们启动mongodb会在data/db目录下产生一些文件，最开始我们不需要关心，mongodb.log是记录日志的文件（在mac终端可以利用touch命令创建文件，其实这点确实没有windows方便），对于维护很重要。其实这些和mysql能够找到相似的地方，不信大家可以翻开mysql安装目录结构看一看哦。</p>
+
+<h3 id="section-4">五、建立配置文件</h3>
+
+<p>mongodb默认没有提供conf配置文件，如果你要问我为什么知道。。。其实我也是猜的，数据库配置文件，mysql–&gt;.ini，svn版本管理软件–&gt;.conf，你只需要尝试一下，看能够识别不就能够知道，但是最后确认还是去官方文档确认的，这里只是说一说当没有文档的时候，我们可以用这种方式来做配置。</p>
+
+<p>配置文件名称：</p>
+
+<pre><code>mongodb.conf
+</code></pre>
+
+<p>其中写入：</p>
+
+<pre><code>dbpath=../data/db
+logpath=../log/mongodb.log
+logappend=true
+</code></pre>
+
+<p>上面参数的意思，其实从字面上就能够理解了。</p>
+
+<ol>
+  <li>datapath： data文件的存放路径（根据自己的实际情况）</li>
+  <li>logpath：同理，log文件的路径（根据自己的实际情况）</li>
+  <li>logappend：log是追加，还是覆盖的方式，我们这里最好用追加吧，好观察。</li>
+</ol>
+
+<h3 id="mongodb">六、启动mongodb</h3>
+
+<p>启动很简单，但是很容易忘记一件事情，就是非install方式，会忘记配置环境变量，环境变量的配置我在之前文章<a href="http://60sky.com/blog/2014/01/11/mac-svn-update/">Mac环境下SVN升级详解</a>中有介绍。这里我们还是进入mongodb的bin目录进行操作，保证不错才是王道。</p>
+
+<p>终端启动命令如下：</p>
+
+<pre><code>./mongod -f ../mongodb.conf 
+</code></pre>
+
+<p>这里你必须指定-f参数，紧跟conf文件路径（根据你的存放位置，我的位置如上图），不然就会按照默认方式，出现不能发现文件的问题，因为我没有建，嘿嘿。</p>
+
+<h3 id="section-5">七、配置验证（搞配置的必要环节）</h3>
+
+<p>如果终端输出以下内容即安装成功：</p>
+
+<pre><code>$ ./mongod -f ../mongodb.conf 
+all output going to: ../log/mongodb.log
+</code></pre>
+
+<p>如果你没有指定log文件，log的信息会打印到终端，这里我们指定了，看起来也清晰，就在log文件中，读者可以打开看看。</p>
+
+<p>我们再进入mongodb输入点命令试试，很简单，输入1＋1就行，它会给你执行结果 2，好玩。（不过不要关掉你启动的窗口哦，当然也有后台模式，读者可以google一下，只是一条命令）</p>
+
+<p>进入mongodb的命令：</p>
+
+<pre><code>$ ./mongo
+</code></pre>
+
+<p>执行后输出的内容（1+1是我自己输入的）：</p>
+
+<pre><code>MongoDB shell version: 2.2.2
+connecting to: test
+&gt; 1+1
+2
+&gt; 
+</code></pre>
+
+<p>得到以上结果，恭喜你，已经安装完毕了，尽情的玩吧。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mac SVN Update]]></title>
+    <link href="http://fegg.github.io/blog/20140802/mac-svn-update/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20140802/mac-svn-update</id>
+    <content type="html"><![CDATA[<h3 id="section">一、前言</h3>
+
+<p>由于svn server版本是1.6.x的原因，Mac自带的svn client是1.6.x，当连接svn server的时候出现版本过低等问题，所以需要把svn client升级要1.7.x或者1.8.x，以下就是将svn client升级到1.8.1的过程。</p>
+
+<h3 id="svn">二、下载SVN源代码包（采用源代码安装的方式）</h3>
+
+<p>下载地址：</p>
+
+<pre><code>http://subversion.apache.org/download/#recommended-release
+</code></pre>
+
+<p><em>注意</em>
+需要下载：subversion-1.8.1.tar.gz
+因为zip里面缺少一些东西，他们两个还是有差别的，具体见google。
+下载后解压到Mac的盘即可（不需要命令了，用解压软件就可以了）</p>
+
+<h3 id="svn-1">三、构建并安装SVN</h3>
+
+<p>解压后SVN的目录，其中安装需要的文件被圈出。</p>
+
+<!--more-->
+
+<p><img src="/images/post/mac-svn1.png" alt="Mou icon" /></p>
+
+<p>如果熟悉linux的朋友，接下来的事情就很简单了。
+根据解压的情况</p>
+
+<pre><code>cd /Applications/Java/subversion-1.8.1
+./configure
+make
+sudo make install
+</code></pre>
+
+<p>这里会等待一段时间…如果没出现error就继续，warn问题不大。
+其实svn client 1.8.1已经安装完毕，因为path还没有设置，在终端输入</p>
+
+<pre><code>svn --version
+</code></pre>
+
+<p>出现的版本依然是1.6.x，所以，请继续往下看。</p>
+
+<h3 id="svnpath">四、配置SVN的PATH</h3>
+<p>在这里，介绍以下Mac的path（老手就可以跳过了）
+首先可以查看一下PATH</p>
+
+<pre><code>$PATH
+</code></pre>
+
+<p>你可以临时在当前终端中输入</p>
+
+<pre><code>export PATH=/usr/local/bin:$PATH
+</code></pre>
+
+<p>来设置当前需要使用的SVN版本。
+你也可以永久让上面的命令生效，就是写入.bash_profile</p>
+
+<pre><code>echo "export PATH= /usr/local/bin:$PATH" &gt;&gt; ~/.bash_profile
+</code></pre>
+
+<p>如果学习过PHP，应该不会陌生，就是把</p>
+
+<pre><code>echo "export PATH= /usr/local/bin:$PATH"
+</code></pre>
+
+<p>输出打印到~/.bash_profile中.</p>
+
+<h3 id="section-1">五、检验配置结果</h3>
+
+<p><img src="/images/post/mac-svn2.png" alt="Mou icon" /></p>
+
+<h3 id="section-2">六、参考网址</h3>
+
+<p>出于素质，附上牛人的连接。</p>
+
+<p>http://jason.pureconcepts.net/2012/10/updating-svn-mac-os-x/</p>
+
+<p>http://www.cnblogs.com/xitang/archive/2011/09/15/2177924.html</p>
+]]></content>
+  </entry>
+  
+</feed>

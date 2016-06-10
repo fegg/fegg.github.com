@@ -151,183 +151,337 @@
 
 <h4 id="json">1. 模块的数据结构（JSON表示）</h4>
 
-<pre><code>module: {
-    //模块名称
-    moduleName: moduleName,
-    //模块依赖集合
-    dependencies: dependencies,
-    //模块实例工厂
-    factory: factory
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="line">	<span class="c1">//模块名称</span>
+</span><span class="line">	<span class="nx">moduleName</span><span class="o">:</span> <span class="nx">moduleName</span><span class="p">,</span>
+</span><span class="line">	<span class="c1">//模块依赖集合</span>
+</span><span class="line">	<span class="nx">dependencies</span><span class="o">:</span> <span class="nx">dependencies</span><span class="p">,</span>
+</span><span class="line">	<span class="c1">//模块实例工厂</span>
+</span><span class="line">	<span class="nx">factory</span><span class="o">:</span> <span class="nx">factory</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <h4 id="section-5">2. 模块定义</h4>
 
 <p>所以我们最后能够形成模块定义的代码如下：</p>
 
-<pre><code>define: function ( moduleName, dependencies, factory ) {
-    if( !modules[moduleName] ) {
-        //模块信息
-        var module = {
-            moduleName: moduleName,
-            dependencies: dependencies,
-            factory: factory
-        };
-
-        modules[moduleName] = module;
-    }
-
-    return modules[moduleName];
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">define</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">moduleName</span><span class="p">,</span> <span class="nx">dependencies</span><span class="p">,</span> <span class="nx">factory</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">modules</span><span class="p">[</span><span class="nx">moduleName</span><span class="p">]</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="c1">//模块信息</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">module</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">			<span class="nx">moduleName</span><span class="o">:</span> <span class="nx">moduleName</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">dependencies</span><span class="o">:</span> <span class="nx">dependencies</span><span class="p">,</span>
+</span><span class="line">			<span class="nx">factory</span><span class="o">:</span> <span class="nx">factory</span>
+</span><span class="line">		<span class="p">};</span>
+</span><span class="line">
+</span><span class="line">		<span class="nx">modules</span><span class="p">[</span><span class="nx">moduleName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">module</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line">
+</span><span class="line">	<span class="k">return</span> <span class="nx">modules</span><span class="p">[</span><span class="nx">moduleName</span><span class="p">];</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <h4 id="section-6">3. 模块调用</h4>
 
 <p>这样我们就定义好了模块，那么我们的入口在哪里呢？我们还需要定义一个use的方法，来成为所谓的main，这样绑定好了才能够调用，现在想来程序也都是这样的。下面这段代码通过递归的产生模块依赖的所有实例，但是这里浪费了一部分instances数组的空间，有时间可以再做哈优化。</p>
 
-<pre><code>use: function ( moduleName ) {
-    //使用括号的方式访问属性，实现动态的赋值（详情查阅“.”和[]的区别）
-    var module = modules[moduleName];
-
-    //产生单个实例
-    if( !module.instance ) {
-        var instances = [], 
-            len = module.dependencies.length - 1;
-
-            for( var i = 0; i &lt;= len; i++ ) {
-                var dependency = module.dependencies[i],
-                    instance = dependency.instance;
-
-                if( instance ) {
-                    instances.push( instance );
-                } else {
-                    //递归，将每次产生的实例放入数组
-                    instances.push( arguments.callee( dependency ) );
-                }
-            }
-            //生成实例
-            module.instance = module.factory.apply( null, instances );
-    }
-
-    return module.instance;
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">use</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">moduleName</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="c1">//使用括号的方式访问属性，实现动态的赋值（详情查阅“.”和[]的区别）</span>
+</span><span class="line">	<span class="kd">var</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">modules</span><span class="p">[</span><span class="nx">moduleName</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">	<span class="c1">//产生单个实例</span>
+</span><span class="line">	<span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">module</span><span class="p">.</span><span class="nx">instance</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="kd">var</span> <span class="nx">instances</span> <span class="o">=</span> <span class="p">[],</span>
+</span><span class="line">			<span class="nx">len</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">			<span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">				<span class="kd">var</span> <span class="nx">dependency</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span>
+</span><span class="line">					<span class="nx">instance</span> <span class="o">=</span> <span class="nx">dependency</span><span class="p">.</span><span class="nx">instance</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">				<span class="k">if</span><span class="p">(</span> <span class="nx">instance</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">					<span class="nx">instances</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">instance</span> <span class="p">);</span>
+</span><span class="line">				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">					<span class="c1">//递归，将每次产生的实例放入数组</span>
+</span><span class="line">					<span class="nx">instances</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">callee</span><span class="p">(</span> <span class="nx">dependency</span> <span class="p">)</span> <span class="p">);</span>
+</span><span class="line">				<span class="p">}</span>
+</span><span class="line">			<span class="p">}</span>
+</span><span class="line">			<span class="c1">//生成实例</span>
+</span><span class="line">			<span class="nx">module</span><span class="p">.</span><span class="nx">instance</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">factory</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">instances</span> <span class="p">);</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line">
+</span><span class="line">	<span class="k">return</span> <span class="nx">module</span><span class="p">.</span><span class="nx">instance</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <h4 id="section-7">4. 完整代码</h4>
 
 <p>最后我形成完整的自己的小库。</p>
 
-<pre><code>(function ( window, undefined ) {
-    var modules = {};
-    var Sky = {
-        //定义模块的基本信息
-        //1.模块名称，2.模块的依赖，3.产生实例的工厂
-        define: function ( moduleName, dependencies, factory ) {
-            if( !modules[moduleName] ) {
-                //模块信息
-                var module = {
-                    moduleName: moduleName,
-                    dependencies: dependencies,
-                    factory: factory
-                };
-
-                modules[moduleName] = module;
-            }
-
-            return modules[moduleName];
-        },
-        //使用依赖
-        use: function ( moduleName ) {
-            var module = modules[moduleName];
-
-            //产生单个实例
-            if( !module.instance ) {
-                var instances = [], 
-                    len = module.dependencies.length - 1;
-
-                for( var i = 0; i &lt;= len; i++ ) {
-                    var dependency = module.dependencies[i],
-                        instance = dependency.instance;
-
-                    if( instance ) {
-                        instances.push( instance );
-                    } else {
-                        //递归，将每次产生的实例放入数组
-                        instances.push( arguments.callee( dependency ) );
-                    }
-                }
-                //生成实例
-                module.instance = module.factory.apply( null, instances );
-            }
-
-            return module.instance;
-        }
-    };
-
-    window.Sky = Sky || {};
-})(window);
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="p">(</span><span class="kd">function</span> <span class="p">(</span> <span class="nb">window</span><span class="p">,</span> <span class="kc">undefined</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="kd">var</span> <span class="nx">modules</span> <span class="o">=</span> <span class="p">{};</span>
+</span><span class="line">	<span class="kd">var</span> <span class="nx">Sky</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">		<span class="c1">//定义模块的基本信息</span>
+</span><span class="line">		<span class="c1">//1.模块名称，2.模块的依赖，3.产生实例的工厂</span>
+</span><span class="line">		<span class="nx">define</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">moduleName</span><span class="p">,</span> <span class="nx">dependencies</span><span class="p">,</span> <span class="nx">factory</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">			<span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">modules</span><span class="p">[</span><span class="nx">moduleName</span><span class="p">]</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">				<span class="c1">//模块信息</span>
+</span><span class="line">				<span class="kd">var</span> <span class="nx">module</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">					<span class="nx">moduleName</span><span class="o">:</span> <span class="nx">moduleName</span><span class="p">,</span>
+</span><span class="line">					<span class="nx">dependencies</span><span class="o">:</span> <span class="nx">dependencies</span><span class="p">,</span>
+</span><span class="line">					<span class="nx">factory</span><span class="o">:</span> <span class="nx">factory</span>
+</span><span class="line">				<span class="p">};</span>
+</span><span class="line">
+</span><span class="line">				<span class="nx">modules</span><span class="p">[</span><span class="nx">moduleName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">module</span><span class="p">;</span>
+</span><span class="line">			<span class="p">}</span>
+</span><span class="line">
+</span><span class="line">			<span class="k">return</span> <span class="nx">modules</span><span class="p">[</span><span class="nx">moduleName</span><span class="p">];</span>
+</span><span class="line">		<span class="p">},</span>
+</span><span class="line">		<span class="c1">//使用依赖</span>
+</span><span class="line">		<span class="nx">use</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">moduleName</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">			<span class="kd">var</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">modules</span><span class="p">[</span><span class="nx">moduleName</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">			<span class="c1">//产生单个实例</span>
+</span><span class="line">			<span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">module</span><span class="p">.</span><span class="nx">instance</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">				<span class="kd">var</span> <span class="nx">instances</span> <span class="o">=</span> <span class="p">[],</span>
+</span><span class="line">					<span class="nx">len</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">				<span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">					<span class="kd">var</span> <span class="nx">dependency</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span>
+</span><span class="line">						<span class="nx">instance</span> <span class="o">=</span> <span class="nx">dependency</span><span class="p">.</span><span class="nx">instance</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">					<span class="k">if</span><span class="p">(</span> <span class="nx">instance</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">						<span class="nx">instances</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">instance</span> <span class="p">);</span>
+</span><span class="line">					<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">						<span class="c1">//递归，将每次产生的实例放入数组</span>
+</span><span class="line">						<span class="nx">instances</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">callee</span><span class="p">(</span> <span class="nx">dependency</span> <span class="p">)</span> <span class="p">);</span>
+</span><span class="line">					<span class="p">}</span>
+</span><span class="line">				<span class="p">}</span>
+</span><span class="line">				<span class="c1">//生成实例</span>
+</span><span class="line">				<span class="nx">module</span><span class="p">.</span><span class="nx">instance</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">factory</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">instances</span> <span class="p">);</span>
+</span><span class="line">			<span class="p">}</span>
+</span><span class="line">
+</span><span class="line">			<span class="k">return</span> <span class="nx">module</span><span class="p">.</span><span class="nx">instance</span><span class="p">;</span>
+</span><span class="line">		<span class="p">}</span>
+</span><span class="line">	<span class="p">};</span>
+</span><span class="line">
+</span><span class="line">	<span class="nb">window</span><span class="p">.</span><span class="nx">Sky</span> <span class="o">=</span> <span class="nx">Sky</span> <span class="o">||</span> <span class="p">{};</span>
+</span><span class="line"><span class="p">})(</span><span class="nb">window</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>下面我们来一个完整的例子来使用一下以上我们构建的轻巧代码。</p>
 
-<pre><code>Sky.define("constant.PI", [], function() {
-    return 3.1415926;
-});
-
-Sky.define("shape.Circle", ["constant.PI"], function( pi ) {
-    function Circle(r) {
-        this.r = r || 0;
-    };
-
-    Circle.prototype.area = function() {
-        return pi * this.r * this.r;
-    };
-
-    return Circle;
-});
-
-Sky.define("shape.Rectangle", [], function() {
-    function Rectangle(width, height) {
-        this.width = width || 0;
-        this.height = height || 0;
-    };
-
-    Rectangle.prototype.area = function() {
-        return this.width * this.height;
-    };
-
-    return Rectangle;
-});
-
-Sky.define("ShapeTypes", ["shape.Circle", "shape.Rectangle"], function( Circle, Rectangle ) {
-    return {
-        'CIRCLE': Circle,
-        'RECTANGLE': Rectangle
-    };
-});
-
-Sky.define("ShapeFactory", ["ShapeTypes"], function( ShapeTypes ) {
-    return {
-        getShape: function(type) {
-            var shape;
-
-            switch (type) {
-            case 'CIRCLE':
-                shape = new ShapeTypes[type](arguments[1]);
-                break;
-            case 'RECTANGLE':
-                shape = new ShapeTypes[type](arguments[1], arguments[2]);
-                break;
-            }
-            return shape;
-        }
-    };
-});
-
-var ShapeFactory = Sky.use("ShapeFactory");
-console.log(ShapeFactory.getShape("CIRCLE").area());
-console.log(ShapeFactory.getShape("RECTANGLE", 2, 3).area());
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">Sky</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s2">&quot;constant.PI&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">return</span> <span class="mf">3.1415926</span><span class="p">;</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="nx">Sky</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s2">&quot;shape.Circle&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;constant.PI&quot;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">pi</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="kd">function</span> <span class="nx">Circle</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="nx">r</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">	<span class="p">};</span>
+</span><span class="line">
+</span><span class="line">	<span class="nx">Circle</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">area</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="nx">pi</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">;</span>
+</span><span class="line">	<span class="p">};</span>
+</span><span class="line">
+</span><span class="line">	<span class="k">return</span> <span class="nx">Circle</span><span class="p">;</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="nx">Sky</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s2">&quot;shape.Rectangle&quot;</span><span class="p">,</span> <span class="p">[],</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">	<span class="kd">function</span> <span class="nx">Rectangle</span><span class="p">(</span><span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">width</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">		<span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">height</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">	<span class="p">};</span>
+</span><span class="line">
+</span><span class="line">	<span class="nx">Rectangle</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">area</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
+</span><span class="line">	<span class="p">};</span>
+</span><span class="line">
+</span><span class="line">	<span class="k">return</span> <span class="nx">Rectangle</span><span class="p">;</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="nx">Sky</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s2">&quot;ShapeTypes&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;shape.Circle&quot;</span><span class="p">,</span> <span class="s2">&quot;shape.Rectangle&quot;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">Circle</span><span class="p">,</span> <span class="nx">Rectangle</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">return</span> <span class="p">{</span>
+</span><span class="line">		<span class="s1">&#39;CIRCLE&#39;</span><span class="o">:</span> <span class="nx">Circle</span><span class="p">,</span>
+</span><span class="line">		<span class="s1">&#39;RECTANGLE&#39;</span><span class="o">:</span> <span class="nx">Rectangle</span>
+</span><span class="line">	<span class="p">};</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="nx">Sky</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s2">&quot;ShapeFactory&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;ShapeTypes&quot;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">ShapeTypes</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">return</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">getShape</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">			<span class="kd">var</span> <span class="nx">shape</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">			<span class="k">switch</span> <span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">			<span class="k">case</span> <span class="s1">&#39;CIRCLE&#39;</span><span class="o">:</span>
+</span><span class="line">				<span class="nx">shape</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ShapeTypes</span><span class="p">[</span><span class="nx">type</span><span class="p">](</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span><span class="line">				<span class="k">break</span><span class="p">;</span>
+</span><span class="line">			<span class="k">case</span> <span class="s1">&#39;RECTANGLE&#39;</span><span class="o">:</span>
+</span><span class="line">				<span class="nx">shape</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ShapeTypes</span><span class="p">[</span><span class="nx">type</span><span class="p">](</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span><span class="line">				<span class="k">break</span><span class="p">;</span>
+</span><span class="line">			<span class="p">}</span>
+</span><span class="line">			<span class="k">return</span> <span class="nx">shape</span><span class="p">;</span>
+</span><span class="line">		<span class="p">}</span>
+</span><span class="line">	<span class="p">};</span>
+</span><span class="line"><span class="p">});</span>
+</span><span class="line">
+</span><span class="line"><span class="kd">var</span> <span class="nx">ShapeFactory</span> <span class="o">=</span> <span class="nx">Sky</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s2">&quot;ShapeFactory&quot;</span><span class="p">);</span>
+</span><span class="line"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">ShapeFactory</span><span class="p">.</span><span class="nx">getShape</span><span class="p">(</span><span class="s2">&quot;CIRCLE&quot;</span><span class="p">).</span><span class="nx">area</span><span class="p">());</span>
+</span><span class="line"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">ShapeFactory</span><span class="p">.</span><span class="nx">getShape</span><span class="p">(</span><span class="s2">&quot;RECTANGLE&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">).</span><span class="nx">area</span><span class="p">());</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>是不是感觉js代码变得更加清爽了？嘿嘿，上面的例子也是面向接口的，大家也可以看看。</p>
 
@@ -354,6 +508,12 @@ console.log(ShapeFactory.getShape("RECTANGLE", 2, 3).area());
 
 <time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>javascript</a>
+  
+</span>
 
 
     </p>
@@ -395,15 +555,15 @@ console.log(ShapeFactory.getShape("RECTANGLE", 2, 3).area());
       </li>
     
       <li class="post">
-        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
       </li>
     
       <li class="post">
-        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>

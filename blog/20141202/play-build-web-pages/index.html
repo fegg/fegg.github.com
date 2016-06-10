@@ -1,0 +1,691 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>像积木一样搭建网页 - 小撸</title>
+  <meta name="author" content="小撸">
+
+  
+  <meta name="description" content="前言 我们在浏览网页的时候，经常会看到很相似的几种内容。比如下面这两种样子： 看上去是不是比较像呢？其实就是图片的位置不一样，大致上可以认为是一样的吧，那么针对这样子的相似度较高的网页，我们应该怎么样开发呢？ 其实这就得谈谈“页面重用机制”了， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/blog/20141202/play-build-web-pages/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="小撸" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">小撸</a></h1>
+  
+    <h2>Follow Your Heart.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">主页</a></li>
+  <li><a href="/blog/archives">所有文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">像积木一样搭建网页</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-02T00:00:00+08:00'><span class='date'>2014 年12 月2 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3 id="section">前言</h3>
+
+<p>我们在浏览网页的时候，经常会看到很相似的几种内容。比如下面这两种样子：</p>
+
+<p><img src="http://p4.qhimg.com/t010118aee227f746a5.png" alt="视图1" /></p>
+
+<p><img src="http://p4.qhimg.com/t0188a9a78a17386fb9.png" alt="视图2" /></p>
+
+<p>看上去是不是比较像呢？其实就是图片的位置不一样，大致上可以认为是一样的吧，那么针对这样子的相似度较高的网页，我们应该怎么样开发呢？</p>
+
+<blockquote>
+  <p>其实这就得谈谈“页面重用机制”了，下面所写的积木式网页构建方式就能够很好的处理页面重用这个问题。</p>
+</blockquote>
+
+<p>接下来将从以下4个方面对积木式网页开发进行描述：</p>
+
+<ol>
+  <li>分析页面结构</li>
+  <li>构建网页的结构</li>
+  <li>编写网页基本的样式</li>
+  <li>编写不同表现的样式</li>
+</ol>
+
+<!-- more -->
+
+<h3 id="section-1">一、分析页面结构</h3>
+
+<p>虽然HTML的语法那些很简单，但是在网页设计和开发中，它却占据着不可动摇的地位。首先我们需要根据设计师的PSD和产品经理所描述的需求，然后确定我们网页的结构，反复的与他们沟通，确定更多的信息，才让我们的网页结构的生命周期变得更长。</p>
+
+<p>这里推荐一个Chrome的插件，可以瞬间去除CSS和JavaScript的效果，查看到最原始网页的表现。</p>
+
+<blockquote>
+  <p>Web Developer</p>
+</blockquote>
+
+<p>下面我们要参考的结构就如下图中2种样子：</p>
+
+<p><img src="http://p5.qhimg.com/t0138cd1fbdfbc5ff7e.png" alt="视图1" /></p>
+
+<p><img src="http://p1.qhimg.com/t01e4dfb2288f445e02.png" alt="视图2" /></p>
+
+<p>我用红线大致描了一下页面的信息块，接下来我们来分析一下信息：</p>
+
+<ol>
+  <li>一张展示图</li>
+  <li>一个标题</li>
+  <li>商品的列表信息（包括总价）</li>
+  <li>附属品的列表信息</li>
+  <li>购买按钮</li>
+</ol>
+
+<p>好吧，这里就不需要PM来确认啦，自己当一回PM ^8^，接下来我们需要描述网页结构。</p>
+
+<h3 id="section-2">二、构建网页的结构</h3>
+
+<p>经过上面的分析，我们可以得出如下的DOM结构：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+</pre></td><td class="code"><pre><code class="html"><span class="line"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;productStackWrap&quot;</span><span class="nt">&gt;</span>
+</span><span class="line">	<span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">&quot;psImage&quot;</span> <span class="na">src=</span><span class="s">&quot;http://p5.qhimg.com/t01bc7da5a2c6e90308.jpg&quot;</span> <span class="na">alt=</span><span class="s">&quot;卢林&quot;</span><span class="nt">&gt;</span>
+</span><span class="line">	<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;psArticleWrap&quot;</span><span class="nt">&gt;</span>
+</span><span class="line">		<span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;psTitle&quot;</span><span class="nt">&gt;</span>赔本大甩卖<span class="nt">&lt;/h1&gt;</span>
+</span><span class="line">		<span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;psPriceWrap&quot;</span><span class="nt">&gt;</span>
+</span><span class="line">			<span class="nt">&lt;li&gt;</span>
+</span><span class="line">				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;spLabel&quot;</span><span class="nt">&gt;</span>眼镜<span class="nt">&lt;/span&gt;</span>
+</span><span class="line">				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;spAmount&quot;</span><span class="nt">&gt;</span>500元<span class="nt">&lt;/span&gt;</span>
+</span><span class="line">			<span class="nt">&lt;/li&gt;</span>
+</span><span class="line">			<span class="nt">&lt;li&gt;</span>
+</span><span class="line">				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;spLabel&quot;</span><span class="nt">&gt;</span>外套<span class="nt">&lt;/span&gt;</span>
+</span><span class="line">				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;spAmount&quot;</span><span class="nt">&gt;</span>300元<span class="nt">&lt;/span&gt;</span>
+</span><span class="line">			<span class="nt">&lt;/li&gt;</span>
+</span><span class="line">			<span class="nt">&lt;li&gt;</span>
+</span><span class="line">				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;spLabel&quot;</span><span class="nt">&gt;</span>iPhone 5S<span class="nt">&lt;/span&gt;</span>
+</span><span class="line">				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;spAmount&quot;</span><span class="nt">&gt;</span>88元<span class="nt">&lt;/span&gt;</span>
+</span><span class="line">			<span class="nt">&lt;/li&gt;</span>
+</span><span class="line">			<span class="nt">&lt;li&gt;</span>
+</span><span class="line">				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;spLabel&quot;</span><span class="nt">&gt;</span>总价<span class="nt">&lt;/span&gt;</span>
+</span><span class="line">				<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;spAmount spTotalPrice&quot;</span><span class="nt">&gt;</span>仅需888元<span class="nt">&lt;/span&gt;</span>
+</span><span class="line">			<span class="nt">&lt;/li&gt;</span>
+</span><span class="line">		<span class="nt">&lt;/ul&gt;</span>
+</span><span class="line">		<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;spDescriptionWrap&quot;</span><span class="nt">&gt;</span>
+</span><span class="line">			<span class="nt">&lt;p&gt;</span>附带品<span class="nt">&lt;/p&gt;</span>
+</span><span class="line">			<span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;descBulletsUL&quot;</span><span class="nt">&gt;</span>
+</span><span class="line">				<span class="nt">&lt;li&gt;</span>可乐一罐<span class="nt">&lt;/li&gt;</span>
+</span><span class="line">				<span class="nt">&lt;li&gt;</span>饭碗一个<span class="nt">&lt;/li&gt;</span>
+</span><span class="line">				<span class="nt">&lt;li&gt;</span>6块钱的麻辣烫<span class="nt">&lt;/li&gt;</span>
+</span><span class="line">			<span class="nt">&lt;/ul&gt;</span>
+</span><span class="line">		<span class="nt">&lt;/div&gt;</span>
+</span><span class="line">		<span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">&quot;psCTA&quot;</span><span class="nt">&gt;</span>买买买<span class="nt">&lt;/button&gt;</span>
+</span><span class="line">	<span class="nt">&lt;/div&gt;</span>
+</span><span class="line"><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>我们这里不需要任何样式，也会是一个很美的网页，至少看起来整洁，信息整齐。（图片太大，直截取文本部分。因为图片的宽、高在初始化的时候必须要设置的，至于为什么要设置可以查阅Google，主要是给图片预留空间，提升文档性能。）</p>
+
+<p><img src="http://p5.qhimg.com/t0146e9616541c6732a.png" alt="无样式的表现" /></p>
+
+<p>好吧，到这里我们的DOM结构就构造完了，接下来添加一点基本的，也可以理解为公用的样式，这里的公用可以不理解为积木块共有的样式。说起来绕了一点，也就是说不同表现的共有样式可以与本身结构具有的基本样式进行分离，这个可以看自己喜好来决定。</p>
+
+<h3 id="section-3">三、编写网页基本的样式</h3>
+
+<p>在此之前我们来看看我本地的文件结构：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">demo  //文件夹
+</span><span class="line">	A.css  //样式1
+</span><span class="line">	B.css  //样式2
+</span><span class="line">	index.css  //基本样式
+</span><span class="line">	index.html //DOM结构
+</span></code></pre></td></tr></table></div></figure>
+
+<p>这里可以处理一些基本的网页样式信息，比如恢复一些元素的默认值、调整部分间隙。这部分代码位于：index.css中，内容放入文章末尾吧，这里我们连贯的描述怎么做页面重用。</p>
+
+<h3 id="section-4">四、编写不同表现的样式</h3>
+
+<p>说了怎么久，DOM结构和基本样式都搞好啦，那么现在我们来实现我们的两张图。现在我们只需要做的是在最外层DOM结构中加入不同的类名：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="html"><span class="line">// A类样式
+</span><span class="line"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;productStackWrap psTreatmentA&quot;</span><span class="nt">&gt;</span>...<span class="nt">&lt;/div&gt;</span>
+</span><span class="line">// B类样式
+</span><span class="line"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;productStackWrap psTreatmentB&quot;</span><span class="nt">&gt;</span>...<span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>这样我们利用CSS的权重来控制特殊的样式，其实这里的 psTreatmentA 类更像一个命名空间，如果用严格的语言来理解的话，那么可以理解为：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">class</span> <span class="nc">psTreatmentA</span> <span class="kd">implements</span> <span class="n">productStackWrap</span> <span class="o">{</span>
+</span><span class="line">	<span class="o">...</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line"><span class="kd">class</span> <span class="nc">psTreatmentB</span> <span class="kd">implements</span> <span class="n">productStackWrap</span> <span class="o">{</span>
+</span><span class="line">	<span class="o">...</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line"><span class="o">...</span>
+</span><span class="line"><span class="kd">class</span> <span class="nc">psTreatmentN</span> <span class="kd">implements</span> <span class="n">productStackWrap</span> <span class="o">{</span>
+</span><span class="line">	<span class="o">...</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<blockquote>
+  <p>注意这里用的是接口哦，CSS的复用可以是多继承的关系，至少我是这么理解的。</p>
+</blockquote>
+
+<p>那么我们改怎么针对这个类来写属于它实例的样式呢？那么看一下下面两段代码就可以理解了。</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+</pre></td><td class="code"><pre><code class="css"><span class="line"><span class="c">/* A类样式 */</span>
+</span><span class="line"><span class="nc">.psTreatmentA</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">width</span><span class="o">:</span> <span class="m">310px</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.psTreatmentA</span> <span class="nc">.psImage</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">width</span><span class="o">:</span> <span class="m">80px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">height</span><span class="o">:</span> <span class="m">112px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.psTreatmentA</span> <span class="nc">.psTitle</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">margin-left</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.psTreatmentA</span> <span class="nc">.psPriceWrap</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">margin-left</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">text-align</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.psTreatmentA</span> <span class="nc">.psCTA</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="c">/* B类样式 */</span>
+</span><span class="line"><span class="nc">.psTreatmentB</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">width</span><span class="o">:</span> <span class="m">385px</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.psTreatmentB</span> <span class="nc">.psImage</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">width</span><span class="o">:</span> <span class="m">386px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">height</span><span class="o">:</span> <span class="m">287px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+</span><span class="line">	<span class="k">margin-bottom</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.psTreatmentB</span> <span class="nc">.psPriceWrap</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+</span><span class="line">	<span class="k">margin-left</span><span class="o">:</span> <span class="m">110px</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.psTreatmentB</span> <span class="nc">.psTitle</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+</span><span class="line">	<span class="k">font-size</span><span class="o">:</span> <span class="m">27px</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>这样做了过后就能够使用同一套DOM结构，来穿上不同的样式了，技术是很简单的技术，但是不同的玩法能玩出不同的精彩哦~</p>
+
+<p>那么，这样做有什么好处呢？这里随机列几条吧。</p>
+
+<p><strong>场景一：</strong></p>
+
+<p>PM说：“我们换回以前那份设计稿吧。”</p>
+
+<p>FE说：“好的，马上弄。”（随手删除了引入的B样式，引入A样式，OK，解决问题~）</p>
+
+<p><strong>场景二：</strong></p>
+
+<p>PM说：“这是最新设计稿，要赶紧上线，1天能上线吗？”</p>
+
+<p>FE说：“我看看设计稿来（啪啪啪~看完设计稿，发现其中有很多复用的网页样式）。”</p>
+
+<p>FE再说：“我尽力吧，晚上做完回你。（使用通用的结构include，最后将之前项目中的A…N样式拿来一套，解决问题！）”</p>
+
+<p>好处还有很多呢，等待你去发现~</p>
+
+<h3 id="section-5">五、最后结束语</h3>
+
+<p>虽然上面文章描述了样式上的重用，其实在JS行为的把握上我们也可以使用相同处理事情的方式，将JS行为的类将表现给分离出来，能够更好的应对需求的变更以及增加代码的可维护~</p>
+
+<p>附：（文章例子中的基本样式）</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+</pre></td><td class="code"><pre><code class="css"><span class="line"><span class="nc">.productStackWrap</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+</span><span class="line">	<span class="k">font-size</span><span class="o">:</span> <span class="m">14px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">margin</span><span class="o">:</span> <span class="m">40px</span> <span class="m">0</span><span class="p">;</span>
+</span><span class="line">	<span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#999</span><span class="p">;</span>
+</span><span class="line">	<span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.psTitle</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">font-size</span><span class="o">:</span> <span class="m">21px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">font-weight</span><span class="o">:</span> <span class="m">700</span><span class="p">;</span>
+</span><span class="line">	<span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.psPriceWrap</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.psPriceWrap</span> <span class="nt">li</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">list-style</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+</span><span class="line">	<span class="k">padding</span><span class="o">:</span> <span class="m">2px</span> <span class="m">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.spLabel</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
+</span><span class="line">	<span class="k">width</span><span class="o">:</span> <span class="m">75px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">text-align</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+</span><span class="line">	<span class="k">padding-right</span><span class="o">:</span> <span class="m">3px</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.spAmount</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
+</span><span class="line">	<span class="k">width</span><span class="o">:</span> <span class="m">75px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">text-align</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+</span><span class="line">	<span class="k">font-weight</span><span class="o">:</span> <span class="m">700</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.spTotalPrice</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">color</span><span class="o">:</span> <span class="nb">green</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.spDescriptionWrap</span> <span class="nt">p</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">line-height</span><span class="o">:</span> <span class="m">150%</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.psCTA</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">background</span><span class="o">:</span> <span class="nb">green</span><span class="p">;</span>
+</span><span class="line">	<span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+</span><span class="line">	<span class="k">padding</span><span class="o">:</span> <span class="m">5px</span> <span class="m">0</span><span class="p">;</span>
+</span><span class="line">	<span class="k">width</span><span class="o">:</span> <span class="m">120px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+</span><span class="line">	<span class="k">border</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class="line">	<span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+</span><span class="line">	<span class="k">font-size</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">#666</span><span class="p">;</span>
+</span><span class="line">	<span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">background</span><span class="o">-</span><span class="k">clip</span><span class="o">:</span> <span class="k">padding</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+</span><span class="line">	<span class="k">background</span><span class="o">:</span> <span class="m">#92c436</span><span class="p">;</span>
+</span><span class="line">	<span class="k">background</span><span class="o">:</span> <span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="k">top</span><span class="o">,</span> <span class="m">#92c436</span> <span class="m">0%</span><span class="o">,</span> <span class="m">#97c64b</span> <span class="m">50%</span><span class="o">,</span> <span class="m">#80c217</span> <span class="m">51%</span><span class="o">,</span> <span class="m">#7cbc0a</span> <span class="m">100%</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.descBulletsUL</span> <span class="nt">li</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">padding</span><span class="o">:</span> <span class="m">4px</span> <span class="m">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">小撸</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-12-02T00:00:00+08:00'><span class='date'>2014 年12 月2 日</span> <span class='time'>12:00 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/css/'>css</a>, <a class='category' href='/blog/categories/html/'>html</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://fegg.github.io/blog/20141202/play-build-web-pages/" data-via="lulin666000" data-counturl="http://fegg.github.io/blog/20141202/play-build-web-pages/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/20141127/one-step-study-thinkjs1/" title="Previous Post: 一步步学习ThinkJS（一）">&laquo; 一步步学习ThinkJS（一）</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/20150524/touch-start/" title="Next Post: 从触摸开始（一）">从触摸开始（一） &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/20160517/redux-can-do/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20160110/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/fegg">@fegg</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'fegg',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 小撸 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'lulin';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://fegg.github.io/blog/20141202/play-build-web-pages/';
+        var disqus_url = 'http://fegg.github.io/blog/20141202/play-build-web-pages/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

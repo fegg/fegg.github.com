@@ -242,15 +242,21 @@ console.log('%d\n', 60);
 
 <p>我们先建一个http.js文件，里面的内容对于后台的开发人员就很熟悉了。</p>
 
-<pre><code>var http = require('http');
-http.createServer(function(req, res) {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write('&lt;h1&gt;Node.js&lt;/h1&gt;');
-    res.end('&lt;p&gt;Hello Node.js&lt;/p&gt;');
-}).listen(8888);
-
-console.log("HTTP server is listening at port 8888.");
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+</span><span class="line"><span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/html&#39;</span><span class="p">});</span>
+</span><span class="line">    <span class="nx">res</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;&lt;h1&gt;Node.js&lt;/h1&gt;&#39;</span><span class="p">);</span>
+</span><span class="line">    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Hello Node.js&lt;/p&gt;&#39;</span><span class="p">);</span>
+</span><span class="line"><span class="p">}).</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8888</span><span class="p">);</span>
+</span><span class="line"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;HTTP server is listening at port 8888.&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>以上代码监听的port：8888，这其实就是建立了一个request，我们在浏览器地址栏中输入：http://localhost:8888/ 即可以访问我们打印的内容。</p>
 
@@ -265,9 +271,11 @@ console.log("HTTP server is listening at port 8888.");
 
 <h4 id="httpjs">1. 首先我们先看看源码的http.js文件。</h4>
 
-<pre><code>var Server = exports.Server = server.Server;
-function createServer() { return new Server(requestListener) };
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">var</span> <span class="nx">Server</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">Server</span> <span class="o">=</span> <span class="nx">server</span><span class="p">.</span><span class="nx">Server</span><span class="p">;</span>
+</span><span class="line"><span class="kd">function</span> <span class="nx">createServer</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="k">new</span> <span class="nx">Server</span><span class="p">(</span><span class="nx">requestListener</span><span class="p">)</span> <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>在这个文件中，我们知道createServer()方法其实返回的就是Server类，这个类是由server这个实例来的。</p>
 
@@ -275,10 +283,13 @@ function createServer() { return new Server(requestListener) };
 
 <p>这个要问怎么找到这些文件的，其实是凭直觉和猜测，再加上模块化的调试方法，可以找到http.js文件的加载模块，就可以找到相应的文件了。</p>
 
-<pre><code>function requestListener() {};
-function connectionListener(socket) {}
-Server.prototype.setTimeout = function(msecs, callback) {};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">function</span> <span class="nx">requestListener</span><span class="p">()</span> <span class="p">{};</span>
+</span><span class="line"><span class="kd">function</span> <span class="nx">connectionListener</span><span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="p">{}</span>
+</span><span class="line"><span class="nx">Server</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setTimeout</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">msecs</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>再这个文件中，我们可以看出和Socket原理差不多，使用定时器来实现端口的监听，但是在源码中可以找到主定时器，这个概念来源于游戏开发，在全局设置定时器，这样大大提升了性能，不得不佩服作者的才能。</p>
 
@@ -290,15 +301,23 @@ Server.prototype.setTimeout = function(msecs, callback) {};
 
 <p>函数大致的执行顺序为：</p>
 
-<pre><code>int Start(int argc, char** argv)
-V8::Initialize();
-    CreateEnvironment() //创建当前环境
-    SetupProcessObject() //启动当前环境的进程
-    Load() //加载当前环境
-    context() //引用上下文
-    uv_run //开始异步事件运行
-    RunAtExit //删除异步事件链表
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="kt">int</span> <span class="nf">Start</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span>
+</span><span class="line"><span class="n">V8</span><span class="o">::</span><span class="n">Initialize</span><span class="p">();</span>
+</span><span class="line">    <span class="n">CreateEnvironment</span><span class="p">()</span> <span class="c1">//创建当前环境</span>
+</span><span class="line">    <span class="n">SetupProcessObject</span><span class="p">()</span> <span class="c1">//启动当前环境的进程</span>
+</span><span class="line">    <span class="n">Load</span><span class="p">()</span> <span class="c1">//加载当前环境</span>
+</span><span class="line">    <span class="n">context</span><span class="p">()</span> <span class="c1">//引用上下文</span>
+</span><span class="line">    <span class="n">uv_run</span> <span class="c1">//开始异步事件运行</span>
+</span><span class="line">    <span class="n">RunAtExit</span> <span class="c1">//删除异步事件链表</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>上面可以看出其实就是通过一系列初始化，最后达到平台的建立。</p>
 
@@ -306,49 +325,73 @@ V8::Initialize();
 
 <p>其实我们经过上面的分析，我们大致知道的node的构成，那么我们能够在node.js（猜想：这个js文件是c和js沟通的桥梁）中，发现传入了process对象。源码结构如下：</p>
 
-<pre><code>(function(process) {});
-//本地模块的加载接口
-NativeModule.require();
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">process</span><span class="p">)</span> <span class="p">{});</span>
+</span><span class="line"><span class="c1">//本地模块的加载接口</span>
+</span><span class="line"><span class="nx">NativeModule</span><span class="p">.</span><span class="nx">require</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>我们来看一看根据process来绑定c语言的模块。</p>
 
-<pre><code>var HTTPParser = process.binding('http_parser').HTTPParser;
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">var</span> <span class="nx">HTTPParser</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">binding</span><span class="p">(</span><span class="s1">&#39;http_parser&#39;</span><span class="p">).</span><span class="nx">HTTPParser</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>是不是就很清晰啦，接下来我们看看模块是怎么注册的。</p>
 
-<pre><code>//现在产生的插件会放置在node_module文件夹下应该很清晰了
-//定义了一个指针结构
-node_module_struct* mod
-//注册自己的模块
-mod-&gt;register_func(Handle&lt;Object&gt; target) 
-//为注册的模块设置一个上下文
-mod-&gt;register_context_func 
-//最后加载到模块缓存，这里也是实现延迟加载的本质
-cache-&gt;Set(module, exports)
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="c1">//现在产生的插件会放置在node_module文件夹下应该很清晰了</span>
+</span><span class="line"><span class="c1">//定义了一个指针结构</span>
+</span><span class="line"><span class="n">node_module_struct</span><span class="o">*</span> <span class="n">mod</span>
+</span><span class="line"><span class="c1">//注册自己的模块</span>
+</span><span class="line"><span class="n">mod</span><span class="o">-&gt;</span><span class="n">register_func</span><span class="p">(</span><span class="n">Handle</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">target</span><span class="p">)</span>
+</span><span class="line"><span class="c1">//为注册的模块设置一个上下文</span>
+</span><span class="line"><span class="n">mod</span><span class="o">-&gt;</span><span class="n">register_context_func</span>
+</span><span class="line"><span class="c1">//最后加载到模块缓存，这里也是实现延迟加载的本质</span>
+</span><span class="line"><span class="n">cache</span><span class="o">-&gt;</span><span class="n">Set</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">exports</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>在模块注册后，还需要做一些准备工作才能够真正的加载到我们的js文件。</p>
 
-<pre><code>//node.cc文件中执行绑定
-static void Binding(const FunctionCallbackInfo&lt;Value&gt;&amp; args);
-//node_javascript.cc文件中会定义你的js
-void DefineJavaScript(Handle&lt;Object&gt; target);
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="c1">//node.cc文件中执行绑定</span>
+</span><span class="line"><span class="k">static</span> <span class="kt">void</span> <span class="nf">Binding</span><span class="p">(</span><span class="k">const</span> <span class="n">FunctionCallbackInfo</span><span class="o">&lt;</span><span class="n">Value</span><span class="o">&gt;&amp;</span> <span class="n">args</span><span class="p">);</span>
+</span><span class="line"><span class="c1">//node_javascript.cc文件中会定义你的js</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">DefineJavaScript</span><span class="p">(</span><span class="n">Handle</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">target</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <h4 id="modulejsjs">6. 在module.js文件中，得到真正的js文件的加载，平台调用。</h4>
 
 <p>在这里作者的module数据结构设置得比较简单，抛去其它得留下结构如下：</p>
 
-<pre><code>module: {
-    id: '',
-    parent: [],
-    export: {},
-    filename,
-    children: []
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="line">    <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class="line">    <span class="nx">parent</span><span class="o">:</span> <span class="p">[],</span>
+</span><span class="line">    <span class="kr">export</span><span class="o">:</span> <span class="p">{},</span>
+</span><span class="line">    <span class="nx">filename</span><span class="p">,</span>
+</span><span class="line">    <span class="nx">children</span><span class="o">:</span> <span class="p">[]</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这样我们这个http程序就能够很好得解释啦。其实知道了原理后面得知识就是看看api和写法了。太晚啦，睡觉觉啦 =_=…后续…</p>
 
@@ -370,6 +413,12 @@ void DefineJavaScript(Handle&lt;Object&gt; target);
 <time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
       
 
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/nodejs/'>nodejs</a>
+  
+</span>
+
 
     </p>
     
@@ -384,10 +433,10 @@ void DefineJavaScript(Handle&lt;Object&gt; target);
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/20140802/hasownproperty/" title="Previous Post: hasOwnProperty">&laquo; hasOwnProperty</a>
+        <a class="basic-alignment left" href="/blog/20140802/graduating-2/" title="Previous Post: 大学毕业总结（二）">&laquo; 大学毕业总结（二）</a>
       
       
-        <a class="basic-alignment right" href="/blog/20140802/hexo-blog/" title="Next Post: Hexo">Hexo &raquo;</a>
+        <a class="basic-alignment right" href="/blog/20140802/java-garbage-problem-1/" title="Next Post: Java中的乱码问题研究（一）">Java中的乱码问题研究（一） &raquo;</a>
       
     </p>
   </footer>
@@ -410,15 +459,15 @@ void DefineJavaScript(Handle&lt;Object&gt; target);
       </li>
     
       <li class="post">
-        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
       </li>
     
       <li class="post">
-        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>

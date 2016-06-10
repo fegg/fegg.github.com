@@ -129,40 +129,61 @@
 
 <p><strong>创建一个项目目录</strong></p>
 
-<pre><code>mkdir ng &amp;&amp; cd ng
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">mkdir ng <span class="o">&amp;&amp;</span> <span class="nb">cd </span>ng
+</span></code></pre></td></tr></table></div></figure>
 
 <p><strong>安装 jspm 环境</strong></p>
 
-<pre><code>sudo npm install jspm/jspm-cli -g
-npm init
-npm install jspm --save-dev
-// 一路回车就行了
-jspm init
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">sudo npm install jspm/jspm-cli -g
+</span><span class="line">npm init
+</span><span class="line">npm install jspm --save-dev
+</span><span class="line">// 一路回车就行了
+</span><span class="line">jspm init
+</span></code></pre></td></tr></table></div></figure>
 
 <p><strong>配置一下 config.js</strong></p>
 
-<pre><code>System.config({
-	"baseURL": "/",
-	"transpiler": "traceur",
-	"paths": {
-		"*": "*.js",
-		"github:*": "jspm_packages/github/*.js"
-	},
-	"map": {
-		"traceur": "github:jmcriffey/bower-traceur@0.0.88",
-		"traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88"
-	}
-});
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">System</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+</span><span class="line">	<span class="s2">&quot;baseURL&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+</span><span class="line">	<span class="s2">&quot;transpiler&quot;</span><span class="o">:</span> <span class="s2">&quot;traceur&quot;</span><span class="p">,</span>
+</span><span class="line">	<span class="s2">&quot;paths&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="line">		<span class="s2">&quot;*&quot;</span><span class="o">:</span> <span class="s2">&quot;*.js&quot;</span><span class="p">,</span>
+</span><span class="line">		<span class="s2">&quot;github:*&quot;</span><span class="o">:</span> <span class="s2">&quot;jspm_packages/github/*.js&quot;</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="s2">&quot;map&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="line">		<span class="s2">&quot;traceur&quot;</span><span class="o">:</span> <span class="s2">&quot;github:jmcriffey/bower-traceur@0.0.88&quot;</span><span class="p">,</span>
+</span><span class="line">		<span class="s2">&quot;traceur-runtime&quot;</span><span class="o">:</span> <span class="s2">&quot;github:jmcriffey/bower-traceur-runtime@0.0.88&quot;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p><strong>安装一个本地服务工具</strong></p>
 
-<pre><code>sudo npm install -g http-server
-// ng 目录下启动
-http-server 
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">sudo npm install -g http-server
+</span><span class="line">// ng 目录下启动
+</span><span class="line">http-server
+</span></code></pre></td></tr></table></div></figure>
 
 <!-- more -->
 
@@ -170,72 +191,115 @@ http-server
 
 <p>（1）使用 TypeScript，所以先安装 tsd 包管理器</p>
 
-<pre><code>sudo npm install -g tsd@^0.6.0
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">sudo npm install -g tsd@^0.6.0
+</span></code></pre></td></tr></table></div></figure>
 
 <p>（2）安装 ng 2 依赖的核心</p>
 
-<pre><code>tsd install angular2 es6-promise rx rx-lite
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">tsd install angular2 es6-promise rx rx-lite
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这里安装完成后会创建包管理器的文件夹：typings</p>
 
 <p>（3）在 ng 目录下创建代码文件</p>
 
-<pre><code>touch app.ts index.html
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">touch app.ts index.html
+</span></code></pre></td></tr></table></div></figure>
 
 <p>（4）配置一下 TypeScript</p>
 
-<pre><code>sudo npm install -g typescript@^1.5.0-beta
-// 在 ng 目录下运行监听编译
-tsc --watch -m commonjs -t es5 --emitDecoratorMetadata app.ts
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">sudo npm install -g typescript@^1.5.0-beta
+</span><span class="line">// 在 ng 目录下运行监听编译
+</span><span class="line">tsc --watch -m commonjs -t es5 --emitDecoratorMetadata app.ts
+</span></code></pre></td></tr></table></div></figure>
 
 <p>（5）接下来编写 app.ts 文件</p>
 
-<pre><code>///&lt;reference path="typings/angular2/angular2.d.ts" /&gt;
-import {Component, View, bootstrap} from 'angular2/angular2';
-
-// Annotation section
-@Component({
-  selector: 'my-app'
-})
-@View({
-  template: '&lt;h1&gt;Hello &lt;/h1&gt;'
-})
-// Component controller
-class MyAppComponent {
-  name: string;
-
-  constructor() {
-    this.name = 'Angular2';
-  }
-}
-
-bootstrap(MyAppComponent);
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="c1">///&lt;reference path=&quot;typings/angular2/angular2.d.ts&quot; /&gt;</span>
+</span><span class="line"><span class="kr">import</span> <span class="p">{</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">View</span><span class="p">,</span> <span class="nx">bootstrap</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;angular2/angular2&#39;</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">// Annotation section</span>
+</span><span class="line"><span class="err">@</span><span class="nx">Component</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">selector</span><span class="o">:</span> <span class="s1">&#39;my-app&#39;</span>
+</span><span class="line"><span class="p">})</span>
+</span><span class="line"><span class="err">@</span><span class="nx">View</span><span class="p">({</span>
+</span><span class="line">	<span class="nx">template</span><span class="o">:</span> <span class="s1">&#39;&lt;h1&gt;Hello &lt;/h1&gt;&#39;</span>
+</span><span class="line"><span class="p">})</span>
+</span><span class="line"><span class="c1">// Component controller</span>
+</span><span class="line"><span class="kr">class</span> <span class="nx">MyAppComponent</span> <span class="p">{</span>
+</span><span class="line">	<span class="nx">name</span><span class="o">:</span> <span class="nx">string</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">	<span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;Angular2&#39;</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="nx">bootstrap</span><span class="p">(</span><span class="nx">MyAppComponent</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>（6）下载官方的 traceur-runtime.js 和 angular2.dev.js（为了速度，你也可以直接引入）</p>
 
-<pre><code>&lt;!-- index.html --&gt;
-&lt;html&gt;
-  	&lt;head&gt;
-	&lt;title&gt;Angular 2 Quickstart&lt;/title&gt;
-    &lt;script src="typings/js/traceur-runtime.js"&gt;&lt;/script&gt;
-    &lt;script src="jspm_packages/system.js"&gt;&lt;/script&gt;
-	&lt;script src="config.js"&gt;&lt;/script&gt;
-	&lt;script src="typings/js/angular2.dev.js"&gt;&lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-
-	&lt;!-- The app component created in app.ts --&gt;
-    &lt;my-app&gt;&lt;/my-app&gt;
-	&lt;script&gt;System.import('./app');&lt;/script&gt;
-
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+</pre></td><td class="code"><pre><code class="html"><span class="line"><span class="c">&lt;!-- index.html --&gt;</span>
+</span><span class="line"><span class="nt">&lt;html&gt;</span>
+</span><span class="line">	<span class="nt">&lt;head&gt;</span>
+</span><span class="line">		<span class="nt">&lt;title&gt;</span>Angular 2 Quickstart<span class="nt">&lt;/title&gt;</span>
+</span><span class="line">		<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;typings/js/traceur-runtime.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class="line">		<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;jspm_packages/system.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class="line">		<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;config.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class="line">		<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;typings/js/angular2.dev.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class="line">	<span class="nt">&lt;/head&gt;</span>
+</span><span class="line">	<span class="nt">&lt;body&gt;</span>
+</span><span class="line">
+</span><span class="line">	<span class="c">&lt;!-- The app component created in app.ts --&gt;</span>
+</span><span class="line">	<span class="nt">&lt;my-app&gt;&lt;/my-app&gt;</span>
+</span><span class="line">	<span class="nt">&lt;script&gt;</span><span class="nx">System</span><span class="p">.</span><span class="kr">import</span><span class="p">(</span><span class="s1">&#39;./app&#39;</span><span class="p">);</span><span class="nt">&lt;/script&gt;</span>
+</span><span class="line">
+</span><span class="line">	<span class="nt">&lt;/body&gt;</span>
+</span><span class="line"><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>最后的文件目录如下：</p>
 
@@ -265,6 +329,12 @@ bootstrap(MyAppComponent);
 <time class='entry-date' datetime='2015-07-09T00:00:00+08:00'><span class='date'>2015 年7 月9 日</span> <span class='time'>12:00 am</span></time>
       
 
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mvvm/'>mvvm</a>
+  
+</span>
+
 
     </p>
     
@@ -279,7 +349,7 @@ bootstrap(MyAppComponent);
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/20150524/%E4%BB%8E%E8%A7%A6%E6%91%B8%E5%BC%80%E5%A7%8B/" title="Previous Post: 从触摸开始（一）">&laquo; 从触摸开始（一）</a>
+        <a class="basic-alignment left" href="/blog/20150524/touch-start/" title="Previous Post: 从触摸开始（一）">&laquo; 从触摸开始（一）</a>
       
       
         <a class="basic-alignment right" href="/blog/20150719/react-component-communicate/" title="Next Post: React 组件之间如何交流">React 组件之间如何交流 &raquo;</a>
@@ -287,6 +357,12 @@ bootstrap(MyAppComponent);
     </p>
   </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -305,15 +381,15 @@ bootstrap(MyAppComponent);
       </li>
     
       <li class="post">
-        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
       </li>
     
       <li class="post">
-        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>
@@ -370,7 +446,10 @@ bootstrap(MyAppComponent);
       var disqus_shortname = 'lulin';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://fegg.github.io/blog/20150709/Hello-Angular2/';
+        var disqus_url = 'http://fegg.github.io/blog/20150709/Hello-Angular2/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

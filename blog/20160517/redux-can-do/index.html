@@ -149,14 +149,17 @@
 
 <p>好吧，来个对比：</p>
 
-<pre><code>y = f(x)
-newState = reducer(state)
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">y</span> <span class="o">=</span> <span class="nx">f</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+</span><span class="line"><span class="nx">newState</span> <span class="o">=</span> <span class="nx">reducer</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>最后我自己先得出一个结论：</p>
 
-<pre><code>f &lt;=&gt; reducer ( &lt;=&gt;: 表示等价的意思)
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">f</span> <span class="o">&lt;=&gt;</span> <span class="nx">reducer</span> <span class="p">(</span> <span class="o">&lt;=&gt;:</span> <span class="err">表示等价的意思</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>好吧，废话就上面那么多了，接下来我举一个实际的例子来理一下自己对 Redux 的理解，这个例子是我在一篇文章中看到的，觉得不错。</p>
 
@@ -174,65 +177,101 @@ newState = reducer(state)
 
 <p><strong>1.首先我们需要定义个 <code>f</code> 来修改坐标</strong></p>
 
-<pre><code>/**
- * reducer
- * @param state 坐标状态
- * @param action 执行的行为
-*/
-function coordinates(state = [1, 1], action) {
-    switch (action.type) {
-        case CLICK:
-            return [
-                state[0] + 40 * Math.random(),
-                state[1] + 40 * Math.random()
-            ]
-        default:
-            return state;
-    }
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * reducer</span>
+</span><span class="line"><span class="cm"> * @param state 坐标状态</span>
+</span><span class="line"><span class="cm"> * @param action 执行的行为</span>
+</span><span class="line"><span class="cm">*/</span>
+</span><span class="line"><span class="kd">function</span> <span class="nx">coordinates</span><span class="p">(</span><span class="nx">state</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">switch</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">case</span> <span class="nx">CLICK</span><span class="o">:</span>
+</span><span class="line">			<span class="k">return</span> <span class="p">[</span>
+</span><span class="line">				<span class="nx">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">40</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">(),</span>
+</span><span class="line">				<span class="nx">state</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">40</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span>
+</span><span class="line">			<span class="p">]</span>
+</span><span class="line">		<span class="k">default</span><span class="o">:</span>
+</span><span class="line">			<span class="k">return</span> <span class="nx">state</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这个函数主要就是使初始坐标 <strong>[1, 1] =&gt; [1 + random, 1 + random]</strong> 这样返回一个全新的数组，这个全新的数组就是新的状态。</p>
 
 <p><strong>2.我们再将这个 <code>f</code> 函数给 Redux 的 Store 去管理</strong></p>
 
-<pre><code>/**
- * 创建 Redux 的 Store(存储器)
-*/
-let store = createStore(coordinates);
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * 创建 Redux 的 Store(存储器)</span>
+</span><span class="line"><span class="cm">*/</span>
+</span><span class="line"><span class="kd">let</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">createStore</span><span class="p">(</span><span class="nx">coordinates</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这个比较简单，就是通过传入 <code>f</code> 来创建一个 Store，对于 Redux 来说有且只有一个 Store，这个和 flux 有比较大的差别。</p>
 
 <p><strong>3.然后再定义一个行为，使我们能够通过 dispatch 调用这个行为去改变 state</strong></p>
 
-<pre><code>/**
- * action
-*/
-const CLICK = 'CLICK';
-/**
- * @returns plainObject =&gt; action
- */
-function click() {
-    return {
-        type: CLICK
-    }
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * action</span>
+</span><span class="line"><span class="cm">*/</span>
+</span><span class="line"><span class="kr">const</span> <span class="nx">CLICK</span> <span class="o">=</span> <span class="s1">&#39;CLICK&#39;</span><span class="p">;</span>
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * @returns plainObject =&gt; action</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kd">function</span> <span class="nx">click</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">return</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">type</span><span class="o">:</span> <span class="nx">CLICK</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>在 Redux 中，只有通过 <code>dispatch</code> 方法去改变状态，就是因为这样，才让我们调试代码变得简单，复现 BUG 更加容易，因为它是单向的，顺着一个方向在流动数据。</p>
 
 <p><strong>4.接下来就写一下 dispatch</strong></p>
 
-<pre><code>plane.events.onInputDown.add(() =&gt; {
-    store.dispatch(click())
-}, null);
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">plane</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">onInputDown</span><span class="p">.</span><span class="nx">add</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class="line">	<span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">click</span><span class="p">())</span>
+</span><span class="line"><span class="p">},</span> <span class="kc">null</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>先抛开其他代码，我们剥离一下：</p>
 
-<pre><code>store.dispatch(click())
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="nx">click</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这样就会去调用行为，然后执行我们上面定义的 <code>coordinates</code> 函数，返回一个新的坐标</p>
 
@@ -240,63 +279,107 @@ function click() {
 
 <p>上面的写完后，我们只是返回来状态，但是还没体现到飞机在场景下的移动效果。我们能够通过</p>
 
-<pre><code>store.getState()
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">store</span><span class="p">.</span><span class="nx">getState</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>来获取最新的当前状态，其实在 Redux 源代码里面就是很简单的一个函数：</p>
 
-<pre><code>function getState() {
-	// 这里的 currentState 是一个外部的变量，在 Store 的作用域下全局生效
-	return currentState;
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">function</span> <span class="nx">getState</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">	<span class="c1">// 这里的 currentState 是一个外部的变量，在 Store 的作用域下全局生效</span>
+</span><span class="line">	<span class="k">return</span> <span class="nx">currentState</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>好吧，现在我们让飞机订阅一下移动的函数：</p>
 
-<pre><code>/**
-* 定义 plane(飞机) 的移动
-*/
-function movePlane(plane) {
-	game.add.tween(plane).to({
-    	x: store.getState()[0],
-        y: store.getState()[1]
-    }, 1000, 'Linear', true);
-}
-/**
-* 移动事件的订阅
-*/
-store.subscribe(movePlane.bind(null, plane));
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm">* 定义 plane(飞机) 的移动</span>
+</span><span class="line"><span class="cm">*/</span>
+</span><span class="line"><span class="kd">function</span> <span class="nx">movePlane</span><span class="p">(</span><span class="nx">plane</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="nx">game</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">tween</span><span class="p">(</span><span class="nx">plane</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span>
+</span><span class="line">		<span class="nx">x</span><span class="o">:</span> <span class="nx">store</span><span class="p">.</span><span class="nx">getState</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+</span><span class="line">		<span class="nx">y</span><span class="o">:</span> <span class="nx">store</span><span class="p">.</span><span class="nx">getState</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+</span><span class="line">	<span class="p">},</span> <span class="mi">1000</span><span class="p">,</span> <span class="s1">&#39;Linear&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm">* 移动事件的订阅</span>
+</span><span class="line"><span class="cm">*/</span>
+</span><span class="line"><span class="nx">store</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">movePlane</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">plane</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>大家会想，为什么我订阅了就自动调用 movePlane 生效了呢？在 Redux 内部会调用当前的监听器，源代码如下，很简单，监听器就是一个数组来装的，最后移出来执行一下：</p>
 
-<pre><code>function subscribe(listener) {
-    var isSubscribed = true;
-
-	ensureCanMutateNextListeners();
-    nextListeners.push(listener);
-    
-    // 然后会返回一个取消订阅的函数，这里省略
-}
-function dispatch(action) {
-	// 省略一些杂七杂八的异常处理代码
-
-	try {
-		isDispatching = true;
-		currentState = currentReducer(currentState, action);
-    } finally {
-    	isDispatching = false;
-	}
-
-	// 执行的代码
-	var listeners = currentListeners = nextListeners;
-	for (var i = 0; i &lt; listeners.length; i++) {
-		listeners[i]();
-	}
-
-	return action;
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">function</span> <span class="nx">subscribe</span><span class="p">(</span><span class="nx">listener</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="kd">var</span> <span class="nx">isSubscribed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">	<span class="nx">ensureCanMutateNextListeners</span><span class="p">();</span>
+</span><span class="line">	<span class="nx">nextListeners</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">listener</span><span class="p">);</span>
+</span><span class="line">	
+</span><span class="line">	<span class="c1">// 然后会返回一个取消订阅的函数，这里省略</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kd">function</span> <span class="nx">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="c1">// 省略一些杂七杂八的异常处理代码</span>
+</span><span class="line">
+</span><span class="line">	<span class="k">try</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">isDispatching</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span><span class="line">		<span class="nx">currentState</span> <span class="o">=</span> <span class="nx">currentReducer</span><span class="p">(</span><span class="nx">currentState</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
+</span><span class="line">	<span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">isDispatching</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line">
+</span><span class="line">	<span class="c1">// 执行的代码</span>
+</span><span class="line">	<span class="kd">var</span> <span class="nx">listeners</span> <span class="o">=</span> <span class="nx">currentListeners</span> <span class="o">=</span> <span class="nx">nextListeners</span><span class="p">;</span>
+</span><span class="line">	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">listeners</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="nx">listeners</span><span class="p">[</span><span class="nx">i</span><span class="p">]();</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line">
+</span><span class="line">	<span class="k">return</span> <span class="nx">action</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>好吧，这样就是一个游戏的流程来，在 Redux 的帮助下，很好的组织了代码，优雅的完成了。执行代码的流程是这样的：</p>
 
@@ -377,15 +460,15 @@ function dispatch(action) {
       </li>
     
       <li class="post">
-        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
       </li>
     
       <li class="post">
-        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>

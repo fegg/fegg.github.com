@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 移动开发 | 小撸]]></title>
+  <link href="http://fegg.github.io/blog/categories/yi-dong-kai-fa/atom.xml" rel="self"/>
+  <link href="http://fegg.github.io/"/>
+  <updated>2016-06-11T02:41:11+08:00</updated>
+  <id>http://fegg.github.io/</id>
+  <author>
+    <name><![CDATA[小撸]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[从触摸开始（一）]]></title>
+    <link href="http://fegg.github.io/blog/20150524/touch-start/"/>
+    <updated>2015-05-24T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20150524/touch-start</id>
+    <content type="html"><![CDATA[<h3 id="section">1. 前言</h3>
+
+<p>最近看了一本《移动Web手册》的书，奇舞团翻译的，非常不错。个人觉得在进入移动端的时候最先应该了解移动端新的交互模式：<strong>触摸</strong>。为什么这样说呢？在PC端，我们大多数的交互都是通过<strong>鼠标</strong>来实现，在开发过程中，对鼠标事件的处理也非常多，通过之前在移动端的开发经验，在移动端的交互也避免不了经常与触摸打交道，所以我们有必要单独学习一下它。</p>
+
+<h3 id="section-1">2. 触摸、鼠标交互模式</h3>
+
+<p><strong>(1) 连续性</strong></p>
+
+<p>触摸事件是不连续的，鼠标事件是连续的。</p>
+
+<p><img src="http://p1.qhimg.com/t01995847f1bbafff14.png" alt="连续性" /></p>
+
+<p>操作顺序：A -&gt; B -&gt; C</p>
+
+<p>在鼠标上：鼠标点击A -&gt; 划过B -&gt; 点击C</p>
+
+<p>在触摸上：手指触摸A -&gt; 跨过B -&gt; 触摸C</p>
+
+<!-- more -->
+
+<p><strong>(2) 下一步预期的操作</strong></p>
+
+<p>在鼠标上：移入元素 -&gt; 点击鼠标左键 -&gt; 触发单击 -&gt; 在有效时间内点击第二次 -&gt; 触发双击</p>
+
+<p><img src="http://p6.qhimg.com/t0158d291e5b4957da5.jpg" alt="鼠标" /></p>
+
+<p>在触摸上，可能有以下几种情况：</p>
+
+<ol>
+  <li>手指触摸屏幕 -&gt; 轻触</li>
+  <li>手指触摸屏幕 -&gt; 双触</li>
+  <li>手指触摸屏幕 -&gt; 滑动</li>
+  <li>手指触摸屏幕 -&gt; 缩放</li>
+</ol>
+
+<p><img src="http://p8.qhimg.com/t011432add6b1f1b6e4.jpg" alt="触摸" /></p>
+
+<blockquote>
+  <p>其实作者认为鼠标事件在用户点击的时候就能够判断行为，其实我觉得如果是双击事件的情况下，浏览器也需要等待一段时间才能够做出反应。这个可以查阅一下google。</p>
+</blockquote>
+
+<p><strong>(3) 等价事件</strong></p>
+
+<p><img src="http://p7.qhimg.com/t0153cb2eaf3a9addb3.png" alt="等价事件" /></p>
+
+<h3 id="section-2">3. 单说触摸事件</h3>
+
+<p>在了解两种不同的交互模式的基础上，我们再来进行单个的分析。其实我觉得学习一样东西，最根本的还是摸清原理部分，就能够很快的Get它了，当然，编码量不够的情况下也许还是需要慢慢来，掌握得更加扎实。</p>
+
+<p><strong>(1) 事件种类</strong></p>
+
+<ul>
+  <li>touchstart: 手指触摸屏幕的瞬间</li>
+  <li>touchmove: 手指在屏幕上移动的时候</li>
+  <li>touchend: 手指离开屏幕的时候</li>
+  <li>touchcancel</li>
+</ul>
+
+<p>其实从命名上就能很清楚的明白他们是干嘛的，当然，有一个比较特殊：touchcancel事件，可能会不太好理解，在最初的学习中可以忽略它，这里做一个简单的介绍：</p>
+
+<blockquote>
+  <p>touchcancel 在系统发生中断的时候会触发，这样说很抽象，我们来举一个栗子，比如你正在玩游戏，触摸的时候，突然手机来了一条短信，这个时候短信通知这个更高级的事件中断了触摸操作，touchcancel事件就触发了。在这个时候游戏开发中，会使用它来进行暂停游戏等操作。</p>
+</blockquote>
+
+<p>由于touchcancel触发的时机不好掌控，所以一般情况下我们会采用下面的方式来处理touchcancel，维护我们的代码逻辑，当然这个要看业务场景。</p>
+
+<p><code>javascript
+dom.addEventListener('touchcancel', function(e){
+	e.preventDefault();
+}, false);
+</code></p>
+
+<p><strong>(2) 触发时机</strong></p>
+
+<p>介绍完了事件的种类，我们来对每一种事件都进行代码级别的测试，看一看是否跟它说的先后顺序一样，这里我将引入鼠标事件一起测试，因为有一些区别性的东西哦。</p>
+
+<p>我们先看一下测试结果：(iOS 8.3 Safari)</p>
+
+<p><strong>A.直接触摸空白部分，然后直接离开</strong></p>
+
+<p><img src="http://p6.qhimg.com/t014f36b6caddf59eea.png" alt="" /></p>
+
+<p><strong>B.在空白区域触摸并滑动，然后离开</strong></p>
+
+<p><img src="http://p8.qhimg.com/t0185793a0e4fd34658.png" alt="" /></p>
+
+<p><strong>C.点击界面中的按钮，未阻止冒泡</strong></p>
+
+<p><img src="http://p3.qhimg.com/t01344b50e10dd503a3.png" alt="" /></p>
+
+<p><strong>D.点击界面中一块区域，阻止冒泡</strong></p>
+
+<p><img src="http://p6.qhimg.com/t0133d2b926bcb771ba.png" alt="" /></p>
+
+<p><strong>E.长按屏幕空白部分，出现选中效果，然后立刻离开屏幕</strong></p>
+
+<p><img src="http://p1.qhimg.com/t0151dc690eab55b394.png" alt="" /></p>
+
+<p>结果很明了，就不需要总结了，下面我们看一下测试的代码：</p>
+
+<p><strong>DOM</strong></p>
+
+<p>``` html</p>
+<div>
+	<button class="btn">这里是一个按钮</button>
+	<span class="area">这里是一块可点击区域</span>
+	<p class="info"></p>
+</div>
+<p>```</p>
+
+<p><strong>JavaScript</strong></p>
+
+<p>``` javascript
+;(function () {
+	var doc = document;
+	var info = doc.querySelector(‘.info’);
+	var btn = doc.querySelector(‘.btn’);
+	var area = doc.querySelector(‘.area’);</p>
+
+<pre><code>doc.ontouchstart = function (e) {
+	info.innerHTML += ', '+ e.type;
+}
+doc.ontouchmove = function (e) {
+	info.innerHTML += ', '+ e.type;
+}
+doc.ontouchend = function (e) {
+	info.innerHTML += ', '+ e.type;
+}
+doc.ontouchcancel = function (e) {
+	info.innerHTML += ', '+ e.type;
+}
+
+doc.onmouseover = function (e) {
+	info.innerHTML += ', '+ e.type;
+}
+doc.onmousemove = function (e) {
+	info.innerHTML += ', '+ e.type;
+}
+doc.onmousedown = function (e) {
+	info.innerHTML += ', '+ e.type;
+}
+doc.onmouseup = function (e) {
+	info.innerHTML += ', '+ e.type;
+}
+doc.onmouseleave = function (e) {
+	info.innerHTML += ', '+ e.type;
+}
+doc.onclick = function (e) {
+	info.innerHTML += ', document: '+ e.type;
+}
+btn.onclick = function (e) {
+	info.innerHTML += ', button: '+ e.type;
+}
+area.onclick = function (e) {
+	e.stopPropagation();
+	info.innerHTML += ', area: '+ e.type;
+} })(); ```
+</code></pre>
+
+<p><strong>CSS</strong></p>
+
+<p><code>css
+.btn {
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	font-size: 16px;
+	border: none;
+	color: #fff;
+	text-align: center;
+	background: #2A3846;
+}
+.area {
+	display: block;
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	color: #fff;
+	text-align: center;
+	background: #2A3846;
+	margin-top: 20px;
+}
+</code></p>
+
+<p>为了不干扰直接知识的理解，之前没有说不同meta头的事情，以及Safari与UC浏览器之间的差异。毕竟要接地气嘛，UC还是要测试一下的。</p>
+
+<p><strong>情况一</strong></p>
+
+<p>``` html</p>
+<meta name="viewport" content="width=device-width" />
+
+<p>```</p>
+
+<p>行为：“触摸空白区域，立刻离开时候的现象”</p>
+
+<p>现象：</p>
+
+<p>Safari：touchstart与touchend事件触发后，延迟一段时间，触发mouse以及click事件；</p>
+
+<p>UC：只触发了touchstart与touchend事件，并无触发mouse和click事件。</p>
+
+<p>行为：“点击页面的按钮（或者元素区域），立刻离开时候的现象”</p>
+
+<p>现象：</p>
+
+<p>Safari：touchstart与touchend事件触发后，延迟一段时间，触发mouse以及click事件，不过click触发是从按钮到document的顺序；</p>
+
+<p>UC：与Safari中表现一致。</p>
+
+<p>总结：</p>
+
+<ul>
+  <li>如果没有禁止缩放，Safari和UC中的点击事件均有延迟现象；</li>
+  <li>在document上绑定事件，与其他元素上绑定事件上述两个浏览器之间存在差异。</li>
+</ul>
+
+<hr />
+
+<p><strong>情况二</strong></p>
+
+<p>``` html</p>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<p>```</p>
+
+<p>先不考虑这样写不符合单一变量测试原则，国内移动网站大多都是这样的meta头，当然，我有测试过，只要带有user-scalable一项就能够满足下面的实验。</p>
+
+<p>不过下面的实验我们排除“点击空白区域这种情况”，因为这document绑定事件确实有差异，我们只测试“点击按钮”这一种行为。</p>
+
+<p>行为：“点击页面的按钮（或者元素区域），立刻离开时候的现象”</p>
+
+<p>现象：</p>
+
+<p>Safari：touchstart与touchend事件触发后，延迟一段时间，触发mouse以及click事件，不过click触发是从按钮到document的顺序；</p>
+
+<p>UC：touchstart、touchend、mouse、click先后顺序不变，但是几乎是同时触发，没有发生延迟。</p>
+
+<p>总结：</p>
+
+<p>在这种情况下，Safari依然存在click事件延迟，UC不存在延迟。</p>
+
+<p>好吧，我承认这样实验有点枯燥，但是必须得这样才能弄明白到底怎么了，到底是怎么了。。。</p>
+
+<blockquote>
+  <p>Tip：这里赞美一下Safari，它能够很好的监听touchmove事件，几乎和手指移动的速度是一样的，UC和Chrome表现均是手指移动一段事件后，再从事件栈里面抛出触发，当然，Chrome触发的速度比UC好。还没有实际例子测试，不知是否会有影响，大家可以测试了给一下结果。</p>
+</blockquote>
+
+<p>发现总结成博文好慢，先不写了，睡觉，接下来有时间将总结以下内容：</p>
+
+<ul>
+  <li>事件级联深入解析</li>
+  <li>300ms延迟的产生原理与解决方案</li>
+  <li>事件默认事件、事件冒泡在移动端的影响</li>
+  <li>触摸事件怎么玩？</li>
+  <li>触摸中的摇曳与HTML5中的摇曳栗子</li>
+  <li>触摸中无限滚动的栗子</li>
+  <li>W3C中的Touch Events</li>
+  <li>未来的Pointer Events</li>
+</ul>
+]]></content>
+  </entry>
+  
+</feed>

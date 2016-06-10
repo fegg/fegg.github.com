@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 前端开发 | 小撸]]></title>
   <link href="http://fegg.github.io/blog/categories/qian-duan-kai-fa/atom.xml" rel="self"/>
   <link href="http://fegg.github.io/"/>
-  <updated>2016-06-11T00:41:49+08:00</updated>
+  <updated>2016-06-11T02:41:11+08:00</updated>
   <id>http://fegg.github.io/</id>
   <author>
     <name><![CDATA[小撸]]></name>
@@ -53,14 +53,16 @@
 
 <p>好吧，来个对比：</p>
 
-<pre><code>y = f(x)
+<p><code>javascript
+y = f(x)
 newState = reducer(state)
-</code></pre>
+</code></p>
 
 <p>最后我自己先得出一个结论：</p>
 
-<pre><code>f &lt;=&gt; reducer ( &lt;=&gt;: 表示等价的意思)
-</code></pre>
+<p><code>javascript
+f &lt;=&gt; reducer ( &lt;=&gt;: 表示等价的意思)
+</code></p>
 
 <p>好吧，废话就上面那么多了，接下来我举一个实际的例子来理一下自己对 Redux 的理解，这个例子是我在一篇文章中看到的，觉得不错。</p>
 
@@ -78,39 +80,42 @@ newState = reducer(state)
 
 <p><strong>1.首先我们需要定义个 <code>f</code> 来修改坐标</strong></p>
 
-<pre><code>/**
+<p><code>javascript
+/**
  * reducer
  * @param state 坐标状态
  * @param action 执行的行为
 */
 function coordinates(state = [1, 1], action) {
-    switch (action.type) {
-        case CLICK:
-            return [
-                state[0] + 40 * Math.random(),
-                state[1] + 40 * Math.random()
-            ]
-        default:
-            return state;
-    }
+	switch (action.type) {
+		case CLICK:
+			return [
+				state[0] + 40 * Math.random(),
+				state[1] + 40 * Math.random()
+			]
+		default:
+			return state;
+	}
 }
-</code></pre>
+</code></p>
 
 <p>这个函数主要就是使初始坐标 <strong>[1, 1] =&gt; [1 + random, 1 + random]</strong> 这样返回一个全新的数组，这个全新的数组就是新的状态。</p>
 
 <p><strong>2.我们再将这个 <code>f</code> 函数给 Redux 的 Store 去管理</strong></p>
 
-<pre><code>/**
+<p><code>javascript
+/**
  * 创建 Redux 的 Store(存储器)
 */
 let store = createStore(coordinates);
-</code></pre>
+</code></p>
 
 <p>这个比较简单，就是通过传入 <code>f</code> 来创建一个 Store，对于 Redux 来说有且只有一个 Store，这个和 flux 有比较大的差别。</p>
 
 <p><strong>3.然后再定义一个行为，使我们能够通过 dispatch 调用这个行为去改变 state</strong></p>
 
-<pre><code>/**
+<p><code>javascript
+/**
  * action
 */
 const CLICK = 'CLICK';
@@ -118,25 +123,27 @@ const CLICK = 'CLICK';
  * @returns plainObject =&gt; action
  */
 function click() {
-    return {
-        type: CLICK
-    }
+	return {
+		type: CLICK
+	}
 }
-</code></pre>
+</code></p>
 
 <p>在 Redux 中，只有通过 <code>dispatch</code> 方法去改变状态，就是因为这样，才让我们调试代码变得简单，复现 BUG 更加容易，因为它是单向的，顺着一个方向在流动数据。</p>
 
 <p><strong>4.接下来就写一下 dispatch</strong></p>
 
-<pre><code>plane.events.onInputDown.add(() =&gt; {
-    store.dispatch(click())
+<p><code>javascript
+plane.events.onInputDown.add(() =&gt; {
+	store.dispatch(click())
 }, null);
-</code></pre>
+</code></p>
 
 <p>先抛开其他代码，我们剥离一下：</p>
 
-<pre><code>store.dispatch(click())
-</code></pre>
+<p><code>javascript
+store.dispatch(click())
+</code></p>
 
 <p>这样就会去调用行为，然后执行我们上面定义的 <code>coordinates</code> 函数，返回一个新的坐标</p>
 
@@ -144,62 +151,63 @@ function click() {
 
 <p>上面的写完后，我们只是返回来状态，但是还没体现到飞机在场景下的移动效果。我们能够通过</p>
 
-<pre><code>store.getState()
-</code></pre>
+<p><code>javascript
+store.getState()
+</code></p>
 
 <p>来获取最新的当前状态，其实在 Redux 源代码里面就是很简单的一个函数：</p>
 
-<pre><code>function getState() {
+<p><code>javascript
+function getState() {
 	// 这里的 currentState 是一个外部的变量，在 Store 的作用域下全局生效
 	return currentState;
 }
-</code></pre>
+</code></p>
 
 <p>好吧，现在我们让飞机订阅一下移动的函数：</p>
 
-<pre><code>/**
+<p><code>javascript
+/**
 * 定义 plane(飞机) 的移动
 */
 function movePlane(plane) {
 	game.add.tween(plane).to({
-    	x: store.getState()[0],
-        y: store.getState()[1]
-    }, 1000, 'Linear', true);
+		x: store.getState()[0],
+		y: store.getState()[1]
+	}, 1000, 'Linear', true);
 }
 /**
 * 移动事件的订阅
 */
 store.subscribe(movePlane.bind(null, plane));
-</code></pre>
+</code></p>
 
 <p>大家会想，为什么我订阅了就自动调用 movePlane 生效了呢？在 Redux 内部会调用当前的监听器，源代码如下，很简单，监听器就是一个数组来装的，最后移出来执行一下：</p>
 
-<pre><code>function subscribe(listener) {
-    var isSubscribed = true;
+<p>``` javascript
+function subscribe(listener) {
+	var isSubscribed = true;</p>
 
-	ensureCanMutateNextListeners();
-    nextListeners.push(listener);
-    
-    // 然后会返回一个取消订阅的函数，这里省略
+<pre><code>ensureCanMutateNextListeners();
+nextListeners.push(listener);
+
+// 然后会返回一个取消订阅的函数，这里省略 } function dispatch(action) {
+// 省略一些杂七杂八的异常处理代码
+
+try {
+	isDispatching = true;
+	currentState = currentReducer(currentState, action);
+} finally {
+	isDispatching = false;
 }
-function dispatch(action) {
-	// 省略一些杂七杂八的异常处理代码
 
-	try {
-		isDispatching = true;
-		currentState = currentReducer(currentState, action);
-    } finally {
-    	isDispatching = false;
-	}
-
-	// 执行的代码
-	var listeners = currentListeners = nextListeners;
-	for (var i = 0; i &lt; listeners.length; i++) {
-		listeners[i]();
-	}
-
-	return action;
+// 执行的代码
+var listeners = currentListeners = nextListeners;
+for (var i = 0; i &lt; listeners.length; i++) {
+	listeners[i]();
 }
+
+return action; } ```
 </code></pre>
 
 <p>好吧，这样就是一个游戏的流程来，在 Redux 的帮助下，很好的组织了代码，优雅的完成了。执行代码的流程是这样的：</p>

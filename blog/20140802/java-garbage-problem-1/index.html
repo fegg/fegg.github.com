@@ -122,10 +122,13 @@
 
 <p>a. 查看操作系统（OS）的默认编码（这点还是有必要的，但是大多数在中国用的都是默认GBK）</p>
 
-<pre><code>Properties props = System.getProperties();
-//操作系统信息
-System.out.println("操作系统默认编码: " + props.getProperty("file.encoding"));
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Properties</span> <span class="n">props</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getProperties</span><span class="o">();</span>
+</span><span class="line"><span class="c1">//操作系统信息</span>
+</span><span class="line"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;操作系统默认编码: &quot;</span> <span class="o">+</span> <span class="n">props</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&quot;file.encoding&quot;</span><span class="o">));</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>b. 确定了默认的情况后，在java文件编译成class文件到内存年的时候，使用GBK编码编译【-encoding】，IDE可以使用默认。（中途的UNICODE编码可以查阅相关资料）</p>
 
@@ -133,40 +136,55 @@ System.out.println("操作系统默认编码: " + props.getProperty("file.encodi
 
 <!--more-->
 
-<pre><code>package com.test.two;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-
-/**
-  * JAVA编码测试
-  * @author 60
-  */
-public class Test {
-    public static void main(String[] args) throws IOException {
-        //接收输入串的变量
-        String str_in = "";
-        //定义流：设置输入接口按照中文的编码
-        BufferedReader std_in = new BufferedReader(
-            new InputStreamReader(System.in, "GBK"));
-        //定义流：设置输出接口按照中文的编码
-        BufferedWriter std_out = new BufferedWriter(
-            new OutputStreamWriter(System.out, "GBK"));
-            //从控制台输出程序中的内容
-            std_out.write("请输入：");
-            std_out.flush();
-            //从控制台输入到程序
-            str_in = std_in.readLine();
-            //从程序输出到控制台
-            std_out.write("这是输入的字符串：\n" + str_in);
-            std_out.flush();
-    }
-}
-</code></pre>
-
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm">    * JAVA编码测试</span>
+</span><span class="line"><span class="cm">    * @author 60</span>
+</span><span class="line"><span class="cm">    */</span>
+</span><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class="line">        <span class="c1">//接收输入串的变量</span>
+</span><span class="line">        <span class="n">String</span> <span class="n">str_in</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+</span><span class="line">        <span class="c1">//定义流：设置输入接口按照中文的编码</span>
+</span><span class="line">        <span class="n">BufferedReader</span> <span class="n">std_in</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">BufferedReader</span><span class="o">(</span>
+</span><span class="line">            <span class="k">new</span> <span class="nf">InputStreamReader</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">in</span><span class="o">,</span> <span class="s">&quot;GBK&quot;</span><span class="o">));</span>
+</span><span class="line">        <span class="c1">//定义流：设置输出接口按照中文的编码</span>
+</span><span class="line">        <span class="n">BufferedWriter</span> <span class="n">std_out</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">BufferedWriter</span><span class="o">(</span>
+</span><span class="line">            <span class="k">new</span> <span class="nf">OutputStreamWriter</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">,</span> <span class="s">&quot;GBK&quot;</span><span class="o">));</span>
+</span><span class="line">            <span class="c1">//从控制台输出程序中的内容</span>
+</span><span class="line">            <span class="n">std_out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">&quot;请输入：&quot;</span><span class="o">);</span>
+</span><span class="line">            <span class="n">std_out</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+</span><span class="line">            <span class="c1">//从控制台输入到程序</span>
+</span><span class="line">            <span class="n">str_in</span> <span class="o">=</span> <span class="n">std_in</span><span class="o">.</span><span class="na">readLine</span><span class="o">();</span>
+</span><span class="line">            <span class="c1">//从程序输出到控制台</span>
+</span><span class="line">            <span class="n">std_out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">&quot;这是输入的字符串：\n&quot;</span> <span class="o">+</span> <span class="n">str_in</span><span class="o">);</span>
+</span><span class="line">            <span class="n">std_out</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 </div>
 
 
@@ -185,6 +203,12 @@ public class Test {
 <time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
       
 
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>
+  
+</span>
+
 
     </p>
     
@@ -199,7 +223,7 @@ public class Test {
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/20140802/hexo-blog/" title="Previous Post: Hexo">&laquo; Hexo</a>
+        <a class="basic-alignment left" href="/blog/20140802/hello-nodejs/" title="Previous Post: Hello Node.js">&laquo; Hello Node.js</a>
       
       
         <a class="basic-alignment right" href="/blog/20140802/java-garbage-problem-2/" title="Next Post: Java中的乱码问题研究（二）">Java中的乱码问题研究（二） &raquo;</a>
@@ -225,15 +249,15 @@ public class Test {
       </li>
     
       <li class="post">
-        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
       </li>
     
       <li class="post">
-        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>

@@ -1,0 +1,1157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Css | 小撸]]></title>
+  <link href="http://fegg.github.io/blog/categories/css/atom.xml" rel="self"/>
+  <link href="http://fegg.github.io/"/>
+  <updated>2016-06-11T02:41:11+08:00</updated>
+  <id>http://fegg.github.io/</id>
+  <author>
+    <name><![CDATA[小撸]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[PostCSS是个什么鬼东西？]]></title>
+    <link href="http://fegg.github.io/blog/20151024/postcss-introduce/"/>
+    <updated>2015-10-24T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20151024/postcss-introduce</id>
+    <content type="html"><![CDATA[<h3 id="section">前言</h3>
+
+<p>最近大漠前辈在群里发关于<code>PostCSS</code>的系列文章，但是耗子姐姐又说看了有点云里雾里的感觉，所以这篇文章将按一个思考的角度来理解一下 PostCSS 到底是一个什么东西。</p>
+
+<p><img src="/images/postcss/top.png" alt="配图" /></p>
+
+<h3 id="section-1">一、提出不懂的地方</h3>
+
+<p>很多时候第一次在网上查询 PostCSS 概念的时候，大家都解释成一个<code>后处理器</code>的概念，其实个人觉得这些概念不重要，更为重要的有以下几点：</p>
+
+<ol>
+  <li>它本质上是一个什么东西？</li>
+  <li>它能解决我们什么问题？</li>
+  <li>它是通过什么方式来解决我们的问题？</li>
+  <li>它解决我们的问题是为什么？</li>
+  <li>怎么实现与 <code>SASS</code>、<code>LESS</code>、<code>Stylus</code> 相同的功能（因为它们被经常拿来比较）</li>
+  <li>它由哪些东西组成？</li>
+  <li>既然是程序可以用的，那么它的API呢？</li>
+</ol>
+
+<!-- more -->
+
+<hr />
+
+<p>Q: 这个时候，你应该会问：<strong>为什么要将组成和API放到最后呢？</strong></p>
+
+<p>A: 那是因为我们在认识一个不太清楚的东西的时候，第一次肯定是一个直观的认识：它到底有什么用？而不会说，一来就去深入的研究它。不过这里本质还是要先说一下的，先留个印象。</p>
+
+<hr />
+
+<h3 id="section-2">二、个个击破</h3>
+
+<h4 id="section-3">1. 它本质上是一个什么东西？</h4>
+
+<ul>
+  <li>PostCSS 可以直观的理解为：它就是一个<code>平台、平台、平台</code>，重要的事情来三遍比较爽，哈哈！</li>
+</ul>
+
+<blockquote>
+  <p>为什么说它是一个平台呢？因为我们直接用它，感觉不能干什么事情，但是如果让一些插件在它上面跑，那么将会很强大。</p>
+</blockquote>
+
+<ul>
+  <li>PostCSS 提供了一个解析器，它能够将 CSS 解析成抽象语法树（AST）。</li>
+</ul>
+
+<p>上面两条看完后，我们可以理解为下面这个模型。</p>
+
+<p><img src="/images/postcss/process.png" alt="基本模型" /></p>
+
+<p>所以说，PostCSS 它需要一个插件系统才能够发挥作用。我们可以通过“插件”来传递AST，然后再把AST转换成一个串，最后再输出到目标文件中去。当然，这里是有API可以用，这里先不讲，免得晕了。</p>
+
+<h4 id="section-4">2. 它能解决我们什么问题？它是通过什么方式来解决我们的问题？</h4>
+
+<p>上面的图很清晰，但是我还是不知道是个什么东西！所以接下来温和点，直接从代码层面来感官的认识一下。</p>
+
+<ul>
+  <li>它能够为 CSS 提供额外的功能；</li>
+  <li>通过在 PostCSS 这个<code>平台</code>上，我们能够开发一些插件，来处理我们的CSS，比如热门的：autoprefixer</li>
+  <li>我们能够使用JavaScript来开发插件（这点对前端来说很重要）</li>
+</ul>
+
+<p>好吧，看到一个熟悉的单词了：autoprefixer，这里我们就让它来当栗子吧，可能更容易理解一点。</p>
+
+<p>首先，我们需要做一些准备，安装好需要的东西。</p>
+
+<p><code>bash
+// postcss 的命令行工具
+sudo npm install  -g postcss-cli
+// autoprefixer 插件
+sudo npm install -g autoprefixer
+</code></p>
+
+<p>第一次用命令行能让你更直观去理解它哈，所以请要有一颗折腾的心。</p>
+
+<p>``` bash
+// 1. 先看下这个命令有哪些参数可以用
+postcss –help</p>
+
+<p>Usage: /usr/local/bin/postcss -use plugin [–config|-c config.json] [–output|-o
+output.css] [input.css]</p>
+
+<p>选项：
+	-c, –config       JSON file with plugin configuration
+	-u, –use          postcss plugin name (can be used multiple times)
+	-o, –output       Output file (stdout if not provided)
+	-d, –dir          Output directory
+	-r, –replace      Replace input file(s) with generated output       [boolean]
+	-s, –syntax       Alternative input syntax parser
+	-p, –parser       Alternative CSS parser
+	-t, –stringifier  Alternative output stringifier
+	-w, –watch        auto-recompile when detecting source changes
+	-v, –version      显示版本号                                        [boolean]
+	-h, –help         显示帮助信息                                      [boolean]</p>
+
+<p>示例：
+	postcss –use autoprefixer -c             Use autoprefixer as a postcss plugin
+	options.json -o screen.css screen.css
+	postcss –use autoprefixer                Pass plugin parameters in
+	–autoprefixer.browsers “&gt; 5%” -o         plugin.option notation
+	screen.css screen.css
+	postcss -u postcss-cachify -u             Use multiple plugins and multiple
+	autoprefixer -d build *.css               input files</p>
+
+<p>Please specify at least one plugin name.
+```</p>
+
+<p>PS: 我贴出来是方便大家在看的时候不用电脑……^_^</p>
+
+<p>好吧，先看一下文件目录，这里我只说一下比较好写的方式，就是将一些参数配置到配置文件中去。</p>
+
+<p><img src="/images/postcss/menu.png" alt="目录结构" /></p>
+
+<p><code>json
+// config.json: 所有的配置
+// p.json: 仅有 autoprefixer 插件的配置
+// config.json 的内容
+{
+	"use": ["autoprefixer"],
+	"input": "src/index.css",
+	"output": "index.css",
+	"autoprefixer": {
+		"browsers": "&gt; 5%"
+	}
+}
+</code></p>
+
+<p><code>json
+// p.json 的内容
+{
+	"autoprefixer": {
+		"browsers": "&gt; 5%"
+	}
+}
+</code></p>
+
+<p>接下来我们在终端里面输入：</p>
+
+<p><code>bash
+// 最简洁的方式
+postcss -c config.json
+// 稍微复杂一点的方式，这里要用 -i 参数，help里面没有，我是从config.json里面的配置猜出来的，官方的那个写法出不来
+postcss -u autoprefixer -c p.json -i src/index.css -o index.css
+// 最复杂的方式
+// 还是不写比较好。。。
+</code></p>
+
+<p>跟平时想到的效果一样：</p>
+
+<p><code>css
+// src/index.css 中的源码
+* {
+	transition: all .1s;
+}
+// 转换过后的代码 index.css
+* {
+	-webkit-transition: all .1s;
+		transition: all .1s;
+}
+</code></p>
+
+<p>好吧，现在肯定就对 PostCSS 有一个感官的认识了，接下来就是需要自己动手去用一下 <code>cssnext</code> 这个插件了～看会发生什么，这里就不写了，也挺好用的，不过应该还是草案状态。</p>
+
+<hr />
+
+<p>我们开发不可能用命令行吧，所以这里再接着介绍代码编写，然后用 node 去执行文件的方式。直接上代码吧。</p>
+
+<p><code>bash
+// 1. 先安装一下需要的库
+npm install postcss --save-dev
+npm install autoprefixer --save-dev
+</code></p>
+
+<p><code>javascript
+// 2. 其实应该先看看 postcss 的 package.json 文件，来看看包含了些什么，留个印象
+// 3. p.js 中的代码
+var postcss = require('postcss');
+var autoprefixer = require('autoprefixer');
+var fs = require('fs');
+var css = '* { transition: all .1s; }';
+postcss([autoprefixer]).process(css).then(function(result) {
+	// 这一行是学习的时候需要的，看一下到底对象里面包含什么
+	console.log(result);
+	if (result.css) {
+		fs.writeFileSync('index.css', result.css);
+	}
+	if (result.map) {
+		fs.writeFileSync('index.css.map', result.map);
+	}
+});
+</code></p>
+
+<p><code>bash
+// 4. 执行 p.js
+node p
+</code></p>
+
+<p>好吧，最后的结果和之前用命令行的方式一样，只不过过程不同。这样下来应该对 PostCSS 有了更多的感觉了吧。还没完，不用慌～我们还需要提出一个问题，我都有 <code>SASS</code> 等预处理器了，还拿它来不是又给前端届添乱么？因为这2年东西确实太多了～</p>
+
+<blockquote>
+  <p>记住一句话：存在即合理</p>
+</blockquote>
+
+<p>既然合理，那么我们就看看它有什么优势呗～</p>
+
+<h4 id="section-5">3. 它解决我们的问题是为什么？优势何在？</h4>
+
+<p>比如，我们用 SASS 来处理 box-shadow 的前缀，我们需要这样写：</p>
+
+<p><code>css
+/* CSS3 box-shadow */
+@mixin box-shadow($top, $left, $blur, $size, $color, $inset: false) {
+	@if $inset {
+		-webkit-box-shadow: inset $top $left $blur $size $color;
+		box-shadow: inset $top $left $blur $size $color;
+	} @else {
+		-webkit-box-shadow: $top $left $blur $size $color;
+		box-shadow: $top $left $blur $size $color;
+	}
+}
+</code></p>
+
+<p>使用 PostCSS 我们只需要按标准的 CSS 来写就行了，因为最后 autoprefixer 会帮我们做添加这个事情～</p>
+
+<p><code>css
+box-shadow: 0 0 3px 5px rgba(222, 222, 222, .3);
+</code></p>
+
+<p>所以，这里就出现了一个经常大家说的未来编码的问题。实际上，PostCSS 改变的是一种开发模式。</p>
+
+<ul>
+  <li>SASS等工具：源代码 -&gt; 生产环境 CSS</li>
+  <li>PostCSS：源代码 -&gt; 标准 CSS -&gt; 生产环境 CSS</li>
+</ul>
+
+<p>这样能体会出优势吧，但是目前大家都是 SASS + PostCSS 这样的开发模式，其实我认为是不错的，取长补短嘛，当然，在 PostCSS 平台上都是可以做到的，只是目前这个过渡期，这样更好，更工程化。接下来我就介绍一些方法来纯粹是用 PostCSS。</p>
+
+<h4 id="sasslessstylus-">4. 怎么实现与 SASS、LESS、Stylus 相同的功能</h4>
+
+<p>其实这一节我都不需要写了～列一下插件就行了，因为插件才是实现，PostCSS 只是提供了一个平台。</p>
+
+<p>其实可以去官方看看：<a href="https://github.com/postcss/postcss">插件系统</a>
+这里列几个便于理解的插件</p>
+
+<ul>
+  <li>postcss-each</li>
+  <li>postcss-for</li>
+  <li>postcss-mixins</li>
+  <li>postcss-extend</li>
+</ul>
+
+<p>从名字就能看出来了吧～应该很好理解。</p>
+
+<h4 id="section-6">5. 它由哪些东西组成？</h4>
+
+<p>其实从官方介绍来看，只包含以下内容：</p>
+
+<ol>
+  <li>CSS Parser</li>
+  <li>CSS 节点树 API</li>
+  <li>source map 生成器</li>
+  <li>生成节点树串</li>
+</ol>
+
+<p>英文不太好 ＝＝ ，就这 4 部分吧，从第一个图其实也能够看出来。</p>
+
+<p>其中的 I/O 体现在什么地方呢？好吧，很容易想到，主要体现在：</p>
+
+<ul>
+  <li>Input: <strong>插件程式</strong>和<strong>CSS Parser</strong></li>
+  <li>Output: <strong>生成节点树串</strong></li>
+</ul>
+
+<p>CSS Parser 可以理解为一个内部过程，而插件程式主要体现在：</p>
+
+<p><code>javascript
+postcss([ autoprefixer ])
+</code></p>
+
+<p>最后生成的节点树串体现在：</p>
+
+<p><code>javascript
+postcss().process().then(function (result) {
+	// 就是这里了
+	console.log(result.css);
+});
+// 现在我贴一下上面 result 对象的一个输出结果
+// 这里我多引入了一个 cssnano 插件
+// 改变的代码就这点，为了更全的看 result
+var opts = {
+	from: 'src/index.css',
+	to: 'index.css',
+	// 配置 map
+	map: { inline: false }
+};
+postcss([ autoprefixer, cssnano() ]).process(css, opts)
+</code></p>
+
+<p><code>javascript
+Result {
+	processor: Processor {
+		// 处理器的版本号
+		version: '5.0.10',
+		// 加载的一堆插件
+		plugins: [
+			[Object], [Object], [Object], [Object], [Object],
+			[Object], [Object], [Object], [Object], [Object],
+			[Object], [Object], [Object], [Object], [Object],
+			[Object], [Object], [Object], [Object], [Object],
+			[Object], [Object], [Object], [Object], [Object],
+			[Object], [Object]
+		]
+	},
+	messages: [],
+	root: Root {
+		raws: {
+			semicolon: false,
+			after: ''
+		},
+		type: 'root',
+		nodes: [
+			[Object]
+		],
+		source: {
+			input: [Object],
+			start: [Object]
+		},
+		_autoprefixerDisabled: false,
+		_autoprefixerPrefix: false,
+		rawCache: {
+			colon: ':',
+			indent: '',
+			beforeDecl: '',
+			beforeRule: '',
+			beforeOpen: '',
+			beforeClose: '',
+			beforeComment: '',
+			after: '',
+			emptyBody: '',
+			commentLeft: '',
+			commentRight: ''
+		}
+	},
+	// 我们代码中配置 opts 变量
+	opts: {
+		from: 'src/index.css',
+		to: 'index.css'
+	},
+	// 这就是重新生成的 节点树串
+	// 这里有自动补全和高效压缩的效果
+	css: '*{-webkit-transition:all .1s;transition:all .1s}',
+	// map的文件的配置
+	map: 
+		SourceMapGenerator {
+			_file: 'index.css',
+			_sourceRoot: null,
+			_skipValidation: false,
+			_sources: ArraySet { _array: [Object], _set: [Object] },
+			_names: ArraySet { _array: [], _set: {} },
+			_mappings: MappingList { _array: [Object], _sorted: true, _last: [Object] },
+			_sourcesContents: { '$src/index.css': '* { transition: all .1s; }' } },
+	// 这里应该是链式要用的吧，暂时不深究
+	lastPlugin: {
+		[Function]
+		postcssPlugin: 'cssnano-reset-stylecache',
+			postcssVersion: '5.0.10'
+	}
+}
+</code></p>
+
+<p>其实吧，这样有点抽象的，还是来看熟悉的 API 吧。</p>
+
+<p>这里出现了 sourcemap，说明 PostCSS 中的转换功能是它必备的，但是必备并不等于：<strong>源代码与目标代码不能完全一致</strong>。</p>
+
+<p>这里吐槽一下 Chrome 的 sourcemap 功能，一坨屎！下面看看 firefox 里面的效果吧。</p>
+
+<p><img src="/images/postcss/sourcemap.png" alt="SourceMap的效果" /></p>
+
+<p>这里 firefox 里面就自动映射了<strong>源文件</strong>，非常不错！</p>
+
+<h4 id="api">6. 既然是程序可以用的，那么它的API呢？</h4>
+
+<p>其实官方有 API 的详细解释，我看了一下，一看就明白了，就不再花时间介绍了，大家可以去看看，这样会知道，原来如此～</p>
+
+<p>PS: 大家可以先看看 Node Common 和 Node相关的，然后再看 plugin</p>
+
+<p><a href="https://github.com/postcss/postcss/blob/master/docs/api.md">官方API</a></p>
+
+<p>这里看一个 DEMO，主要做 rem 和 px 单位之间的互换，加入 processors 就可以用了，很方便：</p>
+
+<p><code>javascript
+var custom = function(css, opts){
+	css.eachDecl(function(decl){
+		decl.value = decl.value.replace(/\d+rem/, function(str){
+			return 16 * parseFloat(str) + "px";
+		});
+	});
+};
+</code></p>
+
+<p>开发插件可以看一下 <a href="https://github.com/postcss/postcss/blob/master/docs/guidelines/plugin.md">官方插件指南</a></p>
+
+<p>更细致的地方，之后有时间的时候再写写 ^_^ 一说技术就停不下来了～</p>
+
+<p>大家在问？我怎么在工程上应用它呢？好吧，使用 gulp, grunt, webpack 都是可以的，我觉得都理解了 PostCSS ，使用这些就很简单了，一查资料，拷贝一份配置就可以开始用了～就这样吧，下次再结合 react 来介绍一下一个叫: postcss-js 的插件，看上去还不错，还没深入用，用到的时候再分享吧。</p>
+
+<p>其实我也是初学者，只是用了自己的学习方法来梳理成文章，下面都是我看过的文章，部分是引用的。这里就不全部举例了，看的文章有点多。。。</p>
+
+<h4 id="section-7">7. 参考的文章</h4>
+
+<ul>
+  <li>最权威的初认识</li>
+</ul>
+
+<p><a href="https://github.com/postcss/postcss">https://github.com/postcss/postcss</a></p>
+
+<ul>
+  <li>一个不错的东西 rework</li>
+</ul>
+
+<p><a href="https://github.com/reworkcss">https://github.com/reworkcss</a></p>
+
+<ul>
+  <li>理解 AST 等插件解析技术</li>
+</ul>
+
+<p><a href="http://rapheal.sinaapp.com/category/js/uglify%E6%BA%90%E7%A0%81/">http://rapheal.sinaapp.com/category/js/uglify%E6%BA%90%E7%A0%81/</a></p>
+
+<ul>
+  <li>大漠的系列文章，应用型很强，推荐</li>
+</ul>
+
+<p><a href="http://www.w3cplus.com/blog/tags/517.html">http://www.w3cplus.com/blog/tags/517.html</a></p>
+
+<ul>
+  <li>一个年龄差不多的开发者的解释</li>
+</ul>
+
+<p><a href="http://acgtofe.com/posts/2015/05/modular-transforming-with-postcss/">http://acgtofe.com/posts/2015/05/modular-transforming-with-postcss/</a></p>
+
+<ul>
+  <li>一篇稍微理论化解释的文章</li>
+</ul>
+
+<p><a href="http://www.oschina.net/translate/its-time-for-everyone-to-learn-about-postcss?cmp">http://www.oschina.net/translate/its-time-for-everyone-to-learn-about-postcss?cmp</a></p>
+
+<ul>
+  <li>一个开发模式简单的优劣比较</li>
+</ul>
+
+<p><a href="http://caibaojian.com/css-processor.html">http://caibaojian.com/css-processor.html</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[像积木一样搭建网页]]></title>
+    <link href="http://fegg.github.io/blog/20141202/play-build-web-pages/"/>
+    <updated>2014-12-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20141202/play-build-web-pages</id>
+    <content type="html"><![CDATA[<h3 id="section">前言</h3>
+
+<p>我们在浏览网页的时候，经常会看到很相似的几种内容。比如下面这两种样子：</p>
+
+<p><img src="http://p4.qhimg.com/t010118aee227f746a5.png" alt="视图1" /></p>
+
+<p><img src="http://p4.qhimg.com/t0188a9a78a17386fb9.png" alt="视图2" /></p>
+
+<p>看上去是不是比较像呢？其实就是图片的位置不一样，大致上可以认为是一样的吧，那么针对这样子的相似度较高的网页，我们应该怎么样开发呢？</p>
+
+<blockquote>
+  <p>其实这就得谈谈“页面重用机制”了，下面所写的积木式网页构建方式就能够很好的处理页面重用这个问题。</p>
+</blockquote>
+
+<p>接下来将从以下4个方面对积木式网页开发进行描述：</p>
+
+<ol>
+  <li>分析页面结构</li>
+  <li>构建网页的结构</li>
+  <li>编写网页基本的样式</li>
+  <li>编写不同表现的样式</li>
+</ol>
+
+<!-- more -->
+
+<h3 id="section-1">一、分析页面结构</h3>
+
+<p>虽然HTML的语法那些很简单，但是在网页设计和开发中，它却占据着不可动摇的地位。首先我们需要根据设计师的PSD和产品经理所描述的需求，然后确定我们网页的结构，反复的与他们沟通，确定更多的信息，才让我们的网页结构的生命周期变得更长。</p>
+
+<p>这里推荐一个Chrome的插件，可以瞬间去除CSS和JavaScript的效果，查看到最原始网页的表现。</p>
+
+<blockquote>
+  <p>Web Developer</p>
+</blockquote>
+
+<p>下面我们要参考的结构就如下图中2种样子：</p>
+
+<p><img src="http://p5.qhimg.com/t0138cd1fbdfbc5ff7e.png" alt="视图1" /></p>
+
+<p><img src="http://p1.qhimg.com/t01e4dfb2288f445e02.png" alt="视图2" /></p>
+
+<p>我用红线大致描了一下页面的信息块，接下来我们来分析一下信息：</p>
+
+<ol>
+  <li>一张展示图</li>
+  <li>一个标题</li>
+  <li>商品的列表信息（包括总价）</li>
+  <li>附属品的列表信息</li>
+  <li>购买按钮</li>
+</ol>
+
+<p>好吧，这里就不需要PM来确认啦，自己当一回PM ^8^，接下来我们需要描述网页结构。</p>
+
+<h3 id="section-2">二、构建网页的结构</h3>
+
+<p>经过上面的分析，我们可以得出如下的DOM结构：</p>
+
+<p>``` html</p>
+<div class="productStackWrap">
+	<img class="psImage" src="http://p5.qhimg.com/t01bc7da5a2c6e90308.jpg" alt="卢林" />
+	<div class="psArticleWrap">
+		<h1 class="psTitle">赔本大甩卖</h1>
+		<ul class="psPriceWrap">
+			<li>
+				<span class="spLabel">眼镜</span>
+				<span class="spAmount">500元</span>
+			</li>
+			<li>
+				<span class="spLabel">外套</span>
+				<span class="spAmount">300元</span>
+			</li>
+			<li>
+				<span class="spLabel">iPhone 5S</span>
+				<span class="spAmount">88元</span>
+			</li>
+			<li>
+				<span class="spLabel">总价</span>
+				<span class="spAmount spTotalPrice">仅需888元</span>
+			</li>
+		</ul>
+		<div class="spDescriptionWrap">
+			<p>附带品</p>
+			<ul class="descBulletsUL">
+				<li>可乐一罐</li>
+				<li>饭碗一个</li>
+				<li>6块钱的麻辣烫</li>
+			</ul>
+		</div>
+		<button class="psCTA">买买买</button>
+	</div>
+</div>
+<p>```</p>
+
+<p>我们这里不需要任何样式，也会是一个很美的网页，至少看起来整洁，信息整齐。（图片太大，直截取文本部分。因为图片的宽、高在初始化的时候必须要设置的，至于为什么要设置可以查阅Google，主要是给图片预留空间，提升文档性能。）</p>
+
+<p><img src="http://p5.qhimg.com/t0146e9616541c6732a.png" alt="无样式的表现" /></p>
+
+<p>好吧，到这里我们的DOM结构就构造完了，接下来添加一点基本的，也可以理解为公用的样式，这里的公用可以不理解为积木块共有的样式。说起来绕了一点，也就是说不同表现的共有样式可以与本身结构具有的基本样式进行分离，这个可以看自己喜好来决定。</p>
+
+<h3 id="section-3">三、编写网页基本的样式</h3>
+
+<p>在此之前我们来看看我本地的文件结构：</p>
+
+<p><code>bash
+demo  //文件夹
+	A.css  //样式1
+	B.css  //样式2
+	index.css  //基本样式
+	index.html //DOM结构
+</code></p>
+
+<p>这里可以处理一些基本的网页样式信息，比如恢复一些元素的默认值、调整部分间隙。这部分代码位于：index.css中，内容放入文章末尾吧，这里我们连贯的描述怎么做页面重用。</p>
+
+<h3 id="section-4">四、编写不同表现的样式</h3>
+
+<p>说了怎么久，DOM结构和基本样式都搞好啦，那么现在我们来实现我们的两张图。现在我们只需要做的是在最外层DOM结构中加入不同的类名：</p>
+
+<p>``` html
+// A类样式</p>
+<div class="productStackWrap psTreatmentA">...</div>
+<p>// B类样式</p>
+<div class="productStackWrap psTreatmentB">...</div>
+<p>```</p>
+
+<p>这样我们利用CSS的权重来控制特殊的样式，其实这里的 psTreatmentA 类更像一个命名空间，如果用严格的语言来理解的话，那么可以理解为：</p>
+
+<p><code>java
+class psTreatmentA implements productStackWrap {
+	...
+}
+class psTreatmentB implements productStackWrap {
+	...
+}
+...
+class psTreatmentN implements productStackWrap {
+	...
+}
+</code></p>
+
+<blockquote>
+  <p>注意这里用的是接口哦，CSS的复用可以是多继承的关系，至少我是这么理解的。</p>
+</blockquote>
+
+<p>那么我们改怎么针对这个类来写属于它实例的样式呢？那么看一下下面两段代码就可以理解了。</p>
+
+<p><code>css
+/* A类样式 */
+.psTreatmentA {
+	width: 310px;
+}
+.psTreatmentA .psImage {
+	width: 80px;
+	height: 112px;
+	float: left;
+}
+.psTreatmentA .psTitle {
+	margin-left: 100px;
+}
+.psTreatmentA .psPriceWrap {
+	margin-left: 100px;
+	text-align: right;
+}
+.psTreatmentA .psCTA {
+	margin: 0 auto;
+}
+/* B类样式 */
+.psTreatmentB {
+	width: 385px;
+}
+.psTreatmentB .psImage {
+	width: 386px;
+	height: 287px;
+	display: block;
+	margin-bottom: 20px;
+}
+.psTreatmentB .psPriceWrap {
+	text-align: left;
+	margin-left: 110px;
+}
+.psTreatmentB .psTitle {
+	text-align: center;
+	font-size: 27px;
+}
+</code></p>
+
+<p>这样做了过后就能够使用同一套DOM结构，来穿上不同的样式了，技术是很简单的技术，但是不同的玩法能玩出不同的精彩哦~</p>
+
+<p>那么，这样做有什么好处呢？这里随机列几条吧。</p>
+
+<p><strong>场景一：</strong></p>
+
+<p>PM说：“我们换回以前那份设计稿吧。”</p>
+
+<p>FE说：“好的，马上弄。”（随手删除了引入的B样式，引入A样式，OK，解决问题~）</p>
+
+<p><strong>场景二：</strong></p>
+
+<p>PM说：“这是最新设计稿，要赶紧上线，1天能上线吗？”</p>
+
+<p>FE说：“我看看设计稿来（啪啪啪~看完设计稿，发现其中有很多复用的网页样式）。”</p>
+
+<p>FE再说：“我尽力吧，晚上做完回你。（使用通用的结构include，最后将之前项目中的A…N样式拿来一套，解决问题！）”</p>
+
+<p>好处还有很多呢，等待你去发现~</p>
+
+<h3 id="section-5">五、最后结束语</h3>
+
+<p>虽然上面文章描述了样式上的重用，其实在JS行为的把握上我们也可以使用相同处理事情的方式，将JS行为的类将表现给分离出来，能够更好的应对需求的变更以及增加代码的可维护~</p>
+
+<p>附：（文章例子中的基本样式）</p>
+
+<p><code>css
+.productStackWrap {
+	position: relative;
+	font-size: 14px;
+	margin: 40px 0;
+	border: 1px solid #999;
+	padding: 20px;
+}
+.psTitle {
+	font-size: 21px;
+	font-weight: 700;
+	margin: 0 0 5px 0;
+}
+.psPriceWrap {
+	padding: 0;
+}
+.psPriceWrap li {
+	list-style: none;
+	padding: 2px 0;
+}
+.spLabel {
+	display: inline-block;
+	width: 75px;
+	text-align: right;
+	padding-right: 3px;
+}
+.spAmount {
+	display: inline-block;
+	width: 75px;
+	text-align: right;
+	font-weight: 700;
+}
+.spTotalPrice {
+	color: green;
+}
+.spDescriptionWrap p {
+	line-height: 150%;
+}
+.psCTA {
+	background: green;
+	color: #fff;
+	padding: 5px 0;
+	width: 120px;
+	display: block;
+	border: 0;
+	text-align: center;
+	font-size: 20px;
+	text-shadow: 1px 1px 1px #666;
+	border-radius: 5px;
+	background-clip: padding-box;
+	background: #92c436;
+	background: linear-gradient(top, #92c436 0%, #97c64b 50%, #80c217 51%, #7cbc0a 100%);
+}
+.descBulletsUL li {
+	padding: 4px 0;
+}
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CSS3 Animation]]></title>
+    <link href="http://fegg.github.io/blog/20140802/css3-animation-1/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20140802/css3-animation-1</id>
+    <content type="html"><![CDATA[<h3 id="css3-">一、CSS3 动画的属性和描述</h3>
+
+<p>(1) 规定动画的名称、周期</p>
+
+<p><code>css
+/* animateTimer默认值为0，动画不会被执行。 */
+div {
+	animation: animateName animateTimer;
+}
+</code></p>
+
+<p>(2) 描述动画</p>
+
+<p><code>css
+/* from...to... &lt;=&gt; 0%...100% */
+@keyframes animateName {
+	from {...}
+	to {...}
+}
+</code></p>
+
+<p>这里就不一一列举了，可以查看<a href="http://www.w3school.com.cn/css3/index.asp">w3cschool css3教程</a>介绍还是蛮详细的，但是缺少部分比较使用的事件讲解，这个就需要查阅一下博客了。</p>
+
+<!-- more -->
+
+<h3 id="css3--1">二、CSS3 动画的三个事件</h3>
+
+<p>（1）开始事件: animationStart</p>
+
+<p>（2）结束事件: animationEnd</p>
+
+<p>（3）重复运动事件: animationIteration</p>
+
+<p>当然，css3动画的支持还不是很全面，之前是webkit内核的浏览器支持比较好，以下是特定内核的前缀。</p>
+
+<p><code>javascript
+var ANIMATION_EVENT_PREFIX = ['Moz', 'webkit', 'ms', 'O'];
+</code></p>
+
+<p>我表示不是很好用，也许是我用的不对吧，最后还是采用定时器来解决一些问题的。其实CSS3动画还是挺酷的，下次阅读一下官方文档，看是怎么实现的。</p>
+
+<h3 id="section">三、动动手，找下感觉</h3>
+
+<p>其实之前做动画，是采用JQuery的一些动画API和自定义动画来做。后来也用了<a href="http://www.qwrap.com/">QWrap</a>来做，可能是因为类似的框架主要针对PC端，所以在移动端的性能自然就不是那么理想，不过iphone的性能还是不错的，做出来的效果还不算很卡，Android 4.x还没测试过。</p>
+
+<p>当然，你也可以采用一些流行的移动端的库，比如：<a href="http://zeptojs.com/">zeptojs</a>等等，很少做移动端，就不多说了，怕误导人。</p>
+
+<p>接下来用一个实际的例子，熟悉一下CSS3动画的API和使用的感觉。</p>
+
+<p>功能描述：主要是一个菜单，点击展示／隐藏列表内容，是一个比较经典的交互。</p>
+
+<p>（1）HTML部分，简单的一个例子结构。</p>
+
+<p>``` html</p>
+<div id="mininav">
+	<div class="nav">
+		<button id="JS-menu">菜单</button>
+		<ul id="JS-items" data-animate="hide" class="items">
+			<li class="item"><a href="http://www.so.com/">360搜索</a></li>
+			<li class="item"><a href="http://www.so.com/">360搜索</a></li>
+			<li class="item"><a href="http://www.so.com/">360搜索</a></li>
+			<li class="item"><a href="http://www.so.com/">360搜索</a></li>
+			<li class="item"><a href="http://www.so.com/">360搜索</a></li>
+			<li class="item"><a href="http://www.so.com/">360搜索</a></li>
+			<li class="item"><a href="http://www.so.com/">360搜索</a></li>
+		</ul>
+	</div>
+</div>
+<p>```</p>
+
+<p>（2）CSS部分，看到多，其实就是为了处理前缀那些，还是不复杂。</p>
+
+<p><code>css
+body, ul, li { margin: 0; padding: 0; }
+#mininav .items { list-style: none; overflow: hidden; display: none; }
+#mininav .item { width: 100%; height: 30px; line-height: 30px; background: #ddd; margin-top: 5px; }
+#mininav .item a { display: block; width: 100%; height: 30px; }
+#mininav .show { animation: show 1s; -moz-animation: show 1s; -webkit-animation: show 1s; -o-animation: show 1s; }
+#mininav .hide { animation: hide 1s; -moz-animation: hide 1s; -webkit-animation: hide 1s; -o-animation: hide 1s; }
+@keyframes show { from { height: 0; } to { height: 245px; } }
+@-moz-keyframes show { from { height: 0; } to { height: 245px; } }
+@-webkit-keyframes show { from { height: 0; } to { height: 245px; } }
+@-o-keyframes show { from { height: 0; } to { height: 245px; } }
+@keyframes hide { from { height: 245px; } to { height: 0; } }
+@-moz-keyframes hide { from { height: 245px; } to { height: 0; } }
+@-webkit-keyframes hide { from { height: 245px; } to { height: 0; } }
+@-o-keyframes hide { from { height: 245px; } to { height: 0; } }
+</code></p>
+
+<p>（3）JS部分，主要处理动态交互的效果，因为有按钮事件嘛。以下代码只是测试用，有些并未封装成库，如果实际中要用，可以采用jquery或者其他什么库，就没那么麻烦了。</p>
+
+<p>核心代码：</p>
+
+<p>``` javascript
+var menu = document.getElementById(‘JS-menu’),
+	nav = document.getElementById(‘JS-items’);</p>
+
+<p>/* 菜单的状态 */
+var STATUS = {
+	show: ‘show’,
+	hide: ‘hide’
+};</p>
+
+<p>/* 定时器索引 */
+var timer = null;</p>
+
+<p>addEvent(menu, ‘click’, function (e) {
+	if(nav.getAttribute(‘data-animate’) == STATUS.hide) {
+		clearTimeout(timer); //防止连续不断的点击</p>
+
+<pre><code>	nav.style.display = 'block';
+	removeClass(nav, STATUS.hide);
+	addClass(nav, STATUS.show);
+	nav.setAttribute('data-animate', STATUS.show);
+} else {
+	timer = setTimeout(function () {
+		nav.style.display = 'none';
+	}, 1000);
+
+	removeClass(nav, STATUS.show);
+	addClass(nav, STATUS.hide);
+	nav.setAttribute('data-animate', STATUS.hide);
+} }, false); ```
+</code></pre>
+
+<p>上面主要就是点击的一个交替，使用定时器是因为自带的动画结束事件未使用成功，之后单独学习一下，总感觉哪儿不对。定时器的时间必须和动画时间一致，动画也有一些参数可以控制效果，可以查看相应API，我使用的默认效果。</p>
+
+<p>以下是完整JS代码：</p>
+
+<p>``` javascript
+(function () {
+	var menu = document.getElementById(‘JS-menu’),
+		nav = document.getElementById(‘JS-items’);</p>
+
+<pre><code>function addEvent(obj, type, fun, isBubble) {
+	if(obj.addEventListener) {
+		obj.addEventListener(type, fun, isBubble);
+	} else {
+		obj.attachEvent('on' + type, fun);
+	}
+}
+
+function hasClass(obj, clazz) {
+	return obj.className.match(new RegExp('(\\s|^)' + clazz + '(\\s|$)'));
+}	
+
+//添加指定class，如果你直接className=papapa，值会被覆盖，所以需要累加
+function addClass(obj, clazz) {
+	if(!hasClass(obj, clazz)) {
+		obj.className += ' ' + clazz;
+	}
+}
+
+//去除指定class，如果有兴趣可以做一个class交替操作
+function removeClass(obj, clazz) {
+	if (hasClass(obj, clazz)) {  
+		var reg = new RegExp('(\\s|^)' + clazz + '(\\s|$)');  
+		obj.className = obj.className.replace(reg, '');
+	}
+}
+
+/* 菜单的状态 */
+var STATUS = {
+	show: 'show',
+	hide: 'hide'
+};
+
+/* 定时器索引 */
+var timer = null;
+
+addEvent(menu, 'click', function (e) {
+	if(nav.getAttribute('data-animate') == STATUS.hide) {
+		clearTimeout(timer); //防止连续不断的点击，出现bug
+
+		nav.style.display = 'block';
+		removeClass(nav, STATUS.hide);
+		addClass(nav, STATUS.show);
+		nav.setAttribute('data-animate', STATUS.show);
+	} else {
+		timer = setTimeout(function () {
+			nav.style.display = 'none';
+		}, 1000);
+
+		removeClass(nav, STATUS.show);
+		addClass(nav, STATUS.hide);
+		nav.setAttribute('data-animate', STATUS.hide);
+	}
+}, false); })(); ```
+</code></pre>
+
+<p>效果示例：</p>
+
+<p><img src="/images/CSS3/css3-animation.gif" alt="CSS3 动画" /></p>
+
+<p>睁不起了＝＝睡觉了～呼噜～</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CSS字体单位]]></title>
+    <link href="http://fegg.github.io/blog/20140802/css-font-size-em-vs-px-vs-pt-vs-precent/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20140802/css-font-size-em-vs-px-vs-pt-vs-precent</id>
+    <content type="html"><![CDATA[<h3 id="section">一、前言</h3>
+
+<p>在CSS样式中，当文本缩放的时候使用font-size属性是最难以理解的方面之一。在CSS中，你有4种不同的选择，能够让你设置文本在浏览器中的展示。那么这4种单位哪一种更适合呢？这个问题引发了各种各样不同的争论和评价。想要找到一个比较权威的回答可能比较困难，因为这个问题比较难回答。</p>
+
+<blockquote>
+  <p>PS: 半年前只翻译啦一半，半夜打开一看原文突然就想把剩下的翻译啦~里面有一些自己的观点描述，如果有错误请您留言给我，一定修正。</p>
+</blockquote>
+
+<h3 id="section-1">二、合适的单位</h3>
+
+<p>**“Ems”(em): ** “em”是被用于网页文件媒介的可缩放的单位（即相对单位）。1em就等于当前字体的大小，举个例子来讲，如果文档中字体的大小为12pt，那么1em = 12pt。Ems拥有能够缩放的特点，所以2em = 24pt，0.5em = 6pt（你也可以使用原文中的.5em，但是我觉得0.5em的可读性更好）等等。</p>
+
+<p>**Pixels(px): ** 像素是被用于屏幕媒介（在计算机屏幕上读取）的固定大小的单位（即绝对单位）。1像素表示电脑屏幕中的1个点（这是你的屏幕能够识别的最小单位）。在设计网页的时候，很多web设计者采用像素，因为它能够很精确的在浏览器中渲染网页。但是，使用像素作为单位，当近视的用户（或者视力不好的用户）放大正在浏览的网页或者在移动端缩小网页到合适的尺寸，都会呈现一些问题。</p>
+
+<p>**Points(pt): ** Points是一直以来被用于打印媒介（打印在纸上等等）。1pt = 1/72英寸。Points和Pixels比较像，它们都是固定大小和不能缩放的单位。</p>
+
+<p>**Percent(%): ** 百分比单位和”em”单位很像，但是存在着细微的不同。首先也是最重要的不同，就是在font-size = 100%（比如：12pt = 100%）的时候。当使用百分比单位，你的文本完全能在移动端正常访问。</p>
+
+<!-- more -->
+
+<h3 id="section-2">三、它们有什么不同呢？</h3>
+
+<p>当你在实际效果中看它们，能够很容易理解它们之间的不同点。一般来讲，1em = 12pt = 16px = 100%。让我们看看将基本字体大小（body中字体大小）从100%增加到120%之后，它们有什么不同。
+测试代码：（这里使用设置div中字体大小来做测试，代码位于文章末尾：例子1-1）</p>
+
+<h3 id="chrome-v30">3. chrome v30中的效果</h3>
+
+<p><img src="http://p8.qhimg.com/t014109bfe077a9f23e.png" alt="字体比较" /></p>
+
+<p><em>(由于这里不涉及字体设计的讲解，设置了内边距等样式便于比较，但是不影响差异的判断)</em></p>
+
+<p>正如你所看到的，em和percent单位当基础font-size增加的时候，对应的字体大小也相对增加；但是px和pt单位却没有反应。对文本设置绝对大小很容易，但对于你的用户要缩小（或者放大）文本，用于在一些设备或者机器中正常显示的时候就不是很好。所以，在网页字体中，使用em和percent单位是更好的解决方案。</p>
+
+<h3 id="em">4. em与百分比的比较</h3>
+
+<p>我们发现pt和px字体单位不是适应Web文档必须选择的单位（其实从作者的语气中并没有表现出使用px单位不好的意思），我们还有em和百分比作为字体的单位。从理论上来说，em和百分比单位都是相同的（指的都是相对单位），但是在实际的使用中，他们会有细微的不同之处，这些不同之处对于我们在选择字体单位的时候是比较重要的。</p>
+
+<p>从例子1-1中，我们可以看出，我们用了“font-size: 100%“来作为我们的基本单位（作用在body标签上）。如果你改变上面代码中基本单位的font-size: 100%为font-size: 1em（body { font-size: 1em; }），你可能不容易发现改变前后的不同之处。让我们看看改变成em单位后，在改变浏览器文本大小的设置后在一些浏览器上的效果。（文章中作者只说了存在于某些浏览器中，我就测试了一下chrome和ie6/7/8/9/10，发现只有ie6会出现作者描述的不清晰和不一致的效果），效果如下图所示：（测试代码位于文章末尾：例子1-2）</p>
+
+<p><img src="http://p5.qhimg.com/t019892068c436c7022.png" alt="最小的情况下" /></p>
+
+<p><img src="http://p3.qhimg.com/t01ef42eede4144e10b.png" alt="最大的情况下" /></p>
+
+<blockquote>
+  <p>在IE6中的设置地方如下，设置中，字体大小为中的时候渲染效果比较好。</p>
+</blockquote>
+
+<p><img src="http://p0.qhimg.com/t01d77ee244466ea54a.png" alt="设置方式" /></p>
+
+<p>当浏览器字体大小设置为“中”的时候，em和百分比之间几乎没有差异。但是当字体大小改变为其他值得时候差异就比较明显。当“最小”的情况下：em渲染的字体比百分比的更小；当“最大”的情况下：差异相当的明显，em渲染的字体比百分比的更大。虽然部分人认为em单位缩放的方式是他们真正想要的，但是在实际的应用中，em文本的缩放是超出预期的，在某些用户设备中，“最小”字体大小的情况下会导致字体模糊难以阅读的情况（其实有点违背网页可读性一条吧）。</p>
+
+<h3 id="section-3">5. 作者观点</h3>
+
+<p>从理论上讲，em单位是在web字体大小领域中即将到来的标准（在我这时候翻译已经比较流行啦），但是在实际应用中，对于用户来说，百分比单位能够提供更多统一的和可被接受的字体渲染。当浏览器设置发生改变，百分比单位的伸缩是按照一种可靠比率的方式缩放、放大的，这样能够提升网页的可读性，更符合设计师的设计初衷。</p>
+
+<p>得出结论：赢家是“百分比”。(大家不忙喷哈，后面作者更新了现在流行的网页字体设置方式)</p>
+
+<h3 id="section-4">6. 作者在2011年1月的补充</h3>
+
+<p>当我写这篇文章几年后，我想总结一下大家的讨论和辩论。一般来说，我在开始写网页的时候，会设置body标签的字体大小为: font-size: 62.5%；这样body标签就是百分比的单位，然后再网页接下来使用em单位。只要body使用的百分比单位设置，你接下就可以任意的选择em和百分比单位了，这样做的话会保留百分比单位对于网页字体渲染的好处。这这几年里，这样的写法已经成为一种标准。</p>
+
+<p>px现在被认为是能够被接受的字体大小单位（使用它做单位，用户可以使用浏览器的“放大”功能来读取较小的文字） ，不过这样做会出一些问题，当在具有非常高密度屏幕的移动设备中（比如一些Android和iPhone设备上拥有每英寸200~300像素以上，让网页中11px和12px的字体不太拥有良好的阅读体验！ ） 。因此，我将继续使用百分比作为在Web文档中的基本字体大小。</p>
+
+<h3 id="section-5">7. 附录</h3>
+
+<blockquote>
+  <p>例子1-1：各种单位在浏览器中的表现测试代码。</p>
+</blockquote>
+
+<p><strong>（1）HTML代码：</strong></p>
+
+<p>``` html</p>
+<div id="test1">
+    <p>font-size: 100%</p>
+    <p class="p1">em: The quick brown fox.</p>
+    <p class="p2">pt: The quick brown fox.</p>
+    <p class="p3">px: The quick brown fox.</p>
+    <p class="p4">percent: The quick brown fox.</p>
+</div>
+<div id="test2">
+    <p>font-size: 120%</p>
+    <p class="p11">em: The quick brown fox.</p>
+    <p class="p12">pt: The quick brown fox.</p>
+    <p class="p13">px: The quick brown fox.</p>
+    <p class="p14">percent: The quick brown fox.</p>
+</div>
+<p>```</p>
+
+<p><strong>（2）CSS代码：</strong></p>
+
+<p><code>css
+/* base style */
+body {
+    font-size: 100%;
+}
+#test1, #test2 {
+    float: left;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+/* container style */
+#test1 {
+    font-size: 100%;
+}
+#test2 {
+    margin-left: 50px;
+    font-size: 120%;
+}
+/* text underline */
+p {
+    border-bottom: 1px solid #aaa;
+}
+/* main style */
+/* font-size: 100% */
+#test1 .p1 {
+    font-size: 1em;
+}
+#test1 .p2 {
+    font-size: 12pt;
+}
+#test1 .p3 {
+    font-size: 16px;
+}
+#test1 .p4 {
+    font-size: 100%;
+}
+/* font-size: 120% */
+#test2 .p11 {
+    font-size: 1em;
+}
+#test2 .p12 {
+    font-size: 12pt;
+}
+#test2 .p13 {
+    font-size: 16px;
+}
+#test2 .p14 {
+    font-size: 100%;
+}
+</code></p>
+
+<blockquote>
+  <p>例子1-2：em与百分比测试中的代码，放在文章最后，以便大家能够更顺畅的阅读下来。</p>
+</blockquote>
+
+<p><strong>（1）HTML代码：</strong></p>
+
+<p>``` html</p>
+<div id="test1">
+    <p>font-size: 1em</p>
+    <p class="p">1em: The quick brown fox.</p>
+</div>
+<div id="test2">
+    <p>font-size: 100%</p>
+    <p class="p">100%: The quick brown fox.</p>
+</div>
+<p>```</p>
+
+<p><strong>（2）CSS代码：</strong></p>
+
+<p><code>css
+/* base style */
+body {
+    font-size: 1em;
+}
+#test1, #test2 {
+    float: left;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+/* container style */
+#test1 {
+}
+#test2 {
+    margin-left: 50px;
+}
+/* text underline */
+p {
+    border-bottom: 1px solid #aaa;
+}
+/* main style */
+#test1 .p {
+    font-size: 1em;
+}
+#test2 .p {
+    font-size: 100%;
+}
+</code></p>
+
+<p>作者文章的评论也比较精彩，能够学习到更多 ^0^</p>
+
+<p>英文原文作者：<a href="http://kyleschaeffer.com/development/css-font-size-em-vs-px-vs-pt-vs/">http://kyleschaeffer.com/development/css-font-size-em-vs-px-vs-pt-vs/</a></p>
+
+]]></content>
+  </entry>
+  
+</feed>

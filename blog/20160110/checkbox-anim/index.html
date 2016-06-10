@@ -135,13 +135,19 @@
 
 <h3 id="section-2">基本结构</h3>
 
-<pre><code>&lt;checkbox-anim class="checkbox_anim js_anim_normal"&gt;
-    &lt;span class="checkbox checkbox-span"&gt;&lt;/span&gt;
-&lt;/checkbox-anim&gt;
-&lt;checkbox-anim class="checkbox_anim js_anim_half"&gt;
-    &lt;span class="checkbox checkbox-span checkbox_half"&gt;&lt;/span&gt;
-&lt;/checkbox-anim&gt;
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="html"><span class="line"><span class="nt">&lt;checkbox-anim</span> <span class="na">class=</span><span class="s">&quot;checkbox_anim js_anim_normal&quot;</span><span class="nt">&gt;</span>
+</span><span class="line">    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;checkbox checkbox-span&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
+</span><span class="line"><span class="nt">&lt;/checkbox-anim&gt;</span>
+</span><span class="line"><span class="nt">&lt;checkbox-anim</span> <span class="na">class=</span><span class="s">&quot;checkbox_anim js_anim_half&quot;</span><span class="nt">&gt;</span>
+</span><span class="line">    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;checkbox checkbox-span checkbox_half&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
+</span><span class="line"><span class="nt">&lt;/checkbox-anim&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这里我的结构比较简单，<code>checkbox-anim</code> 组件属于 <strong>namespace</strong> 里面就是真正的组件肉体了。在真实使用的时候需要引入 <code>input</code> 组件，为了简单，这里就省略了，更清晰的看交互的实现。</p>
 
@@ -151,146 +157,269 @@
   <p>两个组件最基本的样式</p>
 </blockquote>
 
-<pre><code>/********** checkbox 基本样式 *************/
-.checkbox {
-    display: block;
-    width: 50px;
-    height: 50px;
-    background: white;
-    border: 1px solid #e9e9e9;
-    border-radius: 3px;
-    position: relative;
-
-    transition: all .2s cubic-bezier(.68,-.55,.27,1.55);
-}
-
-.checkbox::after {
-    display: block;
-    content: '\20';
-    width: 14px;
-    height: 24px;
-    border: 4px solid white;
-    border-top: 0;
-    border-left: 0;
-
-    transform: rotate(45deg) scale(0);
-    position: absolute;
-    top: 14px;
-    left: 16px;
-
-	transition: all .2s cubic-bezier(.18,.89,.32,1.28) .1s;
-}
-
-/********** checkbox_half 基本样式 *************/
-.checkbox_half {
-	background: #2db7f5;
-	border: 1px solid #2db7f5;
-}
-
-.checkbox_half::after {
-	width: 16px;
-	height: 0;
-	top: 23px;
-	transform: scale(1);
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+</pre></td><td class="code"><pre><code class="css"><span class="line"><span class="c">/********** checkbox 基本样式 *************/</span>
+</span><span class="line"><span class="nc">.checkbox</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+</span><span class="line">    <span class="k">width</span><span class="o">:</span> <span class="m">50px</span><span class="p">;</span>
+</span><span class="line">    <span class="k">height</span><span class="o">:</span> <span class="m">50px</span><span class="p">;</span>
+</span><span class="line">    <span class="k">background</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
+</span><span class="line">    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#e9e9e9</span><span class="p">;</span>
+</span><span class="line">    <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">3px</span><span class="p">;</span>
+</span><span class="line">    <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.2s</span> <span class="n">cubic</span><span class="o">-</span><span class="n">bezier</span><span class="p">(</span><span class="o">.</span><span class="m">68</span><span class="o">,-.</span><span class="m">55</span><span class="o">,.</span><span class="m">27</span><span class="o">,</span><span class="m">1</span><span class="o">.</span><span class="m">55</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="nc">.checkbox</span><span class="o">:</span><span class="nd">:after</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+</span><span class="line">    <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;\20&#39;</span><span class="p">;</span>
+</span><span class="line">    <span class="k">width</span><span class="o">:</span> <span class="m">14px</span><span class="p">;</span>
+</span><span class="line">    <span class="k">height</span><span class="o">:</span> <span class="m">24px</span><span class="p">;</span>
+</span><span class="line">    <span class="k">border</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="nb">white</span><span class="p">;</span>
+</span><span class="line">    <span class="k">border-top</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class="line">    <span class="k">border-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">45</span><span class="n">deg</span><span class="p">)</span> <span class="n">scale</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+</span><span class="line">    <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+</span><span class="line">    <span class="k">top</span><span class="o">:</span> <span class="m">14px</span><span class="p">;</span>
+</span><span class="line">    <span class="k">left</span><span class="o">:</span> <span class="m">16px</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.2s</span> <span class="n">cubic</span><span class="o">-</span><span class="n">bezier</span><span class="p">(</span><span class="o">.</span><span class="m">18</span><span class="o">,.</span><span class="m">89</span><span class="o">,.</span><span class="m">32</span><span class="o">,</span><span class="m">1</span><span class="o">.</span><span class="m">28</span><span class="p">)</span> <span class="m">.1s</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="c">/********** checkbox_half 基本样式 *************/</span>
+</span><span class="line"><span class="nc">.checkbox_half</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">background</span><span class="o">:</span> <span class="m">#2db7f5</span><span class="p">;</span>
+</span><span class="line">	<span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#2db7f5</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="nc">.checkbox_half</span><span class="o">:</span><span class="nd">:after</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">width</span><span class="o">:</span> <span class="m">16px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class="line">	<span class="k">top</span><span class="o">:</span> <span class="m">23px</span><span class="p">;</span>
+</span><span class="line">	<span class="n">transform</span><span class="o">:</span> <span class="n">scale</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <blockquote>
   <p>状态改变后的样式</p>
 </blockquote>
 
-<pre><code>/* checkbox 激活样式 */
-.checked .checkbox {
-	background: #2db7f5;
-    border: 1px solid #2db7f5;
-}
-.checked .checkbox::after {
-	top: 7px;
-	transform: rotate(45deg) scale(1);
-}
-
-/********** checkbox_half 激活样式 *************/
-/* 没有修改背景色的部分哦～ */
-.checked .checkbox_half::after {
-	width: 12px;
-	height: 24px;
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="css"><span class="line"><span class="c">/* checkbox 激活样式 */</span>
+</span><span class="line"><span class="nc">.checked</span> <span class="nc">.checkbox</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">background</span><span class="o">:</span> <span class="m">#2db7f5</span><span class="p">;</span>
+</span><span class="line">    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#2db7f5</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="nc">.checked</span> <span class="nc">.checkbox</span><span class="o">:</span><span class="nd">:after</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">top</span><span class="o">:</span> <span class="m">7px</span><span class="p">;</span>
+</span><span class="line">	<span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">45</span><span class="n">deg</span><span class="p">)</span> <span class="n">scale</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="c">/********** checkbox_half 激活样式 *************/</span>
+</span><span class="line"><span class="c">/* 没有修改背景色的部分哦～ */</span>
+</span><span class="line"><span class="nc">.checked</span> <span class="nc">.checkbox_half</span><span class="o">:</span><span class="nd">:after</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">width</span><span class="o">:</span> <span class="m">12px</span><span class="p">;</span>
+</span><span class="line">	<span class="k">height</span><span class="o">:</span> <span class="m">24px</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <blockquote>
   <p>其余附带的一点样式，非主要，修饰用的</p>
 </blockquote>
 
-<pre><code>/* other 修饰类型样式 */
-.checkbox_anim {
-	cursor: pointer;
-    display: block;
-}
-
-.checkbox-span {
-    margin: 20px;
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="css"><span class="line"><span class="c">/* other 修饰类型样式 */</span>
+</span><span class="line"><span class="nc">.checkbox_anim</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">cursor</span><span class="o">:</span> <span class="k">pointer</span><span class="p">;</span>
+</span><span class="line">    <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="nc">.checkbox-span</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>其实现在我们就算写完了，加入点 JS 就能够完整的动起来了。这里贴一下，可以拿来跑来看看效果 ^0^ 兼容神马的我不知道。。。不知道。。。</p>
 
-<pre><code>(function(window, document, undefined) {
-    if (window.HTMLElement) {
-        HTMLElement.prototype.on = function(type, cb, isbb) {
-            if (window.addEventListener) {
-                this.addEventListener(type, cb, isbb || false);
-            }
-
-            return this;
-        };
-        HTMLElement.prototype.toggleClass = function(cls) {
-            if (this.classList) {
-                this.classList.toggle(cls);
-            }
-
-            return this;
-        };
-    }
-
-    function select(selector) {
-        return document.querySelector(selector);
-    }
-
-    var CheckBox = {
-        checked: 'checked'
-    };
-
-    var CheckBoxNormal = {
-        _self: select('.js_anim_normal'),
-        init: function() {
-            this.bind();
-        },
-        bind: function() {
-            this._self.on('click', this.handleCheckbox.bind(this));
-        },
-        handleCheckbox: function(e) {
-            this._self.toggleClass(CheckBox.checked);
-        }
-    };
-
-    var CheckBoxHalf = {
-        _self: select('.js_anim_half'),
-        init: function() {
-            this.bind();
-        },
-        bind: function() {
-            this._self.on('click', this.handleCheckbox.bind(this));
-        },
-        handleCheckbox: function(e) {
-            this._self.toggleClass(CheckBox.checked);
-        }
-    };
-
-    [CheckBoxNormal, CheckBoxHalf].forEach(function(checkbox) {
-    	checkbox.init();
-    });
-})(window, document);
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="nb">document</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">HTMLElement</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">HTMLElement</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">on</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">cb</span><span class="p">,</span> <span class="nx">isbb</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">                <span class="k">this</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">cb</span><span class="p">,</span> <span class="nx">isbb</span> <span class="o">||</span> <span class="kc">false</span><span class="p">);</span>
+</span><span class="line">            <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+</span><span class="line">        <span class="p">};</span>
+</span><span class="line">        <span class="nx">HTMLElement</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toggleClass</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cls</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">classList</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">                <span class="k">this</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">toggle</span><span class="p">(</span><span class="nx">cls</span><span class="p">);</span>
+</span><span class="line">            <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+</span><span class="line">        <span class="p">};</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">function</span> <span class="nx">select</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">var</span> <span class="nx">CheckBox</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">checked</span><span class="o">:</span> <span class="s1">&#39;checked&#39;</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">var</span> <span class="nx">CheckBoxNormal</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">_self</span><span class="o">:</span> <span class="nx">select</span><span class="p">(</span><span class="s1">&#39;.js_anim_normal&#39;</span><span class="p">),</span>
+</span><span class="line">        <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">();</span>
+</span><span class="line">        <span class="p">},</span>
+</span><span class="line">        <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">_self</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleCheckbox</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+</span><span class="line">        <span class="p">},</span>
+</span><span class="line">        <span class="nx">handleCheckbox</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">_self</span><span class="p">.</span><span class="nx">toggleClass</span><span class="p">(</span><span class="nx">CheckBox</span><span class="p">.</span><span class="nx">checked</span><span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">var</span> <span class="nx">CheckBoxHalf</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">_self</span><span class="o">:</span> <span class="nx">select</span><span class="p">(</span><span class="s1">&#39;.js_anim_half&#39;</span><span class="p">),</span>
+</span><span class="line">        <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">();</span>
+</span><span class="line">        <span class="p">},</span>
+</span><span class="line">        <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">_self</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleCheckbox</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+</span><span class="line">        <span class="p">},</span>
+</span><span class="line">        <span class="nx">handleCheckbox</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">_self</span><span class="p">.</span><span class="nx">toggleClass</span><span class="p">(</span><span class="nx">CheckBox</span><span class="p">.</span><span class="nx">checked</span><span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">[</span><span class="nx">CheckBoxNormal</span><span class="p">,</span> <span class="nx">CheckBoxHalf</span><span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">checkbox</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    	<span class="nx">checkbox</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</span><span class="line">    <span class="p">});</span>
+</span><span class="line"><span class="p">})(</span><span class="nb">window</span><span class="p">,</span> <span class="nb">document</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 </div>
 
 
@@ -309,6 +438,12 @@
 <time class='entry-date' datetime='2016-01-10T00:00:00+08:00'><span class='date'>2016 年1 月10 日</span> <span class='time'>12:00 am</span></time>
       
 
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/xing-qu/'>兴趣</a>
+  
+</span>
+
 
     </p>
     
@@ -323,7 +458,7 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/20151216/hi-vue/" title="Previous Post: 乱玩 Vue Todo">&laquo; 乱玩 Vue Todo</a>
+        <a class="basic-alignment left" href="/blog/20151024/postcss-introduce/" title="Previous Post: PostCSS是个什么鬼东西？">&laquo; PostCSS是个什么鬼东西？</a>
       
       
         <a class="basic-alignment right" href="/blog/20160517/redux-can-do/" title="Next Post: Redux 能做什么？">Redux 能做什么？ &raquo;</a>
@@ -331,6 +466,12 @@
     </p>
   </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -349,15 +490,15 @@
       </li>
     
       <li class="post">
-        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
       </li>
     
       <li class="post">
-        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>
@@ -414,7 +555,10 @@
       var disqus_shortname = 'lulin';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://fegg.github.io/blog/20160110/checkbox-anim/';
+        var disqus_url = 'http://fegg.github.io/blog/20160110/checkbox-anim/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

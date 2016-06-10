@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 基本原理 | 小撸]]></title>
+  <link href="http://fegg.github.io/blog/categories/ji-ben-yuan-li/atom.xml" rel="self"/>
+  <link href="http://fegg.github.io/"/>
+  <updated>2016-06-11T02:41:11+08:00</updated>
+  <id>http://fegg.github.io/</id>
+  <author>
+    <name><![CDATA[小撸]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[GBK与UTF-8]]></title>
+    <link href="http://fegg.github.io/blog/20140802/gbk-and-utf-8/"/>
+    <updated>2014-08-02T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20140802/gbk-and-utf-8</id>
+    <content type="html"><![CDATA[<h3 id="section">一、字节</h3>
+
+<p>字节（Byte）是通过网络传输信息（或硬盘、内存中的存储信息）的单位。</p>
+
+<p>1个英文字母（不区分大小写）占1个字节空间；1个中文汉字占2个字节的空间。</p>
+
+<p>在计算机中的存储形式（使用二进制表示）</p>
+
+<pre><code>1111 1111 -&gt; 1个字节
+</code></pre>
+
+<!-- more -->
+
+<h3 id="section-1">二、字符</h3>
+
+<p>字符是可使用多种不同字符方案或代码页来表示的抽象实体。</p>
+
+<p>例如：</p>
+
+<p>（1）Unicode UTF-16 编码将字符表示为 16 位整数序列，而 Unicode UTF-8 编码则将相同的字符表示为 8 位字节序列。</p>
+
+<p>（2）公共语言运行库使用 Unicode UTF-16（Unicode 转换格式，16 位编码形式）表示字符。</p>
+
+<p>综上：</p>
+
+<p>如果“字符”是以 ANSI 编码形式存在的，比如有这样一个字符串：“hello，前端”</p>
+
+<p>英文字节：1*5个字节</p>
+
+<p>中文字节：2*3 =&gt; 6个字节（其中逗号是中文逗号）</p>
+
+<p>测试小例子:</p>
+
+<p>``` php
+&lt;?php
+	echo ‘1: ‘ . $en = ‘hello’;
+	echo ‘<br />’;
+	echo ‘2: ‘ . $zh = ‘前端’;
+	echo ‘<br />’;
+	echo ‘3: ‘ . $en_zh = $en . $zh;
+	echo ‘<br /><br />’;</p>
+
+<pre><code>echo '英文编码：' . mb_detect_encoding($en) . '&lt;br /&gt;';
+echo '中文编码：' . mb_detect_encoding($zh) . '&lt;br /&gt;';
+echo '英文和中文编码：' . mb_detect_encoding($en_zh) . '&lt;br /&gt;';
+
+echo '纯英文字符长度: ' . strlen($en) . ' 字节' . '&lt;br /&gt;';
+echo '纯中文字符长度: ' . strlen($zh) . ' 字节' . '&lt;br /&gt;';
+echo '混合的时候字符长度: ' . strlen($en_zh) . '&lt;br /&gt;'; ?&gt; ```
+</code></pre>
+
+<p>效果图：</p>
+
+<p><img src="/images/gbk-utf-8/php-string.png" alt="编码小例子" /></p>
+
+<h3 id="ascii">三、ASCII码</h3>
+
+<blockquote>
+  <p>计算机中用二进制数表示字母、数字、符号以及控制符号，目前主要用ASCII码（美国标准信息交换码）。</p>
+</blockquote>
+
+<p>（1）常用字符有128个，编码从0～127；</p>
+
+<p>（2）控制字符：0～31和127，共33个，不可显示；</p>
+
+<p>（3）普通字符：95个，包括10个阿拉伯数字（0-9）、52个英文大小写字母（[a-z]A-Z]）、33个运算符；</p>
+
+<p>（4）每个字符占1个字节，7位，最高位为0。</p>
+
+<pre><code>2^7 = 128，即：0~127
+0xxx xxxx
+</code></pre>
+
+<p>（5）编码数具有递增的特性：a-z -&gt; 97-122</p>
+
+<p>附：ASCII表 在文章最后。</p>
+
+<h3 id="utf-8">四、UTF-8</h3>
+
+<p><strong>（1）字节中的UTF-8</strong></p>
+
+<p>UTF-8是用来解决国际上的多字节编码。</p>
+
+<p>UTF-8对英文使用8位（即：1字节）的空间，在中文中使用24位（即：3个字节）来编码。</p>
+
+<pre><code>8位 ＝ 1字节
+</code></pre>
+
+<p>所以，当我们的网站英文占的比例比较大的时候，采用UTF-8每个字符自占用1字节（其实正常情况下，1个英文字母就应该是1个字节的空间）。这样，就能够节省部分空间。</p>
+
+<p>我们可以这样子计算utf－8中文字符串的长度：</p>
+
+<p>``` php
+&lt;?php
+	$en = ‘hello’;
+	$zh = ‘前端’;</p>
+
+<pre><code>function utf8_strlen($string = null) {
+	preg_match_all('/./us', $string, $matches);
+
+	return count($matches[0]);
+}
+
+echo utf8_strlen($en) . '&lt;br /&gt;';
+echo utf8_strlen($zh); ?&gt; ```
+</code></pre>
+
+<p>最后会输出：</p>
+
+<pre><code>5
+2
+</code></pre>
+
+<h3 id="gb18030gbkgbk2312">五、GB18030、GBK与GBK2312</h3>
+
+<p><strong>ASCII表</strong></p>
+
+<p><img src="/images/gbk-utf-8/ascii.png" alt="ASCII表" /></p>
+
+<p><strong>参考</strong></p>
+
+<p><a href="http://blog.163.com/liubin_1990/blog/static/16256303920129102321582/">http://blog.163.com/liubin_1990/blog/static/16256303920129102321582/</a></p>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mvvm | 小撸]]></title>
+  <link href="http://fegg.github.io/blog/categories/mvvm/atom.xml" rel="self"/>
+  <link href="http://fegg.github.io/"/>
+  <updated>2016-06-11T02:41:11+08:00</updated>
+  <id>http://fegg.github.io/</id>
+  <author>
+    <name><![CDATA[小撸]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hello Angular2]]></title>
+    <link href="http://fegg.github.io/blog/20150709/Hello-Angular2/"/>
+    <updated>2015-07-09T00:00:00+08:00</updated>
+    <id>http://fegg.github.io/blog/20150709/Hello-Angular2</id>
+    <content type="html"><![CDATA[<h3 id="section">前言</h3>
+
+<p>Angular 2 正式版还没有出来，但是发现官网已经推广开发版本了，所以尝了一下鲜，来吧，从 Hello World 开始。</p>
+
+<h3 id="section-1">1. 安装需要的工具</h3>
+
+<p>这部分和 ng 2 没多大关系，但是我第一次根据官网 5 分钟配置中发现了一些坑，所以做一下准备，免得打击了第一次使用技术的自信心。</p>
+
+<ol>
+  <li>Node 和 NPM 最新版（省略）</li>
+  <li>jspm 包管理器来初始化 SystemJS 模块加载器那一套</li>
+</ol>
+
+<p><strong>创建一个项目目录</strong></p>
+
+<p><code>bash
+mkdir ng &amp;&amp; cd ng
+</code></p>
+
+<p><strong>安装 jspm 环境</strong></p>
+
+<p><code>bash
+sudo npm install jspm/jspm-cli -g
+npm init
+npm install jspm --save-dev
+// 一路回车就行了
+jspm init
+</code></p>
+
+<p><strong>配置一下 config.js</strong></p>
+
+<p><code>javascript
+System.config({
+	"baseURL": "/",
+	"transpiler": "traceur",
+	"paths": {
+		"*": "*.js",
+		"github:*": "jspm_packages/github/*.js"
+	},
+	"map": {
+		"traceur": "github:jmcriffey/bower-traceur@0.0.88",
+		"traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88"
+	}
+});
+</code></p>
+
+<p><strong>安装一个本地服务工具</strong></p>
+
+<p><code>bash
+sudo npm install -g http-server
+// ng 目录下启动
+http-server
+</code></p>
+
+<!-- more -->
+
+<h3 id="section-2">2. 开始体验</h3>
+
+<p>（1）使用 TypeScript，所以先安装 tsd 包管理器</p>
+
+<p><code>bash
+sudo npm install -g tsd@^0.6.0
+</code></p>
+
+<p>（2）安装 ng 2 依赖的核心</p>
+
+<p><code>bash
+tsd install angular2 es6-promise rx rx-lite
+</code></p>
+
+<p>这里安装完成后会创建包管理器的文件夹：typings</p>
+
+<p>（3）在 ng 目录下创建代码文件</p>
+
+<p><code>bash
+touch app.ts index.html
+</code></p>
+
+<p>（4）配置一下 TypeScript</p>
+
+<p><code>bash
+sudo npm install -g typescript@^1.5.0-beta
+// 在 ng 目录下运行监听编译
+tsc --watch -m commonjs -t es5 --emitDecoratorMetadata app.ts
+</code></p>
+
+<p>（5）接下来编写 app.ts 文件</p>
+
+<p>``` javascript
+///<reference path="typings/angular2/angular2.d.ts"></reference>
+import {Component, View, bootstrap} from ‘angular2/angular2’;</p>
+
+<p>// Annotation section
+@Component({
+	selector: ‘my-app’
+})
+@View({
+	template: ‘&lt;h1&gt;Hello &lt;/h1&gt;’
+})
+// Component controller
+class MyAppComponent {
+	name: string;</p>
+
+<pre><code>constructor() {
+this.name = 'Angular2';
+} }
+</code></pre>
+
+<p>bootstrap(MyAppComponent);
+```</p>
+
+<p>（6）下载官方的 traceur-runtime.js 和 angular2.dev.js（为了速度，你也可以直接引入）</p>
+
+<p>``` html
+<!-- index.html --></p>
+<html>
+	<head>
+		<title>Angular 2 Quickstart</title>
+		<script src="typings/js/traceur-runtime.js"></script>
+		<script src="jspm_packages/system.js"></script>
+		<script src="config.js"></script>
+		<script src="typings/js/angular2.dev.js"></script>
+	</head>
+	<body>
+
+	<!-- The app component created in app.ts -->
+	<my-app></my-app>
+	<script>System.import('./app');</script>
+
+	</body>
+</html>
+<p>```</p>
+
+<p>最后的文件目录如下：</p>
+
+<p><img src="/images/js/ng2-dev.png" alt="文件目录" /></p>
+
+<p>运行的结果图：</p>
+
+<p><img src="/images/js/ng2-hello.png" alt="ng2 hello" /></p>
+
+<p>源码下载：<a href="http://yunpan.cn/ccy6mh9hrSwHK">360云盘下载</a> （提取码：0da5）</p>
+
+]]></content>
+  </entry>
+  
+</feed>

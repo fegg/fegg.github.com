@@ -128,21 +128,35 @@
 
 <p><img src="/images/post/safari-client.png" alt="Mou icon" /></p>
 
-<pre><code>var windowSize = {
-	width : function () {
-		return window.innerWidth 
-			|| document.body.clientWidth 
-			|| document.documentElement.clientWidth;
-	},
-	height : function () {
-		return window.innerHeight 
-			|| document.body.clientHeight
-			|| document.documentElement.clientHeight;
-	}
-};
-console.log(windowSize.width());
-console.log(windowSize.height());
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">var</span> <span class="nx">windowSize</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">	<span class="nx">width</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span>
+</span><span class="line">			<span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clientWidth</span>
+</span><span class="line">			<span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">clientWidth</span><span class="p">;</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="nx">height</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span>
+</span><span class="line">			<span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clientHeight</span>
+</span><span class="line">			<span class="o">||</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">clientHeight</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">windowSize</span><span class="p">.</span><span class="nx">width</span><span class="p">());</span>
+</span><span class="line"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">windowSize</span><span class="p">.</span><span class="nx">height</span><span class="p">());</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <!--more-->
 
@@ -158,9 +172,11 @@ console.log(windowSize.height());
 
 <p>这里未发现兼容性问题</p>
 
-<pre><code>console.log(screenSize.availWidth());
-console.log(screenSize.availHeight());
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">screenSize</span><span class="p">.</span><span class="nx">availWidth</span><span class="p">());</span>
+</span><span class="line"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">screenSize</span><span class="p">.</span><span class="nx">availHeight</span><span class="p">());</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <h3 id="offsetwidthoffsetheight">三、offsetWidth和offsetHeight</h3>
 
@@ -185,6 +201,12 @@ console.log(screenSize.availHeight());
 <time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
       
 
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javascript/'>javascript</a>
+  
+</span>
+
 
     </p>
     
@@ -202,7 +224,7 @@ console.log(screenSize.availHeight());
         <a class="basic-alignment left" href="/blog/20140802/javascript-module-define/" title="Previous Post: Javascript模块化开发－轻巧自制">&laquo; Javascript模块化开发－轻巧自制</a>
       
       
-        <a class="basic-alignment right" href="/blog/20140802/jquery-selector-optimize/" title="Next Post: JQuery选择器优化策略">JQuery选择器优化策略 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/20140802/key-pages-html/" title="Next Post: 网页的钥匙：HTML/XHTML">网页的钥匙：HTML/XHTML &raquo;</a>
       
     </p>
   </footer>
@@ -225,15 +247,15 @@ console.log(screenSize.availHeight());
       </li>
     
       <li class="post">
-        <a href="/blog/20151216/hi-vue/">乱玩 Vue Todo</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
       </li>
     
       <li class="post">
-        <a href="/blog/20151009/pro-js-2/">JavaScript的特性、函数、对象</a>
+        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>
