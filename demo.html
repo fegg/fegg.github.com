@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name=viewport content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Document</title>
+    <script src="http://s0.qhimg.com/lib/jquery/1102.js"></script>
+</head>
+<body>
+    <img src="zoom.png" alt="">
+    <button id="zoom">zoom</button>
+    <button id="back">back</button>
+    <script>
+        var $meta = null; 
+        $('#zoom').click(function () {
+            $meta = $('meta[name="viewport"]').clone();
+            $('meta[name="viewport"]').remove();
+        });
+        $('#back').click(function () {
+            $('title').before($meta);
+        });
+    </script>
+</body>
+</html>
