@@ -9,7 +9,18 @@
   <meta name="author" content="小撸">
 
   
-  <meta name="description" content="一、前言 上面写了console的乱码问题，接下来写的是web中servlet中的问题，大楷我比较关心一点，因为遇到这个的情况多一些吧。直接开始吧。 二、jsp和servlet中的乱码问题 其实在java文件的编译的情况和（一）中的情况是一样的，不过这里是由WEB容器去调用JVM而已， &hellip;">
+  <meta name="description" content="一、前言 ECMA中所有函数的参数都是按照值传递。 二、基本数据类型 在向函数传递基本数据类型的时候，被传递的值会被复制给一个局部变量（arguments对象的一个元素）。 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+function test( x ) { x = 10; //第一次赋值 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +103,73 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20140802/javascript-arguments/">JavaScript的参数传递</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20140802/javascript-arguments/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20140802/javascript-arguments/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">一、前言</h3>
+
+<p>ECMA中所有函数的参数都是按照<em>值传递</em>。</p>
+
+<h3 id="section-1">二、基本数据类型</h3>
+
+<p>在向函数传递基本数据类型的时候，被传递的值会被复制给一个局部变量（arguments对象的一个元素）。</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">function</span> <span class="nx">test</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="nx">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">//第一次赋值</span>
+</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;x1 : &#39;</span> <span class="o">+</span> <span class="nx">x</span> <span class="p">);</span>	
+</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;arguments1 : &#39;</span> <span class="o">+</span> <span class="nx">arguments</span> <span class="p">)</span>
+</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;arguments[0]1 : &#39;</span> <span class="o">+</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+</span><span class="line">    <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;x2 : &#39;</span> <span class="o">+</span> <span class="nx">x</span> <span class="p">);</span>	
+</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;arguments2 : &#39;</span> <span class="o">+</span> <span class="nx">arguments</span> <span class="p">)</span>
+</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;arguments[0]2 : &#39;</span> <span class="o">+</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="nx">test</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20140802/javascript-arguments/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -542,64 +620,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/20140105/relative-site-web-fonts/">在响应式网站中，提升加载webfonts的性能（一）</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-01-05T00:00:00+08:00'><span class='date'>2014 年1 月5 日</span> <span class='time'>12:00 am</span></time>
-        
-           | <a href="/blog/20140105/relative-site-web-fonts/#disqus_thread"
-             data-disqus-identifier="http://fegg.github.io/blog/20140105/relative-site-web-fonts/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">前言</h3>
-
-<p>因为 Arial, Verdana, Garamond or Times New Roman 这些字体几乎在所有电脑上都有安装，所以以前每个网站都使用他们来渲染文本。至今，虽然webfonts已经在互联网中得到普遍的使用，但是我们依然不知道如何高效的加载他们。</p>
-
-<p>为了提供更好的用户体验，我写了一些怎么做才能高效加载webfonts的简单解决方法，这个方案的实施并不需要昂贵的硬件支持。</p>
-
-<h3 id="section-1">0. 目录</h3>
-
-<p>主要从以下方案进行介绍：</p>
-
-<p>（1）使用woff字体格式（PS：可能是EOT和TTF格式默认情况下不会进行压缩，然而WOFF格式具有内建压缩，而且WOFF格式的支持很广泛的原因。）；</p>
-
-<p>（2）对于不支持webfonts的浏览器使用“web安全”字体（PS：使用前言中提到的一些几乎所有电脑都安装了的字体作为后备字体，保证用户能够正常浏览网页）；</p>
-
-<p>（3）下载字体的“二进制”格式，并且优化它；</p>
-
-<p>（4）使用你自己的字体库；</p>
-
-<p>（5）将字体进行base64编码后，存放于CSS文件中；</p>
-
-<p>（6）如果用户本地没有网页请求的字体，那么就异步加载该字体，并且将该字体存储在localStorage中，以便第二次请求字体直接从localStorage中进行读取，避免字体加载带来的性能问题；</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/20140105/relative-site-web-fonts/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/posts/4">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -612,6 +635,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/20160716/pro-react-get-started/">React 的一些说词</a>
+      </li>
     
       <li class="post">
         <a href="/blog/20160517/redux-can-do/">Redux 能做什么？</a>
@@ -627,10 +654,6 @@
     
       <li class="post">
         <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>

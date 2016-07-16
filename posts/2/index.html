@@ -9,7 +9,11 @@
   <meta name="author" content="小撸">
 
   
-  <meta name="description" content="路程：来回110公里 时间：2014年9月20日 我、智杰、成银、肆爷、文武、文成、孟孟（7人） 1. 景点简介 雁栖湖，是位于北京市怀柔区北部北台上村的水库，拦截雁栖河，北临雄伟的万里长城，南偎一望无际的华北平原。雁栖湖水面宽阔，湖水清澈，每年春秋两季常有成群的大雁来湖中栖息，故而得名。 2. &hellip;">
+  <meta name="description" content="2015年5月9日更新 更新内容：针对Mac OS X 10.10.3不能访问用户目录 1
+http://localhost/~lulin 检查Apache版本是否升级 1
+2
+Server version: Apache/2.4.10 (Unix)
+Server built: Jan 8 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +96,156 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20141126/mac-os-x-10.9-config-amp/">Mac OS X 10.9配置AMP环境</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-11-26T00:00:00+08:00'><span class='date'>2014 年11 月26 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20141126/mac-os-x-10.9-config-amp/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20141126/mac-os-x-10.9-config-amp/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">2015年5月9日更新</h3>
+
+<p>更新内容：针对Mac OS X 10.10.3不能访问用户目录</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">http://localhost/~lulin
+</span></code></pre></td></tr></table></div></figure>
+
+<p>检查Apache版本是否升级</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">Server version: Apache/2.4.10 <span class="o">(</span>Unix<span class="o">)</span>
+</span><span class="line">Server built:   Jan  <span class="m">8</span> <span class="m">2015</span> 20:48:33
+</span></code></pre></td></tr></table></div></figure>
+
+<p>修改的地方有以下 3 点：</p>
+
+<p><strong>（1）/etc/apache2/httpd.conf</strong></p>
+
+<p>打开如下配置（去除#注释）</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="apache"><span class="line"><span class="nb">LoadModule</span> authz_core_module libexec/apache2/mod_authz_core.so
+</span><span class="line"><span class="nb">LoadModule</span> authz_host_module libexec/apache2/mod_authz_host.so
+</span><span class="line"><span class="c"># 这两项是重点检查对象</span>
+</span><span class="line"><span class="nb">LoadModule</span> userdir_module libexec/apache2/mod_userdir.so
+</span><span class="line"><span class="nb">Include</span> <span class="sx">/private/etc/apache2/extra/httpd-userdir.conf</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>修改完后访问会出现，所以还需要修改（2）中的文件</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">Forbidden
+</span><span class="line">You don<span class="err">&#39;</span>t have permission to access /~lulin/ on this server.
+</span></code></pre></td></tr></table></div></figure>
+
+<p><strong>（2）/etc/apache2/extra/httpd-userdir.conf</strong></p>
+
+<p>打开如下配置（去除#注释）</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="apache"><span class="line"><span class="nb">Include</span> <span class="sx">/private/etc/apache2/users/</span>*.conf
+</span></code></pre></td></tr></table></div></figure>
+
+<p>**（3）修改之前 10.9 中 /etc/apache2/users/<youusername>.conf**</youusername></p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="apache"><span class="line"><span class="nt">&lt;Directory</span> <span class="s">&quot;/Users/lulin/Sites/&quot;</span><span class="nt">&gt;</span>
+</span><span class="line">	<span class="nb">Options</span> Indexes MultiViews
+</span><span class="line">	<span class="nb">AllowOverride</span> <span class="k">None</span>
+</span><span class="line">	<span class="nb">Require</span> <span class="k">all</span> granted
+</span><span class="line"><span class="nt">&lt;/Directory&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h3 id="section-1">前言</h3>
+
+<p>因为每次重新安装系统都需要配置一下Apache、MySQL、PHP的环境，网上的文章又不完整或者不完全符合自己的情况，所以写下一篇文章来记录一下，保证99%配置成功，还剩1%由于各种奇葩环境原因。。。主要从 6 个方面进行记录：</p>
+
+<ol>
+  <li>启动Apache</li>
+  <li>建立个人的网站目录</li>
+  <li>启动php的解析功能</li>
+  <li>安装、启动mysql</li>
+  <li>修改mysql root密码</li>
+  <li>使用客户端连接mysql</li>
+</ol>
+
+<h3 id="apache">一、启动Apache</h3>
+
+<p>查看Apache的版本信息：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nv">$ </span>httpd -v
+</span><span class="line">
+</span><span class="line">Server version: Apache/2.2.26 <span class="o">(</span>Unix<span class="o">)</span>
+</span><span class="line">Server built:   Dec <span class="m">10</span> <span class="m">2013</span> 22:09:38
+</span></code></pre></td></tr></table></div></figure>
+
+<p>启动Apache</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nv">$ </span>sudo apachectl restart
+</span></code></pre></td></tr></table></div></figure>
+
+<p>如果终端中显示：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">org.apache.httpd: Already loaded
+</span></code></pre></td></tr></table></div></figure>
+
+<p>就表示已经启动过了，可以使用重启命令：</p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nv">$ </span>sudo apachectl restart
+</span></code></pre></td></tr></table></div></figure>
+
+<p>这样我们的准备工作就做完了，第一步不要太复杂，不然配置会混乱，不太好还原之前的状态。接下来访问：</p>
+
+<p><a href="http://localhost">http://localhost</a></p>
+
+<p>如果出现如下图情况，就表示一切顺利，我们再接下去配置，如果没有成功，其实就不推荐再折腾啦，重装系统是最快的解决方案。。。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20141126/mac-os-x-10.9-config-amp/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -585,73 +739,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/20140802/javascript-arguments/">JavaScript的参数传递</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
-        
-           | <a href="/blog/20140802/javascript-arguments/#disqus_thread"
-             data-disqus-identifier="http://fegg.github.io/blog/20140802/javascript-arguments/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">一、前言</h3>
-
-<p>ECMA中所有函数的参数都是按照<em>值传递</em>。</p>
-
-<h3 id="section-1">二、基本数据类型</h3>
-
-<p>在向函数传递基本数据类型的时候，被传递的值会被复制给一个局部变量（arguments对象的一个元素）。</p>
-
-<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="kd">function</span> <span class="nx">test</span><span class="p">(</span> <span class="nx">x</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class="line">    <span class="nx">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">//第一次赋值</span>
-</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;x1 : &#39;</span> <span class="o">+</span> <span class="nx">x</span> <span class="p">);</span>	
-</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;arguments1 : &#39;</span> <span class="o">+</span> <span class="nx">arguments</span> <span class="p">)</span>
-</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;arguments[0]1 : &#39;</span> <span class="o">+</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
-</span><span class="line">    <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;x2 : &#39;</span> <span class="o">+</span> <span class="nx">x</span> <span class="p">);</span>	
-</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;arguments2 : &#39;</span> <span class="o">+</span> <span class="nx">arguments</span> <span class="p">)</span>
-</span><span class="line">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="s1">&#39;arguments[0]2 : &#39;</span> <span class="o">+</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
-</span><span class="line"><span class="p">};</span>
-</span><span class="line"><span class="nx">test</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/20140802/javascript-arguments/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -669,6 +756,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/20160716/pro-react-get-started/">React 的一些说词</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/20160517/redux-can-do/">Redux 能做什么？</a>
       </li>
     
@@ -682,10 +773,6 @@
     
       <li class="post">
         <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a>
       </li>
     
   </ul>
