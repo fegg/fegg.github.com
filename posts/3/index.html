@@ -9,18 +9,7 @@
   <meta name="author" content="小撸">
 
   
-  <meta name="description" content="一、前言 ECMA中所有函数的参数都是按照值传递。 二、基本数据类型 在向函数传递基本数据类型的时候，被传递的值会被复制给一个局部变量（arguments对象的一个元素）。 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-function test( x ) { x = 10; //第一次赋值 &hellip;">
+  <meta name="description" content="一、前言 现在javascript的流行，前端的代码越来越复杂，所以我们需要软件工程的思想来开发前端。模块化是必不可少的，这样不仅能够提高代码的可维护性、可扩展性以及鲁棒性，更大的好处就是能够提升整个团队的开发效率，也能够让新进的程序员更快的接手工作。今天晚上根据前辈们的经验， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -103,6 +92,53 @@ function test( x ) { x = 10; //第一次赋值 &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20140802/javascript-module-define/">Javascript模块化开发－轻巧自制</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20140802/javascript-module-define/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20140802/javascript-module-define/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">一、前言</h3>
+
+<p>现在javascript的流行，前端的代码越来越复杂，所以我们需要软件工程的思想来开发前端。模块化是必不可少的，这样不仅能够提高代码的可维护性、可扩展性以及鲁棒性，更大的好处就是能够提升整个团队的开发效率，也能够让新进的程序员更快的接手工作。今天晚上根据前辈们的经验，写啦一个简单的模块定义的封装组件，当是练手吧。不过感觉还是蛮好用的。</p>
+
+<h3 id="section-1">二、学习模块化前我们应该先了解点什么呢？</h3>
+
+<p>其实突然就学习模块化的javascript开发，那还是比较丈二和尚，摸不着头脑的。不过如果是做过后台开发的程序员们，可能对于模块化的开发思想并不陌生，因为后台的这方面技术已经很熟悉了。那么这里我就分享一下前端javascript模块化开发的学习。</p>
+
+<h4 id="section-2">1. 了解模块化开发思想</h4>
+
+<p>如果有软件工程背景，那么这一思想就是你自身就应该掌握的。模块（module）就是可以组合、分解以及更换的单元，其实也满足组合大于继承等这些带来的好处吧。如果看成一个系统的话，我们可以从软件体系结构来理解，模块是较大系统中的独立部件，功能、状态与接口反映外部特性，逻辑反映的是内部特性。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20140802/javascript-module-define/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -578,48 +614,6 @@ function test( x ) { x = 10; //第一次赋值 &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/20140802/360-tech/">360技术嘉年华</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-02T00:00:00+08:00'><span class='date'>2014 年8 月2 日</span> <span class='time'>12:00 am</span></time>
-        
-           | <a href="/blog/20140802/360-tech/#disqus_thread"
-             data-disqus-identifier="http://fegg.github.io/blog/20140802/360-tech/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">一、技术嘉年华</h3>
-<p>2014年3月5日来到公司，下午开始第一天的工作，感觉公司的技术氛围不错。今天，第一次参加公司的技术嘉年华，感觉这是一片技术的海洋，有很多技术大拿，也有很多实战大神！</p>
-
-<p><img src="http://p2.qhimg.com/t014085814a8f47a166.jpg" alt="海报" /></p>
-
-<p>这个海报感觉还比较喜庆，感觉有点玩中国风，嘿嘿！</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/20140802/360-tech/">阅读全文 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -637,6 +631,10 @@ function test( x ) { x = 10; //第一次赋值 &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/20160724/react-in-patterns/">React.js 模式</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/20160716/pro-react-get-started/">React 的一些说词</a>
       </li>
     
@@ -650,10 +648,6 @@ function test( x ) { x = 10; //第一次赋值 &hellip;">
     
       <li class="post">
         <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a>
       </li>
     
   </ul>
