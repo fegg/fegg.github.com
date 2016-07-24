@@ -130,26 +130,45 @@
 
 <p>React Component 通过 <code>props</code> 作为 input（之后用输入代替）。下面我们来写一个例子：</p>
 
-<pre><code>// Title.jsx
-class Title extends React.Component {
-    render() {
-        return &lt;h1&gt;{ this.props.text }&lt;/h1&gt;;
-    }
-};
-Title.propTypes = {
-    text: React.PropTypes.string
-};
-Title.defaultProps = {
-    text: 'Hello world'
-};
-
-// App.jsx
-class App extends React.Component {
-    render() {
-        return &lt;Title text='Hello React' /&gt;;
-    }
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">	<span class="c1">// Title.jsx</span>
+</span><span class="line">    <span class="kr">class</span> <span class="nx">Title</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">text</span> <span class="p">}</span><span class="o">&lt;</span><span class="err">/h1&gt;;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">    <span class="nx">Title</span><span class="p">.</span><span class="nx">propTypes</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">text</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">string</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">    <span class="nx">Title</span><span class="p">.</span><span class="nx">defaultProps</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">text</span><span class="o">:</span> <span class="s1">&#39;Hello world&#39;</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// App.jsx</span>
+</span><span class="line">    <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="o">&lt;</span><span class="nx">Title</span> <span class="nx">text</span><span class="o">=</span><span class="s1">&#39;Hello React&#39;</span> <span class="o">/&gt;</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>其中的 <code>Title</code> 组件只有一个输入 - <code>text</code>. 在父组件（App）提供了一个属性，通过 <code>&lt;Title&gt;</code> 组件。在 <code>Title</code> 组件中我们添加了两个设置 <code>propTypes</code> 和 <code>defaultProps</code>，我们来单独看一下：</p>
 
@@ -160,27 +179,49 @@ class App extends React.Component {
 
 <p>还有一个 <code>props.children</code> 属性，能够让我们访问到当前组件的子组件。比如：</p>
 
-<pre><code>class Title extends React.Component {
-    render() {
-        return (
-            &lt;h1&gt;
-                { this.props.text }
-                { this.props.children }
-            &lt;/h1&gt;
-        );
-    }
-};
-
-class App extends React.Component {
-    render() {
-        return (
-            &lt;Title text='Hello React'&gt;
-                &lt;span&gt;community&lt;/span&gt;
-            &lt;/Title&gt;
-        );
-    }
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="kr">class</span> <span class="nx">Title</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span>
+</span><span class="line">                    <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">text</span> <span class="p">}</span>
+</span><span class="line">                    <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span> <span class="p">}</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="err">/h1&gt;</span>
+</span><span class="line">            <span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">Title</span> <span class="nx">text</span><span class="o">=</span><span class="s1">&#39;Hello React&#39;</span><span class="o">&gt;</span>
+</span><span class="line">                    <span class="o">&lt;</span><span class="nx">span</span><span class="o">&gt;</span><span class="nx">community</span><span class="o">&lt;</span><span class="err">/span&gt;</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="err">/Title&gt;</span>
+</span><span class="line">            <span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span></code></pre></td></tr></table></div></figure>
 
 <blockquote>
   <p>值得注意的是：如果我们没有在 Title 组件的 render 方法中添加 { this.props.children } 代码，其中的 span 标签（孩子组件）将不会被渲染。</p>
@@ -192,27 +233,47 @@ class App extends React.Component {
 
 <p>React 的输出就是渲染过后的 HTML 代码。在视觉上我们将看到一个 React 组件的样子。当然，有些组件可能包含一些逻辑，能够帮助我们传递一些数据或者触发一个事件行为（这类组件可能不会有具体的 UI 形态）。为了实现逻辑类型的组件，我们将继续使用组件的 props：</p>
 
-<pre><code>class Title extends React.Component {
-    render() {
-        return (
-            &lt;h1&gt;
-                &lt;a onClick={ this.props.logoClicked }&gt;
-                    &lt;img src='path/to/logo.png' /&gt;
-                &lt;/a&gt;
-            &lt;/h1&gt;
-        );
-    }
-};
-
-class App extends React.Component {
-    render() {
-        return &lt;Title logoClicked={ this.logoClicked } /&gt;;
-    }
-    logoClicked() {
-        console.log('logo clicked');
-    }
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="kr">class</span> <span class="nx">Title</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span>
+</span><span class="line">                    <span class="o">&lt;</span><span class="nx">a</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">logoClicked</span> <span class="p">}</span><span class="o">&gt;</span>
+</span><span class="line">                        <span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s1">&#39;path/to/logo.png&#39;</span> <span class="o">/&gt;</span>
+</span><span class="line">                    <span class="o">&lt;</span><span class="err">/a&gt;</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="err">/h1&gt;</span>
+</span><span class="line">            <span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="o">&lt;</span><span class="nx">Title</span> <span class="nx">logoClicked</span><span class="o">=</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">logoClicked</span> <span class="p">}</span> <span class="o">/&gt;</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">        <span class="nx">logoClicked</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;logo clicked&#39;</span><span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>我们通过一个 callback 的方式在子组件中进行调用，<code>logoClicked</code> 方法能够接受一些数据，这样我们就能够从子组件向父组件传输一些数据了（这里就是 React 方式的子组件向父组件通信）。</p>
 
@@ -228,46 +289,77 @@ class App extends React.Component {
 
 <p>让我们先来看一个简单的例子：</p>
 
-<p>（1）假设我们有一个应用，包含 header 部分，header 内部有一个 navigation（导航）组件。
-（2）所以，我们将有三个 React 组件：App、Header 和 Navigation。
-（3）他们是层级嵌套的关系。</p>
+<p>（1）假设我们有一个应用，包含 header 部分，header 内部有一个 navigation（导航）组件。</p>
+
+<p>（2）所以，我们将有三个 React 组件：App、Header 和 Navigation。</p>
+
+<p>（3）他们是层级嵌套的关系。</p>
 
 <p>所以最后代码如下：</p>
 
-<pre><code>&lt;App&gt;
-	&lt;Header&gt;
-    	&lt;Navigation&gt; ... &lt;/Navigation&gt;
-	&lt;/Header&gt;
-&lt;/App&gt;
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="o">&lt;</span><span class="nx">App</span><span class="o">&gt;</span>
+</span><span class="line">    	<span class="o">&lt;</span><span class="nx">Header</span><span class="o">&gt;</span>
+</span><span class="line">        	<span class="o">&lt;</span><span class="nx">Navigation</span><span class="o">&gt;</span> <span class="p">...</span> <span class="o">&lt;</span><span class="err">/Navigation&gt;</span>
+</span><span class="line">    	<span class="o">&lt;</span><span class="err">/Header&gt;</span>
+</span><span class="line">    <span class="o">&lt;</span><span class="err">/App&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>我们为了组合这些小组件，并且引用他们，我们需要向下面这样定义他们：</p>
 
-<pre><code>// app.jsx
-import Header from './Header.jsx';
-
-export default class App extends React.Component {
-    render() {
-        return &lt;Header /&gt;;
-    }
-}
-
-// Header.jsx
-import Navigation from './Navigation.jsx';
-
-export default class Header extends React.Component {
-    render() {
-        return &lt;header&gt;&lt;Navigation /&gt;&lt;/header&gt;;
-    }
-}
-
-// Navigation.jsx
-export default class Navigation extends React.Component {
-    render() {
-        return (&lt;nav&gt; ... &lt;/nav&gt;);
-    }
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="c1">// app.jsx</span>
+</span><span class="line">    <span class="kr">import</span> <span class="nx">Header</span> <span class="nx">from</span> <span class="s1">&#39;./Header.jsx&#39;</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="o">&lt;</span><span class="nx">Header</span> <span class="o">/&gt;</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// Header.jsx</span>
+</span><span class="line">    <span class="kr">import</span> <span class="nx">Navigation</span> <span class="nx">from</span> <span class="s1">&#39;./Navigation.jsx&#39;</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Header</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="o">&lt;</span><span class="nx">header</span><span class="o">&gt;&lt;</span><span class="nx">Navigation</span> <span class="o">/&gt;&lt;</span><span class="err">/header&gt;;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// Navigation.jsx</span>
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Navigation</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">nav</span><span class="o">&gt;</span> <span class="p">...</span> <span class="o">&lt;</span><span class="err">/nav&gt;);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>然而这样，我们用这种方式去组织组件会有几个问题：</p>
 
@@ -280,24 +372,41 @@ export default class Navigation extends React.Component {
 
 <p>在 React 中，我们能够通过 <code>this.props.children</code> 来很方便的处理这个问题。这个属性能够让父组件读取和访问子组件。这个 API 将使我们的 Header 组件更抽象和低耦合（原文是 dependency-free 不好翻译，但是是这个意思）。</p>
 
-<p>// App.jsx
-    export default class App extends React.Component {
-        render() {
-            return (
-                &lt;Header&gt;
-                    <Navigation></Navigation>
-                &lt;/Header&gt;
-            );
-        }
-    }</p>
-
-<pre><code>// Header.jsx
-export default class Header extends React.Component {
-    render() {
-        return &lt;header&gt;{ this.props.children }&lt;/header&gt;;
-    }
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="c1">// App.jsx</span>
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">Header</span><span class="o">&gt;</span>
+</span><span class="line">                    <span class="o">&lt;</span><span class="nx">Navigation</span> <span class="o">/&gt;</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="err">/Header&gt;</span>
+</span><span class="line">            <span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// Header.jsx</span>
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Header</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="o">&lt;</span><span class="nx">header</span><span class="o">&gt;</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span> <span class="p">}</span><span class="o">&lt;</span><span class="err">/header&gt;;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这将容易测试，因为我们可以让 Header 组件渲染成一个空的 div 标签。这就让组件脱离出来，然后只专注于应用的开发（其实就是抽象了一层父组件，然后让这个父组件和子组件进行了解耦，然后子组件可能才是应用的一些功能实现）。</p>
 
@@ -305,32 +414,57 @@ export default class Header extends React.Component {
 
 <p>每一个 React 组件都接受 props。这非常好，这个 props 属性能包含一些数据。或者说是其他组件。</p>
 
-<pre><code>// App.jsx
-class App extends React.Component {
-    render() {
-        var title = &lt;h1&gt;Hello there!&lt;/h1&gt;;
-
-        return (
-            &lt;Header title={ title }&gt;
-                &lt;Navigation /&gt;
-            &lt;/Header&gt;
-        );
-    }
-};
-
-// Header.jsx
-export default class Header extends React.Component {
-    render() {
-        return (
-            &lt;header&gt;
-                { this.props.title }
-                &lt;hr /&gt;
-                { this.props.children }
-            &lt;/header&gt;
-        );
-    }
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="c1">// App.jsx</span>
+</span><span class="line">    <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="kd">var</span> <span class="nx">title</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">Hello</span> <span class="nx">there</span><span class="o">!&lt;</span><span class="err">/h1&gt;;</span>
+</span><span class="line">
+</span><span class="line">            <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">Header</span> <span class="nx">title</span><span class="o">=</span><span class="p">{</span> <span class="nx">title</span> <span class="p">}</span><span class="o">&gt;</span>
+</span><span class="line">                    <span class="o">&lt;</span><span class="nx">Navigation</span> <span class="o">/&gt;</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="err">/Header&gt;</span>
+</span><span class="line">            <span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// Header.jsx</span>
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Header</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">header</span><span class="o">&gt;</span>
+</span><span class="line">                    <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">title</span> <span class="p">}</span>
+</span><span class="line">                    <span class="o">&lt;</span><span class="nx">hr</span> <span class="o">/&gt;</span>
+</span><span class="line">                    <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span> <span class="p">}</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="err">/header&gt;</span>
+</span><span class="line">            <span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这个技术在我们要合并两个组件，这个组件在 Header 内部的时候是非常有用的，以及在外部提供这个需要合并的组件。</p>
 
@@ -344,56 +478,93 @@ export default class Header extends React.Component {
 
 <p>这里通过一个函数来返回一个高阶组件：</p>
 
-<pre><code>var enhanceComponent = (Component) =&gt;
-    class Enhance extends React.Component {
-        render() {
-            return (
-                &lt;Component
-                    {...this.state}
-                    {...this.props}
-                    /&gt;
-            )
-        }
-    };
-
-export default enhanceComponent;
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="kd">var</span> <span class="nx">enhanceComponent</span> <span class="o">=</span> <span class="p">(</span><span class="nx">Component</span><span class="p">)</span> <span class="o">=&gt;</span>
+</span><span class="line">        <span class="kr">class</span> <span class="nx">Enhance</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">            <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">                <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                    <span class="o">&lt;</span><span class="nx">Component</span>
+</span><span class="line">                        <span class="p">{...</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">}</span>
+</span><span class="line">                        <span class="p">{...</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">}</span>
+</span><span class="line">                        <span class="o">/&gt;</span>
+</span><span class="line">                <span class="p">)</span>
+</span><span class="line">            <span class="p">}</span>
+</span><span class="line">        <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="nx">enhanceComponent</span><span class="p">;</span>
+</span><span class="line">
+</span></code></pre></td></tr></table></div></figure>
 
 <p>我们经常提供一个工厂函数，接受我们的原始组件，当我们需要访问的时候，就返回这个 被升级或者被包裹 过的组件版本給它。比如：</p>
 
-<pre><code>var OriginalComponent = () =&gt; &lt;p&gt;Hello world.&lt;/p&gt;;
-
-class App extends React.Component {
-    render() {
-        return React.createElement(enhanceComponent(OriginalComponent));
-    }
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="kd">var</span> <span class="nx">OriginalComponent</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Hello</span> <span class="nx">world</span><span class="p">.</span><span class="o">&lt;</span><span class="err">/p&gt;;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">enhanceComponent</span><span class="p">(</span><span class="nx">OriginalComponent</span><span class="p">));</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>首先，高阶组件其实也是渲染的原始组件（传入的组件）。一个好的习惯是直接传入 state 和 props 給它。这将有助于我们想代理数据和像是用原始组件一样去使用这个高阶组件。</p>
 
 <p>高阶组件让我们能够控制输入。这些数据我们想通过 props 进行传递。现在像我们说的那样，我们有一个配置，OriginalComponent 组件需要这个配置的数据，代码如下：</p>
 
-<pre><code>var config = require('path/to/configuration');
-
-var enhanceComponent = (Component) =&gt;
-    class Enhance extends React.Component {
-        render() {
-            return (
-                &lt;Component
-                    {...this.state}
-                    {...this.props}
-                    title={ config.appTitle }
-                    /&gt;
-            )
-        }
-    };
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">	<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path/to/configuration&#39;</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">var</span> <span class="nx">enhanceComponent</span> <span class="o">=</span> <span class="p">(</span><span class="nx">Component</span><span class="p">)</span> <span class="o">=&gt;</span>
+</span><span class="line">        <span class="kr">class</span> <span class="nx">Enhance</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">            <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">                <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                    <span class="o">&lt;</span><span class="nx">Component</span>
+</span><span class="line">                        <span class="p">{...</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">}</span>
+</span><span class="line">                        <span class="p">{...</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">}</span>
+</span><span class="line">                        <span class="nx">title</span><span class="o">=</span><span class="p">{</span> <span class="nx">config</span><span class="p">.</span><span class="nx">appTitle</span> <span class="p">}</span>
+</span><span class="line">                        <span class="o">/&gt;</span>
+</span><span class="line">                <span class="p">)</span>
+</span><span class="line">            <span class="p">}</span>
+</span><span class="line">        <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这个配置是隐藏在高阶组件中。OriginalComponent 组件只能通过 props 来调用 title 数据。至于 title 数据从哪里来对于 OriginalComponent 来说并不重要（这就非常棒了！封闭性做的很好）。这是极大的优势，因为它帮助我们测试独立组件，以及提供一个好的机制去 mocking 数据。这里能够这样使用 title 属性（ 也就是 stateless component[无状态组件] ）。</p>
 
-<pre><code>var OriginalComponent = (props) =&gt; &lt;p&gt;{ props.title }&lt;/p&gt;;
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">	<span class="kd">var</span> <span class="nx">OriginalComponent</span> <span class="o">=</span> <span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">{</span> <span class="nx">props</span><span class="p">.</span><span class="nx">title</span> <span class="p">}</span><span class="o">&lt;</span><span class="err">/p&gt;;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>高阶组件是需要另外一个有用的模式－依赖注入（dependency injection）。</p>
 
@@ -407,33 +578,59 @@ var enhanceComponent = (Component) =&gt;
 
 <p>在 React 中 DI 很容易实现，让我们跟着应用来思考：</p>
 
-<pre><code>// Title.jsx
-export default function Title(props) {
-    return &lt;h1&gt;{ props.title }&lt;/h1&gt;;
-}
-
-// Header.jsx
-import Title from './Title.jsx';
-export default function Header() {
-    return (
-        &lt;header&gt;
-            &lt;Title /&gt;
-        &lt;/header&gt;
-    );
-}
-
-// App.jsx
-import Header from './Header.jsx';
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { title: 'React in patterns' };
-    }
-    render() {
-        return &lt;Header /&gt;;
-    }
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="c1">// Title.jsx</span>
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">Title</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span> <span class="nx">props</span><span class="p">.</span><span class="nx">title</span> <span class="p">}</span><span class="o">&lt;</span><span class="err">/h1&gt;;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// Header.jsx</span>
+</span><span class="line">    <span class="kr">import</span> <span class="nx">Title</span> <span class="nx">from</span> <span class="s1">&#39;./Title.jsx&#39;</span><span class="p">;</span>
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">Header</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">            <span class="o">&lt;</span><span class="nx">header</span><span class="o">&gt;</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">Title</span> <span class="o">/&gt;</span>
+</span><span class="line">            <span class="o">&lt;</span><span class="err">/header&gt;</span>
+</span><span class="line">        <span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// App.jsx</span>
+</span><span class="line">    <span class="kr">import</span> <span class="nx">Header</span> <span class="nx">from</span> <span class="s1">&#39;./Header.jsx&#39;</span><span class="p">;</span>
+</span><span class="line">    <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="kr">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;React in patterns&#39;</span> <span class="p">};</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="o">&lt;</span><span class="nx">Header</span> <span class="o">/&gt;</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>有一个 “React in patterns” 的字符串，这个字符串以某种方式来传递给 Title 组件。</p>
 
@@ -441,156 +638,271 @@ class App extends React.Component {
 
 <p>我们前面提到的高阶组件的方式能够用来注入数据。让我们用这个技术来注入一下 title 变量。</p>
 
-<pre><code>// enhance.jsx
-var title = 'React in patterns';
-var enhanceComponent = (Component) =&gt;
-    class Enhance extends React.Component {
-        render() {
-            return (
-                &lt;Component
-                    {...this.state}
-                    {...this.props}
-                    title={ title }
-                    /&gt;
-            )
-        }
-    };
-
-// Header.jsx
-import enhance from './enhance.jsx';
-import Title from './Title.jsx';
-
-var EnhancedTitle = enhance(Title);
-export default function Header() {
-    return (
-        &lt;header&gt;
-            &lt;EnhancedTitle /&gt;
-        &lt;/header&gt;
-    );
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="c1">// enhance.jsx</span>
+</span><span class="line">    <span class="kd">var</span> <span class="nx">title</span> <span class="o">=</span> <span class="s1">&#39;React in patterns&#39;</span><span class="p">;</span>
+</span><span class="line">    <span class="kd">var</span> <span class="nx">enhanceComponent</span> <span class="o">=</span> <span class="p">(</span><span class="nx">Component</span><span class="p">)</span> <span class="o">=&gt;</span>
+</span><span class="line">        <span class="kr">class</span> <span class="nx">Enhance</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">            <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">                <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                    <span class="o">&lt;</span><span class="nx">Component</span>
+</span><span class="line">                        <span class="p">{...</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">}</span>
+</span><span class="line">                        <span class="p">{...</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">}</span>
+</span><span class="line">                        <span class="nx">title</span><span class="o">=</span><span class="p">{</span> <span class="nx">title</span> <span class="p">}</span>
+</span><span class="line">                        <span class="o">/&gt;</span>
+</span><span class="line">                <span class="p">)</span>
+</span><span class="line">            <span class="p">}</span>
+</span><span class="line">        <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// Header.jsx</span>
+</span><span class="line">    <span class="kr">import</span> <span class="nx">enhance</span> <span class="nx">from</span> <span class="s1">&#39;./enhance.jsx&#39;</span><span class="p">;</span>
+</span><span class="line">    <span class="kr">import</span> <span class="nx">Title</span> <span class="nx">from</span> <span class="s1">&#39;./Title.jsx&#39;</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">var</span> <span class="nx">EnhancedTitle</span> <span class="o">=</span> <span class="nx">enhance</span><span class="p">(</span><span class="nx">Title</span><span class="p">);</span>
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">Header</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">            <span class="o">&lt;</span><span class="nx">header</span><span class="o">&gt;</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">EnhancedTitle</span> <span class="o">/&gt;</span>
+</span><span class="line">            <span class="o">&lt;</span><span class="err">/header&gt;</span>
+</span><span class="line">        <span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这个 title 是隐藏在中间层（高阶组件）中，我们通过 prop 来传递给 Title 组件。这很好的解决了，但是这只是解决了一半问题，现在我们没有层级的方式去传递 title，但是这些数据都在 echance.jsx 中间层组件。</p>
 
 <p>React 有一个 <a href="https://facebook.github.io/react/docs/context.html">context</a> 的概念，这个 context 能够在每一个组件中都可以访问它。这个优点像 <a href="https://github.com/krasimir/EventBus">event bus</a> 模型，只不过这里是一个数据。这个方式让我们能够在任何地方访问到数据。</p>
 
-<pre><code>// 我们定义数据的地方：context =&gt; title
-var context = { title: 'React in patterns' };
-class App extends React.Component {
-    getChildContext() {
-        return context;
-    }
-...
-};
-App.childContextTypes = {
-    title: React.PropTypes.string
-};
-
-// 我们需要这个数据的地方
-class Inject extends React.Component {
-    render() {
-        var title = this.context.title;
-    ...
-    }
-}
-Inject.contextTypes = {
-    title: React.PropTypes.string
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="c1">// 我们定义数据的地方：context =&gt; title</span>
+</span><span class="line">    <span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;React in patterns&#39;</span> <span class="p">};</span>
+</span><span class="line">    <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">getChildContext</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="nx">context</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">...</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">    <span class="nx">App</span><span class="p">.</span><span class="nx">childContextTypes</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">title</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">string</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// 我们需要这个数据的地方</span>
+</span><span class="line">    <span class="kr">class</span> <span class="nx">Inject</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="kd">var</span> <span class="nx">title</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">title</span><span class="p">;</span>
+</span><span class="line">        <span class="p">...</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="nx">Inject</span><span class="p">.</span><span class="nx">contextTypes</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">title</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">string</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <blockquote>
   <p>值得注意的是我们必须使用 childContextTypes 和 contextTypes 这两个属性，定义这个上下文对象的类型声明。如果没有声明，context 这个对象将为空（经我测试，如果没有这些类型定义直接报错了，所以一定要记得加上哦）。这可能有些不太合适的地方，因为我们可能会放大量的东西在这里。所以说 context 定义成一个纯对象不是很好的方式，但是我们能够让它成为一个接口的方式来使用它，这将允许我们去存储和获取数据，比如：</p>
 </blockquote>
 
-<pre><code>// dependencies.js
-export default {
-    data: {},
-    get(key) {
-        return this.data[key];
-    },
-    register(key, value) {
-        this.data[key] = value;
-    }
-}
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="c1">// dependencies.js</span>
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">data</span><span class="o">:</span> <span class="p">{},</span>
+</span><span class="line">        <span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+</span><span class="line">        <span class="p">},</span>
+</span><span class="line">        <span class="nx">register</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>然后，我们再看一下我们的例子，顶层的 App 组件可能就会像这样写：</p>
 
-<pre><code>import dependencies from './dependencies';
-
-dependencies.register('title', 'React in patterns');
-
-class App extends React.Component {
-    getChildContext() {
-        return dependencies;
-    }
-    render() {
-        return &lt;Header /&gt;;
-    }
-};
-App.childContextTypes = {
-    data: React.PropTypes.object,
-    get: React.PropTypes.func,
-    register: React.PropTypes.func
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="kr">import</span> <span class="nx">dependencies</span> <span class="nx">from</span> <span class="s1">&#39;./dependencies&#39;</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="nx">dependencies</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;React in patterns&#39;</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">getChildContext</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="nx">dependencies</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="o">&lt;</span><span class="nx">Header</span> <span class="o">/&gt;</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">    <span class="nx">App</span><span class="p">.</span><span class="nx">childContextTypes</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">data</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">object</span><span class="p">,</span>
+</span><span class="line">        <span class="nx">get</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">func</span><span class="p">,</span>
+</span><span class="line">        <span class="nx">register</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">func</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>然后，我们的 Title 组件就从这个 context 中获取数据：</p>
 
-<pre><code>// Title.jsx
-export default class Title extends React.Component {
-    render() {
-        return &lt;h1&gt;{ this.context.get('title') }&lt;/h1&gt;
-    }
-}
-Title.contextTypes = {
-    data: React.PropTypes.object,
-    get: React.PropTypes.func,
-    register: React.PropTypes.func
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="c1">// Title.jsx</span>
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Title</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span> <span class="p">}</span><span class="o">&lt;</span><span class="err">/h1&gt;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="nx">Title</span><span class="p">.</span><span class="nx">contextTypes</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">data</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">object</span><span class="p">,</span>
+</span><span class="line">        <span class="nx">get</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">func</span><span class="p">,</span>
+</span><span class="line">        <span class="nx">register</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">func</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>最好的方式是我们在每次使用 context 的时候不想定义 contextTypes。这就是能够使用高阶组件包裹一层。甚至更多的是，我们能够写一个单独的函数，去更好的描述和帮助我们声明这个额外的地方。之后通过 this.context.get(‘title’) 的方式直接访问 context 数据。我们通过高阶组件获取我们需要的数据，然后通过 prop 的方式来传递给我们的原始组件，比如：</p>
 
-<pre><code>// Title.jsx
-import wire from './wire';
-
-function Title(props) {
-    return &lt;h1&gt;{ props.title }&lt;/h1&gt;;
-}
-
-export default wire(Title, ['title'], function resolve(title) {
-    return { title };
-});
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="c1">// Title.jsx</span>
+</span><span class="line">    <span class="kr">import</span> <span class="nx">wire</span> <span class="nx">from</span> <span class="s1">&#39;./wire&#39;</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">function</span> <span class="nx">Title</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span> <span class="nx">props</span><span class="p">.</span><span class="nx">title</span> <span class="p">}</span><span class="o">&lt;</span><span class="err">/h1&gt;;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="nx">wire</span><span class="p">(</span><span class="nx">Title</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="nx">resolve</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="p">{</span> <span class="nx">title</span> <span class="p">};</span>
+</span><span class="line">    <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这个 wire 函数有三个参数：</p>
 
-<p>（1）一个 React 组件
-（2）需要依赖的数据，这个数据以数组的方式定义
-（3）一个 mapper 的函数，它能接受上下文的原始数据，然后返回一个我们的 React 组件（比如 Title 组件）实际需要的数据对象（相当于一个 filter 管道的作用）。</p>
+<p>（1）一个 React 组件</p>
+
+<p>（2）需要依赖的数据，这个数据以数组的方式定义</p>
+
+<p>（3）一个 mapper 的函数，它能接受上下文的原始数据，然后返回一个我们的 React 组件（比如 Title 组件）实际需要的数据对象（相当于一个 filter 管道的作用）。</p>
 
 <p>这个例子我们只是通过这种方式传递来一个 title 字符串变量。然后在实际应用开发过程中，它可能是一个数据的存储集合，配置或者其他东西。因此，我们通过这种方式，我们能够通过哪些我们确实需要的数据，不用去污染组件，让它们接收一些并不需要的数据。</p>
 
 <p>这里的 wire 函数定义如下：</p>
 
-<pre><code>export default function wire(Component, dependencies, mapper) {
-    class Inject extends React.Component {
-        render() {
-            var resolved = dependencies.map(this.context.get.bind(this.context));
-            var props = mapper(...resolved);
-
-            return React.createElement(Component, props);
-        }
-    }
-    Inject.contextTypes = {
-        data: React.PropTypes.object,
-        get: React.PropTypes.func,
-        register: React.PropTypes.func
-    };
-    return Inject;
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">wire</span><span class="p">(</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">dependencies</span><span class="p">,</span> <span class="nx">mapper</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="kr">class</span> <span class="nx">Inject</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">            <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">                <span class="kd">var</span> <span class="nx">resolved</span> <span class="o">=</span> <span class="nx">dependencies</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">get</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">));</span>
+</span><span class="line">                <span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">mapper</span><span class="p">(...</span><span class="nx">resolved</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">                <span class="k">return</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">props</span><span class="p">);</span>
+</span><span class="line">            <span class="p">}</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">        <span class="nx">Inject</span><span class="p">.</span><span class="nx">contextTypes</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">            <span class="nx">data</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">object</span><span class="p">,</span>
+</span><span class="line">            <span class="nx">get</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">func</span><span class="p">,</span>
+</span><span class="line">            <span class="nx">register</span><span class="o">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">PropTypes</span><span class="p">.</span><span class="nx">func</span>
+</span><span class="line">        <span class="p">};</span>
+</span><span class="line">        <span class="k">return</span> <span class="nx">Inject</span><span class="p">;</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>Inject 是一个高阶组件，它能够访问 context 对象的 dependencies 所有的配置项数组。这个 mapper 函数能够接收 context 的数据，并转换它，然后给 props 最后传递到我们的组件。</p>
 
@@ -610,66 +922,121 @@ export default wire(Title, ['title'], function resolve(title) {
 
 <p>让我们来看一个简单的 Switcher 组件的例子，这个组件包含了一个 button。我们点击它将能够控制切换（flag 不好翻译，程序员都懂的～）</p>
 
-<pre><code>class Switcher extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { flag: false };
-        this._onButtonClick = e =&gt; this.setState({ flag: !this.state.flag });
-    }
-    render() {
-        return (
-            &lt;button onClick={ this._onButtonClick }&gt;
-                { this.state.flag ? 'lights on' : 'lights off' }
-            &lt;/button&gt;
-        );
-    }
-};
-
-// ... and we render it
-class App extends React.Component {
-    render() {
-        return &lt;Switcher /&gt;;
-    }
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="kr">class</span> <span class="nx">Switcher</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="kr">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">flag</span><span class="o">:</span> <span class="kc">false</span> <span class="p">};</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">_onButtonClick</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="nx">flag</span><span class="o">:</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">flag</span> <span class="p">});</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">_onButtonClick</span> <span class="p">}</span><span class="o">&gt;</span>
+</span><span class="line">                    <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">flag</span> <span class="o">?</span> <span class="s1">&#39;lights on&#39;</span> <span class="o">:</span> <span class="s1">&#39;lights off&#39;</span> <span class="p">}</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="err">/button&gt;</span>
+</span><span class="line">            <span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// ... and we render it</span>
+</span><span class="line">    <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="o">&lt;</span><span class="nx">Switcher</span> <span class="o">/&gt;</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这个时候再我们的组件里面有一个数据。或者换句话说：Switcher 只是一个一个我们需要通过 flag 变量来渲染的地方。让我们发送它到一个外面的 store 中：</p>
 
-<pre><code>var Store = {
-    _flag: false,
-    set: function (value) {
-        this._flag = value;
-    },
-    get: function () {
-        return this._flag;
-    }
-};
-
-class Switcher extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { flag: false };
-        this._onButtonClick = e =&gt; {
-            this.setState({ flag: !this.state.flag }, () =&gt; {
-                this.props.onChange(this.state.flag);
-            });
-        }
-    }
-    render() {
-        return (
-            &lt;button onClick={ this._onButtonClick }&gt;
-                { this.state.flag ? 'lights on' : 'lights off' }
-            &lt;/button&gt;
-        );
-    }
-};
-
-class App extends React.Component {
-    render() {
-        return &lt;Switcher onChange={ Store.set.bind(Store) } /&gt;;
-    }
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="kd">var</span> <span class="nx">Store</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">_flag</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class="line">        <span class="nx">set</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">_flag</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+</span><span class="line">        <span class="p">},</span>
+</span><span class="line">        <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_flag</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="kr">class</span> <span class="nx">Switcher</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="kr">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">flag</span><span class="o">:</span> <span class="kc">false</span> <span class="p">};</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">_onButtonClick</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class="line">                <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="nx">flag</span><span class="o">:</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">flag</span> <span class="p">},</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class="line">                    <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">onChange</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">flag</span><span class="p">);</span>
+</span><span class="line">                <span class="p">});</span>
+</span><span class="line">            <span class="p">}</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">_onButtonClick</span> <span class="p">}</span><span class="o">&gt;</span>
+</span><span class="line">                    <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">flag</span> <span class="o">?</span> <span class="s1">&#39;lights on&#39;</span> <span class="o">:</span> <span class="s1">&#39;lights off&#39;</span> <span class="p">}</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="err">/button&gt;</span>
+</span><span class="line">            <span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="o">&lt;</span><span class="nx">Switcher</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span> <span class="nx">Store</span><span class="p">.</span><span class="nx">set</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">Store</span><span class="p">)</span> <span class="p">}</span> <span class="o">/&gt;</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>我们的 Store 对象是<a href="https://addyosmani.com/resources/essentialjsdesignpatterns/book/#singletonpatternjavascript">单例</a> 我们有 helper 去设置和获取 _flag 这个属性的值。通过 getter，然后组件能够通过外部数据进行更新。大楷我们的应用工作流看起来是这样的：</p>
 
@@ -680,17 +1047,27 @@ Switcher -------&gt; Store
 
 <p>让我们假设我们要通过 Store 给后端服务去保存这个 flag 值。当用户返回的时候，我们必须设置合适的初始状态。如果用户离开后在后来，我们必须展示 “lights on” 而不是默认的 “lights off”。现在它变得困难，因为我们的数据是在两个地方。UI 和 Store 中都有自己的状态，我们必须在它们之间交流：Store –&gt; Switcher 和 Switcher –&gt; Store。</p>
 
-<pre><code>// ... in App component
-&lt;Switcher
-    value={ Store.get() }
-    onChange={ Store.set.bind(Store) } /&gt;
-
-// ... in Switcher component
-constructor(props) {
-    super(props);
-    this.state = { flag: this.props.value };
-...
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="c1">// ... in App component</span>
+</span><span class="line">    <span class="o">&lt;</span><span class="nx">Switcher</span>
+</span><span class="line">        <span class="nx">value</span><span class="o">=</span><span class="p">{</span> <span class="nx">Store</span><span class="p">.</span><span class="nx">get</span><span class="p">()</span> <span class="p">}</span>
+</span><span class="line">        <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span> <span class="nx">Store</span><span class="p">.</span><span class="nx">set</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">Store</span><span class="p">)</span> <span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// ... in Switcher component</span>
+</span><span class="line">    <span class="nx">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="kr">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+</span><span class="line">        <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">flag</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">value</span> <span class="p">};</span>
+</span><span class="line">    <span class="p">...</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>我们的模型改变就要通过：</p>
 
@@ -709,40 +1086,69 @@ constructor(props) {
 
 <p>单向数据流就解决了这个问题。它消除了这种多种状态的情况，只保留一个状态，这个状态一般是在 Store 里面。为了实现单向数据流这种方式，我们必须简单修改一下我们的 Store 对象。我们需要一个能够订阅改变的逻辑。</p>
 
-<pre><code>var Store = {
-    _handlers: [],
-    _flag: '',
-    onChange: function (handler) {
-        this._handlers.push(handler);
-    },
-    set: function (value) {
-        this._flag = value;
-        this._handlers.forEach(handler =&gt; handler())
-    },
-    get: function () {
-        return this._flag;
-    }
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="kd">var</span> <span class="nx">Store</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">_handlers</span><span class="o">:</span> <span class="p">[],</span>
+</span><span class="line">        <span class="nx">_flag</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class="line">        <span class="nx">onChange</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">handler</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">_handlers</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">handler</span><span class="p">);</span>
+</span><span class="line">        <span class="p">},</span>
+</span><span class="line">        <span class="nx">set</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">_flag</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">_handlers</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">handler</span> <span class="o">=&gt;</span> <span class="nx">handler</span><span class="p">())</span>
+</span><span class="line">        <span class="p">},</span>
+</span><span class="line">        <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_flag</span><span class="p">;</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>然后我们将有一个钩子在主要的 App 组件中，我们将在每次 Store 中的数据变化的时候重新渲染它。</p>
 
-<pre><code>class App extends React.Component {
-    constructor(props) {
-        super(props);
-        Store.onChange(this.forceUpdate.bind(this));
-    }
-    render() {
-        return (
-            &lt;div&gt;
-                &lt;Switcher
-                    value={ Store.get() }
-                    onChange={ Store.set.bind(Store) } /&gt;
-            &lt;/div&gt;
-        );
-    }
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="kr">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+</span><span class="line">            <span class="nx">Store</span><span class="p">.</span><span class="nx">onChange</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">forceUpdate</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+</span><span class="line">                    <span class="o">&lt;</span><span class="nx">Switcher</span>
+</span><span class="line">                        <span class="nx">value</span><span class="o">=</span><span class="p">{</span> <span class="nx">Store</span><span class="p">.</span><span class="nx">get</span><span class="p">()</span> <span class="p">}</span>
+</span><span class="line">                        <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span> <span class="nx">Store</span><span class="p">.</span><span class="nx">set</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">Store</span><span class="p">)</span> <span class="p">}</span> <span class="o">/&gt;</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="err">/div&gt;</span>
+</span><span class="line">            <span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <blockquote>
   <p>注：我们使用了 forceUpdate 的方式，但这种方式不推荐使用。一般情况能够使用高阶组件进行重新渲染。我们使用 forceUpdate 只是简单的演示。</p>
@@ -750,22 +1156,37 @@ constructor(props) {
 
 <p>因为这个改变，Switcher 变得比之前简单。我们不需要内部的 state：</p>
 
-<pre><code>class Switcher extends React.Component {
-    constructor(props) {
-        super(props);
-        this._onButtonClick = e =&gt; {
-            this.props.onChange(!this.props.value);
-        }
-    }
-    render() {
-        return (
-            &lt;button onClick={ this._onButtonClick }&gt;
-                { this.props.value ? 'lights on' : 'lights off' }
-            &lt;/button&gt;
-        );
-    }
-};
-</code></pre>
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line">    <span class="kr">class</span> <span class="nx">Switcher</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+</span><span class="line">        <span class="nx">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">            <span class="kr">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+</span><span class="line">            <span class="k">this</span><span class="p">.</span><span class="nx">_onButtonClick</span> <span class="o">=</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span><span class="line">                <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">onChange</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+</span><span class="line">            <span class="p">}</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">        <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">            <span class="k">return</span> <span class="p">(</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">_onButtonClick</span> <span class="p">}</span><span class="o">&gt;</span>
+</span><span class="line">                    <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">value</span> <span class="o">?</span> <span class="s1">&#39;lights on&#39;</span> <span class="o">:</span> <span class="s1">&#39;lights off&#39;</span> <span class="p">}</span>
+</span><span class="line">                <span class="o">&lt;</span><span class="err">/button&gt;</span>
+</span><span class="line">            <span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
+</span><span class="line">    <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 <p>这个好处在于：这个模式让我们的组件变成了展示 Store 数据的一个填鸭式组件。它是真的让 React 组件变成了纯粹的渲染层。我们写我们的应用是声明的方式，并且只在一个地方处理一些复杂的数据。</p>
 
