@@ -1,0 +1,786 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>小撸</title>
+  <meta name="author" content="小撸">
+
+  
+  <meta name="description" content="前言 我想找一个好的前端前端框架，找了很久。这个框架将能够帮助我写出具有可扩展性、可维护性 UI 的代码。通过对 React.js 优势的理解，我认为“我找到了它”。在我大量的使用过程中，我发现了一些模式性的东西。这些技术被一次又一次的用于编程开发之中。此时，我将它写下来、 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fegg.github.io/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="小撸" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">小撸</a></h1>
+  
+    <h2>Follow Your Heart.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="fegg.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">主页</a></li>
+  <li><a href="/blog/archives">所有文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20160724/react-in-patterns/">React.js 模式</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-07-24T00:00:00+08:00'><span class='date'>2016 年7 月24 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20160724/react-in-patterns/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20160724/react-in-patterns/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">前言</h3>
+
+<p>我想找一个好的前端前端框架，找了很久。这个框架将能够帮助我写出具有可扩展性、可维护性 UI 的代码。通过对 React.js 优势的理解，我认为“我找到了它”。在我大量的使用过程中，我发现了一些模式性的东西。这些技术被一次又一次的用于编程开发之中。此时，我将它写下来、讨论和分享这些我发现的模式。</p>
+
+<p>这些所有的代码都是可用的，能够在 <a href="https://github.com/krasimir/react-in-patterns">https://github.com/krasimir/react-in-patterns</a> 中下载。我可能不会更新我的博客，但是我将一直在 GitHub 中发布一些东西。我也将鼓励你在 GitHub 中讨论这些模式，通过 issue 或者直接 pull request 的方式。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20160724/react-in-patterns/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20160716/pro-react-get-started/">React 的一些说词</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-07-16T00:00:00+08:00'><span class='date'>2016 年7 月16 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20160716/pro-react-get-started/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20160716/pro-react-get-started/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>其实很多文章都写 React 的代码，代码可能到 Github 上随意下载然后阅读理解，但是有些说词类的东西还是需要看的，这样能够更好的去理解一个东西。好吧，下面大致“翻译”了一下 《Pro React》这本书的 <strong>React‘s Benefits</strong> 的部分。^0^ 英文不太好，如果有不一样的地方能理解就好，毕竟不是专业翻译～</p>
+
+<p>（1）让响应式的渲染变得简单</p>
+
+<p>在以前的 Web 开发过程中，也就是在单页应用之前，在用户每一次浏览页面的时候（比如点击一个按钮），都将重新请求一次服务端，即使是页面上一个很小的状态的改变。这是一种糟糕的用户体验，但是在这种多页的情况下，开发者很容易掌控用户访问的页面。</p>
+
+<p>在单页应用的交互中，用户是通过不断的从服务端获取新的数据，然后切换 DOM 的状态。但是随着系统的发展，Web 系统将变得越来越复杂，它将更加难以确定当前应用的状态（其实这里是指局部受影响的部分），以及很难准时的去更新当前交互中的 DOM 状态。</p>
+
+<p>在 React 出现之前，有很多 JavaScript 的框架去解决以上说到的这个问题，然而，这些解决方案都有一些缺陷，比如系统的“可维护性”、“可扩展性”以及“性能”。（其实这里也不尽然，Angular 1.x 也是很优秀的，在此之前）</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20160716/pro-react-get-started/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20160517/redux-can-do/">Redux 能做什么？</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-05-17T00:00:00+08:00'><span class='date'>2016 年5 月17 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20160517/redux-can-do/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20160517/redux-can-do/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="redux-">一、我先给一个 Redux 的定义</h3>
+
+<p><code>Redux</code> 被大家知道应该都是来自于 <code>React</code> 的出现，但是这篇文章会通过介绍一个 <code>React</code> 之外的例子，来让大家理解 <code>Redux</code> 是什么东西，到底还能够做点撒。</p>
+
+<p>我自己的理解是：</p>
+
+<blockquote>
+  <p>Redux 是一个改变<strong>状态(state)</strong>的模型，这个模型通过一个单向操作的方式来改变<strong>状态</strong>，用数学符号的方式来理解我认为应该是：<code>y = f(x) </code>，嗯，就是一个最简单的函数模型。</p>
+</blockquote>
+
+<p>不过这样说，有些人还会不理解，毕竟以前撸代码不是这个样子的，那么我们先反向的来获取自己的理解。</p>
+
+<p>首先，我们需要知道 Redux 有的以下几个东西：</p>
+
+<ul>
+  <li>createStore</li>
+  <li>reducer</li>
+  <li>dispatch</li>
+</ul>
+
+<p>我觉得需要介绍清楚 Redux ，知道这三个就行了，至于还有一些函数我觉得都是调味料，这里先不介绍。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20160517/redux-can-do/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20160110/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-10T00:00:00+08:00'><span class='date'>2016 年1 月10 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20160110/checkbox-anim/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20160110/checkbox-anim/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">废话</h3>
+
+<p>＝＝晚上失眠了，在网页上看到一个好玩的效果，自己模拟了一下，最开始用SVG写的。。。不多说了，简单记录一下思路和写法。</p>
+
+<h3 id="section-1">思路</h3>
+
+<p>先贴一下效果图，脑袋里面留下直观印象。录的效果可能不太好，大家可以用代码本地跑起来看真实的效果。</p>
+
+<p><img src="/images/checkbox-anim.gif" alt="动态效果" /></p>
+
+<ol>
+  <li>构造一个简单的组件元素，采用 <code>::after</code> 伪元素来实现</li>
+  <li>利用 CSS 中 <code>border</code> 来实现，并且利用 CSS3 动画来添加切换的动画效果</li>
+  <li>主要利用 <code>rotate</code> 和 <code>scale</code> 的效果来实现</li>
+  <li>JS 部分对类名的 <code>toggle</code></li>
+</ol>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20160110/checkbox-anim/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-24T00:00:00+08:00'><span class='date'>2015 年10 月24 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20151024/postcss-introduce/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20151024/postcss-introduce/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">前言</h3>
+
+<p>最近大漠前辈在群里发关于<code>PostCSS</code>的系列文章，但是耗子姐姐又说看了有点云里雾里的感觉，所以这篇文章将按一个思考的角度来理解一下 PostCSS 到底是一个什么东西。</p>
+
+<p><img src="/images/postcss/top.png" alt="配图" /></p>
+
+<h3 id="section-1">一、提出不懂的地方</h3>
+
+<p>很多时候第一次在网上查询 PostCSS 概念的时候，大家都解释成一个<code>后处理器</code>的概念，其实个人觉得这些概念不重要，更为重要的有以下几点：</p>
+
+<ol>
+  <li>它本质上是一个什么东西？</li>
+  <li>它能解决我们什么问题？</li>
+  <li>它是通过什么方式来解决我们的问题？</li>
+  <li>它解决我们的问题是为什么？</li>
+  <li>怎么实现与 <code>SASS</code>、<code>LESS</code>、<code>Stylus</code> 相同的功能（因为它们被经常拿来比较）</li>
+  <li>它由哪些东西组成？</li>
+  <li>既然是程序可以用的，那么它的API呢？</li>
+</ol>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20151024/postcss-introduce/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20150726/induction-react-component-dev/">React 组件开发入门</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-26T00:00:00+08:00'><span class='date'>2015 年7 月26 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20150726/induction-react-component-dev/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20150726/induction-react-component-dev/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">前言</h3>
+
+<p>熟悉 React 的思想后，我们先来尝试开发一个单纯的小组件，可以对比一下是不是比以前的开发模式更加舒适了，这里我主要以一个 Loadding 组件来举栗子，实现了几个基本的功能：</p>
+
+<ul>
+  <li>一种类型的 loadding（菊花转）</li>
+  <li>能够设置 loadding 的三个属性：width height color</li>
+  <li>能够控制 loadding 的显示和隐藏</li>
+</ul>
+
+<p>其实对于一个简单需求来说，这三个属性已经很实用了。但是去网上看一些外国大神写的组件，有一些不明白的地方，所以自己就慢慢搞，do it！</p>
+
+<h3 id="section-1">设计</h3>
+
+<p>我想这样用 loadding 组件：</p>
+
+<p><img src="/images/react/code-loadding.png" alt="使用代码" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20150726/induction-react-component-dev/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20150719/react-component-communicate/">React 组件之间如何交流</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-19T00:00:00+08:00'><span class='date'>2015 年7 月19 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20150719/react-component-communicate/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20150719/react-component-communicate/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">前言</h3>
+
+<p>今天群里面有很多都在问关于 React 组件之间是如何通信的问题，之前自己写的时候也遇到过这类问题。下面是我看到的一篇不错英文版的翻译，看过我博客的人都知道，我翻译可能不会按部就班，会尽可能用中文的意思，来将作者要讲述的技术描述清楚。英文能力有限，如果有不对的地方请跟我留言，一定修改……^_^</p>
+
+<h3 id="section-1">原著序</h3>
+
+<p>处理 React 组件之间的交流方式，主要取决于组件之间的关系，然而这些关系的约定人就是你。</p>
+
+<p>我不会讲太多关于 data-stores、data-adapters 或者 data-helpers 之类的话题。我下面只专注于 React 组件本身的交流方式的讲解。</p>
+
+<p>React 组件之间交流的方式，可以分为以下 3 种：</p>
+
+<ul>
+  <li>【父组件】向【子组件】传值；</li>
+  <li>【子组件】向【父组件】传值；</li>
+  <li>没有任何嵌套关系的组件之间传值（PS：比如：兄弟组件之间传值）</li>
+</ul>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20150719/react-component-communicate/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20150709/Hello-Angular2/">Hello Angular2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-07-09T00:00:00+08:00'><span class='date'>2015 年7 月9 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20150709/Hello-Angular2/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20150709/Hello-Angular2/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">前言</h3>
+
+<p>Angular 2 正式版还没有出来，但是发现官网已经推广开发版本了，所以尝了一下鲜，来吧，从 Hello World 开始。</p>
+
+<h3 id="section-1">1. 安装需要的工具</h3>
+
+<p>这部分和 ng 2 没多大关系，但是我第一次根据官网 5 分钟配置中发现了一些坑，所以做一下准备，免得打击了第一次使用技术的自信心。</p>
+
+<ol>
+  <li>Node 和 NPM 最新版（省略）</li>
+  <li>jspm 包管理器来初始化 SystemJS 模块加载器那一套</li>
+</ol>
+
+<p><strong>创建一个项目目录</strong></p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">mkdir ng <span class="o">&amp;&amp;</span> <span class="nb">cd </span>ng
+</span></code></pre></td></tr></table></div></figure>
+
+<p><strong>安装 jspm 环境</strong></p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">sudo npm install jspm/jspm-cli -g
+</span><span class="line">npm init
+</span><span class="line">npm install jspm --save-dev
+</span><span class="line">// 一路回车就行了
+</span><span class="line">jspm init
+</span></code></pre></td></tr></table></div></figure>
+
+<p><strong>配置一下 config.js</strong></p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="javascript"><span class="line"><span class="nx">System</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+</span><span class="line">	<span class="s2">&quot;baseURL&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+</span><span class="line">	<span class="s2">&quot;transpiler&quot;</span><span class="o">:</span> <span class="s2">&quot;traceur&quot;</span><span class="p">,</span>
+</span><span class="line">	<span class="s2">&quot;paths&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="line">		<span class="s2">&quot;*&quot;</span><span class="o">:</span> <span class="s2">&quot;*.js&quot;</span><span class="p">,</span>
+</span><span class="line">		<span class="s2">&quot;github:*&quot;</span><span class="o">:</span> <span class="s2">&quot;jspm_packages/github/*.js&quot;</span>
+</span><span class="line">	<span class="p">},</span>
+</span><span class="line">	<span class="s2">&quot;map&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="line">		<span class="s2">&quot;traceur&quot;</span><span class="o">:</span> <span class="s2">&quot;github:jmcriffey/bower-traceur@0.0.88&quot;</span><span class="p">,</span>
+</span><span class="line">		<span class="s2">&quot;traceur-runtime&quot;</span><span class="o">:</span> <span class="s2">&quot;github:jmcriffey/bower-traceur-runtime@0.0.88&quot;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line"><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p><strong>安装一个本地服务工具</strong></p>
+
+<figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">sudo npm install -g http-server
+</span><span class="line">// ng 目录下启动
+</span><span class="line">http-server
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20150709/Hello-Angular2/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20150524/touch-start/">从触摸开始（一）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-24T00:00:00+08:00'><span class='date'>2015 年5 月24 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20150524/touch-start/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20150524/touch-start/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">1. 前言</h3>
+
+<p>最近看了一本《移动Web手册》的书，奇舞团翻译的，非常不错。个人觉得在进入移动端的时候最先应该了解移动端新的交互模式：<strong>触摸</strong>。为什么这样说呢？在PC端，我们大多数的交互都是通过<strong>鼠标</strong>来实现，在开发过程中，对鼠标事件的处理也非常多，通过之前在移动端的开发经验，在移动端的交互也避免不了经常与触摸打交道，所以我们有必要单独学习一下它。</p>
+
+<h3 id="section-1">2. 触摸、鼠标交互模式</h3>
+
+<p><strong>(1) 连续性</strong></p>
+
+<p>触摸事件是不连续的，鼠标事件是连续的。</p>
+
+<p><img src="http://p1.qhimg.com/t01995847f1bbafff14.png" alt="连续性" /></p>
+
+<p>操作顺序：A -&gt; B -&gt; C</p>
+
+<p>在鼠标上：鼠标点击A -&gt; 划过B -&gt; 点击C</p>
+
+<p>在触摸上：手指触摸A -&gt; 跨过B -&gt; 触摸C</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20150524/touch-start/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/20141202/play-build-web-pages/">像积木一样搭建网页</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-02T00:00:00+08:00'><span class='date'>2014 年12 月2 日</span> <span class='time'>12:00 am</span></time>
+        
+           | <a href="/blog/20141202/play-build-web-pages/#disqus_thread"
+             data-disqus-identifier="http://fegg.github.io/blog/20141202/play-build-web-pages/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">前言</h3>
+
+<p>我们在浏览网页的时候，经常会看到很相似的几种内容。比如下面这两种样子：</p>
+
+<p><img src="http://p4.qhimg.com/t010118aee227f746a5.png" alt="视图1" /></p>
+
+<p><img src="http://p4.qhimg.com/t0188a9a78a17386fb9.png" alt="视图2" /></p>
+
+<p>看上去是不是比较像呢？其实就是图片的位置不一样，大致上可以认为是一样的吧，那么针对这样子的相似度较高的网页，我们应该怎么样开发呢？</p>
+
+<blockquote>
+  <p>其实这就得谈谈“页面重用机制”了，下面所写的积木式网页构建方式就能够很好的处理页面重用这个问题。</p>
+</blockquote>
+
+<p>接下来将从以下4个方面对积木式网页开发进行描述：</p>
+
+<ol>
+  <li>分析页面结构</li>
+  <li>构建网页的结构</li>
+  <li>编写网页基本的样式</li>
+  <li>编写不同表现的样式</li>
+</ol>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/20141202/play-build-web-pages/">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/2">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/20160724/react-in-patterns/">React.js 模式</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20160716/pro-react-get-started/">React 的一些说词</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20160517/redux-can-do/">Redux 能做什么？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20160110/checkbox-anim/">一个好玩的 CSS 技术 CheckBox</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/20151024/postcss-introduce/">PostCSS是个什么鬼东西？</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/fegg">@fegg</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'fegg',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - 小撸 -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'lulin';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
